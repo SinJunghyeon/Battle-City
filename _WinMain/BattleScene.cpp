@@ -5,26 +5,19 @@
 
 HRESULT BattleScene::Init()
 {
-	rocket = new Tank;
-	/*if (FAILED(rocket->Init(TankType::Player)))
-	{
-		MessageBox(g_hWnd, "·ÎÄÏÀ» ÃÊ±âÈ­¿¡ ½ÇÆĞÇß½À´Ï´Ù.", "¿À·ù", MB_OK);
-		return E_FAIL;
-	}*/
-
 	Sleep(3000);
 
-	// Àû ¸Å´ÏÀú
+	// ì  ë§¤ë‹ˆì €
 	enemyMgr = new EnemyManager;
 	enemyMgr->Init();
 
-	// ¹è°æ ÀÌ¹ÌÁö
-	ImageManager::GetSingleton()->AddImage("Image/background.bmp", WIN_SIZE_X, WIN_SIZE_Y);
+	// ë°°ê²½ ì´ë¯¸ì§€
+	ImageManager::GetSingleton()->AddImage("Image/BattleCity/mapImage.bmp", WIN_SIZE_X, WIN_SIZE_Y);
 
-	backGround = ImageManager::GetSingleton()->FindImage("Image/background.bmp");
+	backGround = ImageManager::GetSingleton()->FindImage("Image/BattleCity/mapImage.bmp");
 	if (backGround == nullptr)
 	{
-		cout << "Image/bin.bmp ÆÄÀÏ ·Îµå¿¡ ½ÇÆĞÇß´Ù." << endl;
+		cout << "Image/bin.bmp íŒŒì¼ ë¡œë“œì— ì‹¤íŒ¨í–ˆë‹¤." << endl;
 
 		return E_FAIL;
 	}
@@ -36,7 +29,7 @@ void BattleScene::Update()
 {
 	if (KeyManager::GetSingleton()->IsOnceKeyDown(VK_ESCAPE))
 	{
-		SceneManager::GetSingleton()->ChangeScene("Å¸ÀÌÆ²¾À");
+		SceneManager::GetSingleton()->ChangeScene("íƒ€ì´í‹€ì”¬");
 		return;
 	}
 

@@ -3,7 +3,7 @@
 
 HRESULT EnemyManager::Init()
 {
-	enemyMaxCount = 10;
+	enemyMaxCount = 4;
 
 	// 데이터타입 : Enemy* 데이터를 10개를 생성, 삽입
 	vecEnemys.resize(enemyMaxCount);
