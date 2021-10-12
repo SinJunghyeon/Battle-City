@@ -48,6 +48,10 @@ int APIENTRY WinMain(HINSTANCE _hInstance, HINSTANCE _hPrevInstance,
 	SetWindowSize(WIN_START_POS_X, WIN_START_POS_Y,
 		WIN_SIZE_X, WIN_SIZE_Y);
 
+
+
+
+
 	// 메인게임 초기화
 	g_mainGame.Init();
 

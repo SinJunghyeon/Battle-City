@@ -14,19 +14,20 @@ HRESULT MainGame::Init()
 	TimerManager::GetSingleton()->Init();
 	SceneManager::GetSingleton()->Init();
 
-	SceneManager::GetSingleton()->AddScene("Å¸ÀÌÆ²¾À", new TitleScene());
-	SceneManager::GetSingleton()->AddScene("ÀüÅõ¾À", new BattleScene());
-	SceneManager::GetSingleton()->AddScene("Å¸ÀÏ¸ÊÅø", new TilemapToolScene());
-	SceneManager::GetSingleton()->AddScene("ÇÈ¼¿Å×½ºÆ®¾À", new PixelCollisionScene());
-	SceneManager::GetSingleton()->AddScene("A*Å×½ºÆ®¾À", new AStarScene());
+	SceneManager::GetSingleton()->AddScene("Å¸ï¿½ï¿½Æ²ï¿½ï¿½", new TitleScene());
+	SceneManager::GetSingleton()->AddScene("ï¿½ï¿½ï¿½ï¿½ï¿½", new BattleScene());
+	SceneManager::GetSingleton()->AddScene("Å¸ï¿½Ï¸ï¿½ï¿½ï¿½", new TilemapToolScene());
+	SceneManager::GetSingleton()->AddScene("ï¿½È¼ï¿½ï¿½×½ï¿½Æ®ï¿½ï¿½", new PixelCollisionScene());
+	SceneManager::GetSingleton()->AddScene("A*ï¿½×½ï¿½Æ®ï¿½ï¿½", new AStarScene());
 
-	SceneManager::GetSingleton()->AddLoadingScene("·Îµù¾À", new LoadingScene());
+	SceneManager::GetSingleton()->AddLoadingScene("ï¿½Îµï¿½ï¿½", new LoadingScene());
 
-	SceneManager::GetSingleton()->ChangeScene("ÀüÅõ¾À");
+
+	SceneManager::GetSingleton()->ChangeScene("ï¿½ï¿½ï¿½ï¿½ï¿½");
 
 	srand((unsigned int) time(nullptr));
 
-	// Å¸ÀÌ¸Ó ¼ÂÆÃ
+	// Å¸ï¿½Ì¸ï¿½ ï¿½ï¿½ï¿½ï¿½
 	hTimer = (HANDLE)SetTimer(g_hWnd, 0, 10, NULL);
 
 	mousePosX = 0;
@@ -34,7 +35,7 @@ HRESULT MainGame::Init()
 	clickedMousePosX = 0; 
 	clickedMousePosY = 0; 
 
-	// ¹é¹öÆÛ
+	// ï¿½ï¿½ï¿½ï¿½ï¿½
 	backBuffer = new Image;
 	int maxSizeX = WIN_SIZE_X > TILEMAPTOOL_SIZE_X ? WIN_SIZE_X : TILEMAPTOOL_SIZE_X;
 	int maxSizeY = WIN_SIZE_Y > TILEMAPTOOL_SIZE_Y ? WIN_SIZE_Y : TILEMAPTOOL_SIZE_Y;
@@ -86,7 +87,7 @@ void MainGame::Release()
 	SceneManager::GetSingleton()->Release();
 	SceneManager::GetSingleton()->ReleaseSingleton();
 
-	// Å¸ÀÌ¸Ó °´Ã¼ »èÁ¦
+	// Å¸ï¿½Ì¸ï¿½ ï¿½ï¿½Ã¼ ï¿½ï¿½ï¿½
 	KillTimer(g_hWnd, 0);
 }
 
