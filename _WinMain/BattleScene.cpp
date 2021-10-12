@@ -19,9 +19,9 @@ HRESULT BattleScene::Init()
 	enemyMgr->Init();
 
 	// 배경 이미지
-	ImageManager::GetSingleton()->AddImage("Image/background.bmp", WIN_SIZE_X, WIN_SIZE_Y);
+	ImageManager::GetSingleton()->AddImage("Image/BattleCity/mapImage.bmp", WIN_SIZE_X, WIN_SIZE_Y);
 
-	backGround = ImageManager::GetSingleton()->FindImage("Image/background.bmp");
+	backGround = ImageManager::GetSingleton()->FindImage("Image/BattleCity/mapImage.bmp");
 	if (backGround == nullptr)
 	{
 		cout << "Image/bin.bmp 파일 로드에 실패했다." << endl;

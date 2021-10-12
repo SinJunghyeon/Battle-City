@@ -22,7 +22,9 @@ HRESULT MainGame::Init()
 
 	SceneManager::GetSingleton()->AddLoadingScene("·Îµù¾À", new LoadingScene());
 
-	SceneManager::GetSingleton()->ChangeScene("A*Å×½ºÆ®¾À");
+
+
+	SceneManager::GetSingleton()->ChangeScene("ÀüÅõ¾À");
 
 	srand((unsigned int) time(nullptr));
 

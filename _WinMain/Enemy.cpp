@@ -5,11 +5,11 @@
 HRESULT Enemy::Init()
 {
 	elapsedCount = 0;
-	fireDelay = rand() % 100;
+	fireDelay = 100;
 	fireTimer = 0;
 
-	ImageManager::GetSingleton()->AddImage("Image/ufo.bmp", 530, 32, 10, 1, true, RGB(255, 0, 255));
-	img = ImageManager::GetSingleton()->FindImage("Image/ufo.bmp");
+	ImageManager::GetSingleton()->AddImage("Image/BattleCity/Enemy/Enemy.bmp", 512, 384, 8, 6, true, RGB(255, 0, 255));
+	img = ImageManager::GetSingleton()->FindImage("Image/BattleCity/Enemy/Enemy.bmp");
 	if (img == nullptr)
 	{
 		return E_FAIL;
@@ -22,7 +22,7 @@ HRESULT Enemy::Init()
 	pos.x = WIN_SIZE_X / 2.0f;
 	pos.y = 100.0f;
 	moveSpeed = 1.0f;
-	bodySize = 53;
+	bodySize = 32;
 
 	return S_OK;
 }
@@ -30,10 +30,10 @@ HRESULT Enemy::Init()
 void Enemy::Update()
 {
 	elapsedCount++;
-	if (elapsedCount >= 10)
+	if (elapsedCount >= 15)
 	{
 		img->SetCurrFrameX(img->GetCurrFrameX() + 1);
-		if (img->GetCurrFrameX() >= img->GetMaxFrameX())
+		if (img->GetCurrFrameX() >= 4)
 		{
 			img->SetCurrFrameX(0);
 		}
