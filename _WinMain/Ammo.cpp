@@ -3,6 +3,7 @@
 #include "Image.h"
 #include "CommonFunction.h"
 
+
 HRESULT Ammo::Init()
 {
 	//float x = 10.0f, y = 20.0f, h = 0.0f;
