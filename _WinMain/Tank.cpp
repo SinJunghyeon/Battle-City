@@ -1,7 +1,7 @@
 #include "Tank.h"
 #include "Image.h"
 
-HRESULT Tank::Init(TankType type)
+HRESULT Tank::Init()
 {
 	ImageManager::GetSingleton()->AddImage("Image/rocket.bmp", 52, 64, true, RGB(255, 0, 255));
 	img = ImageManager::GetSingleton()->FindImage("Image/rocket.bmp");
@@ -9,32 +9,15 @@ HRESULT Tank::Init(TankType type)
 	{
 		return E_FAIL;
 	}
+	pos.x = WIN_SIZE_X / 2.0f;
+	pos.y = WIN_SIZE_Y - 100.0f;
 
-	this->type = type;
+	bodySize = 80;
+	moveSpeed = 3.0f;
 
-	switch (type)
-	{
-	case TankType::Player:
-		pos.x = WIN_SIZE_X / 2.0f;
-		pos.y = WIN_SIZE_Y - 100.0f;
+	barrelSize = 140.0f;
+	barrelAngle = 90.0f * (PI / 180.0f);
 
-		bodySize = 80;
-		moveSpeed = 3.0f;
-
-		barrelSize = 140.0f;
-		barrelAngle = 90.0f * (PI / 180.0f);
-		break;
-	case TankType::Enemy:
-		pos.x = WIN_SIZE_X / 2.0f;
-		pos.y = 100.0f;
-
-		bodySize = 100;
-		moveSpeed = 5.0f;
-
-		barrelSize = 140.0f;
-		barrelAngle = 270.0f * (PI / 180.0f);
-		break;
-	}
 	shape.left = pos.x - (bodySize / 2);
 	shape.top = pos.y - (bodySize / 2);
 	shape.right = shape.left + bodySize;
@@ -73,15 +56,7 @@ void Tank::Update()
 		ammoPack[i].Update();
 	}
 
-	switch (type)
-	{
-	case TankType::Player:
-		ProcessInputKey();
-		break;
-	case TankType::Enemy:
-		AutoMove();
-		break;
-	}
+	ProcessInputKey();
 }
 
 void Tank::Render(HDC hdc)
@@ -132,24 +107,6 @@ void Tank::Fire()
 
 void Tank::Reload()
 {
-}
-
-void Tank::AutoMove()
-{
-	if (shape.right >= WIN_SIZE_X)
-	{
-		moveDir = MoveDir::Left;
-	}
-	else if (shape.left <= 0)
-	{
-		moveDir = MoveDir::Right;
-	}
-
-	switch (moveDir)
-	{
-	case MoveDir::Left:		pos.x -= moveSpeed; break;
-	case MoveDir::Right:	pos.x += moveSpeed; break;
-	}
 }
 
 void Tank::ProcessInputKey()
