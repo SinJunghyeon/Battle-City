@@ -5,6 +5,7 @@
 HRESULT Tank::Init()
 
 {
+
 	ImageManager::GetSingleton()->AddImage("Image/rocket.bmp", 52, 64, true, RGB(255, 0, 255));
 	img = ImageManager::GetSingleton()->FindImage("Image/rocket.bmp");
 	if (img == nullptr)
