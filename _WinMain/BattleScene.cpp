@@ -5,13 +5,6 @@
 
 HRESULT BattleScene::Init()
 {
-	rocket = new Tank;
-	if (FAILED(rocket->Init(TankType::Player)))
-	{
-		MessageBox(g_hWnd, "로켓을 초기화에 실패했습니다.", "오류", MB_OK);
-		return E_FAIL;
-	}
-
 	Sleep(3000);
 
 	// 적 매니저
