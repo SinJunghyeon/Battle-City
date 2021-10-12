@@ -7,6 +7,23 @@
 #include "PixelCollisionScene.h"
 #include "AStarScene.h"
 
+/*
+	©ю╢ц ╟За╕
+	1. юз╥А ╠╦а╤ mapа╤╩Г ЁК╪г©║ а╓╦╝
+	2. аж╦╩ ╟За╕ фпео ╧л╦╝ ╠Бх╧
+
+	Ё╩юо ╪Ж╬В Ё╩©К
+	1. е╦юл╦с юзц╪юШю╦╥н ╠╦гЖ
+	2. фяеД╦╝ фпео ╠╦гЖ ( virtual, pure virtual, UML )
+*/
+
+/*
+	аж╦╩ ╟За╕
+	1. ╨ЯгЮ╫╢фц╟тюс
+	2. юо╧щ юШ 3а╬ (юл╣©фпео <FSM а╤╩Г>, ╟Ь╟щфпео 1╟Ё╬©)
+	3. ╨╦╫╨ 1а╬ (е╨╦╥ ╟Ь╟щфпео 2╟Ё)
+*/
+
 HRESULT MainGame::Init()
 {
 	KeyManager::GetSingleton()->Init();
@@ -14,20 +31,19 @@ HRESULT MainGame::Init()
 	TimerManager::GetSingleton()->Init();
 	SceneManager::GetSingleton()->Init();
 
-	SceneManager::GetSingleton()->AddScene("е╦О©╫О©╫ф╡О©╫О©╫", new TitleScene());
-	SceneManager::GetSingleton()->AddScene("О©╫О©╫О©╫О©╫О©╫", new BattleScene());
-	SceneManager::GetSingleton()->AddScene("е╦О©╫о╦О©╫О©╫О©╫", new TilemapToolScene());
-	SceneManager::GetSingleton()->AddScene("О©╫х╪О©╫О©╫в╫О©╫ф╝О©╫О©╫", new PixelCollisionScene());
-	SceneManager::GetSingleton()->AddScene("A*О©╫в╫О©╫ф╝О©╫О©╫", new AStarScene());
+	SceneManager::GetSingleton()->AddScene("е╦юлф╡╬ю", new TitleScene());
+	SceneManager::GetSingleton()->AddScene("юЭеУ╬ю", new BattleScene());
+	SceneManager::GetSingleton()->AddScene("е╦юо╦йеЬ", new TilemapToolScene());
+	SceneManager::GetSingleton()->AddScene("гх╪©ев╫╨ф╝╬ю", new PixelCollisionScene());
+	SceneManager::GetSingleton()->AddScene("A*ев╫╨ф╝╬ю", new AStarScene());
 
-	SceneManager::GetSingleton()->AddLoadingScene("О©╫н╣О©╫О©╫", new LoadingScene());
+	SceneManager::GetSingleton()->AddLoadingScene("╥н╣Ы╬ю", new LoadingScene());
 
-
-	SceneManager::GetSingleton()->ChangeScene("О©╫О©╫О©╫О©╫О©╫");
+	SceneManager::GetSingleton()->ChangeScene("A*ев╫╨ф╝╬ю");
 
 	srand((unsigned int) time(nullptr));
 
-	// е╦О©╫л╦О©╫ О©╫О©╫О©╫О©╫
+	// е╦юл╦с ╪бфц
 	hTimer = (HANDLE)SetTimer(g_hWnd, 0, 10, NULL);
 
 	mousePosX = 0;
@@ -35,7 +51,7 @@ HRESULT MainGame::Init()
 	clickedMousePosX = 0; 
 	clickedMousePosY = 0; 
 
-	// О©╫О©╫О©╫О©╫О©╫
+	// ╧И╧Жфш
 	backBuffer = new Image;
 	int maxSizeX = WIN_SIZE_X > TILEMAPTOOL_SIZE_X ? WIN_SIZE_X : TILEMAPTOOL_SIZE_X;
 	int maxSizeY = WIN_SIZE_Y > TILEMAPTOOL_SIZE_Y ? WIN_SIZE_Y : TILEMAPTOOL_SIZE_Y;
@@ -87,7 +103,7 @@ void MainGame::Release()
 	SceneManager::GetSingleton()->Release();
 	SceneManager::GetSingleton()->ReleaseSingleton();
 
-	// е╦О©╫л╦О©╫ О©╫О©╫ц╪ О©╫О©╫О©╫
+	// е╦юл╦с ╟╢ц╪ ╩Ха╕
 	KillTimer(g_hWnd, 0);
 }
 
