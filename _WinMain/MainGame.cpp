@@ -6,6 +6,7 @@
 #include "TilemapToolScene.h"
 #include "PixelCollisionScene.h"
 #include "AStarScene.h"
+#include "PlayerTankScene.h"
 
 /*
 	ø¿¥√ ∞˙¡¶
@@ -36,10 +37,11 @@ HRESULT MainGame::Init()
 	SceneManager::GetSingleton()->AddScene("≈∏¿œ∏ ≈¯", new TilemapToolScene());
 	SceneManager::GetSingleton()->AddScene("«»ºø≈◊Ω∫∆Ææ¿", new PixelCollisionScene());
 	SceneManager::GetSingleton()->AddScene("A*≈◊Ω∫∆Ææ¿", new AStarScene());
+	SceneManager::GetSingleton()->AddScene("«√∑π¿ÃæÓ≈ ≈©æ¿", new PlayerTankScene());
 
 	SceneManager::GetSingleton()->AddLoadingScene("∑Œµ˘æ¿", new LoadingScene());
 
-	SceneManager::GetSingleton()->ChangeScene("¿¸≈ıæ¿");
+	SceneManager::GetSingleton()->ChangeScene("≈∏¿Ã∆≤æ¿");
 
 	srand((unsigned int) time(nullptr));
 

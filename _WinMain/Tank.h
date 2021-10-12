@@ -3,15 +3,18 @@
 #include "GameObject.h"
 #include "Ammo.h"
 
-class Tank : public GameObject	// 상속관계
+enum class ecTankState { IDLE, MOVE, FIRE, DAMAGED, DIE };
+
+class Tank : public GameObject
 {
 public:
 	int ammoCount;
 	Ammo* ammoPack;
 
-	MoveDir moveDir;
-
-	bool isAlive;
+	MoveDir moveDir = MoveDir::UP;
+	ecTankState tanckState = ecTankState::IDLE;
+	int elapsedCount = NULL;
+	bool isAlive = true;
 
 
 public:
@@ -21,10 +24,8 @@ public:
 	void Release();
 
 	void Fire();
-	void Reload();
 	void ProcessInputKey();
 
-	// 실습3. 탱크를 상하좌우(WASD)로 움직여보자.
 	void Move(MoveDir dir);
 
 	inline void SetIsAlive(bool alive) { this->isAlive = alive; }

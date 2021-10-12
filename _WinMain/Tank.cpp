@@ -4,8 +4,8 @@
 
 HRESULT Tank::Init()
 {
-	ImageManager::GetSingleton()->AddImage("Image/rocket.bmp", 52, 64, true, RGB(255, 0, 255));
-	img = ImageManager::GetSingleton()->FindImage("Image/rocket.bmp");
+	ImageManager::GetSingleton()->AddImage("Image/BattleCity/Player/Player.bmp", 512, 256, 8, 4, true, RGB(255, 0, 255));
+	img = ImageManager::GetSingleton()->FindImage("Image/BattleCity/Player/Player.bmp");
 	if (img == nullptr)
 	{
 		return E_FAIL;
@@ -13,17 +13,17 @@ HRESULT Tank::Init()
 	pos.x = WIN_SIZE_X / 2.0f;
 	pos.y = WIN_SIZE_Y - 100.0f;
 
-	bodySize = 80;
-	moveSpeed = 3.0f;
+	bodySize = 64;
+	moveSpeed = 20.0f;
 
 	shape.left = pos.x - (bodySize / 2);
 	shape.top = pos.y - (bodySize / 2);
-	shape.right = shape.left + bodySize;
-	shape.bottom = shape.top + bodySize;
-
+	shape.right = pos.x + (bodySize / 2);
+	shape.bottom = pos.y + (bodySize / 2);
 
 	moveDir = MoveDir::UP;
-
+	tanckState = ecTankState::IDLE;
+	elapsedCount = 0;
 	isAlive = true;
 
 	ammoCount = 2;
@@ -52,7 +52,8 @@ void Tank::Update()
 		ammoPack[i].Update();
 	}
 
-	ProcessInputKey();
+	ProcessInputKey();	// 입력키
+	cout << "img->GetCurrFrameX() : " << img->GetCurrFrameX() << endl;
 }
 
 void Tank::Render(HDC hdc)
@@ -60,15 +61,15 @@ void Tank::Render(HDC hdc)
 	if (isAlive == false)	return;
 
 	// 몸통
-	Ellipse(hdc, shape.left, shape.top, shape.right, shape.bottom);
+	Rectangle(hdc, shape.left, shape.top, shape.right, shape.bottom);
 
 	// 미사일
 	for (int i = 0; i < ammoCount; i++)
 	{
 		ammoPack[i].Render(hdc);
 	}
-
-	img->Render(hdc, pos.x, pos.y);
+	// 플레이어 이미지
+	img->Render(hdc, pos.x, pos.y, img->GetCurrFrameX(), img->GetCurrFrameY());
 }
 
 void Tank::Release()
@@ -84,42 +85,103 @@ void Tank::Fire()
 		if (ammoPack[i].GetIsFire()/* && ammoPack[i].GetIsAlive()*/)
 			continue;
 
-		//ammoPack[i].SetIsAlive(true);
-		ammoPack[i].SetPos(pos);	// 미사일 위치 변경
+		ammoPack[i].SetPos(pos);		// 미사일 위치 변경
 		ammoPack[i].SetIsFire(true);	// 미사일 상태 변경
 
 		break;
 	}
 }
 
-void Tank::Reload()
-{
-}
-
 void Tank::ProcessInputKey()
 {
-	// 키입력을 확인
+	// 공격키
 	if (Singleton<KeyManager>::GetSingleton()->IsOnceKeyDown(VK_SPACE))
 	{
 		Fire();
 	}
-
-	if (Singleton<KeyManager>::GetSingleton()->IsStayKeyDown(VK_LEFT))
-	{
-		Move(MoveDir::LEFT);
-	}
-	else if (Singleton<KeyManager>::GetSingleton()->IsStayKeyDown(VK_RIGHT))
-	{
-		Move(MoveDir::RIGHT);
-	}
-
+	// 이동(상)
 	if (Singleton<KeyManager>::GetSingleton()->IsStayKeyDown(VK_UP))
 	{
 		Move(MoveDir::UP);
+		//프레임 움직임
+		elapsedCount++;
+		if (elapsedCount >= 10)
+		{
+			img->SetCurrFrameX(img->GetCurrFrameX() + 1);
+			if (img->GetCurrFrameX() >= 2)
+			{
+				img->SetCurrFrameX(0);
+			}
+		}
+		tanckState = ecTankState::MOVE;
 	}
+	// 이동(하)
 	else if (Singleton<KeyManager>::GetSingleton()->IsStayKeyDown(VK_DOWN))
 	{
 		Move(MoveDir::DOWN);
+		//프레임 움직임
+		elapsedCount++;
+		if (elapsedCount >= 10)
+		{
+			img->SetCurrFrameX(img->GetCurrFrameX() + 1);
+			if (img->GetCurrFrameX() >= 6)
+			{
+				img->SetCurrFrameX(4);
+			}
+		}
+		tanckState = ecTankState::MOVE;
+	}
+	// 이동(좌)
+	else if (Singleton<KeyManager>::GetSingleton()->IsStayKeyDown(VK_LEFT))
+	{
+		Move(MoveDir::LEFT);
+		//프레임 움직임
+		elapsedCount++;
+		if (elapsedCount >= 10)
+		{
+			img->SetCurrFrameX(img->GetCurrFrameX() + 1);
+			if (img->GetCurrFrameX() >= 4)
+			{
+				img->SetCurrFrameX(2);
+			}
+		}
+		tanckState = ecTankState::MOVE;
+	}
+	// 이동(우)
+	else if (Singleton<KeyManager>::GetSingleton()->IsStayKeyDown(VK_RIGHT))
+	{
+		Move(MoveDir::RIGHT);
+		tanckState = ecTankState::MOVE;
+		//프레임 움직임
+		img->SetCurrFrameX(img->GetCurrFrameX() + 1);
+		if (img->GetCurrFrameX() >= 8)
+		{
+			img->SetCurrFrameX(6);
+		}
+	}
+	// 키 뺐을때(상)
+	if (Singleton<KeyManager>::GetSingleton()->IsOnceKeyUp(VK_UP))
+	{
+		moveDir = MoveDir::UP;
+		tanckState = ecTankState::IDLE;
+	}
+	// 키 뺐을때(하)
+	if (Singleton<KeyManager>::GetSingleton()->IsOnceKeyUp(VK_DOWN))
+	{
+		moveDir = MoveDir::DOWN;
+		tanckState = ecTankState::IDLE;
+	}
+	// 키 뺐을때(좌)
+	if (Singleton<KeyManager>::GetSingleton()->IsOnceKeyUp(VK_LEFT))
+	{
+		moveDir = MoveDir::LEFT;
+		tanckState = ecTankState::IDLE;
+	}
+	// 키 뺐을때(우)
+	if (Singleton<KeyManager>::GetSingleton()->IsOnceKeyUp(VK_RIGHT)) 
+	{
+		moveDir = MoveDir::RIGHT;
+		tanckState = ecTankState::IDLE;
 	}
 }
 
@@ -127,10 +189,10 @@ void Tank::Move(MoveDir dir)
 {
 	switch (dir)
 	{
-	case MoveDir::LEFT: pos.x -= moveSpeed; break;
-	case MoveDir::RIGHT: pos.x += moveSpeed; break;
-	case MoveDir::UP: pos.y -= moveSpeed; break;
-	case MoveDir::DOWN: pos.y += moveSpeed; break;
+	case MoveDir::LEFT: pos.x -= (moveSpeed * TimerManager::GetSingleton()->GetDeltaTime()); break;
+	case MoveDir::RIGHT: pos.x += (moveSpeed * TimerManager::GetSingleton()->GetDeltaTime()); break;
+	case MoveDir::UP: pos.y -= (moveSpeed * TimerManager::GetSingleton()->GetDeltaTime()); break;
+	case MoveDir::DOWN: pos.y += (moveSpeed * TimerManager::GetSingleton()->GetDeltaTime()); break;
 	}
 }
 

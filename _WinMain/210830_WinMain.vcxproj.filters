@@ -37,6 +37,9 @@
     <Filter Include="2D Framework\UI_Button">
       <UniqueIdentifier>{3a31a1c9-af35-4d40-b4a2-67c20de4abcd}</UniqueIdentifier>
     </Filter>
+    <Filter Include="MainGame\Scene\실험장">
+      <UniqueIdentifier>{4fd35e11-b8f4-49e1-a2ac-1b7bbcfef613}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -107,6 +110,9 @@
     </ClCompile>
     <ClCompile Include="AStarScene.cpp">
       <Filter>MainGame\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerTankScene.cpp">
+      <Filter>MainGame\Scene\실험장</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -184,6 +190,9 @@
     </ClInclude>
     <ClInclude Include="AStarScene.h">
       <Filter>MainGame\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerTankScene.h">
+      <Filter>MainGame\Scene\실험장</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
