@@ -22,8 +22,6 @@ HRESULT MainGame::Init()
 
 	SceneManager::GetSingleton()->AddLoadingScene("로딩씬", new LoadingScene());
 
-
-
 	SceneManager::GetSingleton()->ChangeScene("전투씬");
 
 	srand((unsigned int) time(nullptr));
