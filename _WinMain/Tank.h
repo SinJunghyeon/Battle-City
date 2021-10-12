@@ -3,16 +3,9 @@
 #include "GameObject.h"
 #include "Ammo.h"
 
-class Tank : public GameObject	// »ó¼Ó°ü°è
+class Tank : public GameObject	// ìƒì†ê´€ê³„
 {
 public:
-	TankType type;
-	// 
-	// GameObject »ó¼Ó º¯¼ö
-	// À§Ä¡, ¸ð¾ç, ÀÌµ¿¼Óµµ
-
-	// ÀÚÃ¼ ¸â¹ö º¯¼ö
-	// Æ÷½Å (µÎ Á¡ÀÇ ÁÂÇ¥)
 	POINTFLOAT barrelEnd;
 	float barrelSize;
 	float barrelAngle;
@@ -27,18 +20,17 @@ public:
 
 
 public:
-	HRESULT Init(TankType type);		// ºÎ¸ðÅ¬·¡½ºÀÇ ÇÔ¼ö Áß ±â´ÉÀÌ ´Ù¸¥ °æ¿ì´Â
-	void Update();		// ¿À¹ö¶óÀÌµùÀ» ÇÑ´Ù
+	HRESULT Init();
+	void Update();
 	void Render(HDC hdc);
 	void Release();
 
 	void RotateBarrelAngle(float rotateAngle);
 	void Fire();
 	void Reload();
-	void AutoMove();
 	void ProcessInputKey();
 
-	// ½Ç½À3. ÅÊÅ©¸¦ »óÇÏÁÂ¿ì(WASD)·Î ¿òÁ÷¿©º¸ÀÚ.
+	// ì‹¤ìŠµ3. íƒ±í¬ë¥¼ ìƒí•˜ì¢Œìš°(WASD)ë¡œ ì›€ì§ì—¬ë³´ìž.
 	void Move(MoveDir dir);
 
 	inline void SetBarrelAngle(float angle) { this->barrelAngle = angle; }
