@@ -20,6 +20,7 @@ private:
 
 	Image* img;
 
+
 public:
 	HRESULT Init();		
 	//void Init(Tank* tank);		// 1. Tank객체의 포인터를 전달
