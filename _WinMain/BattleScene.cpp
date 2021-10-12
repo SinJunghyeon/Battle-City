@@ -7,17 +7,17 @@ HRESULT BattleScene::Init()
 {
 	Sleep(3000);
 
-	// Ï†Å Îß§ÎãàÏ†Ä
+	// ¿˚ ∏≈¥œ¿˙
 	enemyMgr = new EnemyManager;
 	enemyMgr->Init();
 
-	// Î∞∞Í≤Ω Ïù¥ÎØ∏ÏßÄ
+	// πË∞Ê ¿ÃπÃ¡ˆ
 	ImageManager::GetSingleton()->AddImage("Image/BattleCity/mapImage.bmp", WIN_SIZE_X, WIN_SIZE_Y);
 
 	backGround = ImageManager::GetSingleton()->FindImage("Image/BattleCity/mapImage.bmp");
 	if (backGround == nullptr)
 	{
-		cout << "Image/bin.bmp ÌååÏùº Î°úÎìúÏóê Ïã§Ìå®ÌñàÎã§." << endl;
+		cout << "Image/BattleCity/mapImage.bmp ∆ƒ¿œ ∑ŒµÂø° Ω«∆–«ﬂ¥Ÿ." << endl;
 
 		return E_FAIL;
 	}
@@ -29,7 +29,7 @@ void BattleScene::Update()
 {
 	if (KeyManager::GetSingleton()->IsOnceKeyDown(VK_ESCAPE))
 	{
-		SceneManager::GetSingleton()->ChangeScene("ÌÉÄÏù¥ÌãÄÏî¨");
+		SceneManager::GetSingleton()->ChangeScene("≈∏¿Ã∆≤æ¿");
 		return;
 	}
 
