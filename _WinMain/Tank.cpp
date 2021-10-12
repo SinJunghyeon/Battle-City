@@ -3,9 +3,7 @@
 
 
 HRESULT Tank::Init()
-
 {
-
 	ImageManager::GetSingleton()->AddImage("Image/rocket.bmp", 52, 64, true, RGB(255, 0, 255));
 	img = ImageManager::GetSingleton()->FindImage("Image/rocket.bmp");
 	if (img == nullptr)
@@ -18,18 +16,13 @@ HRESULT Tank::Init()
 	bodySize = 80;
 	moveSpeed = 3.0f;
 
-	barrelSize = 140.0f;
-	barrelAngle = 90.0f * (PI / 180.0f);
-
 	shape.left = pos.x - (bodySize / 2);
 	shape.top = pos.y - (bodySize / 2);
 	shape.right = shape.left + bodySize;
 	shape.bottom = shape.top + bodySize;
 
-	barrelEnd.x = pos.x + cos(barrelAngle) * barrelSize;
-	barrelEnd.y = pos.y - sin(barrelAngle) * barrelSize;
 
-	moveDir = MoveDir::Right;
+	moveDir = MoveDir::UP;
 
 	isAlive = true;
 
@@ -83,14 +76,6 @@ void Tank::Release()
 	delete[] ammoPack;
 }
 
-void Tank::RotateBarrelAngle(float rotateAngle)
-{
-	barrelAngle += (rotateAngle * PI / 180.0f);
-
-	barrelEnd.x = pos.x + cos(barrelAngle) * barrelSize;
-	barrelEnd.y = pos.y - sin(barrelAngle) * barrelSize;
-}
-
 void Tank::Fire()
 {
 	for (int i = 0; i < ammoCount; i++)
@@ -102,7 +87,6 @@ void Tank::Fire()
 		//ammoPack[i].SetIsAlive(true);
 		ammoPack[i].SetPos(pos);	// 미사일 위치 변경
 		ammoPack[i].SetIsFire(true);	// 미사일 상태 변경
-		ammoPack[i].SetMoveAngle(barrelAngle); // 미사일 각도 변경
 
 		break;
 	}
@@ -122,20 +106,20 @@ void Tank::ProcessInputKey()
 
 	if (Singleton<KeyManager>::GetSingleton()->IsStayKeyDown(VK_LEFT))
 	{
-		Move(MoveDir::Left);
+		Move(MoveDir::LEFT);
 	}
 	else if (Singleton<KeyManager>::GetSingleton()->IsStayKeyDown(VK_RIGHT))
 	{
-		Move(MoveDir::Right);
+		Move(MoveDir::RIGHT);
 	}
 
 	if (Singleton<KeyManager>::GetSingleton()->IsStayKeyDown(VK_UP))
 	{
-		Move(MoveDir::Up);
+		Move(MoveDir::UP);
 	}
 	else if (Singleton<KeyManager>::GetSingleton()->IsStayKeyDown(VK_DOWN))
 	{
-		Move(MoveDir::Down);
+		Move(MoveDir::DOWN);
 	}
 }
 
@@ -143,10 +127,10 @@ void Tank::Move(MoveDir dir)
 {
 	switch (dir)
 	{
-	case MoveDir::Left: pos.x -= moveSpeed; break;
-	case MoveDir::Right: pos.x += moveSpeed; break;
-	case MoveDir::Up: pos.y -= moveSpeed; break;
-	case MoveDir::Down: pos.y += moveSpeed; break;
+	case MoveDir::LEFT: pos.x -= moveSpeed; break;
+	case MoveDir::RIGHT: pos.x += moveSpeed; break;
+	case MoveDir::UP: pos.y -= moveSpeed; break;
+	case MoveDir::DOWN: pos.y += moveSpeed; break;
 	}
 }
 
