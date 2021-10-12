@@ -104,7 +104,7 @@ void Ammo::Update()
 		if (CheckCollision())
 		{
 			isFire = false;
-			target->SetIsAlive(false);
+			//target->SetIsAlive(false);
 		}
 
 		// 화면을 벗어났는지 확인

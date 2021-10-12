@@ -22,9 +22,8 @@ HRESULT MainGame::Init()
 
 	SceneManager::GetSingleton()->AddLoadingScene("로딩씬", new LoadingScene());
 
-
-
-	SceneManager::GetSingleton()->ChangeScene("A*테스트씬");
+	//SceneManager::GetSingleton()->ChangeScene("A*테스트씬");
+	SceneManager::GetSingleton()->ChangeScene("타이틀씬");//타이틀 테스트용
 
 	srand((unsigned int) time(nullptr));
 
