@@ -1,7 +1,9 @@
 #include "Tank.h"
 #include "Image.h"
 
+
 HRESULT Tank::Init()
+
 {
 	ImageManager::GetSingleton()->AddImage("Image/rocket.bmp", 52, 64, true, RGB(255, 0, 255));
 	img = ImageManager::GetSingleton()->FindImage("Image/rocket.bmp");
@@ -32,7 +34,7 @@ HRESULT Tank::Init()
 
 	ammoCount = 2;
 	ammoPack = new Ammo[ammoCount];
-	// πÃªÁ¿œ √ ±‚»≠
+	// ÎØ∏ÏÇ¨Ïùº Ï¥àÍ∏∞Ìôî
 	for (int i = 0; i < ammoCount; i++)
 	{
 		ammoPack[i].Init();
@@ -45,7 +47,7 @@ void Tank::Update()
 {
 	if (isAlive == false)	return;
 
-	// ¿ßƒ°ø° µ˚∏• ∏æÁ∞™ ∞ªΩ≈
+	// ÏúÑÏπòÏóê Îî∞Î•∏ Î™®ÏñëÍ∞í Í∞±Ïã†
 	shape.left = pos.x - (bodySize / 2);
 	shape.top = pos.y - (bodySize / 2);
 	shape.right = shape.left + bodySize;
@@ -63,10 +65,10 @@ void Tank::Render(HDC hdc)
 {
 	if (isAlive == false)	return;
 
-	// ∏ˆ≈Î
+	// Î™∏ÌÜµ
 	Ellipse(hdc, shape.left, shape.top, shape.right, shape.bottom);
 
-	// πÃªÁ¿œ
+	// ÎØ∏ÏÇ¨Ïùº
 	for (int i = 0; i < ammoCount; i++)
 	{
 		ammoPack[i].Render(hdc);
@@ -92,14 +94,14 @@ void Tank::Fire()
 {
 	for (int i = 0; i < ammoCount; i++)
 	{
-		// ¿¸√º πÃªÁ¿œ¿ª º¯»∏«œ∏Èº≠ πﬂªÁ µ∆¥¬¡ˆ æ»µ∆¥¬¡ˆ ∆«¥‹
+		// Ï†ÑÏ≤¥ ÎØ∏ÏÇ¨ÏùºÏùÑ ÏàúÌöåÌïòÎ©¥ÏÑú Î∞úÏÇ¨ ÎêêÎäîÏßÄ ÏïàÎêêÎäîÏßÄ ÌåêÎã®
 		if (ammoPack[i].GetIsFire()/* && ammoPack[i].GetIsAlive()*/)
 			continue;
 
 		//ammoPack[i].SetIsAlive(true);
-		ammoPack[i].SetPos(pos);	// πÃªÁ¿œ ¿ßƒ° ∫Ø∞Ê
-		ammoPack[i].SetIsFire(true);	// πÃªÁ¿œ ªÛ≈¬ ∫Ø∞Ê
-		ammoPack[i].SetMoveAngle(barrelAngle); // πÃªÁ¿œ ∞¢µµ ∫Ø∞Ê
+		ammoPack[i].SetPos(pos);	// ÎØ∏ÏÇ¨Ïùº ÏúÑÏπò Î≥ÄÍ≤Ω
+		ammoPack[i].SetIsFire(true);	// ÎØ∏ÏÇ¨Ïùº ÏÉÅÌÉú Î≥ÄÍ≤Ω
+		ammoPack[i].SetMoveAngle(barrelAngle); // ÎØ∏ÏÇ¨Ïùº Í∞ÅÎèÑ Î≥ÄÍ≤Ω
 
 		break;
 	}
@@ -111,7 +113,7 @@ void Tank::Reload()
 
 void Tank::ProcessInputKey()
 {
-	// ≈∞¿‘∑¬¿ª »Æ¿Œ
+	// ÌÇ§ÏûÖÎ†•ÏùÑ ÌôïÏù∏
 	if (Singleton<KeyManager>::GetSingleton()->IsOnceKeyDown(VK_SPACE))
 	{
 		Fire();

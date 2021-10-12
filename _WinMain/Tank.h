@@ -3,7 +3,7 @@
 #include "GameObject.h"
 #include "Ammo.h"
 
-class Tank : public GameObject	// »ó¼Ó°ü°è
+class Tank : public GameObject	// ìƒì†ê´€ê³„
 {
 public:
 	POINTFLOAT barrelEnd;
@@ -30,7 +30,7 @@ public:
 	void Reload();
 	void ProcessInputKey();
 
-	// ½Ç½À3. ÅÊÅ©¸¦ »óÇÏÁÂ¿ì(WASD)·Î ¿òÁ÷¿©º¸ÀÚ.
+	// ì‹¤ìŠµ3. íƒ±í¬ë¥¼ ìƒí•˜ì¢Œìš°(WASD)ë¡œ ì›€ì§ì—¬ë³´ìž.
 	void Move(MoveDir dir);
 
 	inline void SetBarrelAngle(float angle) { this->barrelAngle = angle; }
