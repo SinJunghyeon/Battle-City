@@ -14,19 +14,20 @@ HRESULT MainGame::Init()
 	TimerManager::GetSingleton()->Init();
 	SceneManager::GetSingleton()->Init();
 
-	SceneManager::GetSingleton()->AddScene("타이틀씬", new TitleScene());
-	SceneManager::GetSingleton()->AddScene("전투씬", new BattleScene());
-	SceneManager::GetSingleton()->AddScene("타일맵툴", new TilemapToolScene());
-	SceneManager::GetSingleton()->AddScene("픽셀테스트씬", new PixelCollisionScene());
-	SceneManager::GetSingleton()->AddScene("A*테스트씬", new AStarScene());
+	SceneManager::GetSingleton()->AddScene("Ÿ��Ʋ��", new TitleScene());
+	SceneManager::GetSingleton()->AddScene("�����", new BattleScene());
+	SceneManager::GetSingleton()->AddScene("Ÿ�ϸ���", new TilemapToolScene());
+	SceneManager::GetSingleton()->AddScene("�ȼ��׽�Ʈ��", new PixelCollisionScene());
+	SceneManager::GetSingleton()->AddScene("A*�׽�Ʈ��", new AStarScene());
 
-	SceneManager::GetSingleton()->AddLoadingScene("로딩씬", new LoadingScene());
+	SceneManager::GetSingleton()->AddLoadingScene("�ε��", new LoadingScene());
 
-	SceneManager::GetSingleton()->ChangeScene("전투씬");
+
+	SceneManager::GetSingleton()->ChangeScene("�����");
 
 	srand((unsigned int) time(nullptr));
 
-	// 타이머 셋팅
+	// Ÿ�̸� ����
 	hTimer = (HANDLE)SetTimer(g_hWnd, 0, 10, NULL);
 
 	mousePosX = 0;
@@ -34,7 +35,7 @@ HRESULT MainGame::Init()
 	clickedMousePosX = 0; 
 	clickedMousePosY = 0; 
 
-	// 백버퍼
+	// �����
 	backBuffer = new Image;
 	int maxSizeX = WIN_SIZE_X > TILEMAPTOOL_SIZE_X ? WIN_SIZE_X : TILEMAPTOOL_SIZE_X;
 	int maxSizeY = WIN_SIZE_Y > TILEMAPTOOL_SIZE_Y ? WIN_SIZE_Y : TILEMAPTOOL_SIZE_Y;
@@ -86,7 +87,7 @@ void MainGame::Release()
 	SceneManager::GetSingleton()->Release();
 	SceneManager::GetSingleton()->ReleaseSingleton();
 
-	// 타이머 객체 삭제
+	// Ÿ�̸� ��ü ���
 	KillTimer(g_hWnd, 0);
 }
 
