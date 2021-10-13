@@ -133,7 +133,7 @@ void Item::FunctionItem()
 	{
 		if (functionItem == ecFunctionItem::STAR)
 		{
-			cout << "b" << endl;
+			//cout << "b" << endl;
 		}
 	}
 

@@ -28,6 +28,7 @@ HRESULT PlayerTankScene::Init()
 void PlayerTankScene::Update()
 {
 	mpPlayerTank->Update();
+	mpItem->Update();
 }
 
 void PlayerTankScene::Render(HDC hdc)

@@ -222,7 +222,7 @@ void Tank::CollisionItem()
 	RECT a;
 	if (IntersectRect(&a, &shape, &itemShape))
 	{
-		cout << "a" << endl;
+		//cout << "a" << endl;
 		mpItem->SetFunctionItem(true);
 	}
 }
