@@ -40,6 +40,9 @@
     <Filter Include="MainGame\Scene\실험장">
       <UniqueIdentifier>{4fd35e11-b8f4-49e1-a2ac-1b7bbcfef613}</UniqueIdentifier>
     </Filter>
+    <Filter Include="MainGame\Item">
+      <UniqueIdentifier>{22cc8c69-1335-4941-95b8-d26b8f57b647}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -113,6 +116,9 @@
     </ClCompile>
     <ClCompile Include="PlayerTankScene.cpp">
       <Filter>MainGame\Scene\실험장</Filter>
+    </ClCompile>
+    <ClCompile Include="Item.cpp">
+      <Filter>MainGame\Item</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -193,6 +199,9 @@
     </ClInclude>
     <ClInclude Include="PlayerTankScene.h">
       <Filter>MainGame\Scene\실험장</Filter>
+    </ClInclude>
+    <ClInclude Include="Item.h">
+      <Filter>MainGame\Item</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
