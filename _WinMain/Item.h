@@ -6,6 +6,8 @@ class Image;
 class Item : public GameObject
 {
 protected:
+	int selectItem = NULL;				//æ∆¿Ã≈€ º±≈√
+
 	Image* mpImgHelmet = nullptr;		//«Ô∏‰
 	Image* mpImgWatch = nullptr;		//Ω√∞Ë
 	Image* mpImgShovel = nullptr;		//ª
