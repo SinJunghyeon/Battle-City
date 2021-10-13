@@ -38,18 +38,17 @@ void Ammo::Update()
 {
 	if (isFire)
 	{
+		//cout << "Ammo : " << moveDir << endl;
 		if (moveDir == MoveDir::UP)
 		{
 			pos.y -= moveSpeed * TimerManager::GetSingleton()->GetDeltaTime();
 		}
 		if (moveDir == MoveDir::DOWN)
 		{
-
 			pos.y += moveSpeed * TimerManager::GetSingleton()->GetDeltaTime();
 		}
 		if (moveDir == MoveDir::LEFT)
 		{
-
 			pos.x -= moveSpeed * TimerManager::GetSingleton()->GetDeltaTime();
 		}
 		if (moveDir == MoveDir::RIGHT)

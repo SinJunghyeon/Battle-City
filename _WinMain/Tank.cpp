@@ -14,7 +14,7 @@ HRESULT Tank::Init()
 	pos.y = WIN_SIZE_Y - 100.0f;
 
 	bodySize = 64;
-	moveSpeed = 20.0f;
+	moveSpeed = 50.0f;
 
 	shape.left = pos.x - (bodySize / 2);
 	shape.top = pos.y - (bodySize / 2);
@@ -26,7 +26,7 @@ HRESULT Tank::Init()
 	elapsedCount = 0;
 	isAlive = true;
 
-	ammoCount = 2;
+	ammoCount = 300;
 	ammoPack = new Ammo[ammoCount];
 	// 미사일 초기화
 	for (int i = 0; i < ammoCount; i++)
@@ -40,6 +40,8 @@ HRESULT Tank::Init()
 void Tank::Update()
 {
 	if (isAlive == false)	return;
+
+	//cout << "Tank : " << moveDir << endl;
 
 	// 위치에 따른 모양값 갱신
 	shape.left = pos.x - (bodySize / 2);
@@ -102,7 +104,9 @@ void Tank::ProcessInputKey()
 	// 이동(상)
 	if (Singleton<KeyManager>::GetSingleton()->IsStayKeyDown(VK_UP))
 	{
+		moveDir = MoveDir::UP;
 		Move(MoveDir::UP);
+		tanckState = ecTankState::MOVE;
 		//프레임 움직임
 		elapsedCount++;
 		if (elapsedCount >= 10)
@@ -113,12 +117,13 @@ void Tank::ProcessInputKey()
 				img->SetCurrFrameX(0);
 			}
 		}
-		tanckState = ecTankState::MOVE;
 	}
 	// 이동(하)
 	else if (Singleton<KeyManager>::GetSingleton()->IsStayKeyDown(VK_DOWN))
 	{
+		moveDir = MoveDir::DOWN;
 		Move(MoveDir::DOWN);
+		tanckState = ecTankState::MOVE;
 		//프레임 움직임
 		elapsedCount++;
 		if (elapsedCount >= 10)
@@ -129,12 +134,13 @@ void Tank::ProcessInputKey()
 				img->SetCurrFrameX(4);
 			}
 		}
-		tanckState = ecTankState::MOVE;
 	}
 	// 이동(좌)
 	else if (Singleton<KeyManager>::GetSingleton()->IsStayKeyDown(VK_LEFT))
 	{
+		moveDir = MoveDir::LEFT;
 		Move(MoveDir::LEFT);
+		tanckState = ecTankState::MOVE;
 		//프레임 움직임
 		elapsedCount++;
 		if (elapsedCount >= 10)
@@ -145,11 +151,11 @@ void Tank::ProcessInputKey()
 				img->SetCurrFrameX(2);
 			}
 		}
-		tanckState = ecTankState::MOVE;
 	}
 	// 이동(우)
 	else if (Singleton<KeyManager>::GetSingleton()->IsStayKeyDown(VK_RIGHT))
 	{
+		moveDir = MoveDir::RIGHT;
 		Move(MoveDir::RIGHT);
 		tanckState = ecTankState::MOVE;
 		//프레임 움직임
