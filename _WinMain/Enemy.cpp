@@ -21,9 +21,9 @@ HRESULT Enemy::Init()
 
 	pos.x = WIN_SIZE_X / 2.0f;
 	pos.y = 100.0f;
-	moveSpeed = 1.0f;
+	moveSpeed = 50.0f;
 	bodySize = 32;
-	moveDir = MoveDir::UP;
+	moveDir = MoveDir::DOWN;
 
 	return S_OK;
 }
@@ -56,9 +56,7 @@ void Enemy::Release()
 
 void Enemy::AutoMove()
 {
-	elapsedCount++;
-	if (elapsedCount >= 30)
-	{
+	
 		switch (moveDir)
 		{
 		case MoveDir::RIGHT:
@@ -68,24 +66,22 @@ void Enemy::AutoMove()
 		case MoveDir::UP:
 			break;
 		case MoveDir::DOWN:
-		/*cout << "elapsedCount : " << elapsedCount << endl;
-		cout << "처음 프레임 : " << img->GetCurrFrameX() << endl;
-		img->SetCurrFrameX(img->GetCurrFrameX() + 1);
-		cout << "다음 프레임 : " << img->GetCurrFrameX() << endl;*/
-		if (img->GetCurrFrameX() >= 2)
-		{
-			img->SetCurrFrameX(0);
-			cout << "초기화 프레임 : " << img->GetCurrFrameX() << endl << endl;
-		}
-		else
-		{
-			img->SetCurrFrameX(img->GetCurrFrameX() + 1);
-		}
-		elapsedCount = 0;
+			cout << elapsedCount << endl;
+			pos.y += moveSpeed * TimerManager::GetSingleton()->GetDeltaTime();
+			elapsedCount++;
+			if (elapsedCount >= 30)
+			{
+				img->SetCurrFrameX(img->GetCurrFrameX() + 1);
+				if (img->GetCurrFrameX() >= 6)
+				{
+					img->SetCurrFrameX(4);
+					elapsedCount = 0;
+					//cout << "초기화 프레임 : " << img->GetCurrFrameX() << endl << endl;
+				}
+			}
 			break;
 		default:
 			break;
-		}
 	}
 
 }
