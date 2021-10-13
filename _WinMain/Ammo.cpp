@@ -80,7 +80,7 @@ void Ammo::Render(HDC hdc)
 	if (isFire)
 	{
 		img->Render(hdc, pos.x, pos.y);
-		//Ellipse(hdc, shape.left, shape.top, shape.right, shape.bottom);
+		Ellipse(hdc, shape.left, shape.top, shape.right, shape.bottom);
 	}
 }
 

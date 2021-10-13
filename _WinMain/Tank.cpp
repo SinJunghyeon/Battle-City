@@ -1,6 +1,6 @@
 #include "Tank.h"
 #include "Image.h"
-
+#include "Item.h"
 
 HRESULT Tank::Init()
 {
@@ -34,6 +34,14 @@ HRESULT Tank::Init()
 		ammoPack[i].Init();
 	}
 
+	//아이템
+	mpItem = new Item;
+	mpItem->Init();
+	itemShape.left = mpItem->GetShape().left;
+	itemShape.top = mpItem->GetShape().top;
+	itemShape.right = mpItem->GetShape().right;
+	itemShape.bottom = mpItem->GetShape().bottom;
+
 	return S_OK;
 }
 
@@ -56,6 +64,10 @@ void Tank::Update()
 
 	ProcessInputKey();	// 입력키
 	//cout << "img->GetCurrFrameX() : " << img->GetCurrFrameX() << endl;
+	
+	//아이템획득
+	CollisionItem();
+	//cout << mpItem->GetShape().left << endl;
 }
 
 void Tank::Render(HDC hdc)
@@ -72,6 +84,9 @@ void Tank::Render(HDC hdc)
 	}
 	// 플레이어 이미지
 	img->Render(hdc, pos.x, pos.y, img->GetCurrFrameX(), img->GetCurrFrameY());
+
+	//아이템
+	Rectangle(hdc, itemShape.left, itemShape.top, itemShape.right, itemShape.bottom);
 }
 
 void Tank::Release()
@@ -199,6 +214,16 @@ void Tank::Move(MoveDir dir)
 	case MoveDir::RIGHT: pos.x += (moveSpeed * TimerManager::GetSingleton()->GetDeltaTime()); break;
 	case MoveDir::UP: pos.y -= (moveSpeed * TimerManager::GetSingleton()->GetDeltaTime()); break;
 	case MoveDir::DOWN: pos.y += (moveSpeed * TimerManager::GetSingleton()->GetDeltaTime()); break;
+	}
+}
+
+void Tank::CollisionItem()
+{
+	RECT a;
+	if (IntersectRect(&a, &shape, &itemShape))
+	{
+		cout << "a" << endl;
+		mpItem->SetFunctionItem(true);
 	}
 }
 

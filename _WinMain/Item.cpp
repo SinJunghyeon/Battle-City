@@ -6,7 +6,7 @@
 	별 : 마이 탱크가 강화된다. 노멀 → 속사포(2연사) → 슈퍼 탱크(2연사 + 파괴력 증가 + 회색 블록 파괴). 
 		 슈퍼 탱크 상태가 되자 흥분하여 아무 생각없이 포를 여기저기에 마구 쏘다가 실수로 사령부를 파괴하여 자폭하는 아이들이 꼭 있었다. 
 		 당연한 소리겠지만, 마이 탱크가 강화된 상태에서 적 탱크의 공격을 받아 파괴될 경우 다시 1단계 탱크로 초기화된다.
-	수류탄 : 화면상의 적 탱크를 전멸시킨다.[6]
+	수류탄 : 화면상의 적 탱크를 전멸시킨다.
 	탱크 : 1UP.
 	삽 : 일정시간 동안 사령부 주변의 벽이 회색 블록으로 변하며, 시간경과 후엔 사령부 주변의 벽도 회복된다. 
 		 참고로 변화한 회색 블록은 슈탱 상태일 경우 파괴 가능(…). 
@@ -28,9 +28,13 @@ HRESULT Item::Init()
 	shape.right = pos.x + (bodySize / 2);
 	shape.bottom = pos.y + (bodySize / 2);
 
-	//아이템 랜덤 설정
-	srand(time(NULL));
-	selectItem = rand() % 6;
+	////아이템 랜덤 설정
+	//srand(time(NULL));
+	selectItem = 3;
+
+	bIsFunction = false;
+
+	functionItem = ecFunctionItem::NOTHING;
 
 	//헬멧 이미지
 	ImageManager::GetSingleton()->AddImage("Image/BattleCity/Item/Item1.bmp", bodySize, bodySize, 1, 1, true, RGB(255, 0, 255));
@@ -74,36 +78,44 @@ HRESULT Item::Init()
 	{
 		return E_FAIL;
 	}
+
 	return S_OK;
 }
 
 void Item::Update()
 {
+	FunctionItem();
 }
 
 void Item::Render(HDC hdc)
 {
-	Rectangle(hdc, shape.left, shape.top, shape.right, shape.bottom);
+	//Rectangle(hdc, shape.left, shape.top, shape.right, shape.bottom);
 
 	switch (selectItem)
 	{
 	case 0:
 		mpImgHelmet->Render(hdc, pos.x, pos.y);
+		functionItem = ecFunctionItem::HELMET;
 		break;
 	case 1:
 		mpImgWatch->Render(hdc, pos.x, pos.y);
+		functionItem = ecFunctionItem::WATCH;
 		break;
 	case 2:
 		mpImgShovel->Render(hdc, pos.x, pos.y);
+		functionItem = ecFunctionItem::SHOVEL;
 		break;
 	case 3:
 		mpImgStar->Render(hdc, pos.x, pos.y);
+		functionItem = ecFunctionItem::STAR;
 		break;
 	case 4:
 		mpImgGrenade->Render(hdc, pos.x, pos.y);
+		functionItem = ecFunctionItem::GRENADE;
 		break;
 	case 5:
 		mpImgTank->Render(hdc, pos.x, pos.y);
+		functionItem = ecFunctionItem::TANK;
 		break;
 	default:
 		selectItem = rand() % 6;
@@ -112,4 +124,17 @@ void Item::Render(HDC hdc)
 
 void Item::Release()
 {
+}
+
+void Item::FunctionItem()
+{
+	if (!bIsFunction) return;
+	if (bIsFunction)
+	{
+		if (functionItem == ecFunctionItem::STAR)
+		{
+			cout << "b" << endl;
+		}
+	}
+
 }
