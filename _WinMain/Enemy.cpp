@@ -23,28 +23,15 @@ HRESULT Enemy::Init()
 	pos.y = 100.0f;
 	moveSpeed = 1.0f;
 	bodySize = 32;
+	moveDir = MoveDir::UP;
 
 	return S_OK;
 }
 
 void Enemy::Update()
 {
-	elapsedCount++;
-	if (elapsedCount >= 15)
-	{
-		img->SetCurrFrameX(img->GetCurrFrameX() + 1);
-		if (img->GetCurrFrameX() >= 4)
-		{
-			img->SetCurrFrameX(0);
-		}
-		elapsedCount = 0;
-	}
+	AutoMove();
 
-	// Ammo
-	/*
-		1. 랜덤시간마다 미사일을 한발씩 발사하도록 구현
-		2. 딜레이 없이  30발 연속 발사 (1프레임 마다 1발씩)
-	*/
 	fireTimer++;
 	if (fireTimer >= fireDelay)
 	{
@@ -65,4 +52,40 @@ void Enemy::Render(HDC hdc)
 void Enemy::Release()
 {
 	SAFE_RELEASE(ammoMgr);
+}
+
+void Enemy::AutoMove()
+{
+	elapsedCount++;
+	if (elapsedCount >= 30)
+	{
+		switch (moveDir)
+		{
+		case MoveDir::RIGHT:
+			break;
+		case MoveDir::LEFT:
+			break;
+		case MoveDir::UP:
+			break;
+		case MoveDir::DOWN:
+		/*cout << "elapsedCount : " << elapsedCount << endl;
+		cout << "처음 프레임 : " << img->GetCurrFrameX() << endl;
+		img->SetCurrFrameX(img->GetCurrFrameX() + 1);
+		cout << "다음 프레임 : " << img->GetCurrFrameX() << endl;*/
+		if (img->GetCurrFrameX() >= 2)
+		{
+			img->SetCurrFrameX(0);
+			cout << "초기화 프레임 : " << img->GetCurrFrameX() << endl << endl;
+		}
+		else
+		{
+			img->SetCurrFrameX(img->GetCurrFrameX() + 1);
+		}
+		elapsedCount = 0;
+			break;
+		default:
+			break;
+		}
+	}
+
 }
