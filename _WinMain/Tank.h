@@ -5,17 +5,20 @@
 
 enum class ecTankState { IDLE, MOVE, FIRE, DAMAGED, DIE };
 
+class Item;
 class Tank : public GameObject
 {
 public:
 	int ammoCount;
 	Ammo* ammoPack;
 
-	MoveDir moveDir = MoveDir::UP;
 	ecTankState tanckState = ecTankState::IDLE;
 	int elapsedCount = NULL;
 	bool isAlive = true;
 
+	//¾ÆÀÌÅÛ
+	Item* mpItem = nullptr;
+	RECT itemShape;
 
 public:
 	HRESULT Init();
@@ -27,6 +30,7 @@ public:
 	void ProcessInputKey();
 
 	void Move(MoveDir dir);
+	void CollisionItem();
 
 	inline void SetIsAlive(bool alive) { this->isAlive = alive; }
 

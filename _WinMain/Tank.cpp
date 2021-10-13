@@ -1,6 +1,6 @@
 #include "Tank.h"
 #include "Image.h"
-
+#include "Item.h"
 
 HRESULT Tank::Init()
 {
@@ -14,7 +14,7 @@ HRESULT Tank::Init()
 	pos.y = WIN_SIZE_Y - 100.0f;
 
 	bodySize = 64;
-	moveSpeed = 20.0f;
+	moveSpeed = 50.0f;
 
 	shape.left = pos.x - (bodySize / 2);
 	shape.top = pos.y - (bodySize / 2);
@@ -26,7 +26,7 @@ HRESULT Tank::Init()
 	elapsedCount = 0;
 	isAlive = true;
 
-	ammoCount = 2;
+	ammoCount = 300;
 	ammoPack = new Ammo[ammoCount];
 	// 미사일 초기화
 	for (int i = 0; i < ammoCount; i++)
@@ -34,12 +34,22 @@ HRESULT Tank::Init()
 		ammoPack[i].Init();
 	}
 
+	//아이템
+	mpItem = new Item;
+	mpItem->Init();
+	itemShape.left = mpItem->GetShape().left;
+	itemShape.top = mpItem->GetShape().top;
+	itemShape.right = mpItem->GetShape().right;
+	itemShape.bottom = mpItem->GetShape().bottom;
+
 	return S_OK;
 }
 
 void Tank::Update()
 {
 	if (isAlive == false)	return;
+
+	//cout << "Tank : " << moveDir << endl;
 
 	// 위치에 따른 모양값 갱신
 	shape.left = pos.x - (bodySize / 2);
@@ -53,7 +63,11 @@ void Tank::Update()
 	}
 
 	ProcessInputKey();	// 입력키
-	cout << "img->GetCurrFrameX() : " << img->GetCurrFrameX() << endl;
+	//cout << "img->GetCurrFrameX() : " << img->GetCurrFrameX() << endl;
+	
+	//아이템획득
+	CollisionItem();
+	//cout << mpItem->GetShape().left << endl;
 }
 
 void Tank::Render(HDC hdc)
@@ -70,6 +84,9 @@ void Tank::Render(HDC hdc)
 	}
 	// 플레이어 이미지
 	img->Render(hdc, pos.x, pos.y, img->GetCurrFrameX(), img->GetCurrFrameY());
+
+	//아이템
+	Rectangle(hdc, itemShape.left, itemShape.top, itemShape.right, itemShape.bottom);
 }
 
 void Tank::Release()
@@ -84,7 +101,7 @@ void Tank::Fire()
 		// 전체 미사일을 순회하면서 발사 됐는지 안됐는지 판단
 		if (ammoPack[i].GetIsFire()/* && ammoPack[i].GetIsAlive()*/)
 			continue;
-
+		ammoPack[i].SetMoveDir(moveDir);
 		ammoPack[i].SetPos(pos);		// 미사일 위치 변경
 		ammoPack[i].SetIsFire(true);	// 미사일 상태 변경
 
@@ -102,7 +119,9 @@ void Tank::ProcessInputKey()
 	// 이동(상)
 	if (Singleton<KeyManager>::GetSingleton()->IsStayKeyDown(VK_UP))
 	{
+		moveDir = MoveDir::UP;
 		Move(MoveDir::UP);
+		tanckState = ecTankState::MOVE;
 		//프레임 움직임
 		elapsedCount++;
 		if (elapsedCount >= 10)
@@ -113,12 +132,13 @@ void Tank::ProcessInputKey()
 				img->SetCurrFrameX(0);
 			}
 		}
-		tanckState = ecTankState::MOVE;
 	}
 	// 이동(하)
 	else if (Singleton<KeyManager>::GetSingleton()->IsStayKeyDown(VK_DOWN))
 	{
+		moveDir = MoveDir::DOWN;
 		Move(MoveDir::DOWN);
+		tanckState = ecTankState::MOVE;
 		//프레임 움직임
 		elapsedCount++;
 		if (elapsedCount >= 10)
@@ -129,12 +149,13 @@ void Tank::ProcessInputKey()
 				img->SetCurrFrameX(4);
 			}
 		}
-		tanckState = ecTankState::MOVE;
 	}
 	// 이동(좌)
 	else if (Singleton<KeyManager>::GetSingleton()->IsStayKeyDown(VK_LEFT))
 	{
+		moveDir = MoveDir::LEFT;
 		Move(MoveDir::LEFT);
+		tanckState = ecTankState::MOVE;
 		//프레임 움직임
 		elapsedCount++;
 		if (elapsedCount >= 10)
@@ -145,11 +166,11 @@ void Tank::ProcessInputKey()
 				img->SetCurrFrameX(2);
 			}
 		}
-		tanckState = ecTankState::MOVE;
 	}
 	// 이동(우)
 	else if (Singleton<KeyManager>::GetSingleton()->IsStayKeyDown(VK_RIGHT))
 	{
+		moveDir = MoveDir::RIGHT;
 		Move(MoveDir::RIGHT);
 		tanckState = ecTankState::MOVE;
 		//프레임 움직임
@@ -193,6 +214,16 @@ void Tank::Move(MoveDir dir)
 	case MoveDir::RIGHT: pos.x += (moveSpeed * TimerManager::GetSingleton()->GetDeltaTime()); break;
 	case MoveDir::UP: pos.y -= (moveSpeed * TimerManager::GetSingleton()->GetDeltaTime()); break;
 	case MoveDir::DOWN: pos.y += (moveSpeed * TimerManager::GetSingleton()->GetDeltaTime()); break;
+	}
+}
+
+void Tank::CollisionItem()
+{
+	RECT a;
+	if (IntersectRect(&a, &shape, &itemShape))
+	{
+		//cout << "a" << endl;
+		mpItem->SetFunctionItem(true);
 	}
 }
 

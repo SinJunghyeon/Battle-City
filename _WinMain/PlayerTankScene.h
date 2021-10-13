@@ -3,14 +3,18 @@
 #include "Config.h"
 #include "GameEntity.h"
 
-class Tank;
 class Image;
+class Tank;
+class Item;
 class PlayerTankScene : public GameEntity
 {
 private:
-	Tank* mpPlayerTank;
 	// 배경 이미지
 	Image* backGround;
+	//플레이어 탱크
+	Tank* mpPlayerTank;
+	//아이템
+	Item* mpItem;
 
 public:
 	virtual HRESULT Init() override;
