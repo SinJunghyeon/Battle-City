@@ -11,7 +11,6 @@ public:
 	int ammoCount;
 	Ammo* ammoPack;
 
-	MoveDir moveDir = MoveDir::UP;
 	ecTankState tanckState = ecTankState::IDLE;
 	int elapsedCount = NULL;
 	bool isAlive = true;

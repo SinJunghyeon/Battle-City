@@ -53,7 +53,7 @@ void Tank::Update()
 	}
 
 	ProcessInputKey();	// 입력키
-	cout << "img->GetCurrFrameX() : " << img->GetCurrFrameX() << endl;
+	//cout << "img->GetCurrFrameX() : " << img->GetCurrFrameX() << endl;
 }
 
 void Tank::Render(HDC hdc)
@@ -84,7 +84,7 @@ void Tank::Fire()
 		// 전체 미사일을 순회하면서 발사 됐는지 안됐는지 판단
 		if (ammoPack[i].GetIsFire()/* && ammoPack[i].GetIsAlive()*/)
 			continue;
-
+		ammoPack[i].SetMoveDir(moveDir);
 		ammoPack[i].SetPos(pos);		// 미사일 위치 변경
 		ammoPack[i].SetIsFire(true);	// 미사일 상태 변경
 

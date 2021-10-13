@@ -62,7 +62,7 @@ void AmmoManager::Fire()
 
 		(*itAmmos)->SetIsFire(true);
 		(*itAmmos)->SetPos(owner->GetPos());
-		(*itAmmos)->SetMoveAngle(DEGREE_TO_RADIAN(270.0f));
+		(*itAmmos)->SetMoveDir(owner->GetMoveDir());
 		break;
 	}
 }

@@ -14,6 +14,7 @@
 */
 
 #include "GameEntity.h"
+#include "Config.h"
 
 class Image;
 class GameObject : public GameEntity
@@ -26,6 +27,8 @@ protected:	// 상속된 클래스에 노출시킨다.
 	float moveSpeed;
 	int bodySize;
 
+	MoveDir moveDir;
+
 	Image* img;
 
 public:
@@ -36,6 +39,7 @@ public:
 	inline POINTFLOAT GetPos() { return this->pos; }
 	inline void SetMoveSpeed(float speed) { this->moveSpeed = speed; }
 	inline int GetBodySize() { return this->bodySize; }
+	inline MoveDir GetMoveDir() { return this->moveDir; }
 
 	GameObject();
 	~GameObject();
