@@ -9,7 +9,7 @@ class Item : public GameObject
 {
 protected:
 	int selectItem = NULL;				//아이템 선택
-	bool bIsFunction = false;			//아이템 기능
+	bool bExistItem = true;				//아이템 존재여부
 
 	Image* mpImgHelmet = nullptr;		//헬멧
 	Image* mpImgWatch = nullptr;		//시계
@@ -26,8 +26,9 @@ public:
 	virtual void Render(HDC hdc) override;
 	virtual void Release() override;
 
-	void FunctionItem();
+	inline void SetExistItem(bool bExistItem) { this->bExistItem = bExistItem; }
+	inline bool GetExistItem() { return bExistItem; }
 
-	inline void SetFunctionItem(bool bIsFunction) { this->bIsFunction = bIsFunction; }
+	inline ecFunctionItem GetItemState() { return functionItem;	}
 };
 

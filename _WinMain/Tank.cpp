@@ -14,7 +14,7 @@ HRESULT Tank::Init()
 	pos.y = WIN_SIZE_Y - 100.0f;
 
 	bodySize = 64;
-	moveSpeed = 50.0f;
+	moveSpeed = 500.0f;
 
 	shape.left = pos.x - (bodySize / 2);
 	shape.top = pos.y - (bodySize / 2);
@@ -33,6 +33,8 @@ HRESULT Tank::Init()
 	{
 		ammoPack[i].Init();
 	}
+
+	//bObtainItem = false;
 
 	//아이템
 	mpItem = new Item;
@@ -67,6 +69,8 @@ void Tank::Update()
 	
 	//아이템획득
 	CollisionItem();
+	//아이템
+	mpItem->Update();
 	//cout << mpItem->GetShape().left << endl;
 }
 
@@ -75,7 +79,7 @@ void Tank::Render(HDC hdc)
 	if (isAlive == false)	return;
 
 	// 몸통
-	Rectangle(hdc, shape.left, shape.top, shape.right, shape.bottom);
+	//Rectangle(hdc, shape.left, shape.top, shape.right, shape.bottom);
 
 	// 미사일
 	for (int i = 0; i < ammoCount; i++)
@@ -86,11 +90,13 @@ void Tank::Render(HDC hdc)
 	img->Render(hdc, pos.x, pos.y, img->GetCurrFrameX(), img->GetCurrFrameY());
 
 	//아이템
-	Rectangle(hdc, itemShape.left, itemShape.top, itemShape.right, itemShape.bottom);
+	mpItem->Render(hdc);
+	//Rectangle(hdc, itemShape.left, itemShape.top, itemShape.right, itemShape.bottom);
 }
 
 void Tank::Release()
 {
+	SAFE_RELEASE(mpItem);
 	delete[] ammoPack;
 }
 
@@ -222,8 +228,29 @@ void Tank::CollisionItem()
 	RECT a;
 	if (IntersectRect(&a, &shape, &itemShape))
 	{
+		//cout << "아이템 접촉! !" << endl;
+		FunctionItem();
+		mpItem->SetExistItem(false);
+	}
+}
+
+void Tank::FunctionItem()
+{
+	if (mpItem->GetItemState() == ecFunctionItem::STAR)
+	{
 		//cout << "a" << endl;
-		mpItem->SetFunctionItem(true);
+		if (img->GetCurrFrameY() == 0)
+		{
+			img->SetCurrFrameY(1);
+		}
+		if (img->GetCurrFrameY() == 1)
+		{
+			img->SetCurrFrameY(2);
+		}
+		if (img->GetCurrFrameY() == 2)
+		{
+			img->SetCurrFrameY(3);
+		}
 	}
 }
 
