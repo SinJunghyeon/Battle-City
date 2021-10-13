@@ -11,6 +11,7 @@ private:
 
 	int fireDelay;
 	int fireTimer;
+	MoveDir moveDir;
 
 public:
 	HRESULT Init();
@@ -18,5 +19,6 @@ public:
 	void Render(HDC hdc);
 	void Release();
 	
+	void AutoMove();
 };
 
