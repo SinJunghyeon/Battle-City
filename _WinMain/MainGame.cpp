@@ -7,6 +7,7 @@
 #include "PixelCollisionScene.h"
 #include "AStarScene.h"
 #include "PlayerTankScene.h"
+#include "Timer.h"
 
 /*
 	¿À´Ã °úÁ¦
@@ -41,7 +42,7 @@ HRESULT MainGame::Init()
 
 	SceneManager::GetSingleton()->AddLoadingScene("·Îµù¾À", new LoadingScene());
 
-	SceneManager::GetSingleton()->ChangeScene("Å¸ÀÌÆ²¾À");
+	SceneManager::GetSingleton()->ChangeScene("Å¸ÀÏ¸ÊÅø");
 
 	srand((unsigned int) time(nullptr));
 

@@ -4,11 +4,11 @@
 
 enum class Terrain { Earth, Wall, Water, Grass, BreakableWall, End };
 
-#define TILE_SIZE	32
-#define TILE_COUNT_X	20
-#define TILE_COUNT_Y	20
-#define SAMPLE_TILE_COUNT_X	20
-#define SAMPLE_TILE_COUNT_Y	9
+#define TILE_SIZE	16
+#define TILE_COUNT_X	26
+#define TILE_COUNT_Y	26
+#define SAMPLE_TILE_COUNT_X	11
+#define SAMPLE_TILE_COUNT_Y	11
 
 typedef struct tagSampleTile
 {

@@ -12,11 +12,11 @@ HRESULT TilemapToolScene::Init()
 {
     SetWindowSize(20, 20, TILEMAPTOOL_SIZE_X, TILEMAPTOOL_SIZE_Y);
 
-    sampleImage = ImageManager::GetSingleton()->AddImage("Image/maptiles.bmp",
-        640, 288, 20, 9, true, RGB(255, 0, 255));
+    sampleImage = ImageManager::GetSingleton()->AddImage("Image/BattleCity/SamlpTile1.bmp",
+        440, 440, 11, 11, true, RGB(255, 0, 255));
     if (sampleImage == nullptr)
     {
-        cout << "Image/maptiles.bmp 로드 실패!!" << endl;
+        cout << "Image/BattleCity/SamlpTile1.bmp 로드 실패!!" << endl;
         return E_FAIL;
     }
 
@@ -28,8 +28,8 @@ HRESULT TilemapToolScene::Init()
             SetRect(&(tileInfo[i * TILE_COUNT_X + j].rc),
                 j * TILE_SIZE, i * TILE_SIZE,
                 j * TILE_SIZE + TILE_SIZE, i * TILE_SIZE + TILE_SIZE);
-
-            tileInfo[i * TILE_COUNT_X + j].frameX = 3;
+            
+            tileInfo[i * TILE_COUNT_X + j].frameX = 0;
             tileInfo[i * TILE_COUNT_X + j].frameY = 0;
 
             tileInfo[i * TILE_COUNT_X + j].terrain = Terrain::Grass;
@@ -79,9 +79,9 @@ void TilemapToolScene::Update()
             int selectedIdY = posY / TILE_SIZE;
 
             selectedSampleTile.frameX = 
-                sampleTileInfo[selectedIdY * SAMPLE_TILE_COUNT_X + selectedIdX].frameX;
+                selectedIdX;
             selectedSampleTile.frameY =
-                sampleTileInfo[selectedIdY * SAMPLE_TILE_COUNT_X + selectedIdX].frameY;
+                selectedIdY;
         }
     }
 
@@ -137,10 +137,10 @@ void TilemapToolScene::Render(HDC hdc)
                 tileInfo[i * TILE_COUNT_X + j].frameX,
                 tileInfo[i * TILE_COUNT_X + j].frameY);
 
-            //Rectangle(hdc, tileInfo[i * TILE_COUNT_X + j].rc.left,
-            //    tileInfo[i * TILE_COUNT_X + j].rc.top,
-            //    tileInfo[i * TILE_COUNT_X + j].rc.right,
-            //    tileInfo[i * TILE_COUNT_X + j].rc.bottom);
+            Rectangle(hdc, tileInfo[i * TILE_COUNT_X + j].rc.left - TILE_SIZE / 2,
+                tileInfo[i * TILE_COUNT_X + j].rc.top - TILE_SIZE / 2,
+                tileInfo[i * TILE_COUNT_X + j].rc.right,
+                tileInfo[i * TILE_COUNT_X + j].rc.bottom);
         }
     }
 
