@@ -4,7 +4,8 @@
 
 HRESULT Enemy::Init()
 {
-	elapsedCount = 0;
+	elapsedCount1 = 0;
+	elapsedCount2 = 0;
 	fireDelay = 100;
 	fireTimer = 0;
 
@@ -30,6 +31,12 @@ HRESULT Enemy::Init()
 
 void Enemy::Update()
 {
+	elapsedCount1++;
+	if (elapsedCount1 >= 100)
+	{
+		moveDir = (MoveDir)(rand() % 4);
+		elapsedCount1 = 0;
+	}
 	AutoMove();
 
 	fireTimer++;
@@ -51,32 +58,80 @@ void Enemy::Render(HDC hdc)
 
 void Enemy::Release()
 {
-	SAFE_RELEASE(ammoMgr);
+	//SAFE_RELEASE(ammoMgr);
 }
 
 void Enemy::AutoMove()
 {
-	
 		switch (moveDir)
 		{
 		case MoveDir::RIGHT:
+			if (img->GetCurrFrameX() <= 5 || img->GetCurrFrameX() >= 8)
+			{
+				img->SetCurrFrameX(6);
+			}
+			pos.x += moveSpeed * TimerManager::GetSingleton()->GetDeltaTime();
+			elapsedCount2++;
+
+			if (elapsedCount2 >= 5)
+			{
+				img->SetCurrFrameX(img->GetCurrFrameX() + 1);
+				if (img->GetCurrFrameX() >= 8)
+				{
+					img->SetCurrFrameX(6);
+					elapsedCount2 = 0;
+				}
+			}
 			break;
 		case MoveDir::LEFT:
+			if (img->GetCurrFrameX() <= 1 || img->GetCurrFrameX() >= 4)
+			{
+				
+				img->SetCurrFrameX(2);
+			}
+			pos.x -= moveSpeed * TimerManager::GetSingleton()->GetDeltaTime();
+			elapsedCount2++;
+			if (elapsedCount2 >= 5)
+			{
+				img->SetCurrFrameX(img->GetCurrFrameX() + 1);
+				if (img->GetCurrFrameX() >= 4)
+				{
+					img->SetCurrFrameX(2);
+					elapsedCount2 = 0;
+				}
+			}
 			break;
 		case MoveDir::UP:
+			if (img->GetCurrFrameX() <= -1 || img->GetCurrFrameX() >= 2)
+			{
+				img->SetCurrFrameX(0);
+			}
+			pos.y -= moveSpeed * TimerManager::GetSingleton()->GetDeltaTime();
+			elapsedCount2++;
+			if (elapsedCount2 >= 5)
+			{
+				img->SetCurrFrameX(img->GetCurrFrameX() + 1);
+				if (img->GetCurrFrameX() >= 2)
+				{
+					img->SetCurrFrameX(0);
+					elapsedCount2 = 0;
+				}
+			}
 			break;
 		case MoveDir::DOWN:
-			cout << elapsedCount << endl;
+			if (img->GetCurrFrameX() <= 3 || img->GetCurrFrameX() >= 6)
+			{
+				img->SetCurrFrameX(4);
+			}
 			pos.y += moveSpeed * TimerManager::GetSingleton()->GetDeltaTime();
-			elapsedCount++;
-			if (elapsedCount >= 30)
+			elapsedCount2++;
+			if (elapsedCount2 >= 5)
 			{
 				img->SetCurrFrameX(img->GetCurrFrameX() + 1);
 				if (img->GetCurrFrameX() >= 6)
 				{
 					img->SetCurrFrameX(4);
-					elapsedCount = 0;
-					//cout << "초기화 프레임 : " << img->GetCurrFrameX() << endl << endl;
+					elapsedCount2 = 0;
 				}
 			}
 			break;

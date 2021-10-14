@@ -4,16 +4,17 @@
 
 class Image;
 class Tank;
+class Enemy;
 class Ammo : public GameObject
 {
 private:
-	Tank* mpPlayerTank;
-
+	Tank* pPlayerTank;
+	Enemy* pEnemyTank;
 	bool isFire;
 
 	Image* img;
 
-	MoveDir moveDir = MoveDir::UP;
+	MoveDir moveDir;
 
 public:
 	HRESULT Init();
@@ -24,7 +25,9 @@ public:
 	void SetIsFire(bool fire);
 	inline bool GetIsFire() { return this->isFire; }
 
-	inline void SetMoveDir(MoveDir moveDir) { this->moveDir = moveDir; }
+	inline void SetMoveDir(MoveDir moveDir) {
+		this->moveDir = moveDir;
+	}
 
 	Ammo();
 	~Ammo();
