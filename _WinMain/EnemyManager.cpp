@@ -12,7 +12,7 @@ HRESULT EnemyManager::Init()
 	{
 		vecEnemys[i] = new Enemy;
 		vecEnemys[i]->Init();
-		POINTFLOAT pos{ 100.0f + (i % 5) * 100.0f, 100.0f + (i / 5) * 80.0f };
+		POINTFLOAT pos{ 300.0f + (i % 5) * 100.0f, 400.0f + (i / 5) * 80.0f };
 		vecEnemys[i]->SetPos(pos);
 	}
 
