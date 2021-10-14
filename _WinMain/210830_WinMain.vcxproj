@@ -143,6 +143,7 @@
     <ClCompile Include="AmmoManager.cpp" />
     <ClCompile Include="AStarScene.cpp" />
     <ClCompile Include="BattleScene.cpp" />
+    <ClCompile Include="BattleTest.cpp" />
     <ClCompile Include="Button.cpp" />
     <ClCompile Include="ButtonFunction.cpp" />
     <ClCompile Include="Enemy.cpp" />
@@ -170,6 +171,7 @@
     <ClInclude Include="AmmoManager.h" />
     <ClInclude Include="AStarScene.h" />
     <ClInclude Include="BattleScene.h" />
+    <ClInclude Include="BattleTest.h" />
     <ClInclude Include="Button.h" />
     <ClInclude Include="ButtonFunction.h" />
     <ClInclude Include="CommonFunction.h" />
@@ -184,6 +186,7 @@
     <ClInclude Include="KeyManager.h" />
     <ClInclude Include="LoadingScene.h" />
     <ClInclude Include="MainGame.h" />
+    <ClInclude Include="MapConfig.h" />
     <ClInclude Include="PixelCollisionScene.h" />
     <ClInclude Include="PlayerTankScene.h" />
     <ClInclude Include="SceneManager.h" />
