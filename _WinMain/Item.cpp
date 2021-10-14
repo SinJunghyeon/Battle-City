@@ -28,11 +28,12 @@ HRESULT Item::Init()
 	shape.right = pos.x + (bodySize / 2);
 	shape.bottom = pos.y + (bodySize / 2);
 
-	////아이템 랜덤 설정
+	//아이템 랜덤 설정
 	//srand(time(NULL));
+	//selectItem = rand() % 6;
 	selectItem = 3;
 
-	bIsFunction = false;
+	bExistItem = true;
 
 	functionItem = ecFunctionItem::NOTHING;
 
@@ -84,57 +85,47 @@ HRESULT Item::Init()
 
 void Item::Update()
 {
-	FunctionItem();
+	cout << boolalpha << "Item bExistItem : " << bExistItem << endl;
 }
 
 void Item::Render(HDC hdc)
 {
 	//Rectangle(hdc, shape.left, shape.top, shape.right, shape.bottom);
 
-	switch (selectItem)
+	if (bExistItem)
 	{
-	case 0:
-		mpImgHelmet->Render(hdc, pos.x, pos.y);
-		functionItem = ecFunctionItem::HELMET;
-		break;
-	case 1:
-		mpImgWatch->Render(hdc, pos.x, pos.y);
-		functionItem = ecFunctionItem::WATCH;
-		break;
-	case 2:
-		mpImgShovel->Render(hdc, pos.x, pos.y);
-		functionItem = ecFunctionItem::SHOVEL;
-		break;
-	case 3:
-		mpImgStar->Render(hdc, pos.x, pos.y);
-		functionItem = ecFunctionItem::STAR;
-		break;
-	case 4:
-		mpImgGrenade->Render(hdc, pos.x, pos.y);
-		functionItem = ecFunctionItem::GRENADE;
-		break;
-	case 5:
-		mpImgTank->Render(hdc, pos.x, pos.y);
-		functionItem = ecFunctionItem::TANK;
-		break;
-	default:
-		selectItem = rand() % 6;
+		switch (selectItem)
+		{
+		case 0:
+			mpImgHelmet->Render(hdc, pos.x, pos.y);
+			functionItem = ecFunctionItem::HELMET;
+			break;
+		case 1:
+			mpImgWatch->Render(hdc, pos.x, pos.y);
+			functionItem = ecFunctionItem::WATCH;
+			break;
+		case 2:
+			mpImgShovel->Render(hdc, pos.x, pos.y);
+			functionItem = ecFunctionItem::SHOVEL;
+			break;
+		case 3:
+			mpImgStar->Render(hdc, pos.x, pos.y);
+			functionItem = ecFunctionItem::STAR;
+			break;
+		case 4:
+			mpImgGrenade->Render(hdc, pos.x, pos.y);
+			functionItem = ecFunctionItem::GRENADE;
+			break;
+		case 5:
+			mpImgTank->Render(hdc, pos.x, pos.y);
+			functionItem = ecFunctionItem::TANK;
+			break;
+		default:
+			selectItem = rand() % 6;
+		}
 	}
 }
 
 void Item::Release()
 {
-}
-
-void Item::FunctionItem()
-{
-	if (!bIsFunction) return;
-	if (bIsFunction)
-	{
-		if (functionItem == ecFunctionItem::STAR)
-		{
-			//cout << "b" << endl;
-		}
-	}
-
 }
