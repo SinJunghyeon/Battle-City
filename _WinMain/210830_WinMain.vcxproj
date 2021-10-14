@@ -151,11 +151,13 @@
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="Image.cpp" />
     <ClCompile Include="ImageManager.cpp" />
+    <ClCompile Include="Item.cpp" />
     <ClCompile Include="KeyManager.cpp" />
     <ClCompile Include="LoadingScene.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MainGame.cpp" />
     <ClCompile Include="PixelCollisionScene.cpp" />
+    <ClCompile Include="PlayerTankScene.cpp" />
     <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="Tank.cpp" />
     <ClCompile Include="TilemapToolScene.cpp" />
@@ -178,10 +180,12 @@
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="Image.h" />
     <ClInclude Include="ImageManager.h" />
+    <ClInclude Include="Item.h" />
     <ClInclude Include="KeyManager.h" />
     <ClInclude Include="LoadingScene.h" />
     <ClInclude Include="MainGame.h" />
     <ClInclude Include="PixelCollisionScene.h" />
+    <ClInclude Include="PlayerTankScene.h" />
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="Singleton.h" />
     <ClInclude Include="Tank.h" />

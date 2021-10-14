@@ -6,7 +6,7 @@ HRESULT TitleScene::Init()
 {
 	ImageManager::GetSingleton()->AddImage("Image/BattleCity/Title.bmp", WIN_SIZE_X, WIN_SIZE_Y);
 	backGround = ImageManager::GetSingleton()->FindImage("Image/BattleCity/Title.bmp");
-	
+
 	//ImageManager::GetSingleton()->AddImage("Image/BattleCity/Player/Player.bmp", 512, 256, 8, 4, true, RGB(255, 0, 255));
 	//pSelectIcon = ImageManager::GetSingleton()->FindImage("Image/BattleCity/Player/Player.bmp");
 
@@ -22,7 +22,7 @@ void TitleScene::Update()
 	}
 	if (countFrameY >= WIN_SIZE_Y / 2)
 	{
-		countFrameY-=2;
+		countFrameY -= 2;
 	}
 
 	/*if (selectIcon < 8)

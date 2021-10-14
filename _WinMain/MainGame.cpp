@@ -6,6 +6,7 @@
 #include "TilemapToolScene.h"
 #include "PixelCollisionScene.h"
 #include "AStarScene.h"
+#include "PlayerTankScene.h"
 
 HRESULT MainGame::Init()
 {
@@ -14,19 +15,20 @@ HRESULT MainGame::Init()
 	TimerManager::GetSingleton()->Init();
 	SceneManager::GetSingleton()->Init();
 
-	SceneManager::GetSingleton()->AddScene("a", new TitleScene());
-	SceneManager::GetSingleton()->AddScene("b", new BattleScene());
-	SceneManager::GetSingleton()->AddScene("c", new TilemapToolScene());
-	SceneManager::GetSingleton()->AddScene("d", new PixelCollisionScene());
-	SceneManager::GetSingleton()->AddScene("e", new AStarScene());
+	SceneManager::GetSingleton()->AddScene("Å¸ÀÌÆ²¾À", new TitleScene());
+	SceneManager::GetSingleton()->AddScene("ÀüÅõ¾À", new BattleScene());
+	SceneManager::GetSingleton()->AddScene("Å¸ÀÏ¸ÊÅø", new TilemapToolScene());
+	SceneManager::GetSingleton()->AddScene("ÇÈ¼¿Å×½ºÆ®¾À", new PixelCollisionScene());
+	SceneManager::GetSingleton()->AddScene("A*Å×½ºÆ®¾À", new AStarScene());
+	SceneManager::GetSingleton()->AddScene("ÇÃ·¹ÀÌ¾îÅÊÅ©¾À", new PlayerTankScene());
 
-	SceneManager::GetSingleton()->AddLoadingScene("f", new LoadingScene());
+	SceneManager::GetSingleton()->AddLoadingScene("·Îµù¾À", new LoadingScene());
 
-	SceneManager::GetSingleton()->ChangeScene("b");
+	SceneManager::GetSingleton()->ChangeScene("Å¸ÀÌÆ²¾À");
 
 	srand((unsigned int) time(nullptr));
 
-	// íƒ€ì´ë¨¸ ì…‹íŒ…
+	// Å¸ÀÌ¸Ó ¼ÂÆÃ
 	hTimer = (HANDLE)SetTimer(g_hWnd, 0, 10, NULL);
 
 	mousePosX = 0;
@@ -34,7 +36,7 @@ HRESULT MainGame::Init()
 	clickedMousePosX = 0; 
 	clickedMousePosY = 0; 
 
-	// ë°±ë²„í¼
+	// ¹é¹öÆÛ
 	backBuffer = new Image;
 	int maxSizeX = WIN_SIZE_X > TILEMAPTOOL_SIZE_X ? WIN_SIZE_X : TILEMAPTOOL_SIZE_X;
 	int maxSizeY = WIN_SIZE_Y > TILEMAPTOOL_SIZE_Y ? WIN_SIZE_Y : TILEMAPTOOL_SIZE_Y;
@@ -80,7 +82,7 @@ void MainGame::Release()
 	SceneManager::GetSingleton()->Release();
 	SceneManager::GetSingleton()->ReleaseSingleton();
 
-	// íƒ€ì´ë¨¸ ê°ì²´ ì‚­ì œ
+	// Å¸ÀÌ¸Ó °´Ã¼ »èÁ¦
 	KillTimer(g_hWnd, 0);
 }
 

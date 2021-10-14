@@ -1,21 +1,20 @@
 #pragma once
+
 #include "Config.h"
 #include "GameEntity.h"
 
-class ButtonFunction;
-class Button;
 class Image;
-class TitleScene : public GameEntity
+class Tank;
+class Item;
+class PlayerTankScene : public GameEntity
 {
 private:
+	// 배경 이미지
 	Image* backGround;
-	//Image* pSelectIcon = nullptr;
-
-	LPARGUMENT_PTR arg;
-
-	int countFrameY = WIN_SIZE_Y + WIN_SIZE_Y / 2;
-	//int selectIcon = 7;		//frameX값
-
+	//플레이어 탱크
+	Tank* mpPlayerTank;
+	//아이템
+	Item* mpItem;
 
 public:
 	virtual HRESULT Init() override;
@@ -23,3 +22,4 @@ public:
 	virtual void Render(HDC hdc) override;
 	virtual void Release() override;
 };
+
