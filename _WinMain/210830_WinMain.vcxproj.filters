@@ -43,6 +43,9 @@
     <Filter Include="MainGame\Item">
       <UniqueIdentifier>{22cc8c69-1335-4941-95b8-d26b8f57b647}</UniqueIdentifier>
     </Filter>
+    <Filter Include="MainGame\Enemy\실험">
+      <UniqueIdentifier>{39b8203b-2fed-4c84-9c96-c244ec4d02de}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -119,6 +122,11 @@
     </ClCompile>
     <ClCompile Include="Item.cpp">
       <Filter>MainGame\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="BattleTest.cpp">
+      <Filter>MainGame\Scene\실험장</Filter>
+    <ClCompile Include="EnemyTank.cpp">
+      <Filter>MainGame\Enemy\실험</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -202,6 +210,14 @@
     </ClInclude>
     <ClInclude Include="Item.h">
       <Filter>MainGame\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="MapConfig.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="BattleTest.h">
+      <Filter>MainGame\Scene\실험장</Filter>
+    <ClInclude Include="EnemyTank.h">
+      <Filter>MainGame\Enemy\실험</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

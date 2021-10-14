@@ -7,6 +7,7 @@
 #include "PixelCollisionScene.h"
 #include "AStarScene.h"
 #include "PlayerTankScene.h"
+#include "BattleTest.h"
 
 HRESULT MainGame::Init()
 {
@@ -17,6 +18,7 @@ HRESULT MainGame::Init()
 
 	SceneManager::GetSingleton()->AddScene("titleS", new TitleScene());
 	SceneManager::GetSingleton()->AddScene("battleS", new BattleScene());
+	SceneManager::GetSingleton()->AddScene("battleTest", new BattleTest());
 	SceneManager::GetSingleton()->AddScene("tilemapS", new TilemapToolScene());
 	SceneManager::GetSingleton()->AddScene("pixeltestS", new PixelCollisionScene());
 	SceneManager::GetSingleton()->AddScene("A*testS", new AStarScene());
@@ -26,7 +28,7 @@ HRESULT MainGame::Init()
 
 	SceneManager::GetSingleton()->ChangeScene("titleS");
 
-	srand((unsigned int) time(nullptr));
+	//srand((unsigned int) time(nullptr));
 
 	// 타이머 셋팅
 	hTimer = (HANDLE)SetTimer(g_hWnd, 0, 10, NULL);

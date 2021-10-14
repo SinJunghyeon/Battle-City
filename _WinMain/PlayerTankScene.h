@@ -6,6 +6,7 @@
 class Image;
 class Tank;
 class Item;
+class EnemyTank;
 class PlayerTankScene : public GameEntity
 {
 private:
@@ -15,6 +16,8 @@ private:
 	Tank* mpPlayerTank;
 	//아이템
 	//Item* mpItem;
+	//적
+	EnemyTank* mpEnemy;
 
 public:
 	virtual HRESULT Init() override;
