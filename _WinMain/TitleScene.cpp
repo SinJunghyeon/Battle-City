@@ -3,12 +3,12 @@
 #include "Image.h"
 
 HRESULT TitleScene::Init()
-{
+{	
 	ImageManager::GetSingleton()->AddImage("Image/BattleCity/Title.bmp", WIN_SIZE_X, WIN_SIZE_Y);
 	backGround = ImageManager::GetSingleton()->FindImage("Image/BattleCity/Title.bmp");
 
-	//ImageManager::GetSingleton()->AddImage("Image/BattleCity/Player/Player.bmp", 512, 256, 8, 4, true, RGB(255, 0, 255));
-	//pSelectIcon = ImageManager::GetSingleton()->FindImage("Image/BattleCity/Player/Player.bmp");
+	ImageManager::GetSingleton()->AddImage("Image/BattleCity/Player/Player.bmp", 512, 256, 8, 4, true, RGB(255, 0, 255));
+	pSelectIcon = ImageManager::GetSingleton()->FindImage("Image/BattleCity/Player/Player.bmp");
 
 	return S_OK;
 }
@@ -20,31 +20,59 @@ void TitleScene::Update()
 		SceneManager::GetSingleton()->ChangeScene("battleS", "loadingS");
 		return;
 	}
-	if (countFrameY >= WIN_SIZE_Y / 2)
+
+	if (KeyManager::GetSingleton()->IsOnceKeyDown(VK_DOWN))
 	{
-		countFrameY -= 2;
+		iconPosNum++;
+		iconPosY[iconPosNum];
+		if (iconPosNum > 1)
+		{
+			iconPosNum = 0;
+		}
+	}
+	else if (KeyManager::GetSingleton()->IsOnceKeyDown(VK_UP))
+	{
+		iconPosNum--;
+		iconPosY[iconPosNum];
+		if (iconPosNum < 0)
+		{
+			iconPosNum = 1;
+		}
 	}
 
-	/*if (selectIcon < 8)
+
+	if (countFrameY >= WIN_SIZE_Y / 2)
 	{
-		selectIcon++;
+		countFrameY -= 10;
 	}
-	else
+	
+	switch (selectIcon)
 	{
+	case 7:
+		selectIcon = 6;
+		break;
+	case 6:
 		selectIcon = 7;
-	}*/
+		break;
+	}
+
+	if (countFrameY <= WIN_SIZE_Y / 2)
+	{
+		bIsSceneIcon = true;
+	}
+
+	elapsedCount++;
 }
 
 void TitleScene::Render(HDC hdc)
 {
-	if (backGround)
+	backGround->Render(hdc, WIN_SIZE_X / 2, countFrameY);
+
+
+	if (bIsSceneIcon)
 	{
-		backGround->Render(hdc, WIN_SIZE_X / 2, countFrameY);
+		pSelectIcon->Render(hdc, WIN_SIZE_X / 4, iconPosY[iconPosNum], selectIcon, 0);
 	}
-	/*if (pSelectIcon)
-	{
-		pSelectIcon->Render(hdc, WIN_SIZE_X / 2, WIN_SIZE_Y / 2, selectIcon, 1);
-	}*/
 }
 
 void TitleScene::Release()

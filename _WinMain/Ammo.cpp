@@ -36,7 +36,6 @@ HRESULT Ammo::Init()
 
 void Ammo::Update()
 {
-	//moveDir = pEnemyTank->GetMoveDir();
 	if (isFire)
 	{
 		if (moveDir == MoveDir::UP)

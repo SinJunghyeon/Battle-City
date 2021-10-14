@@ -61,11 +61,7 @@ void MainGame::Render(HDC hdc)
 {
 	HDC hBackBufferDC = backBuffer->GetMemDC();
 
-	wsprintf(text, "MousePosX : %d", g_ptMouse.x);
-	TextOut(hBackBufferDC, 200, 10, text, strlen(text));
-
-	wsprintf(text, "MousePosY : %d", g_ptMouse.y);
-	TextOut(hBackBufferDC, 200, 40, text, strlen(text));
+	PatBlt(hBackBufferDC, 0, 0, backBuffer->GetWidth(), backBuffer->GetHeight(), BLACKNESS);
 
 	SceneManager::GetSingleton()->Render(hBackBufferDC);
 
