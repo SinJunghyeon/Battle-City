@@ -11,14 +11,13 @@ class Tank : public GameObject
 public:
 	int ammoCount;
 	Ammo* ammoPack;
-
 	//bool bObtainItem = false;
 
 	ecTankState tanckState = ecTankState::IDLE;
 	int elapsedCount = NULL;
 	bool isAlive = true;
 
-	//æ∆¿Ã≈€
+	//¬æ√Ü√Ä√å√Ö√õ
 	Item* mpItem = nullptr;
 	RECT itemShape;
 

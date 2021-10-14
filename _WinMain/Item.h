@@ -8,15 +8,15 @@ class Image;
 class Item : public GameObject
 {
 protected:
-	int selectItem = NULL;				//¾ÆÀÌÅÛ ¼±ÅÃ
-	bool bExistItem = true;				//¾ÆÀÌÅÛ Á¸Àç¿©ºÎ
+	int selectItem = NULL;				//ì•„ì´í…œ ì„ íƒ
+	bool bExistItem = true;				//ì•„ì´í…œ ì¡´ì¬ì—¬ë¶€
 
-	Image* mpImgHelmet = nullptr;		//Çï¸ä
-	Image* mpImgWatch = nullptr;		//½Ã°è
-	Image* mpImgShovel = nullptr;		//»ğ
-	Image* mpImgStar = nullptr;			//º°
-	Image* mpImgGrenade = nullptr;		//¼ö·ùÅº
-	Image* mpImgTank = nullptr;			//ÅÊÅ©
+	Image* mpImgHelmet = nullptr;		//í—¬ë©§
+	Image* mpImgWatch = nullptr;		//ì‹œê³„
+	Image* mpImgShovel = nullptr;		//ì‚½
+	Image* mpImgStar = nullptr;			//ë³„
+	Image* mpImgGrenade = nullptr;		//ìˆ˜ë¥˜íƒ„
+	Image* mpImgTank = nullptr;			//íƒ±í¬
 
 	ecFunctionItem functionItem = ecFunctionItem::NOTHING;
 
