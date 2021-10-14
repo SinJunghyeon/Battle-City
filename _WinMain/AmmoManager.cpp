@@ -63,6 +63,7 @@ void AmmoManager::Fire()
 		(*itAmmos)->SetIsFire(true);
 		(*itAmmos)->SetPos(owner->GetPos());
 		(*itAmmos)->SetMoveDir(owner->GetMoveDir());
+		//cout << "AmmoManager¿¡¼­ moveDir : " << owner->GetMoveDir() << endl;
 		break;
 	}
 }
