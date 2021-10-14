@@ -29,7 +29,7 @@ void BattleScene::Update()
 {
 	if (KeyManager::GetSingleton()->IsOnceKeyDown(VK_ESCAPE))
 	{
-		SceneManager::GetSingleton()->ChangeScene("타이틀씬");
+		SceneManager::GetSingleton()->ChangeScene("a");
 		return;
 	}
 

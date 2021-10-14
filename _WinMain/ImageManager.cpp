@@ -16,18 +16,6 @@ void ImageManager::Release()
 	mapImages.clear();
 }
 
-//void ImageManager::AddImage()
-//{
-//	// 추가하려는 이미지를 자료구조에서 찾는다.
-//
-//	// 있으면 종료.
-//
-//	// 없으면 추가한다.
-//	//new Image();
-//	//img->Init
-//
-//}
-
 Image* ImageManager::AddImage(const char* fileName, int width, int height, bool isTrans, COLORREF transColor)
 {
 	if (FindImage(fileName))

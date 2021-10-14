@@ -14,15 +14,15 @@ HRESULT MainGame::Init()
 	TimerManager::GetSingleton()->Init();
 	SceneManager::GetSingleton()->Init();
 
-	SceneManager::GetSingleton()->AddScene("타이틀씬", new TitleScene());
-	SceneManager::GetSingleton()->AddScene("전투씬", new BattleScene());
-	SceneManager::GetSingleton()->AddScene("타일맵툴", new TilemapToolScene());
-	SceneManager::GetSingleton()->AddScene("픽셀테스트씬", new PixelCollisionScene());
-	SceneManager::GetSingleton()->AddScene("A*테스트씬", new AStarScene());
+	SceneManager::GetSingleton()->AddScene("a", new TitleScene());
+	SceneManager::GetSingleton()->AddScene("b", new BattleScene());
+	SceneManager::GetSingleton()->AddScene("c", new TilemapToolScene());
+	SceneManager::GetSingleton()->AddScene("d", new PixelCollisionScene());
+	SceneManager::GetSingleton()->AddScene("e", new AStarScene());
 
-	SceneManager::GetSingleton()->AddLoadingScene("로딩씬", new LoadingScene());
+	SceneManager::GetSingleton()->AddLoadingScene("f", new LoadingScene());
 
-	SceneManager::GetSingleton()->ChangeScene("전투씬");
+	SceneManager::GetSingleton()->ChangeScene("b");
 
 	srand((unsigned int) time(nullptr));
 
@@ -56,12 +56,6 @@ void MainGame::Update()
 void MainGame::Render(HDC hdc)
 {
 	HDC hBackBufferDC = backBuffer->GetMemDC();
-
-	wsprintf(text, "MousePosX : %d", mousePosX);
-	TextOut(hBackBufferDC, 200, 10, text, strlen(text));
-
-	wsprintf(text, "MousePosY : %d", mousePosY);
-	TextOut(hBackBufferDC, 200, 40, text, strlen(text));
 
 	SceneManager::GetSingleton()->Render(hBackBufferDC);
 
