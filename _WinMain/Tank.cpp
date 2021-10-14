@@ -26,7 +26,7 @@ HRESULT Tank::Init()
 	elapsedCount = 0;
 	isAlive = true;
 
-	ammoCount = 1;
+	ammoCount = 300;
 	ammoPack = new Ammo[ammoCount];
 	// 미사일 초기화
 	for (int i = 0; i < ammoCount; i++)
@@ -34,7 +34,13 @@ HRESULT Tank::Init()
 		ammoPack[i].Init();
 	}
 
-	//bObtainItem = false;
+	ptHP = 1;			//플레이어 HP
+	ptAttackValue = 1;	//공격력
+
+	ptLife = 2;			//총 목숨
+	bIsAlive = true;	//살아있는지?
+
+	ptScore = 0;		//점수
 
 	//아이템
 	mpItem = new Item;
@@ -244,6 +250,10 @@ void Tank::FunctionItem()
 	{
 		cout << "a" << endl;
 		img->SetCurrFrameY(img->GetCurrFrameY() + 1);
+		if (img->GetCurrFrameY() >= 3)
+		{
+			img->SetCurrFrameY(3);
+		}
 		ammoCount = 2;
 		ammoPack = new Ammo[ammoCount];
 		// 미사일 초기화
@@ -251,18 +261,6 @@ void Tank::FunctionItem()
 		{
 			ammoPack[i].Init();
 		}
-		//if (img->GetCurrFrameY() == 0)
-		//{
-		//	img->SetCurrFrameY(1);
-		//}
-		//if (img->GetCurrFrameY() == 1)
-		//{
-		//	img->SetCurrFrameY(2);
-		//}
-		//if (img->GetCurrFrameY() == 2)
-		//{
-		//	img->SetCurrFrameY(3);
-		//}
 	}
 }
 
