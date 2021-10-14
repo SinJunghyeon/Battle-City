@@ -22,9 +22,9 @@ HRESULT Enemy::Init()
 
 	pos.x = WIN_SIZE_X / 2.0f;
 	pos.y = 100.0f;
-	moveSpeed = 50.0f;
+	moveSpeed = 10.0f;
 	bodySize = 32;
-	moveDir = MoveDir::DOWN;
+	moveDir = MoveDir::UP;
 
 	return S_OK;
 }
@@ -58,7 +58,7 @@ void Enemy::Render(HDC hdc)
 
 void Enemy::Release()
 {
-	//SAFE_RELEASE(ammoMgr);
+	SAFE_RELEASE(ammoMgr);
 }
 
 void Enemy::AutoMove()

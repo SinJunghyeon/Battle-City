@@ -5,20 +5,19 @@ HRESULT EnemyManager::Init()
 {
 	enemyMaxCount = 4;
 
-	// ╣╔юлеме╦ют : Enemy* ╣╔юлем╦╕ 10╟Ё╦╕ ╩Щ╪╨, ╩Пют
+	// К█╟Л²╢М└╟М┐─Л·┘ : Enemy* К█╟Л²╢М└╟К╔╪ 10Й╟°К╔╪ Л┐²Л└╠, Л┌╫Л·┘
 	vecEnemys.resize(enemyMaxCount);
 
 	for (int i = 0; i < enemyMaxCount; i++)
 	{
 		vecEnemys[i] = new Enemy;
 		vecEnemys[i]->Init();
-		POINTFLOAT pos{ 100.0f + (i % 5) * 100.0f, 100.0f + (i / 5) * 80.0f };
-		vecEnemys[i]->SetPos(pos);/*
-		MoveDir moveDir = MoveDir::DOWN;
-		vecEnemys[i]->SetMoveDir(moveDir);*/
+		POINTFLOAT pos{ 300.0f + (i % 5) * 100.0f, 400.0f + (i / 5) * 80.0f };
+		vecEnemys[i]->SetPos(pos);
+
 	}
 
-	// ╣╔юлеме╦ют : Enemy* ╣╔юлем 10╟Ё╦╕ ╩Пютгр ╪Ж юж╢б ╦ч╦П╦╝╦╦ х╝╨╦
+	// К█╟Л²╢М└╟М┐─Л·┘ : Enemy* К█╟Л²╢М└╟ 10Й╟°К╔╪ Л┌╫Л·┘М∙═ Л┬≤ Л·┬К┼■ К╘■К╙╗К╕╛К╖▄ М≥∙КЁ╢
 	//vecEnemys.reserve(10);
 	//int count = vecEnemys.size();
 
@@ -30,7 +29,7 @@ HRESULT EnemyManager::Init()
 	//	vecEnemys[i]->Init();
 	//}
 
-	//// фВюнем 10╟Ёб╔╦╝ ╧Х©╜
+	//// М▐╛Л²╦М└╟ 10Й╟°Л╖°К╕╛ К╟╟Л≈╢
 	//for (int i = 0; i < 10; i++)
 	//{
 	//	enemy[i] = new Enemy;
