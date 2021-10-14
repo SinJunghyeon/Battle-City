@@ -12,11 +12,22 @@ HRESULT TilemapToolScene::Init()
 {
     SetWindowSize(20, 20, TILEMAPTOOL_SIZE_X, TILEMAPTOOL_SIZE_Y);
 
-    sampleImage = ImageManager::GetSingleton()->AddImage("Image/maptiles.bmp",
-        640, 288, 20, 9, true, RGB(255, 0, 255));
+    // 타일 맵 이미지
+    sampleImage = ImageManager::GetSingleton()->AddImage("Image/BattleCity/SamlpTile1.bmp",
+        220, 220, 11, 11, true, RGB(255, 0, 255));
     if (sampleImage == nullptr)
     {
-        cout << "Image/maptiles.bmp 로드 실패!!" << endl;
+        cout << "Image/BattleCity/SamlpTile1.bmp 로드 실패!!" << endl;
+        return E_FAIL;
+    }
+
+    // 배경 이미지
+    ImageManager::GetSingleton()->AddImage("Image/BattleCity/mapImage.bmp", WIN_SIZE_X, WIN_SIZE_Y);
+    backGround = ImageManager::GetSingleton()->FindImage("Image/BattleCity/mapImage.bmp");
+    if (backGround == nullptr)
+    {
+        cout << "Image/BattleCity/mapImage.bmp 파일 로드에 실패했다." << endl;
+
         return E_FAIL;
     }
 
@@ -26,10 +37,10 @@ HRESULT TilemapToolScene::Init()
         for (int j = 0; j < TILE_COUNT_X; j++)    // x축
         {
             SetRect(&(tileInfo[i * TILE_COUNT_X + j].rc),
-                j * TILE_SIZE, i * TILE_SIZE,
-                j * TILE_SIZE + TILE_SIZE, i * TILE_SIZE + TILE_SIZE);
-
-            tileInfo[i * TILE_COUNT_X + j].frameX = 3;
+                j * TILE_SIZE + 100, i * TILE_SIZE + 100,
+                j * TILE_SIZE + TILE_SIZE + 100, i * TILE_SIZE + TILE_SIZE + 100);
+            
+            tileInfo[i * TILE_COUNT_X + j].frameX = 0;
             tileInfo[i * TILE_COUNT_X + j].frameY = 0;
 
             tileInfo[i * TILE_COUNT_X + j].terrain = Terrain::Grass;
@@ -79,9 +90,9 @@ void TilemapToolScene::Update()
             int selectedIdY = posY / TILE_SIZE;
 
             selectedSampleTile.frameX = 
-                sampleTileInfo[selectedIdY * SAMPLE_TILE_COUNT_X + selectedIdX].frameX;
+                selectedIdX;
             selectedSampleTile.frameY =
-                sampleTileInfo[selectedIdY * SAMPLE_TILE_COUNT_X + selectedIdX].frameY;
+                selectedIdY;
         }
     }
 
@@ -115,7 +126,7 @@ void TilemapToolScene::Update()
 
     if (KeyManager::GetSingleton()->IsOnceKeyUp('S'))
     {
-        Save();
+        Save(1);
     }
 
     if (KeyManager::GetSingleton()->IsOnceKeyUp('L'))
@@ -126,6 +137,9 @@ void TilemapToolScene::Update()
 
 void TilemapToolScene::Render(HDC hdc)
 {
+    if (backGround)
+        backGround->Render(hdc);
+
     // 메인 영역
     for (int i = 0; i < TILE_COUNT_Y; i++)
     {
@@ -137,10 +151,10 @@ void TilemapToolScene::Render(HDC hdc)
                 tileInfo[i * TILE_COUNT_X + j].frameX,
                 tileInfo[i * TILE_COUNT_X + j].frameY);
 
-            //Rectangle(hdc, tileInfo[i * TILE_COUNT_X + j].rc.left,
-            //    tileInfo[i * TILE_COUNT_X + j].rc.top,
-            //    tileInfo[i * TILE_COUNT_X + j].rc.right,
-            //    tileInfo[i * TILE_COUNT_X + j].rc.bottom);
+           /* Rectangle(hdc, tileInfo[i * TILE_COUNT_X + j].rc.left,
+                tileInfo[i * TILE_COUNT_X + j].rc.top,
+                tileInfo[i * TILE_COUNT_X + j].rc.right,
+                tileInfo[i * TILE_COUNT_X + j].rc.bottom);*/
         }
     }
 

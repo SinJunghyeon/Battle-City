@@ -15,20 +15,20 @@ HRESULT MainGame::Init()
 	TimerManager::GetSingleton()->Init();
 	SceneManager::GetSingleton()->Init();
 
-	SceneManager::GetSingleton()->AddScene("Å¸ÀÌÆ²¾À", new TitleScene());
-	SceneManager::GetSingleton()->AddScene("ÀüÅõ¾À", new BattleScene());
-	SceneManager::GetSingleton()->AddScene("Å¸ÀÏ¸ÊÅø", new TilemapToolScene());
-	SceneManager::GetSingleton()->AddScene("ÇÈ¼¿Å×½ºÆ®¾À", new PixelCollisionScene());
-	SceneManager::GetSingleton()->AddScene("A*Å×½ºÆ®¾À", new AStarScene());
-	SceneManager::GetSingleton()->AddScene("ÇÃ·¹ÀÌ¾îÅÊÅ©¾À", new PlayerTankScene());
+	SceneManager::GetSingleton()->AddScene("íƒ€ì´í‹€ì”¬", new TitleScene());
+	SceneManager::GetSingleton()->AddScene("ì „íˆ¬ì”¬", new BattleScene());
+	SceneManager::GetSingleton()->AddScene("íƒ€ì¼ë§µíˆ´", new TilemapToolScene());
+	SceneManager::GetSingleton()->AddScene("í”½ì…€í…ŒìŠ¤íŠ¸ì”¬", new PixelCollisionScene());
+	SceneManager::GetSingleton()->AddScene("A*í…ŒìŠ¤íŠ¸ì”¬", new AStarScene());
+	SceneManager::GetSingleton()->AddScene("í”Œë ˆì´ì–´íƒ±í¬ì”¬", new PlayerTankScene());
 
-	SceneManager::GetSingleton()->AddLoadingScene("·Îµù¾À", new LoadingScene());
+	SceneManager::GetSingleton()->AddLoadingScene("ë¡œë”©ì”¬", new LoadingScene());
 
-	SceneManager::GetSingleton()->ChangeScene("Å¸ÀÌÆ²¾À");
+	SceneManager::GetSingleton()->ChangeScene("íƒ€ì´í‹€ì”¬");
 
 	srand((unsigned int) time(nullptr));
 
-	// Å¸ÀÌ¸Ó ¼ÂÆÃ
+	// íƒ€ì´ë¨¸ ì…‹íŒ…
 	hTimer = (HANDLE)SetTimer(g_hWnd, 0, 10, NULL);
 
 	mousePosX = 0;
@@ -36,7 +36,7 @@ HRESULT MainGame::Init()
 	clickedMousePosX = 0; 
 	clickedMousePosY = 0; 
 
-	// ¹é¹öÆÛ
+	// ë°±ë²„í¼
 	backBuffer = new Image;
 	int maxSizeX = WIN_SIZE_X > TILEMAPTOOL_SIZE_X ? WIN_SIZE_X : TILEMAPTOOL_SIZE_X;
 	int maxSizeY = WIN_SIZE_Y > TILEMAPTOOL_SIZE_Y ? WIN_SIZE_Y : TILEMAPTOOL_SIZE_Y;
@@ -58,6 +58,12 @@ void MainGame::Update()
 void MainGame::Render(HDC hdc)
 {
 	HDC hBackBufferDC = backBuffer->GetMemDC();
+
+	wsprintf(text, "MousePosX : %d", g_ptMouse.x);
+	TextOut(hBackBufferDC, 200, 10, text, strlen(text));
+
+	wsprintf(text, "MousePosY : %d", g_ptMouse.y);
+	TextOut(hBackBufferDC, 200, 40, text, strlen(text));
 
 	SceneManager::GetSingleton()->Render(hBackBufferDC);
 
@@ -82,7 +88,7 @@ void MainGame::Release()
 	SceneManager::GetSingleton()->Release();
 	SceneManager::GetSingleton()->ReleaseSingleton();
 
-	// Å¸ÀÌ¸Ó °´Ã¼ »èÁ¦
+	// íƒ€ì´ë¨¸ ê°ì²´ ì‚­ì œ
 	KillTimer(g_hWnd, 0);
 }
 

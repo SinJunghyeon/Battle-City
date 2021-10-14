@@ -8,15 +8,15 @@ class Image;
 class Item : public GameObject
 {
 protected:
-	int selectItem = NULL;				//¾ÆÀÌÅÛ ¼±ÅÃ
-	bool bIsFunction = false;			//¾ÆÀÌÅÛ ±â´É
+	int selectItem = NULL;				//ì•„ì´í…œ ì„ íƒ
+	bool bExistItem = true;				//ì•„ì´í…œ ì¡´ìž¬ì—¬ë¶€
 
-	Image* mpImgHelmet = nullptr;		//Çï¸ä
-	Image* mpImgWatch = nullptr;		//½Ã°è
-	Image* mpImgShovel = nullptr;		//»ð
-	Image* mpImgStar = nullptr;			//º°
-	Image* mpImgGrenade = nullptr;		//¼ö·ùÅº
-	Image* mpImgTank = nullptr;			//ÅÊÅ©
+	Image* mpImgHelmet = nullptr;		//í—¬ë©§
+	Image* mpImgWatch = nullptr;		//ì‹œê³„
+	Image* mpImgShovel = nullptr;		//ì‚½
+	Image* mpImgStar = nullptr;			//ë³„
+	Image* mpImgGrenade = nullptr;		//ìˆ˜ë¥˜íƒ„
+	Image* mpImgTank = nullptr;			//íƒ±í¬
 
 	ecFunctionItem functionItem = ecFunctionItem::NOTHING;
 
@@ -26,8 +26,9 @@ public:
 	virtual void Render(HDC hdc) override;
 	virtual void Release() override;
 
-	void FunctionItem();
+	inline void SetExistItem(bool bExistItem) { this->bExistItem = bExistItem; }
+	inline bool GetExistItem() { return bExistItem; }
 
-	inline void SetFunctionItem(bool bIsFunction) { this->bIsFunction = bIsFunction; }
+	inline ecFunctionItem GetItemState() { return functionItem;	}
 };
 

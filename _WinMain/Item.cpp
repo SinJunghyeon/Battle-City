@@ -3,17 +3,17 @@
 #include "Image.h"
 
 /*
-	º° : ¸¶ÀÌ ÅÊÅ©°¡ °­È­µÈ´Ù. ³ë¸Ö ¡æ ¼Ó»çÆ÷(2¿¬»ç) ¡æ ½´ÆÛ ÅÊÅ©(2¿¬»ç + ÆÄ±«·Â Áõ°¡ + È¸»ö ºí·Ï ÆÄ±«). 
-		 ½´ÆÛ ÅÊÅ© »óÅÂ°¡ µÇÀÚ ÈïºÐÇÏ¿© ¾Æ¹« »ý°¢¾øÀÌ Æ÷¸¦ ¿©±âÀú±â¿¡ ¸¶±¸ ½î´Ù°¡ ½Ç¼ö·Î »ç·ÉºÎ¸¦ ÆÄ±«ÇÏ¿© ÀÚÆøÇÏ´Â ¾ÆÀÌµéÀÌ ²À ÀÖ¾ú´Ù. 
-		 ´ç¿¬ÇÑ ¼Ò¸®°ÚÁö¸¸, ¸¶ÀÌ ÅÊÅ©°¡ °­È­µÈ »óÅÂ¿¡¼­ Àû ÅÊÅ©ÀÇ °ø°ÝÀ» ¹Þ¾Æ ÆÄ±«µÉ °æ¿ì ´Ù½Ã 1´Ü°è ÅÊÅ©·Î ÃÊ±âÈ­µÈ´Ù.
-	¼ö·ùÅº : È­¸é»óÀÇ Àû ÅÊÅ©¸¦ Àü¸ê½ÃÅ²´Ù.
-	ÅÊÅ© : 1UP.
-	»ð : ÀÏÁ¤½Ã°£ µ¿¾È »ç·ÉºÎ ÁÖº¯ÀÇ º®ÀÌ È¸»ö ºí·ÏÀ¸·Î º¯ÇÏ¸ç, ½Ã°£°æ°ú ÈÄ¿£ »ç·ÉºÎ ÁÖº¯ÀÇ º®µµ È¸º¹µÈ´Ù. 
-		 Âü°í·Î º¯È­ÇÑ È¸»ö ºí·ÏÀº ½´ÅÊ »óÅÂÀÏ °æ¿ì ÆÄ±« °¡´É(¡¦). 
-		 ´Ü, ¸Ê ÄÁ½ºÆ®·°¼ÇÀ» ÅëÇØ Á÷Á¢ ¸¸µç ¸Ê¿¡¼­ »ç·ÉºÎ ÁÖÀ§¸¦ È¸»ö ºí·ÏÀ¸·Î ¸¸µç °æ¿ì »ð ¾ÆÀÌÅÛÀ» ¸Ô°í ÀÏÁ¤ ½Ã°£ÀÌ °æ°úµÇ¸é ÀÏ¹Ý °¥»ö ºí·ÏÀ¸·Î µÇµ¹¾Æ°¡±â ¶§¹®¿¡, 
-		 ¸ÊÀ» ¸¸µç ³ë·ÂÀÌ Çê¼ö°í°¡ µÇ¾î ÀÌ °æ¿ì¿£ ÀÏºÎ·¯ ÀÌ ¾ÆÀÌÅÛÀ» ¾È ¸Ô´Â °æ¿ìµµ ¸¹´Ù.
-	½Ã°è : ÀÏÁ¤ ½Ã°£ µ¿¾È Àû ÅÊÅ©ÀÇ ¿òÁ÷ÀÓÀÌ ¸ØÃá´Ù.
-	Çï¸ä : ÀÏÁ¤ ½Ã°£ µ¿¾È ¸¶ÀÌ ÅÊÅ©ÀÇ ÁÖº¯¿¡ ¹è¸®¾î°¡ ÃÄÁø ¹«Àû »óÅÂ°¡ µÈ´Ù.
+	ë³„ : ë§ˆì´ íƒ±í¬ê°€ ê°•í™”ëœë‹¤. ë…¸ë©€ â†’ ì†ì‚¬í¬(2ì—°ì‚¬) â†’ ìŠˆí¼ íƒ±í¬(2ì—°ì‚¬ + íŒŒê´´ë ¥ ì¦ê°€ + íšŒìƒ‰ ë¸”ë¡ íŒŒê´´). 
+		 ìŠˆí¼ íƒ±í¬ ìƒíƒœê°€ ë˜ìž í¥ë¶„í•˜ì—¬ ì•„ë¬´ ìƒê°ì—†ì´ í¬ë¥¼ ì—¬ê¸°ì €ê¸°ì— ë§ˆêµ¬ ì˜ë‹¤ê°€ ì‹¤ìˆ˜ë¡œ ì‚¬ë ¹ë¶€ë¥¼ íŒŒê´´í•˜ì—¬ ìží­í•˜ëŠ” ì•„ì´ë“¤ì´ ê¼­ ìžˆì—ˆë‹¤. 
+		 ë‹¹ì—°í•œ ì†Œë¦¬ê² ì§€ë§Œ, ë§ˆì´ íƒ±í¬ê°€ ê°•í™”ëœ ìƒíƒœì—ì„œ ì  íƒ±í¬ì˜ ê³µê²©ì„ ë°›ì•„ íŒŒê´´ë  ê²½ìš° ë‹¤ì‹œ 1ë‹¨ê³„ íƒ±í¬ë¡œ ì´ˆê¸°í™”ëœë‹¤.
+	ìˆ˜ë¥˜íƒ„ : í™”ë©´ìƒì˜ ì  íƒ±í¬ë¥¼ ì „ë©¸ì‹œí‚¨ë‹¤.
+	íƒ±í¬ : 1UP.
+	ì‚½ : ì¼ì •ì‹œê°„ ë™ì•ˆ ì‚¬ë ¹ë¶€ ì£¼ë³€ì˜ ë²½ì´ íšŒìƒ‰ ë¸”ë¡ìœ¼ë¡œ ë³€í•˜ë©°, ì‹œê°„ê²½ê³¼ í›„ì—” ì‚¬ë ¹ë¶€ ì£¼ë³€ì˜ ë²½ë„ íšŒë³µëœë‹¤. 
+		 ì°¸ê³ ë¡œ ë³€í™”í•œ íšŒìƒ‰ ë¸”ë¡ì€ ìŠˆíƒ± ìƒíƒœì¼ ê²½ìš° íŒŒê´´ ê°€ëŠ¥(â€¦). 
+		 ë‹¨, ë§µ ì»¨ìŠ¤íŠ¸ëŸ­ì…˜ì„ í†µí•´ ì§ì ‘ ë§Œë“  ë§µì—ì„œ ì‚¬ë ¹ë¶€ ì£¼ìœ„ë¥¼ íšŒìƒ‰ ë¸”ë¡ìœ¼ë¡œ ë§Œë“  ê²½ìš° ì‚½ ì•„ì´í…œì„ ë¨¹ê³  ì¼ì • ì‹œê°„ì´ ê²½ê³¼ë˜ë©´ ì¼ë°˜ ê°ˆìƒ‰ ë¸”ë¡ìœ¼ë¡œ ë˜ëŒì•„ê°€ê¸° ë•Œë¬¸ì—, 
+		 ë§µì„ ë§Œë“  ë…¸ë ¥ì´ í—›ìˆ˜ê³ ê°€ ë˜ì–´ ì´ ê²½ìš°ì—” ì¼ë¶€ëŸ¬ ì´ ì•„ì´í…œì„ ì•ˆ ë¨¹ëŠ” ê²½ìš°ë„ ë§Žë‹¤.
+	ì‹œê³„ : ì¼ì • ì‹œê°„ ë™ì•ˆ ì  íƒ±í¬ì˜ ì›€ì§ìž„ì´ ë©ˆì¶˜ë‹¤.
+	í—¬ë©§ : ì¼ì • ì‹œê°„ ë™ì•ˆ ë§ˆì´ íƒ±í¬ì˜ ì£¼ë³€ì— ë°°ë¦¬ì–´ê°€ ì³ì§„ ë¬´ì  ìƒíƒœê°€ ëœë‹¤.
 */
 
 HRESULT Item::Init()
@@ -28,50 +28,51 @@ HRESULT Item::Init()
 	shape.right = pos.x + (bodySize / 2);
 	shape.bottom = pos.y + (bodySize / 2);
 
-	////¾ÆÀÌÅÛ ·£´ý ¼³Á¤
+	//ì•„ì´í…œ ëžœë¤ ì„¤ì •
 	//srand(time(NULL));
+	//selectItem = rand() % 6;
 	selectItem = 3;
 
-	bIsFunction = false;
+	bExistItem = true;
 
 	functionItem = ecFunctionItem::NOTHING;
 
-	//Çï¸ä ÀÌ¹ÌÁö
+	//í—¬ë©§ ì´ë¯¸ì§€
 	ImageManager::GetSingleton()->AddImage("Image/BattleCity/Item/Item1.bmp", bodySize, bodySize, 1, 1, true, RGB(255, 0, 255));
 	mpImgHelmet = ImageManager::GetSingleton()->FindImage("Image/BattleCity/Item/Item1.bmp");
 	if (mpImgHelmet == nullptr)
 	{
 		return E_FAIL;
 	}
-	//½Ã°è ÀÌ¹ÌÁö
+	//ì‹œê³„ ì´ë¯¸ì§€
 	ImageManager::GetSingleton()->AddImage("Image/BattleCity/Item/Item2.bmp", bodySize, bodySize, 1, 1, true, RGB(255, 0, 255));
 	mpImgWatch = ImageManager::GetSingleton()->FindImage("Image/BattleCity/Item/Item2.bmp");
 	if (mpImgWatch == nullptr)
 	{
 		return E_FAIL;
 	}
-	//»ð ÀÌ¹ÌÁö
+	//ì‚½ ì´ë¯¸ì§€
 	ImageManager::GetSingleton()->AddImage("Image/BattleCity/Item/Item3.bmp", bodySize, bodySize, 1, 1, true, RGB(255, 0, 255));
 	mpImgShovel = ImageManager::GetSingleton()->FindImage("Image/BattleCity/Item/Item3.bmp");
 	if (mpImgShovel == nullptr)
 	{
 		return E_FAIL;
 	}
-	//º° ÀÌ¹ÌÁö
+	//ë³„ ì´ë¯¸ì§€
 	ImageManager::GetSingleton()->AddImage("Image/BattleCity/Item/Item4.bmp", bodySize, bodySize, 1, 1, true, RGB(255, 0, 255));
 	mpImgStar = ImageManager::GetSingleton()->FindImage("Image/BattleCity/Item/Item4.bmp");
 	if (mpImgStar == nullptr)
 	{
 		return E_FAIL;
 	}
-	//¼ö·ùÅº ÀÌ¹ÌÁö
+	//ìˆ˜ë¥˜íƒ„ ì´ë¯¸ì§€
 	ImageManager::GetSingleton()->AddImage("Image/BattleCity/Item/Item5.bmp", bodySize, bodySize, 1, 1, true, RGB(255, 0, 255));
 	mpImgGrenade = ImageManager::GetSingleton()->FindImage("Image/BattleCity/Item/Item5.bmp");
 	if (mpImgGrenade == nullptr)
 	{
 		return E_FAIL;
 	}
-	//ÅÊÅ© ÀÌ¹ÌÁö
+	//íƒ±í¬ ì´ë¯¸ì§€
 	ImageManager::GetSingleton()->AddImage("Image/BattleCity/Item/Item6.bmp", bodySize, bodySize, 1, 1, true, RGB(255, 0, 255));
 	mpImgTank = ImageManager::GetSingleton()->FindImage("Image/BattleCity/Item/Item6.bmp");
 	if (mpImgTank == nullptr)
@@ -84,57 +85,47 @@ HRESULT Item::Init()
 
 void Item::Update()
 {
-	FunctionItem();
+	cout << boolalpha << "Item bExistItem : " << bExistItem << endl;
 }
 
 void Item::Render(HDC hdc)
 {
 	//Rectangle(hdc, shape.left, shape.top, shape.right, shape.bottom);
 
-	switch (selectItem)
+	if (bExistItem)
 	{
-	case 0:
-		mpImgHelmet->Render(hdc, pos.x, pos.y);
-		functionItem = ecFunctionItem::HELMET;
-		break;
-	case 1:
-		mpImgWatch->Render(hdc, pos.x, pos.y);
-		functionItem = ecFunctionItem::WATCH;
-		break;
-	case 2:
-		mpImgShovel->Render(hdc, pos.x, pos.y);
-		functionItem = ecFunctionItem::SHOVEL;
-		break;
-	case 3:
-		mpImgStar->Render(hdc, pos.x, pos.y);
-		functionItem = ecFunctionItem::STAR;
-		break;
-	case 4:
-		mpImgGrenade->Render(hdc, pos.x, pos.y);
-		functionItem = ecFunctionItem::GRENADE;
-		break;
-	case 5:
-		mpImgTank->Render(hdc, pos.x, pos.y);
-		functionItem = ecFunctionItem::TANK;
-		break;
-	default:
-		selectItem = rand() % 6;
+		switch (selectItem)
+		{
+		case 0:
+			mpImgHelmet->Render(hdc, pos.x, pos.y);
+			functionItem = ecFunctionItem::HELMET;
+			break;
+		case 1:
+			mpImgWatch->Render(hdc, pos.x, pos.y);
+			functionItem = ecFunctionItem::WATCH;
+			break;
+		case 2:
+			mpImgShovel->Render(hdc, pos.x, pos.y);
+			functionItem = ecFunctionItem::SHOVEL;
+			break;
+		case 3:
+			mpImgStar->Render(hdc, pos.x, pos.y);
+			functionItem = ecFunctionItem::STAR;
+			break;
+		case 4:
+			mpImgGrenade->Render(hdc, pos.x, pos.y);
+			functionItem = ecFunctionItem::GRENADE;
+			break;
+		case 5:
+			mpImgTank->Render(hdc, pos.x, pos.y);
+			functionItem = ecFunctionItem::TANK;
+			break;
+		default:
+			selectItem = rand() % 6;
+		}
 	}
 }
 
 void Item::Release()
 {
-}
-
-void Item::FunctionItem()
-{
-	if (!bIsFunction) return;
-	if (bIsFunction)
-	{
-		if (functionItem == ecFunctionItem::STAR)
-		{
-			//cout << "b" << endl;
-		}
-	}
-
 }

@@ -9,12 +9,12 @@ class Item;
 class PlayerTankScene : public GameEntity
 {
 private:
-	// ¹è°æ ÀÌ¹ÌÁö
+	// ë°°ê²½ ì´ë¯¸ì§€
 	Image* backGround;
-	//ÇÃ·¹ÀÌ¾î ÅÊÅ©
+	//í”Œë ˆì´ì–´ íƒ±í¬
 	Tank* mpPlayerTank;
-	//¾ÆÀÌÅÛ
-	Item* mpItem;
+	//ì•„ì´í…œ
+	//Item* mpItem;
 
 public:
 	virtual HRESULT Init() override;
