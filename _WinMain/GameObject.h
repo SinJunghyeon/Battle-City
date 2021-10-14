@@ -34,9 +34,6 @@ protected:	// 상속된 클래스에 노출시킨다.
 public:
 	void Move();
 
-	// this가 nullptr이다. 코드상으로 함수를 객체가 호출했지만 객체가 없다. 에러
-	inline void SetPos(POINTFLOAT pos) { this->pos = pos; }
-
 	inline POINTFLOAT GetPos() { return this->pos; }
 	inline void SetPos(POINTFLOAT pos) { this->pos = pos; }
 
