@@ -17,7 +17,7 @@ void TitleScene::Update()
 {
 	if (KeyManager::GetSingleton()->IsOnceKeyDown(VK_SPACE))
 	{
-		SceneManager::GetSingleton()->ChangeScene("ÀüÅõ¾À", "·Îµù¾À");
+		SceneManager::GetSingleton()->ChangeScene("battleS", "loadingS");
 		return;
 	}
 	if (countFrameY >= WIN_SIZE_Y / 2)
