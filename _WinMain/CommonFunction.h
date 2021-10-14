@@ -25,3 +25,12 @@ inline void SetWindowSize(int startX, int startY, int sizeX, int sizeY)
 	MoveWindow(g_hWnd, startX, startY,
 		rc.right - rc.left, rc.bottom - rc.top, true);
 }
+
+inline void DrawRect(HDC hdc, int left, int top, int right, int bottom)
+{
+	MoveToEx(hdc, left, top, NULL);
+	LineTo(hdc, left, bottom);
+	LineTo(hdc, right, bottom);
+	LineTo(hdc, right, top);
+	LineTo(hdc, left, top);
+}

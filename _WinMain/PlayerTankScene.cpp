@@ -5,19 +5,19 @@
 
 HRESULT PlayerTankScene::Init()
 {
-	//ÅÊÅ©
+	//íƒ±í¬
 	mpPlayerTank = new Tank;
 	mpPlayerTank->Init();
-	//¾ÆÀÌÅÛ
-	mpItem = new Item;
-	mpItem->Init();
+	//ì•„ì´í…œ
+	//mpItem = new Item;
+	//mpItem->Init();
 
-	// ¹è°æ ÀÌ¹ÌÁö
+	// ë°°ê²½ ì´ë¯¸ì§€
 	ImageManager::GetSingleton()->AddImage("Image/BattleCity/mapImage.bmp", WIN_SIZE_X, WIN_SIZE_Y);
 	backGround = ImageManager::GetSingleton()->FindImage("Image/BattleCity/mapImage.bmp");
 	if (backGround == nullptr)
 	{
-		cout << "Image/BattleCity/mapImage.bmp ÆÄÀÏ ·Îµå¿¡ ½ÇÆÐÇß´Ù." << endl;
+		cout << "Image/BattleCity/mapImage.bmp íŒŒì¼ ë¡œë“œì— ì‹¤íŒ¨í–ˆë‹¤." << endl;
 
 		return E_FAIL;
 	}
@@ -28,7 +28,7 @@ HRESULT PlayerTankScene::Init()
 void PlayerTankScene::Update()
 {
 	mpPlayerTank->Update();
-	mpItem->Update();
+	//mpItem->Update();
 }
 
 void PlayerTankScene::Render(HDC hdc)
@@ -36,11 +36,11 @@ void PlayerTankScene::Render(HDC hdc)
 	if (backGround)
 		backGround->Render(hdc);
 	mpPlayerTank->Render(hdc);
-	mpItem->Render(hdc);
+	//mpItem->Render(hdc);
 }
 
 void PlayerTankScene::Release()
 {
 	SAFE_RELEASE(mpPlayerTank);
-	SAFE_RELEASE(mpItem);
+	//SAFE_RELEASE(mpItem);
 }
