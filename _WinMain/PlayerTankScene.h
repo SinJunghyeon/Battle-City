@@ -17,12 +17,17 @@ private:
 	//아이템
 	//Item* mpItem;
 	//적
+	int enemyCount;
 	EnemyTank* mpEnemy;
+	Image* mpImgEnemy;
+
 
 public:
 	virtual HRESULT Init() override;
 	virtual void Update() override;
 	virtual void Render(HDC hdc) override;
 	virtual void Release() override;
+
+	void EnemyTankState();
 };
 
