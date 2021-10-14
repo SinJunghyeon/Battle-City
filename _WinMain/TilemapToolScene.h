@@ -4,11 +4,11 @@
 
 enum class Terrain { Earth, Wall, Water, Grass, BreakableWall, End };
 
-#define TILE_SIZE	32
-#define TILE_COUNT_X	20
-#define TILE_COUNT_Y	20
-#define SAMPLE_TILE_COUNT_X	20
-#define SAMPLE_TILE_COUNT_Y	9
+#define TILE_SIZE	20
+#define TILE_COUNT_X	26
+#define TILE_COUNT_Y	26
+#define SAMPLE_TILE_COUNT_X	11
+#define SAMPLE_TILE_COUNT_Y	11
 
 typedef struct tagSampleTile
 {
@@ -32,6 +32,9 @@ private:
 	SAMPLE_TILE_INFO sampleTileInfo[SAMPLE_TILE_COUNT_Y * SAMPLE_TILE_COUNT_X];
 	TILE_INFO tileInfo[TILE_COUNT_Y * TILE_COUNT_X];
 	Image* sampleImage;
+
+	// 배경 이미지
+	Image* backGround;
 
 	SAMPLE_TILE_INFO	selectedSampleTile;
 
