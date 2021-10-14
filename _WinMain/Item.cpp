@@ -28,8 +28,9 @@ HRESULT Item::Init()
 	shape.right = pos.x + (bodySize / 2);
 	shape.bottom = pos.y + (bodySize / 2);
 
-	////아이템 랜덤 설정
+	//아이템 랜덤 설정
 	//srand(time(NULL));
+	//selectItem = rand() % 6;
 	selectItem = 3;
 
 	bExistItem = true;
@@ -84,7 +85,7 @@ HRESULT Item::Init()
 
 void Item::Update()
 {
-	//cout << boolalpha << "bExistItem : " << bExistItem << endl;
+	cout << boolalpha << "Item bExistItem : " << bExistItem << endl;
 }
 
 void Item::Render(HDC hdc)

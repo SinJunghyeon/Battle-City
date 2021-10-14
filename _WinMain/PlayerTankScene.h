@@ -14,7 +14,7 @@ private:
 	//플레이어 탱크
 	Tank* mpPlayerTank;
 	//아이템
-	Item* mpItem;
+	//Item* mpItem;
 
 public:
 	virtual HRESULT Init() override;

@@ -228,8 +228,11 @@ void Tank::CollisionItem()
 	RECT a;
 	if (IntersectRect(&a, &shape, &itemShape))
 	{
-		//cout << "아이템 접촉! !" << endl;
-		FunctionItem();
+		cout << "아이템 접촉! !" << endl;
+		if (mpItem->GetExistItem() == true)
+		{
+			FunctionItem();
+		}
 		mpItem->SetExistItem(false);
 	}
 }
@@ -238,19 +241,20 @@ void Tank::FunctionItem()
 {
 	if (mpItem->GetItemState() == ecFunctionItem::STAR)
 	{
-		//cout << "a" << endl;
-		if (img->GetCurrFrameY() == 0)
-		{
-			img->SetCurrFrameY(1);
-		}
-		if (img->GetCurrFrameY() == 1)
-		{
-			img->SetCurrFrameY(2);
-		}
-		if (img->GetCurrFrameY() == 2)
-		{
-			img->SetCurrFrameY(3);
-		}
+		cout << "a" << endl;
+		img->SetCurrFrameY(img->GetCurrFrameY() + 1);
+		//if (img->GetCurrFrameY() == 0)
+		//{
+		//	img->SetCurrFrameY(1);
+		//}
+		//if (img->GetCurrFrameY() == 1)
+		//{
+		//	img->SetCurrFrameY(2);
+		//}
+		//if (img->GetCurrFrameY() == 2)
+		//{
+		//	img->SetCurrFrameY(3);
+		//}
 	}
 }
 
