@@ -86,7 +86,6 @@ void Enemy::AutoMove()
 		case MoveDir::LEFT:
 			if (img->GetCurrFrameX() <= 1 || img->GetCurrFrameX() >= 4)
 			{
-				
 				img->SetCurrFrameX(2);
 			}
 			pos.x -= moveSpeed * TimerManager::GetSingleton()->GetDeltaTime();

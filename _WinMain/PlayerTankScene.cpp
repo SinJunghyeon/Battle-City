@@ -2,6 +2,7 @@
 #include "Image.h"
 #include "Tank.h"
 #include "Item.h"
+#include "EnemyTank.h"
 
 HRESULT PlayerTankScene::Init()
 {
@@ -11,6 +12,9 @@ HRESULT PlayerTankScene::Init()
 	//아이템
 	//mpItem = new Item;
 	//mpItem->Init();
+	//적
+	mpEnemy = new EnemyTank;
+	mpEnemy->Init();
 
 	// 배경 이미지
 	ImageManager::GetSingleton()->AddImage("Image/BattleCity/mapImage.bmp", WIN_SIZE_X, WIN_SIZE_Y);
@@ -37,10 +41,12 @@ void PlayerTankScene::Render(HDC hdc)
 		backGround->Render(hdc);
 	mpPlayerTank->Render(hdc);
 	//mpItem->Render(hdc);
+	mpEnemy->Render(hdc);
 }
 
 void PlayerTankScene::Release()
 {
 	SAFE_RELEASE(mpPlayerTank);
 	//SAFE_RELEASE(mpItem);
+	SAFE_RELEASE(mpEnemy);
 }
