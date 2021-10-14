@@ -15,16 +15,16 @@ HRESULT MainGame::Init()
 	TimerManager::GetSingleton()->Init();
 	SceneManager::GetSingleton()->Init();
 
-	SceneManager::GetSingleton()->AddScene("타이틀씬", new TitleScene());
-	SceneManager::GetSingleton()->AddScene("전투씬", new BattleScene());
-	SceneManager::GetSingleton()->AddScene("타일맵툴", new TilemapToolScene());
-	SceneManager::GetSingleton()->AddScene("픽셀테스트씬", new PixelCollisionScene());
-	SceneManager::GetSingleton()->AddScene("A*테스트씬", new AStarScene());
-	SceneManager::GetSingleton()->AddScene("플레이어탱크씬", new PlayerTankScene());
+	SceneManager::GetSingleton()->AddScene("titleS", new TitleScene());
+	SceneManager::GetSingleton()->AddScene("battleS", new BattleScene());
+	SceneManager::GetSingleton()->AddScene("tilemapS", new TilemapToolScene());
+	SceneManager::GetSingleton()->AddScene("pixeltestS", new PixelCollisionScene());
+	SceneManager::GetSingleton()->AddScene("A*testS", new AStarScene());
+	SceneManager::GetSingleton()->AddScene("playertankS", new PlayerTankScene());
 
-	SceneManager::GetSingleton()->AddLoadingScene("로딩씬", new LoadingScene());
+	SceneManager::GetSingleton()->AddLoadingScene("loadingS", new LoadingScene());
 
-	SceneManager::GetSingleton()->ChangeScene("타이틀씬");
+	SceneManager::GetSingleton()->ChangeScene("titleS");
 
 	srand((unsigned int) time(nullptr));
 
@@ -59,11 +59,7 @@ void MainGame::Render(HDC hdc)
 {
 	HDC hBackBufferDC = backBuffer->GetMemDC();
 
-	wsprintf(text, "MousePosX : %d", g_ptMouse.x);
-	TextOut(hBackBufferDC, 200, 10, text, strlen(text));
-
-	wsprintf(text, "MousePosY : %d", g_ptMouse.y);
-	TextOut(hBackBufferDC, 200, 40, text, strlen(text));
+	PatBlt(hBackBufferDC, 0, 0, backBuffer->GetWidth(), backBuffer->GetHeight(), BLACKNESS);
 
 	SceneManager::GetSingleton()->Render(hBackBufferDC);
 
