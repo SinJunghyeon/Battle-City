@@ -13,9 +13,7 @@ HRESULT EnemyManager::Init()
 		vecEnemys[i] = new Enemy;
 		vecEnemys[i]->Init();
 		POINTFLOAT pos{ 100.0f + (i % 5) * 100.0f, 100.0f + (i / 5) * 80.0f };
-		vecEnemys[i]->SetPos(pos);/*
-		MoveDir moveDir = MoveDir::DOWN;
-		vecEnemys[i]->SetMoveDir(moveDir);*/
+		vecEnemys[i]->SetPos(pos);
 	}
 
 	// 데이터타입 : Enemy* 데이터 10개를 삽입할 수 있는 메모리만 확보

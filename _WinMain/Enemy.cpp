@@ -35,7 +35,6 @@ void Enemy::Update()
 	if (elapsedCount1 >= 100)
 	{
 		moveDir = (MoveDir)(rand() % 4);
-		//cout << "Enemy¿¡¼­ moveDir : " << moveDir << endl;
 		elapsedCount1 = 0;
 	}
 	AutoMove();
@@ -59,12 +58,11 @@ void Enemy::Render(HDC hdc)
 
 void Enemy::Release()
 {
-	SAFE_RELEASE(ammoMgr);
+	//SAFE_RELEASE(ammoMgr);
 }
 
 void Enemy::AutoMove()
 {
-	
 		switch (moveDir)
 		{
 		case MoveDir::RIGHT:
@@ -88,6 +86,7 @@ void Enemy::AutoMove()
 		case MoveDir::LEFT:
 			if (img->GetCurrFrameX() <= 1 || img->GetCurrFrameX() >= 4)
 			{
+				
 				img->SetCurrFrameX(2);
 			}
 			pos.x -= moveSpeed * TimerManager::GetSingleton()->GetDeltaTime();
