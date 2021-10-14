@@ -36,6 +36,7 @@ HRESULT Ammo::Init()
 
 void Ammo::Update()
 {
+	//moveDir = pEnemyTank->GetMoveDir();
 	if (isFire)
 	{
 		if (moveDir == MoveDir::UP)
@@ -60,7 +61,7 @@ void Ammo::Update()
 		shape.right = pos.x + (bodySize / 2.0f);
 		shape.bottom = pos.y + (bodySize / 2.0f);
 
-		// È­¸éÀ» ¹þ¾î³µ´ÂÁö È®ÀÎ
+		// ÃˆÂ­Â¸Ã©Ã€Â» Â¹Ã¾Â¾Ã®Â³ÂµÂ´Ã‚ÃÃ¶ ÃˆÂ®Ã€ÃŽ
 		if (shape.left > WIN_SIZE_X || shape.right < 0 ||
 			shape.top > WIN_SIZE_Y || shape.bottom < 0)
 		{
