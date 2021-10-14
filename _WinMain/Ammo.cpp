@@ -1,5 +1,6 @@
 #include "Ammo.h"
 #include "Tank.h"
+#include "Enemy.h"
 #include "Image.h"
 #include "CommonFunction.h"
 
@@ -18,9 +19,8 @@ HRESULT Ammo::Init()
 
 	moveSpeed = 300.0f;
 
-	moveDir = MoveDir::UP;
-
-	mpPlayerTank = new Tank;
+	pPlayerTank = new Tank;
+	pEnemyTank = new Enemy;
 
 	isFire = false;
 
@@ -36,9 +36,9 @@ HRESULT Ammo::Init()
 
 void Ammo::Update()
 {
+	moveDir = pEnemyTank->GetMoveDir();
 	if (isFire)
 	{
-		//cout << "Ammo : " << moveDir << endl;
 		if (moveDir == MoveDir::UP)
 		{
 			pos.y -= moveSpeed * TimerManager::GetSingleton()->GetDeltaTime();
