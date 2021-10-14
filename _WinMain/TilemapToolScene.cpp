@@ -2,11 +2,6 @@
 #include "Image.h"
 #include "CommonFunction.h"
 
-/*
-    1. 세이브, 로드 버튼 추가
-    2. 샘플 타일 다중선택 가능하도록
-    3. 탐색기(파일선택창)를 활용한 세이브, 로드 
-*/
 
 HRESULT TilemapToolScene::Init()
 {
@@ -43,7 +38,7 @@ HRESULT TilemapToolScene::Init()
             tileInfo[i * TILE_COUNT_X + j].frameX = 0;
             tileInfo[i * TILE_COUNT_X + j].frameY = 0;
 
-            tileInfo[i * TILE_COUNT_X + j].terrain = Terrain::Grass;
+            tileInfo[i * TILE_COUNT_X + j].terrain = Terrain::WALL;
         }
     }
 
@@ -121,12 +116,19 @@ void TilemapToolScene::Update()
                 tileInfo[i].frameY = selectedSampleTile.frameY;
                 break;
             }
+            if (KeyManager::GetSingleton()->IsStayKeyDown(VK_RBUTTON)) // 디버그용
+            {
+                if (tileInfo[i].terrain == Terrain::WALL) cout << "WALL" << endl;
+                else if (tileInfo[i].terrain == Terrain::STEEL) cout << "STEEL" << endl;
+                else if (tileInfo[i].terrain == Terrain::ROAD) cout << "ROAD" << endl;
+                else if (tileInfo[i].terrain == Terrain::HQ) cout << "HQ" << endl;
+            }
         }
     }
 
     if (KeyManager::GetSingleton()->IsOnceKeyUp('S'))
     {
-        Save(1);
+        Save();
     }
 
     if (KeyManager::GetSingleton()->IsOnceKeyUp('L'))
@@ -145,6 +147,9 @@ void TilemapToolScene::Render(HDC hdc)
     {
         for (int j = 0; j < TILE_COUNT_X; j++)
         {
+
+            SetTerrain(&tileInfo[i * TILE_COUNT_X + j]);
+
             sampleImage->Render(hdc,
                 tileInfo[i * TILE_COUNT_X + j].rc.left + TILE_SIZE / 2,
                 tileInfo[i * TILE_COUNT_X + j].rc.top + TILE_SIZE / 2,
@@ -233,3 +238,5 @@ void TilemapToolScene::Load(int loadIndex)
 
     CloseHandle(hFile);
 }
+
+

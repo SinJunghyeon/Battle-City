@@ -1,29 +1,7 @@
 #pragma once
 #include "Config.h"
 #include "GameEntity.h"
-
-enum class Terrain { Earth, Wall, Water, Grass, BreakableWall, End };
-
-#define TILE_SIZE	20
-#define TILE_COUNT_X	26
-#define TILE_COUNT_Y	26
-#define SAMPLE_TILE_COUNT_X	11
-#define SAMPLE_TILE_COUNT_Y	11
-
-typedef struct tagSampleTile
-{
-	RECT rc;
-	int frameX, frameY;
-} SAMPLE_TILE_INFO;
-
-typedef struct tagTile
-{
-	Terrain terrain;
-	RECT rc;
-	//image
-	// sample tile의 아이디 (프레임 X, 프레임 Y)
-	int frameX, frameY;
-} TILE_INFO;
+#include "MapConfig.h"
 
 class Image;
 class TilemapToolScene : public GameEntity
@@ -46,6 +24,5 @@ public:
 
 	void Save(int saveIndex = 0);
 	void Load(int loadIndex = 0);
-
 };
 
