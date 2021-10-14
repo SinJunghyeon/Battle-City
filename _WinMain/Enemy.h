@@ -13,7 +13,6 @@ private:
 
 	int fireDelay;
 	int fireTimer;
-	MoveDir moveDir;
 
 public:
 	HRESULT Init();
