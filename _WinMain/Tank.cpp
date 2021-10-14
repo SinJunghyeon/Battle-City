@@ -26,7 +26,7 @@ HRESULT Tank::Init()
 	elapsedCount = 0;
 	isAlive = true;
 
-	ammoCount = 300;
+	ammoCount = 1;
 	ammoPack = new Ammo[ammoCount];
 	// 미사일 초기화
 	for (int i = 0; i < ammoCount; i++)
@@ -231,6 +231,7 @@ void Tank::CollisionItem()
 		cout << "아이템 접촉! !" << endl;
 		if (mpItem->GetExistItem() == true)
 		{
+			cout << "기능획득! !" << endl;
 			FunctionItem();
 		}
 		mpItem->SetExistItem(false);
@@ -243,6 +244,13 @@ void Tank::FunctionItem()
 	{
 		cout << "a" << endl;
 		img->SetCurrFrameY(img->GetCurrFrameY() + 1);
+		ammoCount = 2;
+		ammoPack = new Ammo[ammoCount];
+		// 미사일 초기화
+		for (int i = 0; i < ammoCount; i++)
+		{
+			ammoPack[i].Init();
+		}
 		//if (img->GetCurrFrameY() == 0)
 		//{
 		//	img->SetCurrFrameY(1);
