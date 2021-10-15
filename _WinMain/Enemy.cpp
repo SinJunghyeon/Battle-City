@@ -9,8 +9,8 @@ HRESULT Enemy::Init()
 	fireDelay = 100;
 	fireTimer = 0;
 
-	ImageManager::GetSingleton()->AddImage("Image/BattleCity/Enemy/Enemy.bmp", 512, 384, 8, 6, true, RGB(255, 0, 255));
-	img = ImageManager::GetSingleton()->FindImage("Image/BattleCity/Enemy/Enemy.bmp");
+	img = new Image;
+	img->Init("Image/BattleCity/Enemy/Enemy.bmp", 512, 384, 8, 6, true, RGB(255, 0, 255));
 	if (img == nullptr)
 	{
 		return E_FAIL;
@@ -73,7 +73,7 @@ void Enemy::AutoMove()
 			pos.x += moveSpeed * TimerManager::GetSingleton()->GetDeltaTime();
 			elapsedCount2++;
 
-			if (elapsedCount2 >= 5)
+			if (elapsedCount2 >= 4)
 			{
 				img->SetCurrFrameX(img->GetCurrFrameX() + 1);
 				if (img->GetCurrFrameX() >= 8)
@@ -90,7 +90,7 @@ void Enemy::AutoMove()
 			}
 			pos.x -= moveSpeed * TimerManager::GetSingleton()->GetDeltaTime();
 			elapsedCount2++;
-			if (elapsedCount2 >= 5)
+			if (elapsedCount2 >= 4)
 			{
 				img->SetCurrFrameX(img->GetCurrFrameX() + 1);
 				if (img->GetCurrFrameX() >= 4)
@@ -107,7 +107,7 @@ void Enemy::AutoMove()
 			}
 			pos.y -= moveSpeed * TimerManager::GetSingleton()->GetDeltaTime();
 			elapsedCount2++;
-			if (elapsedCount2 >= 5)
+			if (elapsedCount2 >= 4)
 			{
 				img->SetCurrFrameX(img->GetCurrFrameX() + 1);
 				if (img->GetCurrFrameX() >= 2)
@@ -124,7 +124,7 @@ void Enemy::AutoMove()
 			}
 			pos.y += moveSpeed * TimerManager::GetSingleton()->GetDeltaTime();
 			elapsedCount2++;
-			if (elapsedCount2 >= 5)
+			if (elapsedCount2 >= 4)
 			{
 				img->SetCurrFrameX(img->GetCurrFrameX() + 1);
 				if (img->GetCurrFrameX() >= 6)

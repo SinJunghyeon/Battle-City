@@ -9,10 +9,10 @@ class Enemy : public GameObject
 private:
 	int elapsedCount1;
 	int elapsedCount2;
-	AmmoManager* ammoMgr;
-
 	int fireDelay;
 	int fireTimer;
+	
+	AmmoManager* ammoMgr;
 
 public:
 	HRESULT Init();
