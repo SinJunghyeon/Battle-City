@@ -83,6 +83,9 @@
     <ClCompile Include="BattleTest2.cpp">
       <Filter>MainGame\Scene\실험방</Filter>
     </ClCompile>
+    <ClCompile Include="StageScene.cpp">
+      <Filter>MainGame\Scene\실험방</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="KeyManager.h">
@@ -176,6 +179,9 @@
       <Filter>MainGame\Player</Filter>
     </ClInclude>
     <ClInclude Include="BattleTest2.h">
+      <Filter>MainGame\Scene\실험방</Filter>
+    </ClInclude>
+    <ClInclude Include="StageScene.h">
       <Filter>MainGame\Scene\실험방</Filter>
     </ClInclude>
   </ItemGroup>
