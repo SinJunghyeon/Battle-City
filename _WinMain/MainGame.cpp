@@ -11,6 +11,7 @@
 #include "BattleTest2.h"
 #include "StageScene.h"
 
+//2021.10.15
 
 HRESULT MainGame::Init()
 {
