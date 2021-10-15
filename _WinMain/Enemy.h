@@ -12,6 +12,8 @@ private:
 	int fireDelay;
 	int fireTimer;
 	
+	bool isCollision;
+
 	AmmoManager* ammoMgr;
 
 public:
@@ -21,5 +23,7 @@ public:
 	void Release();
 	
 	void AutoMove();
+
+	bool Collider();
 };
 
