@@ -9,6 +9,8 @@
 #include "PlayerTankScene.h"
 #include "BattleTest.h"
 #include "BattleTest2.h"
+#include "StageScene.h"
+
 
 HRESULT MainGame::Init()
 {
@@ -18,6 +20,7 @@ HRESULT MainGame::Init()
 	SceneManager::GetSingleton()->Init();
 
 	SceneManager::GetSingleton()->AddScene("titleS", new TitleScene());
+	SceneManager::GetSingleton()->AddScene("stageS", new StageScene());
 	SceneManager::GetSingleton()->AddScene("battleS", new BattleScene());
 	SceneManager::GetSingleton()->AddScene("battleTest", new BattleTest());
 	SceneManager::GetSingleton()->AddScene("battleTest2", new BattleTest2());

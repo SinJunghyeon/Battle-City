@@ -9,10 +9,12 @@ class Enemy : public GameObject
 private:
 	int elapsedCount1;
 	int elapsedCount2;
-	AmmoManager* ammoMgr;
-
 	int fireDelay;
 	int fireTimer;
+	
+	bool isCollision;
+
+	AmmoManager* ammoMgr;
 
 public:
 	HRESULT Init();
@@ -21,5 +23,7 @@ public:
 	void Release();
 	
 	void AutoMove();
+
+	bool Collider();
 };
 
