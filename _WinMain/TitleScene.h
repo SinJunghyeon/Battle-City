@@ -8,8 +8,10 @@ class Image;
 class TitleScene : public GameEntity
 {
 private:
+	
+	HANDLE timeLate;	//헤더에서 초기화시 작동하지 않아서 cpp에 초기화
 
-	Image* backGround = nullptr;
+	Image* pbackGround = nullptr;
 	Image* pSelectIcon = nullptr;
 
 	LPARGUMENT_PTR arg;
@@ -22,9 +24,14 @@ private:
 	bool bIsSceneIcon = false;	//플레이어선택 아이콘 등장
 	int elapsedCount=0;
 
+	int textNum = 1;
+
 public:
 	virtual HRESULT Init() override;
 	virtual void Update() override;
 	virtual void Render(HDC hdc) override;
 	virtual void Release() override;
+
+	void SetText(int textNum) { this->textNum; }
+	int GetTextNum() { return this->textNum; }
 };
