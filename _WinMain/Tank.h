@@ -21,13 +21,13 @@ public:
 	Item* mpItem = nullptr;
 	RECT itemShape;
 
-	int ptHP = NULL;			//플레이어 HP
-	float ptAttackValue = NULL;	//공격력
+	int ptHP = NULL;				//플레이어 HP
+	float ptAttackValue = NULL;		//공격력
 
-	int ptLife = NULL;			//플레이어 목숨
-	bool bIsAlive = true;		//살아있는지?
+	int ptLife = NULL;				//플레이어 목숨
+	bool bIsAlive = true;			//살아있는지?
 
-	int ptScore = NULL;			//플레이어 탱크 점수
+	int ptScore = NULL;				//플레이어 탱크 점수
 
 public:
 	HRESULT Init();

@@ -35,9 +35,6 @@
     <ClCompile Include="MainGame.cpp">
       <Filter>MainGame</Filter>
     </ClCompile>
-    <ClCompile Include="Tank.cpp">
-      <Filter>MainGame</Filter>
-    </ClCompile>
     <ClCompile Include="Ammo.cpp">
       <Filter>MainGame\Ammo</Filter>
     </ClCompile>
@@ -80,6 +77,9 @@
     <ClCompile Include="Item.cpp">
       <Filter>MainGame\Item</Filter>
     </ClCompile>
+    <ClCompile Include="Tank.cpp">
+      <Filter>MainGame\Player</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="KeyManager.h">
@@ -116,9 +116,6 @@
       <Filter>2D FrameWork</Filter>
     </ClInclude>
     <ClInclude Include="MainGame.h">
-      <Filter>MainGame</Filter>
-    </ClInclude>
-    <ClInclude Include="Tank.h">
       <Filter>MainGame</Filter>
     </ClInclude>
     <ClInclude Include="Ammo.h">
@@ -172,6 +169,9 @@
     <ClInclude Include="MapConfig.h">
       <Filter>Config</Filter>
     </ClInclude>
+    <ClInclude Include="Tank.h">
+      <Filter>MainGame\Player</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="2D FrameWork">
@@ -206,6 +206,9 @@
     </Filter>
     <Filter Include="Config">
       <UniqueIdentifier>{7956e58a-6494-4584-b71d-b0808357e3f4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MainGame\Player">
+      <UniqueIdentifier>{58937433-015c-4a04-a270-2b272e8132ac}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

@@ -55,6 +55,7 @@ HRESULT Tank::Init()
 
 void Tank::Update()
 {
+	//cout << "img->GetCurrFrameX() : " << img->GetCurrFrameX() << endl;
 	if (isAlive == false)	return;
 
 	//cout << "Tank : " << moveDir << endl;
@@ -132,64 +133,76 @@ void Tank::ProcessInputKey()
 	if (Singleton<KeyManager>::GetSingleton()->IsStayKeyDown(VK_UP))
 	{
 		moveDir = MoveDir::UP;
+		img->SetCurrFrameX(0);
 		Move(MoveDir::UP);
 		tanckState = ecTankState::MOVE;
 		//프레임 움직임
 		elapsedCount++;
-		if (elapsedCount >= 10)
+		if (elapsedCount >= 20)
 		{
-			img->SetCurrFrameX(img->GetCurrFrameX() + 1);
-			if (img->GetCurrFrameX() >= 2)
-			{
-				img->SetCurrFrameX(0);
-			}
+			img->SetCurrFrameX(1);
+		}
+		if (elapsedCount >= 40)
+		{
+			img->SetCurrFrameX(0);
+			elapsedCount = 0;
 		}
 	}
 	// 이동(하)
 	else if (Singleton<KeyManager>::GetSingleton()->IsStayKeyDown(VK_DOWN))
 	{
 		moveDir = MoveDir::DOWN;
+		img->SetCurrFrameX(4);
 		Move(MoveDir::DOWN);
 		tanckState = ecTankState::MOVE;
 		//프레임 움직임
 		elapsedCount++;
-		if (elapsedCount >= 10)
+		if (elapsedCount >= 20)
 		{
-			img->SetCurrFrameX(img->GetCurrFrameX() + 1);
-			if (img->GetCurrFrameX() >= 6)
-			{
-				img->SetCurrFrameX(4);
-			}
+			img->SetCurrFrameX(5);
+		}
+		if (elapsedCount >= 40)
+		{
+			img->SetCurrFrameX(4);
+			elapsedCount = 0;
 		}
 	}
 	// 이동(좌)
 	else if (Singleton<KeyManager>::GetSingleton()->IsStayKeyDown(VK_LEFT))
 	{
 		moveDir = MoveDir::LEFT;
+		img->SetCurrFrameX(2);
 		Move(MoveDir::LEFT);
 		tanckState = ecTankState::MOVE;
-		//프레임 움직임
-		elapsedCount++;
-		if (elapsedCount >= 10)
+		//프레임 움직임					
+		elapsedCount++;					
+		if (elapsedCount >= 20)			
 		{
-			img->SetCurrFrameX(img->GetCurrFrameX() + 1);
-			if (img->GetCurrFrameX() >= 4)
-			{
-				img->SetCurrFrameX(2);
-			}
+			img->SetCurrFrameX(3);
+		}
+		if (elapsedCount >= 40)			
+		{
+			img->SetCurrFrameX(2);
+			elapsedCount = 0;
 		}
 	}
 	// 이동(우)
 	else if (Singleton<KeyManager>::GetSingleton()->IsStayKeyDown(VK_RIGHT))
 	{
 		moveDir = MoveDir::RIGHT;
+		img->SetCurrFrameX(6);
 		Move(MoveDir::RIGHT);
 		tanckState = ecTankState::MOVE;
 		//프레임 움직임
-		img->SetCurrFrameX(img->GetCurrFrameX() + 1);
-		if (img->GetCurrFrameX() >= 8)
+		elapsedCount++;
+		if (elapsedCount >= 20)
+		{
+			img->SetCurrFrameX(7);
+		}
+		if (elapsedCount >= 40)
 		{
 			img->SetCurrFrameX(6);
+			elapsedCount = 0;
 		}
 	}
 	// 키 뺐을때(상)
