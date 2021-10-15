@@ -119,21 +119,25 @@ void TilemapToolScene::Update()
             if (KeyManager::GetSingleton()->IsStayKeyDown(VK_RBUTTON)) // 디버그용
             {
                 if (tileInfo[i].terrain == Terrain::WALL) cout << "WALL" << endl;
+                else if (tileInfo[i].playerSpawn) cout << "playerSpawn" << endl;
+                else if (tileInfo[i].enemySpawn) cout << "enemySpawn" << endl;
+                else if (tileInfo[i].itemSpawn) cout << "itemSpawn" << endl;
                 else if (tileInfo[i].terrain == Terrain::STEEL) cout << "STEEL" << endl;
                 else if (tileInfo[i].terrain == Terrain::ROAD) cout << "ROAD" << endl;
                 else if (tileInfo[i].terrain == Terrain::HQ) cout << "HQ" << endl;
+                else if (tileInfo[i].terrain == Terrain::GRASS) cout << "GRASS" << endl;
             }
         }
     }
 
     if (KeyManager::GetSingleton()->IsOnceKeyUp('S'))
     {
-        Save();
+        Save(1);
     }
 
     if (KeyManager::GetSingleton()->IsOnceKeyUp('L'))
     {
-        Load();
+        Load(1);
     }
 }
 
@@ -149,6 +153,7 @@ void TilemapToolScene::Render(HDC hdc)
         {
 
             SetTerrain(&tileInfo[i * TILE_COUNT_X + j]);
+            SetSpawn(&tileInfo[i * TILE_COUNT_X + j]);
 
             sampleImage->Render(hdc,
                 tileInfo[i * TILE_COUNT_X + j].rc.left + TILE_SIZE / 2,
