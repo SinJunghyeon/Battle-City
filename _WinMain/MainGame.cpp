@@ -31,7 +31,7 @@ HRESULT MainGame::Init()
 
 	SceneManager::GetSingleton()->AddLoadingScene("loadingS", new LoadingScene());
 
-	SceneManager::GetSingleton()->ChangeScene("tilemapS");
+	SceneManager::GetSingleton()->ChangeScene("titleS");
 
 	//srand((unsigned int) time(nullptr));
 

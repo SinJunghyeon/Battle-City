@@ -162,6 +162,7 @@
     <ClCompile Include="PixelCollisionScene.cpp" />
     <ClCompile Include="PlayerTankScene.cpp" />
     <ClCompile Include="SceneManager.cpp" />
+    <ClCompile Include="StageScene.cpp" />
     <ClCompile Include="Tank.cpp" />
     <ClCompile Include="TilemapToolScene.cpp" />
     <ClCompile Include="Timer.cpp" />
@@ -195,6 +196,7 @@
     <ClInclude Include="PlayerTankScene.h" />
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="Singleton.h" />
+    <ClInclude Include="StageScene.h" />
     <ClInclude Include="Tank.h" />
     <ClInclude Include="TilemapToolScene.h" />
     <ClInclude Include="Timer.h" />
