@@ -50,6 +50,7 @@ public:
 	inline MoveDir GetMoveDir() { return this->moveDir; }
 	inline void SetMoveDir(MoveDir moveDir) { this->moveDir = moveDir; }
 
+
 	GameObject();
 	~GameObject();
 };
