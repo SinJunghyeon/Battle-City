@@ -30,11 +30,10 @@ HRESULT MainGame::Init()
 	SceneManager::GetSingleton()->AddScene("pixeltestS", new PixelCollisionScene());
 	SceneManager::GetSingleton()->AddScene("A*testS", new AStarScene());
 	SceneManager::GetSingleton()->AddScene("playertankS", new PlayerTankScene());
-	SceneManager::GetSingleton()->AddScene("endingS", new EndingScene());
 
 	SceneManager::GetSingleton()->AddLoadingScene("loadingS", new LoadingScene());
 
-	SceneManager::GetSingleton()->ChangeScene("titleS");
+	SceneManager::GetSingleton()->ChangeScene("battleTest2");
 
 	//srand((unsigned int) time(nullptr));
 
