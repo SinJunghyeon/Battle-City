@@ -166,6 +166,8 @@ bool Enemy::Collider()
 	case MoveDir::UP:
 		if (shape.top <= 0)
 		{
+
+
 			return true;
 		}
 		break;
