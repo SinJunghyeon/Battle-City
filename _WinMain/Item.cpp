@@ -7,7 +7,7 @@
 		 슈퍼 탱크 상태가 되자 흥분하여 아무 생각없이 포를 여기저기에 마구 쏘다가 실수로 사령부를 파괴하여 자폭하는 아이들이 꼭 있었다. 
 		 당연한 소리겠지만, 마이 탱크가 강화된 상태에서 적 탱크의 공격을 받아 파괴될 경우 다시 1단계 탱크로 초기화된다.
 	수류탄 : 화면상의 적 탱크를 전멸시킨다.
-	탱크 : 1UP.
+	탱크 : 목숨 1UP.
 	삽 : 일정시간 동안 사령부 주변의 벽이 회색 블록으로 변하며, 시간경과 후엔 사령부 주변의 벽도 회복된다. 
 		 참고로 변화한 회색 블록은 슈탱 상태일 경우 파괴 가능(…). 
 		 단, 맵 컨스트럭션을 통해 직접 만든 맵에서 사령부 주위를 회색 블록으로 만든 경우 삽 아이템을 먹고 일정 시간이 경과되면 일반 갈색 블록으로 되돌아가기 때문에, 
@@ -30,8 +30,8 @@ HRESULT Item::Init()
 
 	//아이템 랜덤 설정
 	srand(time(NULL));
-	selectItem = rand() % 6;
-	//selectItem = 3;
+	//selectItem = rand() % 6;
+	selectItem = 0;
 
 	bExistItem = true;
 
@@ -87,11 +87,16 @@ void Item::Update()
 {
 	//cout << boolalpha << "Item bExistItem : " << bExistItem << endl;
 
-	if (!bExistItem)
-	{
-		bExistItem = !bExistItem;
-		selectItem = rand() % 6;
-	}
+	//elapedCount++;
+	//if (elapedCount >= 100)
+	//{
+	//	if (!bExistItem)
+	//	{
+	//		bExistItem = !bExistItem;
+	//		selectItem = rand() % 6;
+	//	}
+	//}
+
 }
 
 void Item::Render(HDC hdc)

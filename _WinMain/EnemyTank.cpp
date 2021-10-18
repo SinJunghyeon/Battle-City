@@ -4,7 +4,7 @@
 HRESULT EnemyTank::Init()
 {
 	pos.x = rand() % 980 + 40;
-	pos.y = 500;
+	pos.y = 400;
 	bodySize = 64;
 	moveSpeed = 50.0f;
 
@@ -51,6 +51,8 @@ void EnemyTank::Update()
 	{
 		bIsAlive = false;
 	}
+
+
 
 }
 
