@@ -147,7 +147,6 @@
     <ClCompile Include="BattleTest2.cpp" />
     <ClCompile Include="Button.cpp" />
     <ClCompile Include="ButtonFunction.cpp" />
-    <ClCompile Include="EndingScene.cpp" />
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="EnemyManager.cpp" />
     <ClCompile Include="EnemyTank.cpp" />
@@ -181,7 +180,6 @@
     <ClInclude Include="ButtonFunction.h" />
     <ClInclude Include="CommonFunction.h" />
     <ClInclude Include="Config.h" />
-    <ClInclude Include="EndingScene.h" />
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="EnemyManager.h" />
     <ClInclude Include="EnemyTank.h" />

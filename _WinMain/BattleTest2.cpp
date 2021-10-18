@@ -31,6 +31,7 @@ HRESULT BattleTest2::Init()
     player->Init();
     spawnPos = GetSpawnPos(tileInfo, ObjectType::PLAYER).back();
     player->SetPos(spawnPos);
+    player->SetTileMap(tileInfo);
 
     return S_OK;
 }
@@ -60,7 +61,6 @@ void BattleTest2::Update()
 
     // 플레이어 탱크
     tempPos = player->GetPos();
-    Collision(player, tileInfo);
     player->Update();
 
     if (tempPos.x != player->GetPos().x || tempPos.y != player->GetPos().y)

@@ -24,15 +24,10 @@ protected:
 	int elapsedCount = NULL;
 
 public:
-	virtual HRESULT Init() override;
-	virtual void Update() override;
-	virtual void Render(HDC hdc) override;
-	virtual void Release() override;
-
-	void SetMoveDir();
-	void SetObState();
-	void SetEnemyTankState();
-	void AutoMove();
+	HRESULT Init();
+	void Update();
+	void Render(HDC hdc);
+	void Release();
 
 	void SetMoveDir();
 	void SetObState();

@@ -7,26 +7,15 @@
 //예상치 않은 결과 : enemyCount 수만큼 elapsdecount가 늘어남.
 HRESULT PlayerTankScene::Init()
 {
-	srand(time(NULL));
 	//탱크
 	mpPlayerTank = new Tank;
 	mpPlayerTank->Init();
-	playerTankRect = mpPlayerTank->GetShape();
-	//playerTankRect.left = mpPlayerTank->GetShape().left;
-	//playerTankRect.top = mpPlayerTank->GetShape().top;
-	//playerTankRect.right = mpPlayerTank->GetShape().right;
-	//playerTankRect.bottom = mpPlayerTank->GetShape().bottom;
 	//아이템
-	mpItem = new Item;
-	mpItem->Init();
-	itemRect = mpItem->GetShape();
-	//itemRect.left = mpItem->GetShape().left;
-	//itemRect.top = mpItem->GetShape().top;
-	//itemRect.right = mpItem->GetShape().right;
-	//itemRect.bottom = mpItem->GetShape().bottom;
+	//mpItem = new Item;
+	//mpItem->Init();
 	//적
 	//mpEnemy->Init();
-	enemyCount = 2;
+	enemyCount = 17;
 	mpEnemy = new EnemyTank[enemyCount];
 	mpImgEnemy = new Image[enemyCount];
 	for (int i = 0; i < enemyCount; i++)
@@ -52,12 +41,12 @@ HRESULT PlayerTankScene::Init()
 
 void PlayerTankScene::Update()
 {
-	//for (int i = 0; i < enemyCount; i++)
-	//{
-	//	cout << i << "의 탱크 : " << mpEnemy[i].GetElapsedCount() << endl;
-	//}
+	for (int i = 0; i < enemyCount; i++)
+	{
+		cout << mpEnemy[i].GetElapsedCount() << endl;
+	}
 	mpPlayerTank->Update();
-	mpItem->Update();
+	//mpItem->Update();
 	//mpEnemy->Update();
 	for (int i = 0; i < enemyCount; i++)
 	{
@@ -69,25 +58,6 @@ void PlayerTankScene::Update()
 		//}
 		EnemyTankState();
 	}
-	//플레이어
-	playerTankRect = mpPlayerTank->GetShape();
-	//playerTankRect.left = mpPlayerTank->GetShape().left;
-	//playerTankRect.top = mpPlayerTank->GetShape().top;
-	//playerTankRect.right = mpPlayerTank->GetShape().right;
-	//playerTankRect.bottom = mpPlayerTank->GetShape().bottom;
-
-	//아이템
-	//cout << boolalpha << "mpItem->GetExistItem() : " << mpItem->GetExistItem() << endl;
-	if (mpItem->GetExistItem() == true)
-	{
-		itemRect = mpItem->GetShape();
-	}
-	//itemRect.left = mpItem->GetShape().left;
-	//itemRect.top = mpItem->GetShape().top;
-	//itemRect.right = mpItem->GetShape().right;
-	//itemRect.bottom = mpItem->GetShape().bottom;
-	//플레이어 아이템 접촉
-	CollisionItem();
 }
 
 void PlayerTankScene::Render(HDC hdc)
@@ -95,9 +65,7 @@ void PlayerTankScene::Render(HDC hdc)
 	if (backGround)
 		backGround->Render(hdc);
 	mpPlayerTank->Render(hdc);
-	//Rectangle(hdc, playerTankRect.left, playerTankRect.top, playerTankRect.right, playerTankRect.bottom);
-	mpItem->Render(hdc);
-	//Rectangle(hdc, itemRect.left, itemRect.top, itemRect.right, itemRect.bottom);
+	//mpItem->Render(hdc);
 	//mpEnemy->Render(hdc);
 	for (int i = 0; i < enemyCount; i++)
 	{
@@ -109,7 +77,7 @@ void PlayerTankScene::Render(HDC hdc)
 void PlayerTankScene::Release()
 {
 	SAFE_RELEASE(mpPlayerTank);
-	SAFE_RELEASE(mpItem);
+	//SAFE_RELEASE(mpItem);
 	//SAFE_RELEASE(mpEnemy);
 	delete[] mpEnemy;
 }
@@ -186,64 +154,5 @@ void PlayerTankScene::EnemyTankState()
 				}
 			}
 		}
-	}
-  
-}
-
-void PlayerTankScene::CollisionItem()
-{
-	RECT a;
-	if (IntersectRect(&a, &playerTankRect, &itemRect))
-	{
-		//cout << "아이템 접촉! !" << endl;
-		if (mpItem->GetExistItem() == true)
-		{
-			//cout << "기능획득! !" << endl;
-			FunctionItem();
-		}
-		mpItem->SetExistItem(false);
-	}
-}
-
-void PlayerTankScene::FunctionItem()
-{
-	//헬멧
-	if (mpItem->GetItemState() == ecFunctionItem::HELMET)
-	{
-		mpPlayerTank->SetInvincible(true);
-		mpPlayerTank->SetElapsedInvincible(0);
-	}
-	//시계
-	if (mpItem->GetItemState() == ecFunctionItem::WATCH)
-	{
-
-	}
-	//삽
-	if (mpItem->GetItemState() == ecFunctionItem::SHOVEL)
-	{
-
-	}
-	//별
-	if (mpItem->GetItemState() == ecFunctionItem::STAR)
-	{
-		mpPlayerTank->SetImgFrameY(mpPlayerTank->GetImgFrameY() + 2);
-		if (mpPlayerTank->GetImgFrameY() >= 3)
-		{
-			mpPlayerTank->SetImgFrameY(3);
-		}
-		if (mpPlayerTank->GetImgFrameY() >= 2)
-		{
-			mpPlayerTank->SetAmmoCount(2);
-		}
-	}
-	//수류탄
-	if (mpItem->GetItemState() == ecFunctionItem::GRENADE)
-	{
-
-	}
-	//탱크
-	if (mpItem->GetItemState() == ecFunctionItem::TANK)
-	{
-		mpPlayerTank->SetptLife(mpPlayerTank->GetptLife() + 1);
 	}
 }
