@@ -10,8 +10,9 @@
 #include "BattleTest.h"
 #include "BattleTest2.h"
 #include "StageScene.h"
+#include "EndingScene.h"
 
-//2021.10.15
+//2021.10.18
 
 HRESULT MainGame::Init()
 {

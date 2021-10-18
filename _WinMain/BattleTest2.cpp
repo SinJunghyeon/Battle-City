@@ -132,11 +132,13 @@ void BattleTest2::Collision(GameObject* tank, TILE_INFO* tile)
     POINTFLOAT pos; // SetPos를 사용하기 위해 임시로 만든 변수
     pos.x = tank->GetPos().x;
     pos.y = tank->GetPos().y;
+    
+    RECT tempPlayerTank = tank->GetShape();
 
     int moveSpeed = tank->GetMoveSpeed();
     for (int i = 0; i < TILE_COUNT_X * TILE_COUNT_Y; i++)
     {
-        if (IntersectRect(&tempRect, &tank->GetShape(), &tile[i].rc))
+        if (IntersectRect(&tempRect, &tempPlayerTank, &tile[i].rc))
         {
             if ((tile[i].terrain == Terrain::WALL) || (tile[i].terrain == Terrain::STEEL) || (tile[i].terrain == Terrain::HQ_WALL) || (tile[i].terrain == Terrain::HQ_STEEL))
             {
