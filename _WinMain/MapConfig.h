@@ -17,9 +17,10 @@ typedef struct tagTile
 {
 	Terrain terrain;
 	RECT rc;
-	//image
-	// sample tile의 아이디 (프레임 X, 프레임 Y)
 	int frameX, frameY;
+    bool playerSpawn = false;
+    bool enemySpawn = false;
+    bool itemSpawn = false;
 } TILE_INFO;
 
 inline void SetTerrain(TILE_INFO* rc)
@@ -62,5 +63,24 @@ inline void SetTerrain(TILE_INFO* rc)
     else
     {
         rc->terrain = Terrain::ROAD;
+    }
+}
+
+inline void SetSpawn(TILE_INFO* rc)
+{
+    if (rc->frameX == 2)
+    {
+        if (rc->frameY == 1)
+        {
+            rc->playerSpawn = true;
+        }
+        else if (rc->frameY == 2)
+        {
+            rc->enemySpawn = true;
+        }
+        else if (rc->frameY == 3)
+        {
+            rc->itemSpawn = true;
+        }
     }
 }

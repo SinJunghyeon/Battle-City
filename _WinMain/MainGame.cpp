@@ -8,7 +8,10 @@
 #include "AStarScene.h"
 #include "PlayerTankScene.h"
 #include "BattleTest.h"
+#include "BattleTest2.h"
 #include "StageScene.h"
+
+//2021.10.15
 
 HRESULT MainGame::Init()
 {
@@ -21,6 +24,7 @@ HRESULT MainGame::Init()
 	SceneManager::GetSingleton()->AddScene("stageS", new StageScene());
 	SceneManager::GetSingleton()->AddScene("battleS", new BattleScene());
 	SceneManager::GetSingleton()->AddScene("battleTest", new BattleTest());
+	SceneManager::GetSingleton()->AddScene("battleTest2", new BattleTest2());
 	SceneManager::GetSingleton()->AddScene("tilemapS", new TilemapToolScene());
 	SceneManager::GetSingleton()->AddScene("pixeltestS", new PixelCollisionScene());
 	SceneManager::GetSingleton()->AddScene("A*testS", new AStarScene());

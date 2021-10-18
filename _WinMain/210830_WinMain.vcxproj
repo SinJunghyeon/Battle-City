@@ -144,6 +144,7 @@
     <ClCompile Include="AStarScene.cpp" />
     <ClCompile Include="BattleScene.cpp" />
     <ClCompile Include="BattleTest.cpp" />
+    <ClCompile Include="BattleTest2.cpp" />
     <ClCompile Include="Button.cpp" />
     <ClCompile Include="ButtonFunction.cpp" />
     <ClCompile Include="Enemy.cpp" />
@@ -161,6 +162,7 @@
     <ClCompile Include="PixelCollisionScene.cpp" />
     <ClCompile Include="PlayerTankScene.cpp" />
     <ClCompile Include="SceneManager.cpp" />
+    <ClCompile Include="StageScene.cpp" />
     <ClCompile Include="Tank.cpp" />
     <ClCompile Include="TilemapToolScene.cpp" />
     <ClCompile Include="Timer.cpp" />
@@ -173,6 +175,7 @@
     <ClInclude Include="AStarScene.h" />
     <ClInclude Include="BattleScene.h" />
     <ClInclude Include="BattleTest.h" />
+    <ClInclude Include="BattleTest2.h" />
     <ClInclude Include="Button.h" />
     <ClInclude Include="ButtonFunction.h" />
     <ClInclude Include="CommonFunction.h" />
@@ -193,6 +196,7 @@
     <ClInclude Include="PlayerTankScene.h" />
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="Singleton.h" />
+    <ClInclude Include="StageScene.h" />
     <ClInclude Include="Tank.h" />
     <ClInclude Include="TilemapToolScene.h" />
     <ClInclude Include="Timer.h" />

@@ -85,7 +85,7 @@ HRESULT Item::Init()
 
 void Item::Update()
 {
-	cout << boolalpha << "Item bExistItem : " << bExistItem << endl;
+	//cout << boolalpha << "Item bExistItem : " << bExistItem << endl;
 
 	if (!bExistItem)
 	{

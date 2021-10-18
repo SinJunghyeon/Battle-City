@@ -7,9 +7,10 @@ class Image;
 class StageScene : public GameEntity
 {
 private:
-	Image* pStageImage = nullptr;
-	Image* pStageNum = nullptr;
-	Image* pBackground = nullptr;
+	Image* StageImage = nullptr;
+	Image* StageNum = nullptr;
+	Image* Background = nullptr;
+	Image* Background2 = nullptr;
 
 	
 
