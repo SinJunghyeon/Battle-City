@@ -5,10 +5,10 @@
 HRESULT TitleScene::Init()
 {	
 	ImageManager::GetSingleton()->AddImage("Image/BattleCity/Title.bmp", WIN_SIZE_X, WIN_SIZE_Y);
-	pbackGround = ImageManager::GetSingleton()->FindImage("Image/BattleCity/Title.bmp");
+	backGround = ImageManager::GetSingleton()->FindImage("Image/BattleCity/Title.bmp");
 
 	ImageManager::GetSingleton()->AddImage("Image/BattleCity/Player/Player.bmp", 512, 256, 8, 4, true, RGB(255, 0, 255));
-	pSelectIcon = ImageManager::GetSingleton()->FindImage("Image/BattleCity/Player/Player.bmp");
+	selectIcon = ImageManager::GetSingleton()->FindImage("Image/BattleCity/Player/Player.bmp");
 
 	return S_OK;
 }
@@ -16,7 +16,7 @@ HRESULT TitleScene::Init()
 void TitleScene::Update()
 {
 
-	if (KeyManager::GetSingleton()->IsOnceKeyDown(VK_DOWN))
+	if (KeyManager::GetSingleton()->IsStayKeyDown(VK_DOWN))
 	{
 		iconPosNum++;
 		iconPosY[iconPosNum];
@@ -25,7 +25,7 @@ void TitleScene::Update()
 			iconPosNum = 0;
 		}
 	}
-	else if (KeyManager::GetSingleton()->IsOnceKeyDown(VK_UP))
+	else if (KeyManager::GetSingleton()->IsStayKeyDown(VK_UP))
 	{
 		iconPosNum--;
 		iconPosY[iconPosNum];
@@ -45,20 +45,20 @@ void TitleScene::Update()
 		}
 	}
 	
-	switch (selectIcon)
+	switch (iconFrameX)
 	{
 	case 7:
-		selectIcon = 6;
+		iconFrameX = 6;
 		break;
 	case 6:
-		selectIcon = 7;
+		iconFrameX = 7;
 		break;
 	}
 
 	if (countFrameY <= WIN_SIZE_Y / 2)
 	{
 		bIsSceneIcon = true;
-		if (KeyManager::GetSingleton()->IsOnceKeyDown(VK_SPACE))
+		if (KeyManager::GetSingleton()->IsOnceKeyDown(VK_RETURN))
 		{
 			SceneManager::GetSingleton()->ChangeScene("stageS", "loadingS");
 			return;
@@ -70,13 +70,13 @@ void TitleScene::Update()
 
 void TitleScene::Render(HDC hdc)
 {
-	pbackGround->Render(hdc, WIN_SIZE_X / 2, countFrameY);
+	backGround->Render(hdc, WIN_SIZE_X / 2, countFrameY);
 
 
 	if (bIsSceneIcon)
 	{
 		timeLate = (HANDLE)SetTimer(g_hWnd, 0, 100, NULL);	//탱크 프레임 조정
-		pSelectIcon->Render(hdc, WIN_SIZE_X / 4, iconPosY[iconPosNum], selectIcon, 0);
+		selectIcon->Render(hdc, WIN_SIZE_X / 4, iconPosY[iconPosNum], iconFrameX, 0);
 	}
 }
 
