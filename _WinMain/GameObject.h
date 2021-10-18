@@ -39,6 +39,8 @@ public:
 
 	inline RECT GetShape() { return this->shape; }
 	
+	// 21.10.18 WJ - GetMoveSpeed() 추가했습니다.
+	inline float GetMoveSpeed() { return this->moveSpeed; }
 	inline void SetMoveSpeed(float speed) { this->moveSpeed = speed; }
 	
 	inline int GetBodySize() { return this->bodySize; }

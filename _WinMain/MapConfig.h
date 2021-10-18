@@ -1,5 +1,6 @@
 #pragma once
-enum class Terrain { ROAD, WALL, WATER, GRASS, STEEL, ICE, HQ, End };
+enum class Terrain { ROAD, WALL, WATER, GRASS, STEEL, ICE, HQ, HQ_WALL, HQ_STEEL, End };
+enum class ObjectType { PLAYER, ENEMY, ITEM };
 
 #define TILE_SIZE	20
 #define TILE_COUNT_X	26
@@ -70,6 +71,19 @@ inline void SetTerrain(TILE_INFO* rc)
         rc->terrain = Terrain::WALL;
         rc->hp = 2;
     }
+    else if (rc->frameX == 8)
+    {
+        if (rc->frameY == 0)
+        {
+            rc->terrain = Terrain::HQ_WALL;
+            rc->hp = 2;
+        }
+        else if (rc->frameY == 2)
+        {
+            rc->terrain = Terrain::HQ_STEEL;
+            rc->hp = 1;
+        }
+    }
     else
     {
         rc->terrain = Terrain::ROAD;
@@ -93,5 +107,46 @@ inline void SetSpawn(TILE_INFO* rc)
         {
             rc->itemSpawn = true;
         }
+    }
+}
+
+inline vector<POINTFLOAT> GetSpawnPos(TILE_INFO* map, ObjectType type)
+{
+    POINTFLOAT pos;
+    vector<POINTFLOAT> playerSpawnPos;
+    vector<POINTFLOAT> enemySpawnPos;
+    vector<POINTFLOAT> itemSpawnPos;
+
+    for (int i = 0; i < TILE_COUNT_X * TILE_COUNT_Y; i++)
+    {
+        if (map[i].playerSpawn)
+        {
+            pos.x = map[i].rc.right;
+            pos.y = map[i].rc.bottom;
+            playerSpawnPos.push_back(pos);
+        }
+        if (map[i].enemySpawn)
+        {
+            pos.x = map[i].rc.right;
+            pos.y = map[i].rc.bottom;
+            enemySpawnPos.push_back(pos);
+        }
+        if (map[i].itemSpawn)
+        {
+            pos.x = map[i].rc.right;
+            pos.y = map[i].rc.bottom;
+            itemSpawnPos.push_back(pos);
+        }
+    }
+    switch (type)
+    {
+    case ObjectType::PLAYER:
+        return playerSpawnPos;
+    case ObjectType::ENEMY:
+        return enemySpawnPos;
+    case ObjectType::ITEM:
+        return itemSpawnPos;
+    default:
+        break;
     }
 }
