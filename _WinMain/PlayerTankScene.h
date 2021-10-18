@@ -14,12 +14,14 @@ private:
 	Image* backGround;
 	//플레이어 탱크
 	Tank* mpPlayerTank;
-	//아이템
-	//Item* mpItem;
+	RECT playerTankRect;
 	//적
 	int enemyCount;
 	EnemyTank* mpEnemy;
 	Image* mpImgEnemy;
+	//아이템
+	Item* mpItem;
+	RECT itemRect;
 
 
 public:
@@ -29,5 +31,7 @@ public:
 	virtual void Release() override;
 
 	void EnemyTankState();
+	void CollisionItem();
+	void FunctionItem();
 };
 
