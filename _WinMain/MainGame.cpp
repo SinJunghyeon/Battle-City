@@ -10,6 +10,9 @@
 #include "BattleTest.h"
 #include "BattleTest2.h"
 #include "StageScene.h"
+#include "EndingScene.h"
+
+//2021.10.15
 
 //2021.10.15
 
@@ -29,6 +32,7 @@ HRESULT MainGame::Init()
 	SceneManager::GetSingleton()->AddScene("pixeltestS", new PixelCollisionScene());
 	SceneManager::GetSingleton()->AddScene("A*testS", new AStarScene());
 	SceneManager::GetSingleton()->AddScene("playertankS", new PlayerTankScene());
+	SceneManager::GetSingleton()->AddScene("endingS", new EndingScene());
 
 	SceneManager::GetSingleton()->AddLoadingScene("loadingS", new LoadingScene());
 

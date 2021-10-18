@@ -46,6 +46,7 @@ HRESULT PlayerTankScene::Init()
 		return E_FAIL;
 	}
 
+
 	return S_OK;
 }
 
@@ -186,6 +187,7 @@ void PlayerTankScene::EnemyTankState()
 			}
 		}
 	}
+  
 }
 
 void PlayerTankScene::CollisionItem()

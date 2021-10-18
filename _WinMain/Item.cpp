@@ -87,7 +87,7 @@ void Item::Update()
 {
 	//cout << boolalpha << "Item bExistItem : " << bExistItem << endl;
 
-	//elapedCount++;
+  //elapedCount++;
 	//if (elapedCount >= 100)
 	//{
 	//	if (!bExistItem)
@@ -96,6 +96,7 @@ void Item::Update()
 	//		selectItem = rand() % 6;
 	//	}
 	//}
+
 
 }
 

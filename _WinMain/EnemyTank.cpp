@@ -23,10 +23,10 @@ HRESULT EnemyTank::Init()
 	//	return E_FAIL;
 	//}
 
-	mChangeDir = rand() % 4;			//MoveDir º¯¼ö(0 : LEFT, 1 : RIGHT, 2 : UP, 3 : DOWN)
-	SetMoveDir();						//MoveDir¼³Á¤
-	mChangeObState = rand() % 2;		//Obstate º¯¼ö(0 : IDLE, 1 : MOVE)
-	SetObState();						//ObState¼³Á¤
+	mChangeDir = rand() % 4;			//MoveDir ë³€ìˆ˜(0 : LEFT, 1 : RIGHT, 2 : UP, 3 : DOWN)
+	SetMoveDir();						//MoveDirì„¤ì •
+	mChangeObState = rand() % 2;		//Obstate ë³€ìˆ˜(0 : IDLE, 1 : MOVE)
+	SetObState();						//ObStateì„¤ì •
 
 	mDelayCount = 0;
 	bIsAlive = true;
@@ -51,18 +51,15 @@ void EnemyTank::Update()
 	{
 		bIsAlive = false;
 	}
-
-
-
 }
 
 void EnemyTank::Render(HDC hdc)
 {
 	if (bIsAlive)
 	{
-		// ¸öÅë
+		// ëª¸í†µ
 		//Rectangle(hdc, shape.left, shape.top, shape.right, shape.bottom);
-		// ÇÃ·¹ÀÌ¾î ÀÌ¹ÌÁö
+		// í”Œë ˆì´ì–´ ì´ë¯¸ì§€
 		//mpEImg->Render(hdc, pos.x, pos.y, mpEImg->GetCurrFrameX(), mpEImg->GetCurrFrameY());
 	}
 }

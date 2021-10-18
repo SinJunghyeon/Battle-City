@@ -34,6 +34,11 @@ public:
 	void SetEnemyTankState();
 	void AutoMove();
 
+	void SetMoveDir();
+	void SetObState();
+	void SetEnemyTankState();
+	void AutoMove();
+
 	inline void SetETHP(int etHP) { this->etHP = etHP; }
 	inline void SeteTankState(eTankState state) { this->tanckState = state; }
 	inline void SetElapsedCount(int elapsedCount) { this->elapsedCount = elapsedCount; }
