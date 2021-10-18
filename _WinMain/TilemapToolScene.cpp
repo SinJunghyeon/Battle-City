@@ -118,26 +118,28 @@ void TilemapToolScene::Update()
             }
             if (KeyManager::GetSingleton()->IsStayKeyDown(VK_RBUTTON)) // 디버그용
             {
-                if (tileInfo[i].terrain == Terrain::WALL) cout << "WALL" << endl;
-                else if (tileInfo[i].playerSpawn) cout << "playerSpawn" << endl;
-                else if (tileInfo[i].enemySpawn) cout << "enemySpawn" << endl;
-                else if (tileInfo[i].itemSpawn) cout << "itemSpawn" << endl;
-                else if (tileInfo[i].terrain == Terrain::STEEL) cout << "STEEL" << endl;
-                else if (tileInfo[i].terrain == Terrain::ROAD) cout << "ROAD" << endl;
-                else if (tileInfo[i].terrain == Terrain::HQ) cout << "HQ" << endl;
-                else if (tileInfo[i].terrain == Terrain::GRASS) cout << "GRASS" << endl;
+                if (tileInfo[i].terrain == Terrain::WALL) cout << "WALL" << tileInfo[i].hp << endl;
+                else if (tileInfo[i].playerSpawn) cout << "playerSpawn" << tileInfo[i].hp << endl;
+                else if (tileInfo[i].enemySpawn) cout << "enemySpawn" << tileInfo[i].hp << endl;
+                else if (tileInfo[i].itemSpawn) cout << "itemSpawn" << tileInfo[i].hp << endl;
+                else if (tileInfo[i].terrain == Terrain::STEEL) cout << "STEEL" << tileInfo[i].hp << endl;
+                else if (tileInfo[i].terrain == Terrain::ROAD) cout << "ROAD" << tileInfo[i].hp << endl;
+                else if (tileInfo[i].terrain == Terrain::HQ) cout << "HQ" << tileInfo[i].hp << endl;
+                else if (tileInfo[i].terrain == Terrain::GRASS) cout << "GRASS" << tileInfo[i].hp << endl;
+                else if (tileInfo[i].terrain == Terrain::HQ_WALL) cout << "HQ_WALL" << tileInfo[i].hp << endl;
+                else if (tileInfo[i].terrain == Terrain::HQ_STEEL) cout << "HQ_STEEL" << tileInfo[i].hp << endl;
             }
         }
     }
 
     if (KeyManager::GetSingleton()->IsOnceKeyUp('S'))
     {
-        Save(1);
+        Save();
     }
 
     if (KeyManager::GetSingleton()->IsOnceKeyUp('L'))
     {
-        Load(1);
+        Load();
     }
 }
 

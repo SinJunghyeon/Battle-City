@@ -3,6 +3,7 @@
 #include "GameEntity.h"
 #include "MapConfig.h"
 
+class GameObject;
 class EnemyManager;
 class Tank;
 class Image;
@@ -20,9 +21,16 @@ private:
 
     // 플레이어
     Tank* player;
+    POINTFLOAT spawnPos;
 
     // 적
     EnemyManager* enemies;
+
+    // 충돌처리용 RECT
+    RECT tempRect;
+
+    // 디버그용
+    POINTFLOAT tempPos;
 
 public:
     HRESULT Init();
@@ -32,6 +40,6 @@ public:
 
     void Load(int loadIndex = 0);
 
-
+    void Collision(GameObject* tank, TILE_INFO* tile);
 };
 

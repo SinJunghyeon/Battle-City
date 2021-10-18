@@ -21,8 +21,8 @@ HRESULT Tank::Init()
 	pos.x = WIN_SIZE_X / 2.0f;
 	pos.y = WIN_SIZE_Y - 100.0f;
 
-	bodySize = 64;
-	moveSpeed = 500.0f;
+	bodySize = 38;
+	moveSpeed = 100.0f;
 
 	shape.left = pos.x - (bodySize / 2);
 	shape.top = pos.y - (bodySize / 2);
@@ -134,12 +134,13 @@ void Tank::Render(HDC hdc)
 		ammoPack[i].Render(hdc);
 	}
 	// 플레이어 이미지
-	img->Render(hdc, pos.x, pos.y, img->GetCurrFrameX(), img->GetCurrFrameY());
+	img->Render(hdc, pos.x + 12, pos.y + 10, img->GetCurrFrameX(), img->GetCurrFrameY(), 0.625f);
 	//무적상태
 	if (isInvincible)
 	{
 	effectImg->Render(hdc, pos.x - 27, pos.y - 17, effectImg->GetCurrFrameX(), effectImg->GetCurrFrameY(), 4);
 	}
+
 
 	////아이템
 	//mpItem->Render(hdc);
