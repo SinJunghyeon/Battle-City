@@ -25,16 +25,21 @@ HRESULT BattleTest2::Init()
         return E_FAIL;
     }
 
+    // 적 매니저
+    enemyMgr = new EnemyManager;
+    enemyMgr->Init();
+
     Load();
 
     // 플레이어 탱크
     player = new Tank;
     player->Init();
-    spawnPos = GetSpawnPos(tileInfo, ObjectType::PLAYER).back();
-    player->SetPos(spawnPos);
+    playerSpawnPos = GetSpawnPos(tileInfo, ObjectType::PLAYER).back();
+    player->SetPos(playerSpawnPos);
     player->SetTileMap(tileInfo);
     playerTankRect = player->GetShape();
-    //아이템
+    
+    // 아이템
     mpItem = new Item;
     mpItem->Init();
     itemRect = mpItem->GetShape();
@@ -76,6 +81,10 @@ void BattleTest2::Update()
     //}
     playerTankRect = player->GetShape();
 
+    //적 탱크
+    if (enemyMgr)
+        enemyMgr->Update();
+
     //아이템
     mpItem->Update();
     if (mpItem->GetExistItem() == true)
@@ -114,7 +123,12 @@ void BattleTest2::Render(HDC hdc)
 
     // 플레이어 탱크
     player->Render(hdc);
-    //아이템    
+
+    // 적 탱크
+    if (enemyMgr)
+        enemyMgr->Render(hdc);
+
+    // 아이템    
     if (mpItem->GetExistItem() == true)
     {
         mpItem->Render(hdc);
@@ -125,7 +139,11 @@ void BattleTest2::Release()
 {
     // 플레이어 탱크
     SAFE_RELEASE(player);
-    //아이템
+
+    // 적 탱크
+    SAFE_RELEASE(enemyMgr);
+    
+    // 아이템
     SAFE_RELEASE(mpItem);
 }
 
