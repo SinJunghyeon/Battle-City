@@ -22,7 +22,7 @@ HRESULT Enemy::Init()
 
 	pos.x = WIN_SIZE_X / 2.0f;
 	pos.y = 100.0f;
-	moveSpeed = 30.0f;
+	moveSpeed = 70.0f;
 	bodySize = 32;
 	moveDir = MoveDir::RIGHT;
 
@@ -166,8 +166,6 @@ bool Enemy::Collider()
 	case MoveDir::UP:
 		if (shape.top <= 0)
 		{
-
-
 			return true;
 		}
 		break;
