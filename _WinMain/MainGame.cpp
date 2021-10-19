@@ -32,7 +32,8 @@ HRESULT MainGame::Init()
 
 	SceneManager::GetSingleton()->AddLoadingScene("loadingS", new LoadingScene());
 
-	SceneManager::GetSingleton()->ChangeScene("battleTest2");
+	SceneManager::GetSingleton()->ChangeScene("titleS");
+
 
 
 	//srand((unsigned int) time(nullptr));
