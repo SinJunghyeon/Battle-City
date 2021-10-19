@@ -22,11 +22,12 @@ private:
 
     // 플레이어
     Tank* player;
-    POINTFLOAT spawnPos;
+    POINTFLOAT playerSpawnPos;
     RECT playerTankRect;
 
     // 적
-    EnemyManager* enemies;
+    EnemyManager* enemyMgr;
+    POINTFLOAT enemySpawnPos;
 
     // 충돌처리용 RECT
     RECT tempRect;
