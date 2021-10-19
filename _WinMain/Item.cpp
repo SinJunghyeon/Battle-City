@@ -31,7 +31,7 @@ HRESULT Item::Init()
 	//아이템 랜덤 설정
 	srand(time(NULL));
 	selectItem = rand() % 6;
-	selectItem = 0;
+	//selectItem = 2;
 
 	bExistItem = true;
 

@@ -15,15 +15,18 @@ private:
 	Image* killEnemy = nullptr;
 	Image* killEnemyArrow = nullptr;
 	Image* scoreText = nullptr;
+	Image* textTotal = nullptr;
 
 	POINT hiscoreTextPos;
 
-	StageScene* stageTextSize;
+	StageScene* stageTextSize = nullptr;;
 	
-	int killEnemyPosX = WIN_SIZE_X * 2 / 5;
+	int killEnemyPosX = WIN_SIZE_X * 4 / 5;
 	int killEnemyPosY[4] = { WIN_SIZE_Y * 4 / 10, WIN_SIZE_Y * 5 / 10 ,WIN_SIZE_Y * 6 / 10 ,WIN_SIZE_Y * 7 / 10 };
 	
 	int scoreTextPosX = killEnemyPosX - 100;
+
+	bool isAnimation = false;
 
 public:
 	virtual HRESULT Init() override;

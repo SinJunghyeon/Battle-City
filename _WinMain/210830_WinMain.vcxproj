@@ -153,6 +153,7 @@
     <ClCompile Include="EnemyTank.cpp" />
     <ClCompile Include="GameEntity.cpp" />
     <ClCompile Include="GameObject.cpp" />
+    <ClCompile Include="GameOverScene.cpp" />
     <ClCompile Include="Image.cpp" />
     <ClCompile Include="ImageManager.cpp" />
     <ClCompile Include="Item.cpp" />
@@ -186,6 +187,7 @@
     <ClInclude Include="EnemyTank.h" />
     <ClInclude Include="GameEntity.h" />
     <ClInclude Include="GameObject.h" />
+    <ClInclude Include="GameOverScene.h" />
     <ClInclude Include="Image.h" />
     <ClInclude Include="ImageManager.h" />
     <ClInclude Include="Item.h" />

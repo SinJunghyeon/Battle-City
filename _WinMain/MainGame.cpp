@@ -10,8 +10,9 @@
 #include "BattleTest2.h"
 #include "StageScene.h"
 #include "EndingScene.h"
+#include "GameOverScene.h"
 
-//2021.10.19 중간수정
+//2021.10.19 최종수정
 
 HRESULT MainGame::Init()
 {
@@ -29,11 +30,9 @@ HRESULT MainGame::Init()
 	SceneManager::GetSingleton()->AddScene("pixeltestS", new PixelCollisionScene());
 	SceneManager::GetSingleton()->AddScene("A*testS", new AStarScene());
 	SceneManager::GetSingleton()->AddScene("endingS", new EndingScene());
+	SceneManager::GetSingleton()->AddScene("gameoverS", new GameOverScene());
 
-	SceneManager::GetSingleton()->AddLoadingScene("loadingS", new LoadingScene());
-
-	SceneManager::GetSingleton()->ChangeScene("battleTest2");
-
+	SceneManager::GetSingleton()->ChangeScene("titleS");
 
 	//srand((unsigned int) time(nullptr));
 
