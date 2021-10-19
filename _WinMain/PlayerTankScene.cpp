@@ -4,6 +4,8 @@
 #include "Item.h"
 #include "EnemyTank.h"
 
+//폐기예정
+
 //예상치 않은 결과 : enemyCount 수만큼 elapsdecount가 늘어남.
 HRESULT PlayerTankScene::Init()
 {

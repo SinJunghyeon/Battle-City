@@ -3,6 +3,8 @@
 #include "Config.h"
 #include "GameEntity.h"
 
+//폐기예정
+
 class Image;
 class Tank;
 class Item;

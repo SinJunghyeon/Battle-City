@@ -20,6 +20,8 @@ protected:
 
 	ecFunctionItem functionItem = ecFunctionItem::NOTHING;
 
+	int tempElapsedCount = 0;
+
 public:
 	virtual HRESULT Init() override;
 	virtual void Update() override;
