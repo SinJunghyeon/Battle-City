@@ -12,7 +12,7 @@
 #include "EndingScene.h"
 #include "GameOverScene.h"
 
-//2021.10.19 중간수정
+//2021.10.19 최종수정
 
 HRESULT MainGame::Init()
 {
