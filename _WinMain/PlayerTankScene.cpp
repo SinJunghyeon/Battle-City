@@ -75,7 +75,7 @@ void PlayerTankScene::Update()
 	//playerTankRect.top = mpPlayerTank->GetShape().top;
 	//playerTankRect.right = mpPlayerTank->GetShape().right;
 	//playerTankRect.bottom = mpPlayerTank->GetShape().bottom;
-
+	
 	//아이템
 	//cout << boolalpha << "mpItem->GetExistItem() : " << mpItem->GetExistItem() << endl;
 	if (mpItem->GetExistItem() == true)
@@ -93,8 +93,7 @@ void PlayerTankScene::Update()
 void PlayerTankScene::Render(HDC hdc)
 {
 	if (backGround)
-		backGround->Render(hdc);
-	mpPlayerTank->Render(hdc);
+		backGround->Render(hdc); mpPlayerTank->Render(hdc);
 	//Rectangle(hdc, playerTankRect.left, playerTankRect.top, playerTankRect.right, playerTankRect.bottom);
 	mpItem->Render(hdc);
 	//Rectangle(hdc, itemRect.left, itemRect.top, itemRect.right, itemRect.bottom);
@@ -187,7 +186,6 @@ void PlayerTankScene::EnemyTankState()
 			}
 		}
 	}
-  
 }
 
 void PlayerTankScene::CollisionItem()

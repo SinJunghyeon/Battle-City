@@ -24,7 +24,14 @@ HRESULT BattleTest2::Init()
         return E_FAIL;
     }
 
-    Load(1);
+    Load();
+
+    // 플레이어 탱크
+    player = new Tank;
+    player->Init();
+    spawnPos = GetSpawnPos(tileInfo, ObjectType::PLAYER).back();
+    player->SetPos(spawnPos);
+    player->SetTileMap(tileInfo);
 
     return S_OK;
 }
@@ -38,13 +45,27 @@ void BattleTest2::Update()
         {
             if (KeyManager::GetSingleton()->IsStayKeyDown(VK_RBUTTON)) // 디버그용
             {
-                if (tileInfo[i].terrain == Terrain::WALL) cout << "WALL" << endl;
-                else if (tileInfo[i].terrain == Terrain::STEEL) cout << "STEEL" << endl;
-                else if (tileInfo[i].terrain == Terrain::ROAD) cout << "ROAD" << endl;
-                else if (tileInfo[i].terrain == Terrain::HQ) cout << "HQ" << endl;
-                else if (tileInfo[i].terrain == Terrain::GRASS) cout << "GRASS" << endl;
+                if (tileInfo[i].terrain == Terrain::WALL) cout << "WALL" << tileInfo[i].hp << endl;
+                else if (tileInfo[i].playerSpawn) cout << "playerSpawn" << tileInfo[i].hp << endl;
+                else if (tileInfo[i].enemySpawn) cout << "enemySpawn" << tileInfo[i].hp << endl;
+                else if (tileInfo[i].itemSpawn) cout << "itemSpawn" << tileInfo[i].hp << endl;
+                else if (tileInfo[i].terrain == Terrain::STEEL) cout << "STEEL" << tileInfo[i].hp << endl;
+                else if (tileInfo[i].terrain == Terrain::ROAD) cout << "ROAD" << tileInfo[i].hp << endl;
+                else if (tileInfo[i].terrain == Terrain::HQ) cout << "HQ" << tileInfo[i].hp << endl;
+                else if (tileInfo[i].terrain == Terrain::GRASS) cout << "GRASS" << tileInfo[i].hp << endl;
+                else if (tileInfo[i].terrain == Terrain::HQ_WALL) cout << "HQ_WALL" << tileInfo[i].hp << endl;
+                else if (tileInfo[i].terrain == Terrain::HQ_STEEL) cout << "HQ_STEEL" << tileInfo[i].hp << endl;
             }
         }
+    }
+
+    // 플레이어 탱크
+    tempPos = player->GetPos();
+    player->Update();
+
+    if (tempPos.x != player->GetPos().x || tempPos.y != player->GetPos().y)
+    {
+        cout << "x : " << player->GetPos().x << " y : " << player->GetPos().y << endl;
     }
 }
 
@@ -72,10 +93,15 @@ void BattleTest2::Render(HDC hdc)
                  tileInfo[i * TILE_COUNT_X + j].rc.bottom);*/
         }
     }
+
+    // 플레이어 탱크
+    player->Render(hdc);
 }
 
 void BattleTest2::Release()
 {
+    // 플레이어 탱크
+    player->Release();
 }
 
 void BattleTest2::Load(int loadIndex)
@@ -99,4 +125,45 @@ void BattleTest2::Load(int loadIndex)
     }
 
     CloseHandle(hFile);
+}
+
+void BattleTest2::Collision(GameObject* tank, TILE_INFO* tile)
+{
+    POINTFLOAT pos; // SetPos를 사용하기 위해 임시로 만든 변수
+    pos.x = tank->GetPos().x;
+    pos.y = tank->GetPos().y;
+    
+    RECT tempPlayerTank = tank->GetShape();
+
+    int moveSpeed = tank->GetMoveSpeed();
+    for (int i = 0; i < TILE_COUNT_X * TILE_COUNT_Y; i++)
+    {
+        if (IntersectRect(&tempRect, &tempPlayerTank, &tile[i].rc))
+        {
+            if ((tile[i].terrain == Terrain::WALL) || (tile[i].terrain == Terrain::STEEL) || (tile[i].terrain == Terrain::HQ_WALL) || (tile[i].terrain == Terrain::HQ_STEEL))
+            {
+                switch (tank->GetMoveDir())
+                {
+                case MoveDir::DOWN:
+                    pos.y -= (moveSpeed * TimerManager::GetSingleton()->GetDeltaTime());
+                    tank->SetPos(pos);
+                    break;
+                case MoveDir::UP:
+                    pos.y += (moveSpeed * TimerManager::GetSingleton()->GetDeltaTime());
+                    tank->SetPos(pos);
+                    break;
+                case MoveDir::LEFT:
+                    pos.x += (moveSpeed * TimerManager::GetSingleton()->GetDeltaTime());
+                    tank->SetPos(pos);
+                    break;
+                case MoveDir::RIGHT:
+                    pos.x -= (moveSpeed * TimerManager::GetSingleton()->GetDeltaTime());
+                    tank->SetPos(pos);
+                    break;
+                default:
+                    break;
+                }
+            }
+        }
+    }
 }

@@ -36,10 +36,11 @@ HRESULT Enemy::Init()
 
 void Enemy::Update()
 {
-	// 임시 충돌 체크
-
 	AutoMove();
-	//Collider();
+	if (Collider())
+	{
+		moveDir = (MoveDir)(rand() % 4);
+	}
 
 	fireTimer++;
 	if (fireTimer >= fireDelay)
@@ -73,11 +74,6 @@ void Enemy::AutoMove()
 	switch (moveDir)
 	{
 	case MoveDir::RIGHT:
-		if (shape.right >= WIN_SIZE_X)
-		{
-			moveDir = (MoveDir)(rand() % 4);
-			return;
-		}
 		if (img->GetCurrFrameX() <= 5 || img->GetCurrFrameX() >= 8)
 		{
 			img->SetCurrFrameX(6);
@@ -156,12 +152,30 @@ bool Enemy::Collider()
 	switch (moveDir)
 	{
 	case MoveDir::RIGHT:
+		if (shape.right >= WIN_SIZE_X)
+		{
+			return true;
+		}
 		break;
 	case MoveDir::LEFT:
+		if (shape.left <= 0)
+		{
+			return true;
+		}
 		break;
 	case MoveDir::UP:
+		if (shape.top <= 0)
+		{
+
+
+			return true;
+		}
 		break;
 	case MoveDir::DOWN:
+		if (shape.bottom >= WIN_SIZE_Y)
+		{
+			return true;
+		}
 		break;
 	default:
 		break;

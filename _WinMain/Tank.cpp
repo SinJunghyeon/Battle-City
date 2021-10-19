@@ -1,9 +1,8 @@
 #include "Tank.h"
-//#include "Item.h"
+#include "Item.h"
 
 HRESULT Tank::Init()
 {
-	//탱크 이미지
 	ImageManager::GetSingleton()->AddImage("Image/BattleCity/Player/Player.bmp", 512, 256, 8, 4, true, RGB(255, 0, 255));
 	img = ImageManager::GetSingleton()->FindImage("Image/BattleCity/Player/Player.bmp");
 	if (img == nullptr)
@@ -21,8 +20,8 @@ HRESULT Tank::Init()
 	pos.x = WIN_SIZE_X / 2.0f;
 	pos.y = WIN_SIZE_Y - 100.0f;
 
-	bodySize = 64;
-	moveSpeed = 500.0f;
+	bodySize = 40;
+	moveSpeed = 100.0f;
 
 	shape.left = pos.x - (bodySize / 2);
 	shape.top = pos.y - (bodySize / 2);
@@ -56,6 +55,7 @@ HRESULT Tank::Init()
 	//itemShape.right = mpItem->GetShape().right;
 	//itemShape.bottom = mpItem->GetShape().bottom;
 
+
 	isInvincible = true;	//무적상태
 	elapsedInvincible = 0;
 
@@ -66,11 +66,11 @@ void Tank::Update()
 {
 	//cout << "img->GetCurrFrameX() : " << img->GetCurrFrameX() << endl;
 	//cout << "img->GetCurrFrameY() : " << img->GetCurrFrameY() << endl;
-	cout << "elapsedInvincible : " << elapsedInvincible << endl;
-	cout << "elapsedCount : " << elapsedCount << endl;
+	//cout << "elapsedInvincible : " << elapsedInvincible << endl;
+	//cout << "elapsedCount : " << elapsedCount << endl;
 	//cout << "ptLife : " << ptLife << endl;
-	cout << "effectImg->GetCurrFrameX() : " << effectImg->GetCurrFrameX() << endl;
-	cout << boolalpha << "isInvincible : " << isInvincible << endl;
+	//cout << "effectImg->GetCurrFrameX() : " << effectImg->GetCurrFrameX() << endl;
+	//cout << boolalpha << "isInvincible : " << isInvincible << endl;
 	if (isAlive == false)	return;
 
 	//cout << "Tank : " << moveDir << endl;
@@ -113,12 +113,11 @@ void Tank::Update()
 		}
 	}
 
-	////아이템획득
+	//아이템획득
 	//CollisionItem();
-	////아이템
+	//아이템
 	//mpItem->Update();
 	//cout << mpItem->GetShape().left << endl;
-	//cout << "Attack : " << ptAttackValue << endl;
 }
 
 void Tank::Render(HDC hdc)
@@ -134,11 +133,11 @@ void Tank::Render(HDC hdc)
 		ammoPack[i].Render(hdc);
 	}
 	// 플레이어 이미지
-	img->Render(hdc, pos.x, pos.y, img->GetCurrFrameX(), img->GetCurrFrameY());
+	img->Render(hdc, pos.x + 12, pos.y + 10, img->GetCurrFrameX(), img->GetCurrFrameY(), 0.625f);
 	//무적상태
 	if (isInvincible)
 	{
-	effectImg->Render(hdc, pos.x - 27, pos.y - 17, effectImg->GetCurrFrameX(), effectImg->GetCurrFrameY(), 4);
+		effectImg->Render(hdc, pos.x - 27, pos.y - 17, effectImg->GetCurrFrameX(), effectImg->GetCurrFrameY(), 4);
 	}
 
 	////아이템
@@ -278,12 +277,37 @@ void Tank::ProcessInputKey()
 
 void Tank::Move(MoveDir dir)
 {
+	POINTFLOAT buffPos; // 현재 좌표를 백업하기 위한 버퍼
+	buffPos.x = pos.x;
+	buffPos.y = pos.y;
+	RECT buffRect;
+	buffRect = shape;
+
 	switch (dir)
 	{
 	case MoveDir::LEFT: pos.x -= (moveSpeed * TimerManager::GetSingleton()->GetDeltaTime()); break;
 	case MoveDir::RIGHT: pos.x += (moveSpeed * TimerManager::GetSingleton()->GetDeltaTime()); break;
 	case MoveDir::UP: pos.y -= (moveSpeed * TimerManager::GetSingleton()->GetDeltaTime()); break;
 	case MoveDir::DOWN: pos.y += (moveSpeed * TimerManager::GetSingleton()->GetDeltaTime()); break;
+	}
+
+
+	// 위치에 따른 모양값 갱신
+	shape.left = pos.x - (bodySize / 2);
+	shape.top = pos.y - (bodySize / 2);
+	shape.right = shape.left + bodySize;
+	shape.bottom = shape.top + bodySize;
+
+	for (int i = 0; i < TILE_COUNT_X * TILE_COUNT_Y; i++)
+	{
+		if (IntersectRect(&tempRect, &shape, &tile[i].rc))
+		{
+			if ((tile[i].terrain == Terrain::WALL) || (tile[i].terrain == Terrain::STEEL) || (tile[i].terrain == Terrain::HQ_WALL) || (tile[i].terrain == Terrain::HQ_STEEL))
+			{
+				pos = buffPos;
+				shape = buffRect;
+			}
+		}
 	}
 }
 
@@ -292,45 +316,33 @@ void Tank::Move(MoveDir dir)
 //	RECT a;
 //	if (IntersectRect(&a, &shape, &itemShape))
 //	{
-//		//cout << "아이템 접촉! !" << endl;
+//		cout << "아이템 접촉! !" << endl;
 //		if (mpItem->GetExistItem() == true)
 //		{
-//			//cout << "기능획득! !" << endl;
+//			cout << "기능획득! !" << endl;
 //			FunctionItem();
 //		}
 //		mpItem->SetExistItem(false);
 //	}
 //}
-
+//
 //void Tank::FunctionItem()
 //{
-//	//스타
 //	if (mpItem->GetItemState() == ecFunctionItem::STAR)
 //	{
-//		//cout << "a" << endl;
+//		cout << "a" << endl;
 //		img->SetCurrFrameY(img->GetCurrFrameY() + 1);
 //		if (img->GetCurrFrameY() >= 3)
 //		{
 //			img->SetCurrFrameY(3);
 //		}
-//		if (img->GetCurrFrameY() >= 2)
+//		ammoCount = 2;
+//		ammoPack = new Ammo[ammoCount];
+//		// 미사일 초기화
+//		for (int i = 0; i < ammoCount; i++)
 //		{
-//			//미사일 개수 조정
-//			ammoCount = 2;
-//			ammoPack = new Ammo[ammoCount];
-//			//미사일 초기화
-//			for (int i = 0; i < ammoCount; i++)
-//			{
-//				ammoPack[i].Init();
-//			}
-//			//공격력 증가
-//			ptAttackValue = 2;		
+//			ammoPack[i].Init();
 //		}
-//	}
-//	//탱크
-//	if (mpItem->GetItemState() == ecFunctionItem::TANK)
-//	{
-//		ptLife += 1;
 //	}
 //}
 

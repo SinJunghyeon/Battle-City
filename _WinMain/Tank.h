@@ -3,13 +3,14 @@
 #include "GameObject.h"
 #include "Ammo.h"
 #include "Image.h"
+#include "MapConfig.h"
 
 enum class ecTankState { IDLE, MOVE, FIRE, DAMAGED, DIE };
 
 class Item;
 class Tank : public GameObject
 {
-private:
+public:
 	int ammoCount;
 	Ammo* ammoPack;
 	//bool bObtainItem = false;
@@ -21,7 +22,7 @@ private:
 	////¾ÆÀÌÅÛ
 	//Item* mpItem = nullptr;
 	//RECT itemShape;
-	
+
 	float ptAttackValue = NULL;		//공격력
 	int ptLife = NULL;				//플레이어 목숨
 	int ptScore = NULL;				//플레이어 탱크 점수
@@ -30,11 +31,17 @@ private:
 	bool isInvincible = true;		//무적상태
 	int elapsedInvincible = NULL;
 
+	// 타일 정보
+	TILE_INFO* tile;
+
+	// 충돌처리용 RECT
+	RECT tempRect;
+
 public:
-	virtual HRESULT Init() override;
-	virtual void Update() override;
-	virtual void Render(HDC hdc) override;
-	virtual void Release() override;
+	HRESULT Init();
+	void Update();
+	void Render(HDC hdc);
+	void Release();
 
 	void Fire();
 	void ProcessInputKey();
@@ -44,7 +51,7 @@ public:
 	//void FunctionItem();
 
 	inline void SetIsAlive(bool alive) { this->isAlive = alive; }
-	inline void SetAmmoCount(int ammoCount) { this->ammoCount = ammoCount; } 
+	inline void SetAmmoCount(int ammoCount) { this->ammoCount = ammoCount; }
 
 	inline void SetptAttackValue(float ptAttackValue) { this->ptAttackValue = ptAttackValue; }
 	inline float GetptAttackValue() { return ptAttackValue; }
@@ -58,6 +65,8 @@ public:
 	inline void SetElapsedInvincible(int elapsedInvincible) { this->elapsedInvincible = elapsedInvincible; }
 
 	inline void SetInvincible(bool isInvincible) { this->isInvincible = isInvincible; }
+	// 타일 정보를 받아오는 함수
+	inline void SetTileMap(TILE_INFO* tile) { this->tile = tile; }
 
 	Tank();
 	~Tank();

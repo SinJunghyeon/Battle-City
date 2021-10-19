@@ -12,9 +12,7 @@
 #include "StageScene.h"
 #include "EndingScene.h"
 
-//2021.10.15
-
-//2021.10.15
+//2021.10.18 최종수정
 
 HRESULT MainGame::Init()
 {
@@ -36,7 +34,7 @@ HRESULT MainGame::Init()
 
 	SceneManager::GetSingleton()->AddLoadingScene("loadingS", new LoadingScene());
 
-	SceneManager::GetSingleton()->ChangeScene("titleS");
+	SceneManager::GetSingleton()->ChangeScene("endingS");
 
 	//srand((unsigned int) time(nullptr));
 

@@ -20,8 +20,6 @@ protected:
 
 	ecFunctionItem functionItem = ecFunctionItem::NOTHING;
 
-	int elapedCount = 0;
-
 public:
 	virtual HRESULT Init() override;
 	virtual void Update() override;
