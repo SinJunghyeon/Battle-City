@@ -34,7 +34,6 @@ HRESULT MainGame::Init()
 
 	SceneManager::GetSingleton()->ChangeScene("titleS");
 
-
 	//srand((unsigned int) time(nullptr));
 
 	// 타이머 셋팅

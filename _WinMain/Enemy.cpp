@@ -10,7 +10,7 @@ HRESULT Enemy::Init()
 	fireTimer = 0;
 
 	img = new Image;
-	img->Init("Image/BattleCity/Enemy/Enemy.bmp", 512, 384, 8, 6, true, RGB(255, 0, 255));
+	img->Init("Image/BattleCity/Enemy/Enemy.bmp", 320, 240, 8, 6, true, RGB(255, 0, 255));
 	if (img == nullptr)
 	{
 		return E_FAIL;
@@ -23,13 +23,13 @@ HRESULT Enemy::Init()
 	pos.x = WIN_SIZE_X / 2.0f;
 	pos.y = 100.0f;
 	moveSpeed = 30.0f;
-	bodySize = 32;
+	bodySize = 40;
 	moveDir = MoveDir::RIGHT;
 
-	shape.left = pos.x - bodySize / 2;
-	shape.top = pos.y - bodySize / 2;
-	shape.right = shape.left + bodySize;
-	shape.bottom = shape.top + bodySize;
+	shape.left = pos.x - bodySize / 2 + 1;
+	shape.top = pos.y - bodySize / 2 + 1;
+	shape.right = shape.left + bodySize - 5;
+	shape.bottom = shape.top + bodySize - 5;
 
 	return S_OK;
 }
@@ -51,14 +51,16 @@ void Enemy::Update()
 	}
 	ammoMgr->Update();
 
-	shape.left = pos.x - bodySize / 2;
-	shape.top = pos.y - bodySize / 2;
-	shape.right = shape.left + bodySize;
-	shape.bottom = shape.top + bodySize;
+	shape.left = pos.x - bodySize / 2 + 1;
+	shape.top = pos.y - bodySize / 2 + 1;
+	shape.right = shape.left + bodySize - 5;
+	shape.bottom = shape.top + bodySize - 5;
 }
 
 void Enemy::Render(HDC hdc)
 {
+	Rectangle(hdc, shape.left, shape.top, shape.right, shape.bottom);
+
 	img->Render(hdc, pos.x, pos.y, img->GetCurrFrameX(), img->GetCurrFrameY());
 
 	ammoMgr->Render(hdc);
@@ -166,8 +168,6 @@ bool Enemy::Collider()
 	case MoveDir::UP:
 		if (shape.top <= 0)
 		{
-
-
 			return true;
 		}
 		break;

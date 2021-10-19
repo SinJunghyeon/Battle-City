@@ -1,58 +1,77 @@
 #include "EnemyManager.h"
 #include "Enemy.h"
+#include "MapConfig.h"
 
 HRESULT EnemyManager::Init()
 {
 	enemyMaxCount = 4;
 
-	// 데이터타입 : Enemy* 데이터를 10개를 생성, 삽입
 	vecEnemys.resize(enemyMaxCount);
 
 	for (int i = 0; i < enemyMaxCount; i++)
 	{
 		vecEnemys[i] = new Enemy;
 		vecEnemys[i]->Init();
-		POINTFLOAT pos{ 300.0f + (i % 5) * 100.0f, 400.0f + (i / 5) * 80.0f };
-		vecEnemys[i]->SetPos(pos);
-
+		//POINTFLOAT pos{ 300.0f + (i % 5) * 200.0f, 400.0f + (i / 5) * 80.0f };
+		vecEnemys[i]->SetPos();
 	}
 
-	// 데이터타입 : Enemy* 데이터 10개를 삽입할 수 있는 메모리만 확보
-	//vecEnemys.reserve(10);
-	//int count = vecEnemys.size();
-
-	//cout << "reserve count : " << count << endl;
-
-	//for (int i = 0; i < 10; i++)
-	//{
-	//	vecEnemys.push_back(new Enemy);
-	//	vecEnemys[i]->Init();
-	//}
-
-	//// 포인터 10개짜리 배열
-	//for (int i = 0; i < 10; i++)
-	//{
-	//	enemy[i] = new Enemy;
-	//	enemy[i]->Init();
-	//	POINTFLOAT pos { 100.0f + (i % 5) * 100.0f, 100.0f + (i / 5) * 80.0f };
-	//	enemy[i]->SetPos(pos);
-	//}
+	//playerSpawnPos = GetSpawnPos(tileInfo, ObjectType::PLAYER).back();
+	//player->SetPos(playerSpawnPos);
+	//player->SetTileMap(tileInfo);
 
 	return S_OK;
 }
 
 void EnemyManager::Update()
 {
+	for (int i = 0; i < enemyMaxCount; i++)
+	{
+		for (int j = 0; j < enemyMaxCount; j++)
+		{
+			if (i == j)
+				continue;
+			switch (vecEnemys[i]->GetMoveDir())
+			{
+			case MoveDir::RIGHT:
+				if ((vecEnemys[i]->GetShape().right >= vecEnemys[j]->GetShape().left) &&
+					(abs(vecEnemys[i]->GetPos().y - vecEnemys[j]->GetPos().y) <= 32))
+				{
+					vecEnemys[i]->SetMoveDir((MoveDir)(rand() % 4));
+				}
+				break;
+			case MoveDir::LEFT:
+				if ((vecEnemys[i]->GetShape().left <= vecEnemys[j]->GetShape().right) &&
+					(abs(vecEnemys[i]->GetPos().y - vecEnemys[j]->GetPos().y) <= 32))
+				{
+					vecEnemys[i]->SetMoveDir((MoveDir)(rand() % 4));
+				}
+				break;
+			case MoveDir::UP:
+				if ((vecEnemys[i]->GetShape().top <= vecEnemys[j]->GetShape().bottom) &&
+					(abs(vecEnemys[i]->GetPos().x - vecEnemys[j]->GetPos().x) <= 32))
+				{
+					vecEnemys[i]->SetMoveDir((MoveDir)(rand() % 4));
+				}
+				break;
+			case MoveDir::DOWN:
+				if ((vecEnemys[i]->GetShape().bottom >= vecEnemys[j]->GetShape().top) &&
+					(abs(vecEnemys[i]->GetPos().x - vecEnemys[j]->GetPos().x) <= 32))
+				{
+					vecEnemys[i]->SetMoveDir((MoveDir)(rand() % 4));
+				}
+				break;
+			default:
+				break;
+			}
+		}
+	}
+
 	for (itEnemys = vecEnemys.begin();
 		itEnemys != vecEnemys.end(); itEnemys++)
 	{
 		(*itEnemys)->Update();
 	}
-
-	//for (int i = 0; i < enemyMaxCount; i++)
-	//{
-	//	vecEnemys[i]->Update();
-	//}
 }
 
 void EnemyManager::Render(HDC hdc)
@@ -62,11 +81,6 @@ void EnemyManager::Render(HDC hdc)
 	{
 		(*itEnemys)->Render(hdc);
 	}
-
-	//for (int i = 0; i < enemyMaxCount; i++)
-	//{
-	//	vecEnemys[i]->Render(hdc);
-	//}
 }
 
 void EnemyManager::Release()
@@ -77,12 +91,6 @@ void EnemyManager::Release()
 		SAFE_RELEASE((*itEnemys));
 	}
 	vecEnemys.clear();
-
-	//for (int i = 0; i < enemyMaxCount; i++)
-	//{
-	//	SAFE_RELEASE(vecEnemys[i]);
-	//}
-	//vecEnemys.clear();
 }
 
 void EnemyManager::AddEnemy(float posX, float posY)

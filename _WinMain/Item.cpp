@@ -18,8 +18,8 @@
 
 HRESULT Item::Init()
 {
-	pos.x = WIN_SIZE_X / 2;
-	pos.y = WIN_SIZE_Y / 2;
+	pos.x = 280;
+	pos.y = 386;
 
 	bodySize = 32;
 
@@ -31,7 +31,7 @@ HRESULT Item::Init()
 	//아이템 랜덤 설정
 	srand(time(NULL));
 	selectItem = rand() % 6;
-	//selectItem = 3;
+	//selectItem = 2;
 
 	bExistItem = true;
 
@@ -80,17 +80,26 @@ HRESULT Item::Init()
 		return E_FAIL;
 	}
 
+	tempElapsedCount = 0;
+
 	return S_OK;
 }
 
 void Item::Update()
 {
+	//cout << "Item::Update()" << endl;
 	//cout << boolalpha << "Item bExistItem : " << bExistItem << endl;
+	//cout << "tempElapsedCount : " << tempElapsedCount << endl;
 
 	if (!bExistItem)
 	{
-		bExistItem = !bExistItem;
-		selectItem = rand() % 6;
+		tempElapsedCount++;
+		if (tempElapsedCount >= 100)
+		{
+			bExistItem = !bExistItem;
+			selectItem = rand() % 6;
+			tempElapsedCount = 0;
+		}
 	}
 }
 

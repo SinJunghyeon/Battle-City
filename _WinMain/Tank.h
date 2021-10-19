@@ -13,21 +13,17 @@ class Tank : public GameObject
 public:
 	int ammoCount;
 	Ammo* ammoPack;
-	//bool bObtainItem = false;
 
 	ecTankState tanckState = ecTankState::IDLE;
 	int elapsedCount = NULL;
-	bool isAlive = true;
+	bool isAlive = false;
 
-	////¾ÆÀÌÅÛ
-	//Item* mpItem = nullptr;
-	//RECT itemShape;
 
 	float ptAttackValue = NULL;		//공격력
 	int ptLife = NULL;				//플레이어 목숨
 	int ptScore = NULL;				//플레이어 탱크 점수
 
-	Image* effectImg;
+	Image* effectImg = nullptr;
 	bool isInvincible = true;		//무적상태
 	int elapsedInvincible = NULL;
 
@@ -36,6 +32,10 @@ public:
 
 	// 충돌처리용 RECT
 	RECT tempRect;
+
+	Image* spawnImg = nullptr;
+	int elapsedSpawn = NULL;
+	int spawnCount = NULL;
 
 public:
 	HRESULT Init();
@@ -47,8 +47,6 @@ public:
 	void ProcessInputKey();
 
 	void Move(MoveDir dir);
-	//void CollisionItem();
-	//void FunctionItem();
 
 	inline void SetIsAlive(bool alive) { this->isAlive = alive; }
 	inline void SetAmmoCount(int ammoCount) { this->ammoCount = ammoCount; }

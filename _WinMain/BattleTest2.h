@@ -7,6 +7,7 @@ class GameObject;
 class EnemyManager;
 class Tank;
 class Image;
+class Item;
 class BattleTest2 : public GameEntity
 {
 private:
@@ -21,16 +22,22 @@ private:
 
     // 플레이어
     Tank* player;
-    POINTFLOAT spawnPos;
+    POINTFLOAT playerSpawnPos;
+    RECT playerTankRect;
 
     // 적
-    EnemyManager* enemies;
+    EnemyManager* enemyMgr;
+    POINTFLOAT enemySpawnPos;
 
     // 충돌처리용 RECT
     RECT tempRect;
 
     // 디버그용
     POINTFLOAT tempPos;
+
+    //아이템
+    Item* mpItem;
+    RECT itemRect;
 
 public:
     HRESULT Init();
@@ -41,5 +48,7 @@ public:
     void Load(int loadIndex = 0);
 
     void Collision(GameObject* tank, TILE_INFO* tile);
+    void CollisionItem();
+    void FunctionItem();
 };
 

@@ -1,6 +1,7 @@
 #pragma once
 #include "Config.h"
 #include "GameEntity.h"
+#include "MapConfig.h"
 
 class Enemy;
 class EnemyManager : public GameEntity
@@ -10,6 +11,8 @@ private:
 	vector<Enemy*>::iterator itEnemys;
 
 	int enemyMaxCount;
+
+	TILE_INFO* map;
 
 public:
 	HRESULT Init();

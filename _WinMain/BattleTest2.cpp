@@ -2,6 +2,7 @@
 #include "Image.h"
 #include "Tank.h"
 #include "EnemyManager.h"
+#include "Item.h"
 
 HRESULT BattleTest2::Init()
 {
@@ -24,20 +25,32 @@ HRESULT BattleTest2::Init()
         return E_FAIL;
     }
 
+    // 적 매니저
+    enemyMgr = new EnemyManager;
+    enemyMgr->Init();
+
     Load();
 
     // 플레이어 탱크
     player = new Tank;
     player->Init();
-    spawnPos = GetSpawnPos(tileInfo, ObjectType::PLAYER).back();
-    player->SetPos(spawnPos);
+    playerSpawnPos = GetSpawnPos(tileInfo, ObjectType::PLAYER).back();
+    player->SetPos(playerSpawnPos);
     player->SetTileMap(tileInfo);
+    playerTankRect = player->GetShape();
+    
+    // 아이템
+    mpItem = new Item;
+    mpItem->Init();
+    itemRect = mpItem->GetShape();
 
     return S_OK;
 }
 
 void BattleTest2::Update()
 {
+    //cout << boolalpha << "mpItem->GetExistItem() : " << mpItem->GetExistItem() << endl;
+
     // 타일 속성 확인용 코드
     for (int i = 0; i < TILE_COUNT_X * TILE_COUNT_Y; i++)
     {
@@ -62,11 +75,25 @@ void BattleTest2::Update()
     // 플레이어 탱크
     tempPos = player->GetPos();
     player->Update();
+    //if (tempPos.x != player->GetPos().x || tempPos.y != player->GetPos().y)
+    //{
+    //    cout << "x : " << player->GetPos().x << " y : " << player->GetPos().y << endl;
+    //}
+    playerTankRect = player->GetShape();
 
-    if (tempPos.x != player->GetPos().x || tempPos.y != player->GetPos().y)
+    //적 탱크
+    if (enemyMgr)
+        enemyMgr->Update();
+
+    //아이템
+    mpItem->Update();
+    if (mpItem->GetExistItem() == true)
     {
-        cout << "x : " << player->GetPos().x << " y : " << player->GetPos().y << endl;
+        itemRect = mpItem->GetShape();
     }
+
+    //플레이어 아이템 접촉
+    CollisionItem();
 }
 
 void BattleTest2::Render(HDC hdc)
@@ -87,21 +114,37 @@ void BattleTest2::Render(HDC hdc)
                 tileInfo[i * TILE_COUNT_X + j].frameX,
                 tileInfo[i * TILE_COUNT_X + j].frameY);
 
-            /* Rectangle(hdc, tileInfo[i * TILE_COUNT_X + j].rc.left,
-                 tileInfo[i * TILE_COUNT_X + j].rc.top,
-                 tileInfo[i * TILE_COUNT_X + j].rc.right,
-                 tileInfo[i * TILE_COUNT_X + j].rc.bottom);*/
+             //Rectangle(hdc, tileInfo[i * TILE_COUNT_X + j].rc.left,
+             //    tileInfo[i * TILE_COUNT_X + j].rc.top,
+             //    tileInfo[i * TILE_COUNT_X + j].rc.right,
+             //    tileInfo[i * TILE_COUNT_X + j].rc.bottom);
         }
     }
 
     // 플레이어 탱크
     player->Render(hdc);
+
+    // 적 탱크
+    if (enemyMgr)
+        enemyMgr->Render(hdc);
+
+    // 아이템    
+    if (mpItem->GetExistItem() == true)
+    {
+        mpItem->Render(hdc);
+    }
 }
 
 void BattleTest2::Release()
 {
     // 플레이어 탱크
-    player->Release();
+    SAFE_RELEASE(player);
+
+    // 적 탱크
+    SAFE_RELEASE(enemyMgr);
+    
+    // 아이템
+    SAFE_RELEASE(mpItem);
 }
 
 void BattleTest2::Load(int loadIndex)
@@ -133,12 +176,12 @@ void BattleTest2::Collision(GameObject* tank, TILE_INFO* tile)
     pos.x = tank->GetPos().x;
     pos.y = tank->GetPos().y;
     
-    RECT tempPlayerTank = tank->GetShape();
+    RECT teplayer = tank->GetShape();
 
     int moveSpeed = tank->GetMoveSpeed();
     for (int i = 0; i < TILE_COUNT_X * TILE_COUNT_Y; i++)
     {
-        if (IntersectRect(&tempRect, &tempPlayerTank, &tile[i].rc))
+        if (IntersectRect(&tempRect, &teplayer, &tile[i].rc))
         {
             if ((tile[i].terrain == Terrain::WALL) || (tile[i].terrain == Terrain::STEEL) || (tile[i].terrain == Terrain::HQ_WALL) || (tile[i].terrain == Terrain::HQ_STEEL))
             {
@@ -165,5 +208,63 @@ void BattleTest2::Collision(GameObject* tank, TILE_INFO* tile)
                 }
             }
         }
+    }
+}
+
+void BattleTest2::CollisionItem()
+{
+    RECT a;        
+    if (mpItem->GetExistItem() == true)
+    {
+        if (IntersectRect(&a, &playerTankRect, &itemRect))
+        {
+            //cout << "아이템 접촉! !" << endl;
+            //cout << "기능획득! !" << endl;
+            FunctionItem();
+            mpItem->SetExistItem(false);
+        }
+    }
+}
+
+void BattleTest2::FunctionItem()
+{
+    //헬멧
+    if (mpItem->GetItemState() == ecFunctionItem::HELMET)
+    {
+        player->SetInvincible(true);
+        player->SetElapsedInvincible(0);
+    }
+    //시계
+    if (mpItem->GetItemState() == ecFunctionItem::WATCH)
+    {
+
+    }
+    //삽
+    if (mpItem->GetItemState() == ecFunctionItem::SHOVEL)
+    {
+
+    }
+    //별
+    if (mpItem->GetItemState() == ecFunctionItem::STAR)
+    {
+        player->SetImgFrameY(player->GetImgFrameY() + 1);
+        if (player->GetImgFrameY() >= 3)
+        {
+            player->SetImgFrameY(3);
+        }
+        if (player->GetImgFrameY() >= 2)
+        {
+            player->SetAmmoCount(2);
+        }
+    }
+    //수류탄
+    if (mpItem->GetItemState() == ecFunctionItem::GRENADE)
+    {
+
+    }
+    //탱크
+    if (mpItem->GetItemState() == ecFunctionItem::TANK)
+    {
+        player->SetptLife(player->GetptLife() + 1);
     }
 }
