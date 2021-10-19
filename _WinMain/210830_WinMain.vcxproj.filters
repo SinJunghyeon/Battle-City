@@ -59,9 +59,6 @@
     <ClCompile Include="TitleScene.cpp">
       <Filter>MainGame\Scene</Filter>
     </ClCompile>
-    <ClCompile Include="PlayerTankScene.cpp">
-      <Filter>MainGame\Scene\실험방</Filter>
-    </ClCompile>
     <ClCompile Include="BattleTest.cpp">
       <Filter>MainGame\Scene\실험방</Filter>
     </ClCompile>
@@ -150,9 +147,6 @@
     </ClInclude>
     <ClInclude Include="TitleScene.h">
       <Filter>MainGame\Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="PlayerTankScene.h">
-      <Filter>MainGame\Scene\실험방</Filter>
     </ClInclude>
     <ClInclude Include="BattleTest.h">
       <Filter>MainGame\Scene\실험방</Filter>
