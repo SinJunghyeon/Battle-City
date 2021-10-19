@@ -6,13 +6,13 @@
 #include "TilemapToolScene.h"
 #include "PixelCollisionScene.h"
 #include "AStarScene.h"
-#include "PlayerTankScene.h"
 #include "BattleTest.h"
 #include "BattleTest2.h"
 #include "StageScene.h"
 #include "EndingScene.h"
+#include "GameOverScene.h"
 
-//2021.10.18 최종수정
+//2021.10.19 중간수정
 
 HRESULT MainGame::Init()
 {
@@ -29,12 +29,11 @@ HRESULT MainGame::Init()
 	SceneManager::GetSingleton()->AddScene("tilemapS", new TilemapToolScene());
 	SceneManager::GetSingleton()->AddScene("pixeltestS", new PixelCollisionScene());
 	SceneManager::GetSingleton()->AddScene("A*testS", new AStarScene());
-	SceneManager::GetSingleton()->AddScene("playertankS", new PlayerTankScene());
 	SceneManager::GetSingleton()->AddScene("endingS", new EndingScene());
+	SceneManager::GetSingleton()->AddScene("gameoverS", new GameOverScene());
 
-	SceneManager::GetSingleton()->AddLoadingScene("loadingS", new LoadingScene());
+	SceneManager::GetSingleton()->ChangeScene("titleS");
 
-	SceneManager::GetSingleton()->ChangeScene("endingS");
 
 	//srand((unsigned int) time(nullptr));
 
