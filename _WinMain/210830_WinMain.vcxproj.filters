@@ -86,6 +86,9 @@
     <ClCompile Include="EndingScene.cpp">
       <Filter>MainGame\Scene\실험방</Filter>
     </ClCompile>
+    <ClCompile Include="GameOverScene.cpp">
+      <Filter>MainGame\Scene\실험방</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="KeyManager.h">
@@ -182,6 +185,9 @@
       <Filter>MainGame\Scene\실험방</Filter>
     </ClInclude>
     <ClInclude Include="EndingScene.h">
+      <Filter>MainGame\Scene\실험방</Filter>
+    </ClInclude>
+    <ClInclude Include="GameOverScene.h">
       <Filter>MainGame\Scene\실험방</Filter>
     </ClInclude>
   </ItemGroup>

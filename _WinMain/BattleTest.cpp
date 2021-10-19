@@ -25,6 +25,10 @@ HRESULT BattleTest::Init()
         return E_FAIL;
     }
 
+    // Àû ¸Å´ÏÀú
+    enemyMgr = new EnemyManager;
+    enemyMgr->Init();
+
     Load();
 
     // ÇÃ·¹ÀÌ¾î ÅÊÅ©
@@ -76,6 +80,10 @@ void BattleTest::Update()
     //}
     playerTankRect = player->GetShape();
 
+    //Àû ÅÊÅ©
+    if (enemyMgr)
+        enemyMgr->Update();
+
     //¾ÆÀÌÅÛ
     mpItem->Update();
     if (mpItem->GetExistItem() == true)
@@ -114,6 +122,11 @@ void BattleTest::Render(HDC hdc)
 
     // ÇÃ·¹ÀÌ¾î ÅÊÅ©
     player->Render(hdc);
+
+    // Àû ÅÊÅ©
+    if (enemyMgr)
+        enemyMgr->Render(hdc);
+
     //¾ÆÀÌÅÛ    
     if (mpItem->GetExistItem() == true)
     {
@@ -125,6 +138,8 @@ void BattleTest::Release()
 {
     // ÇÃ·¹ÀÌ¾î ÅÊÅ©
     SAFE_RELEASE(player);
+    // Àû ÅÊÅ©
+    SAFE_RELEASE(enemyMgr);
     //¾ÆÀÌÅÛ
     SAFE_RELEASE(mpItem);
 }
