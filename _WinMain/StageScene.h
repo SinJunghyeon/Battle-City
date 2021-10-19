@@ -24,7 +24,7 @@ public:
 	virtual void Render(HDC hdc) override;
 	virtual void Release() override;
 
-	int stageN = 1;
+	int stageN = 1;	//외부에서 클리어가 들어오면 이걸 ++하는걸로
 
 	int stageImageSizeX = 37 * 5;
 	int stageImageSizeY = 7 * 5;
