@@ -36,6 +36,7 @@ HRESULT MainGame::Init()
 
 	SceneManager::GetSingleton()->ChangeScene("battleS");
 
+
 	//srand((unsigned int) time(nullptr));
 
 	// 타이머 셋팅

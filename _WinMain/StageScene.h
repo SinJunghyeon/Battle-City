@@ -12,8 +12,6 @@ private:
 	//Image* background2 = nullptr;
 		
 
-	int stageImageSizeX = 37 * 5;
-	int stageImageSizeY = 7 * 5;
 
 	int downFrameY = WIN_SIZE_Y + WIN_SIZE_Y / 2;
 	int upFrameY = WIN_SIZE_Y - WIN_SIZE_Y / 2;
@@ -27,5 +25,8 @@ public:
 	virtual void Release() override;
 
 	int stageN = 1;
+
+	int stageImageSizeX = 37 * 5;
+	int stageImageSizeY = 7 * 5;
 };
 
