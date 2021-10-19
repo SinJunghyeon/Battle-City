@@ -149,7 +149,7 @@ void Tank::Render(HDC hdc)
 	if (isAlive)	//살아있을 때
 	{
 		//몸통
-		//Rectangle(hdc, shape.left, shape.top, shape.right, shape.bottom);
+		Rectangle(hdc, shape.left, shape.top, shape.right, shape.bottom);
 		//이미지
 		img->Render(hdc, pos.x + 12, pos.y + 10, img->GetCurrFrameX(), img->GetCurrFrameY(), 0.625f);
 		//무적상태
