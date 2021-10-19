@@ -12,8 +12,8 @@ HRESULT EnemyManager::Init()
 	{
 		vecEnemys[i] = new Enemy;
 		vecEnemys[i]->Init();
-		//POINTFLOAT pos{ 300.0f + (i % 5) * 200.0f, 400.0f + (i / 5) * 80.0f };
-		vecEnemys[i]->SetPos();
+		POINTFLOAT pos{ 300.0f + (i % 5) * 200.0f, 400.0f + (i / 5) * 80.0f };
+		vecEnemys[i]->SetPos(pos);
 	}
 
 	//playerSpawnPos = GetSpawnPos(tileInfo, ObjectType::PLAYER).back();
