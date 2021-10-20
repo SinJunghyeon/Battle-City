@@ -1,4 +1,4 @@
-#include "BattleTest.h"
+ #include "BattleTest.h"
 #include "Image.h"
 #include "Tank.h"
 #include "EnemyManager.h"
@@ -50,7 +50,8 @@ HRESULT BattleTest::Init()
 void BattleTest::Update()
 {
     //cout << boolalpha << "mpItem->GetExistItem() : " << mpItem->GetExistItem() << endl;
-    cout << "elapsedChange : " << elapsedChange << endl;
+    //cout << "elapsedChange : " << elapsedChange << endl;
+    //cout << "elapsedCount : " << elapsedCount << endl;
 
     // 타일 속성 확인용 코드
     for (int i = 0; i < TILE_COUNT_X * TILE_COUNT_Y; i++)
@@ -112,6 +113,16 @@ void BattleTest::Update()
                     elapsedChange = 0;
                 }
             }
+        }
+    }
+
+    //적탱크의 상태가 IDLE일 때
+    if (elapsedCount < 10000)
+    {
+        elapsedCount++;
+        if (elapsedCount >= 300)
+        {
+            enemyMgr->TankState(ecTankState::MOVE);
         }
     }
 }
@@ -256,6 +267,8 @@ void BattleTest::FunctionItem()
     if (mpItem->GetItemState() == ecFunctionItem::WATCH)
     {
         //적탱크 일시정지
+        enemyMgr->TankState(ecTankState::IDLE);
+        elapsedCount = 0;
     }
     //삽
     if (mpItem->GetItemState() == ecFunctionItem::SHOVEL)
@@ -288,6 +301,7 @@ void BattleTest::FunctionItem()
     if (mpItem->GetItemState() == ecFunctionItem::GRENADE)
     {
         //나와있는 적 모두 죽임
+        enemyMgr->IsAlive(false);
     }
     //탱크
     if (mpItem->GetItemState() == ecFunctionItem::TANK)

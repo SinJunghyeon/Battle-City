@@ -38,6 +38,8 @@ HRESULT Enemy::Init()
 	shape.right = shape.left + bodySize - 5;
 	shape.bottom = shape.top + bodySize - 5;
 
+	tankState = ecTankState::MOVE;
+
 	return S_OK;
 }
 
@@ -62,7 +64,7 @@ void Enemy::Update()
 		}
 	}
 
-	if (isAlive)
+	if (isAlive && tankState == ecTankState::MOVE)
 	{
 		Move(moveDir);
 		MoveFrame();
@@ -90,10 +92,10 @@ void Enemy::Update()
 
 void Enemy::Render(HDC hdc)
 {
-	// ÀÓ½Ã Ãæµ¹
+	// ì„ì‹œ ì¶©ëŒ
 	Rectangle(hdc, shape.left, shape.top, shape.right, shape.bottom);
 
-	if (!isAlive)	//Á×¾îÀÖÀ» ¶§ -> ½ºÆù ÀÌ¹ÌÁö¸¦ ºÎ¸£°í -> »ì°Ô²û
+	if (!isAlive)	//ì£½ì–´ìˆì„ ë•Œ -> ìŠ¤í° ì´ë¯¸ì§€ë¥¼ ë¶€ë¥´ê³  -> ì‚´ê²Œë”
 	{
 		spawnImg->Render(hdc, pos.x, pos.y, spawnImg->GetCurrFrameX(), spawnImg->GetCurrFrameY());
 	}
@@ -105,7 +107,7 @@ void Enemy::Render(HDC hdc)
 		ammoMgr->Render(hdc);
 	}
 
-	// È­¸é ¹ÛÀ¸·Î ³ª°¡´Â °Í Ã¼Å©
+	// í™”ë©´ ë°–ìœ¼ë¡œ ë‚˜ê°€ëŠ” ê²ƒ ì²´í¬
 	switch (moveDir)
 	{
 	case MoveDir::RIGHT:
@@ -142,7 +144,7 @@ void Enemy::Release()
 	SAFE_RELEASE(ammoMgr);
 }
 
-// ¿òÁ÷ÀÌ´Â ¸ğ¾ç
+// ì›€ì§ì´ëŠ” ëª¨ì–‘
 void Enemy::MoveFrame()
 {
 	switch (moveDir)
@@ -217,7 +219,7 @@ void Enemy::MoveFrame()
 	}
 }
 
-// °ÔÀÓ È­¸é ¹Û ³ª°¡Áö ¾Ê°Ô
+// ê²Œì„ í™”ë©´ ë°– ë‚˜ê°€ì§€ ì•Šê²Œ
 //bool Enemy::Collider()
 //{
 //	switch (moveDir)
@@ -255,7 +257,7 @@ void Enemy::MoveFrame()
 
 void Enemy::Move(MoveDir dir)
 {
-	POINTFLOAT buffPos; // ÇöÀç ÁÂÇ¥¸¦ ¹é¾÷ÇÏ±â À§ÇÑ ¹öÆÛ
+	POINTFLOAT buffPos; // í˜„ì¬ ì¢Œí‘œë¥¼ ë°±ì—…í•˜ê¸° ìœ„í•œ ë²„í¼
 	buffPos.x = pos.x;
 	buffPos.y = pos.y;
 	RECT buffRect;

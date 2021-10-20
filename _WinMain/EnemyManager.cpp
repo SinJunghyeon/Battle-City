@@ -1,5 +1,4 @@
 #include "EnemyManager.h"
-#include "Enemy.h"
 
 HRESULT EnemyManager::Init()
 {
@@ -28,7 +27,7 @@ void EnemyManager::Update()
 		vecEnemys[i]->SetMoveSpeed(20.0f);
 	}
 
-	// Àû »õ·Î ¸®½ºÆù
+	// Ã€Ã» Â»ÃµÂ·ÃŽ Â¸Â®Â½ÂºÃ†Ã¹
 	enemySpawnDelay++;
 	if (enemySpawnDelay >= 500)
 	{
@@ -37,7 +36,7 @@ void EnemyManager::Update()
 		enemySpawnDelay = 0;
 	}
 
-	// Àû³¢¸® Ãæµ¹È®ÀÎ
+	// Ã€Ã»Â³Â¢Â¸Â® ÃƒÃ¦ÂµÂ¹ÃˆÂ®Ã€ÃŽ
 	for (int i = 0; i < enemyCurrCount; i++)
 	{
 		for (int j = 0; j < enemyCurrCount; j++)
@@ -130,3 +129,20 @@ void EnemyManager::SetTileMapManager(TILE_INFO* tile)
 		vecEnemys[i]->SetTileMap(tile);
 	}
 }
+
+void EnemyManager::TankState(ecTankState state)
+{
+	for (int i = 0; i < enemyCurrCount; i++)
+	{
+		vecEnemys[i]->SetTankState(state);
+	}
+}
+
+void EnemyManager::IsAlive(bool isAlive)
+{
+	for (int i = 0; i < enemyCurrCount; i++)
+	{
+		vecEnemys[i]->SetIsAlive(isAlive);
+	}
+}
+
