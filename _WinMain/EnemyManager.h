@@ -1,7 +1,6 @@
 #pragma once
 #include "Config.h"
 #include "GameEntity.h"
-#include "MapConfig.h"
 
 class Enemy;
 class EnemyManager : public GameEntity
@@ -12,7 +11,7 @@ private:
 
 	int enemyMaxCount;
 
-	TILE_INFO* map;
+	POINTFLOAT enemySpawnPos[3];
 
 public:
 	HRESULT Init();

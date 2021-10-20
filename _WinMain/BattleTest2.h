@@ -2,6 +2,7 @@
 #include "Config.h"
 #include "GameEntity.h"
 #include "MapConfig.h"
+#include "Enemy.h"
 
 class GameObject;
 class EnemyManager;
@@ -27,7 +28,6 @@ private:
 
     // 利
     EnemyManager* enemyMgr;
-    POINTFLOAT enemySpawnPos;
 
     // 面倒贸府侩 RECT
     RECT tempRect;

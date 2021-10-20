@@ -2,6 +2,7 @@
 #include "Config.h"
 #include "GameObject.h"
 #include "Ammo.h"
+#include "Config.h"
 
 class AmmoManager;
 class Enemy : public GameObject
@@ -16,6 +17,7 @@ private:
 
 	AmmoManager* ammoMgr;
 
+	//TILE_INFO* tile;
 public:
 	HRESULT Init();
 	void Update();
@@ -25,5 +27,7 @@ public:
 	void AutoMove();
 
 	bool Collider();
+
+	//inline void SetTileMap(TILE_INFO* tile) { this->tile = tile; }
 };
 

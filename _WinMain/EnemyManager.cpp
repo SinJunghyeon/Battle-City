@@ -1,24 +1,19 @@
 #include "EnemyManager.h"
 #include "Enemy.h"
-#include "MapConfig.h"
 
 HRESULT EnemyManager::Init()
 {
-	enemyMaxCount = 4;
+	enemyMaxCount = 3;
 
 	vecEnemys.resize(enemyMaxCount);
 
 	for (int i = 0; i < enemyMaxCount; i++)
 	{
+		enemySpawnPos[i] = { 120.0f + (i % 3) * 242.0f, 120.0f };
 		vecEnemys[i] = new Enemy;
 		vecEnemys[i]->Init();
-		POINTFLOAT pos{ 300.0f + (i % 5) * 200.0f, 400.0f + (i / 5) * 80.0f };
-		vecEnemys[i]->SetPos(pos);
+		vecEnemys[i]->SetPos(enemySpawnPos[i]);
 	}
-
-	//playerSpawnPos = GetSpawnPos(tileInfo, ObjectType::PLAYER).back();
-	//player->SetPos(playerSpawnPos);
-	//player->SetTileMap(tileInfo);
 
 	return S_OK;
 }
