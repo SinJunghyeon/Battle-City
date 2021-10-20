@@ -19,6 +19,6 @@ public:
 	void Render(HDC hdc);
 	void Release();
 
-	void AddEnemy(float posX, float posY);
+	void AddEnemy(POINTFLOAT pos);
 };
 

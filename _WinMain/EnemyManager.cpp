@@ -88,6 +88,7 @@ void EnemyManager::Release()
 	vecEnemys.clear();
 }
 
-void EnemyManager::AddEnemy(float posX, float posY)
+void EnemyManager::AddEnemy(POINTFLOAT pos)
 {
+
 }
