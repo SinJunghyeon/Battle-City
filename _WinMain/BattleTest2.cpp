@@ -182,8 +182,8 @@ void BattleTest2::AmmoMapCollision(Tank* tank, TILE_INFO* tile)
     for (int j = 0; j < tank->ammoCount; j++)
     {
         RECT TankRect = tank->ammoPack[j].GetShape();
-        cout << "battletest2 pos.x : " << tank->ammoPack[j].GetPos().x << endl;
-        cout << "battletest2 pos.y : " << tank->ammoPack[j].GetPos().y << endl;
+        //cout << "battletest2 pos.x : " << tank->ammoPack[j].GetPos().x << endl;
+        //cout << "battletest2 pos.y : " << tank->ammoPack[j].GetPos().y << endl;
         for (int i = 0; i < TILE_COUNT_X * TILE_COUNT_Y; i++)
         {
             if (IntersectRect(&tempRect, &TankRect, &tile[i].rc)) // Ammo랑 Tile이 충돌하면
