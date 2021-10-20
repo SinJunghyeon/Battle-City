@@ -1,5 +1,4 @@
 #include "EnemyManager.h"
-#include "Enemy.h"
 
 HRESULT EnemyManager::Init()
 {
@@ -121,3 +120,20 @@ void EnemyManager::AddEnemy(POINTFLOAT pos)
 	if (enemyCurrCount > enemyMaxCount)
 		enemyCurrCount = enemyMaxCount;
 }
+
+void EnemyManager::TankState(ecTankState state)
+{
+	for (int i = 0; i < enemyCurrCount; i++)
+	{
+		vecEnemys[i]->SetTankState(state);
+	}
+}
+
+void EnemyManager::IsAlive(bool isAlive)
+{
+	for (int i = 0; i < enemyCurrCount; i++)
+	{
+		vecEnemys[i]->SetIsAlive(isAlive);
+	}
+}
+
