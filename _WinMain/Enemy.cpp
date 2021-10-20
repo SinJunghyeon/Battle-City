@@ -84,7 +84,6 @@ void Enemy::Update()
 		shape.right = shape.left + bodySize - 5;
 		shape.bottom = shape.top + bodySize - 5;
 	}
-
 }
 
 void Enemy::Render(HDC hdc)
@@ -96,6 +95,7 @@ void Enemy::Render(HDC hdc)
 	{
 		spawnImg->Render(hdc, pos.x, pos.y, spawnImg->GetCurrFrameX(), spawnImg->GetCurrFrameY());
 	}
+
 	if (isAlive)
 	{
 		img->Render(hdc, pos.x, pos.y, img->GetCurrFrameX(), img->GetCurrFrameY());
@@ -220,4 +220,40 @@ bool Enemy::Collider()
 	}
 
 	return false;
+}
+
+void Enemy::Move(MoveDir dir)
+{
+	POINTFLOAT buffPos; // 현재 좌표를 백업하기 위한 버퍼
+	buffPos.x = pos.x;
+	buffPos.y = pos.y;
+	RECT buffRect;
+	buffRect = shape;
+
+	switch (dir)
+	{
+	case MoveDir::LEFT: pos.x -= (moveSpeed * TimerManager::GetSingleton()->GetDeltaTime()); break;
+	case MoveDir::RIGHT: pos.x += (moveSpeed * TimerManager::GetSingleton()->GetDeltaTime()); break;
+	case MoveDir::UP: pos.y -= (moveSpeed * TimerManager::GetSingleton()->GetDeltaTime()); break;
+	case MoveDir::DOWN: pos.y += (moveSpeed * TimerManager::GetSingleton()->GetDeltaTime()); break;
+	}
+
+
+	// 위치에 따른 모양값 갱신
+	shape.left = pos.x - (bodySize / 2) - 2;
+	shape.top = pos.y - (bodySize / 2) - 3;
+	shape.right = pos.x + (bodySize / 2);
+	shape.bottom = pos.y + (bodySize / 2) - 3;
+
+	for (int i = 0; i < TILE_COUNT_X * TILE_COUNT_Y; i++)
+	{
+		if (IntersectRect(&tempRect, &shape, &tile[i].rc))
+		{
+			if ((tile[i].terrain == Terrain::WALL) || (tile[i].terrain == Terrain::STEEL) || (tile[i].terrain == Terrain::HQ_WALL) || (tile[i].terrain == Terrain::HQ_STEEL))
+			{
+				pos = buffPos;
+				shape = buffRect;
+			}
+		}
+	}
 }

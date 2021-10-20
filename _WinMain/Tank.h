@@ -3,7 +3,6 @@
 #include "GameObject.h"
 #include "Ammo.h"
 #include "Image.h"
-#include "MapConfig.h"
 
 class Item;
 class Tank : public GameObject
@@ -23,9 +22,6 @@ public:
 	Image* effectImg = nullptr;
 	bool isInvincible = true;		//무적상태
 	int elapsedInvincible = NULL;
-
-	// 타일 정보
-	TILE_INFO* tile;
 
 	// 충돌처리용 RECT
 	RECT tempRect;

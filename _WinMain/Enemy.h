@@ -20,9 +20,13 @@ private:
 
 	AmmoManager* ammoMgr;
 
+	// 충돌처리용 RECT
+	RECT tempRect;
+
 	Image* spawnImg;
 	int elapsedSpawn = NULL;
 	int spawnCount = NULL;
+
 public:
 	HRESULT Init();
 	void Update();
@@ -30,10 +34,11 @@ public:
 	void Release();
 	
 	void AutoMove();
+	void Move(MoveDir dir);
 
 	bool Collider();
 
 	void SetMoveSpeed(float moveSpeed) { this->moveSpeed = moveSpeed; }
-	//inline void SetTileMap(TILE_INFO* tile) { this->tile = tile; }
+	inline void SetTileMap(TILE_INFO* tile) { this->tile = tile; }
 };
 

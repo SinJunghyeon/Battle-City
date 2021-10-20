@@ -26,7 +26,6 @@ void EnemyManager::Update()
 	for (int i = 0; i < enemyCurrCount; i++)
 	{
 		vecEnemys[i]->SetMoveSpeed(20.0f);
-
 	}
 	enemySpawnDelay++;
 
@@ -37,6 +36,7 @@ void EnemyManager::Update()
 		enemySpawnDelay = 0;
 	}
 
+	// 적끼리 충돌확인
 	for (int i = 0; i < enemyCurrCount; i++)
 	{
 		for (int j = 0; j < enemyCurrCount; j++)
