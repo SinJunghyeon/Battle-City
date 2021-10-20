@@ -8,6 +8,7 @@ class EnemyManager;
 class Tank;
 class Image;
 class Item;
+class Ammo;
 class BattleTest2 : public GameEntity
 {
 private:
@@ -47,7 +48,7 @@ public:
 
     void Load(int loadIndex = 0);
 
-    void Collision(GameObject* tank, TILE_INFO* tile);
+    void AmmoMapCollision(Tank* tank, TILE_INFO* tile);
     void CollisionItem();
     void FunctionItem();
 };

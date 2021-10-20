@@ -14,8 +14,6 @@ private:
 
 	Image* img;
 
-	MoveDir moveDir;
-
 public:
 	HRESULT Init();
 	void Update();
@@ -24,10 +22,6 @@ public:
 
 	void SetIsFire(bool fire);
 	inline bool GetIsFire() { return this->isFire; }
-
-	inline void SetMoveDir(MoveDir moveDir) {
-		this->moveDir = moveDir;
-	}
 
 	Ammo();
 	~Ammo();
