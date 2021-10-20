@@ -66,11 +66,6 @@ inline void SetTerrain(TILE_INFO* rc)
             rc->hp = 0;
         }
     }
-    else if (0 <= rc->frameX && rc->frameX <= 4 && rc->frameY == 8)
-    {
-        rc->terrain = Terrain::WALL;
-        rc->hp = 2;
-    }
     else if (rc->frameX == 8)
     {
         if (rc->frameY == 0)

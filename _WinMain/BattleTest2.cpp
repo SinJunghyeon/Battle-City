@@ -176,30 +176,26 @@ void BattleTest2::Load(int loadIndex)
 
 void BattleTest2::AmmoMapCollision(Tank* tank, TILE_INFO* tile)
 {
-    POINTFLOAT pos;
-    pos.x = 0;
-    pos.y = 0;
     for (int j = 0; j < tank->ammoCount; j++)
     {
         RECT TankRect = tank->ammoPack[j].GetShape();
-        cout << "battletest2 pos.x : " << tank->ammoPack[j].GetPos().x << endl;
-        cout << "battletest2 pos.y : " << tank->ammoPack[j].GetPos().y << endl;
+        /*cout << "Ammo pos.x : " << tank->ammoPack[j].GetPos().x << endl;
+        cout << "Ammo pos.y : " << tank->ammoPack[j].GetPos().y << endl;
+        cout << "총알 발사 여부 : " << tank->ammoPack[j].GetIsFire() << endl;*/
         for (int i = 0; i < TILE_COUNT_X * TILE_COUNT_Y; i++)
         {
-            if (IntersectRect(&tempRect, &TankRect, &tile[i].rc)) // Ammo랑 Tile이 충돌하면
+            if (IntersectRect(&tempRect, &TankRect, &tile[i].rc) && tank->ammoPack[j].GetIsFire()) // Ammo랑 Tile이 충돌하면
             {
                 if ((tile[i].terrain == Terrain::WALL) || (tile[i].terrain == Terrain::HQ_WALL)) // 충돌한 Tile이 벽일때
                 {
-                    tank->ammoPack[j].SetIsFire(false);
-                    tank->ammoPack[j].SetPos(pos);
-                    if (tile[i].hp == 1) // 파괴된 벽인 경우
+                    tile[i].hp--;
+                    if (tile[i].hp == 0) // 파괴된 벽인 경우
                     {
                         tile[i].frameX = 10;
                         tile[i].frameY = 10; // ROAD로 바꾼다.
                     }
                     else
                     {
-                        tile[i].hp--;
                         tile[i].frameY = 8;
                         switch (tank->ammoPack[j].GetMoveDir()) // Ammo의 방향에 따라 처리
                         {
@@ -218,8 +214,14 @@ void BattleTest2::AmmoMapCollision(Tank* tank, TILE_INFO* tile)
                         default:
                             break;
                         }
-                        
                     }
+                    tank->ammoPack[j].SetIsFire(false);
+                    tank->ammoPack[j].SetPos(tank->GetPos());
+                }
+                else if ((tile[i].terrain == Terrain::STEEL) || (tile[i].terrain == Terrain::HQ_STEEL))
+                {
+                    tank->ammoPack[j].SetIsFire(false);
+                    tank->ammoPack[j].SetPos(tank->GetPos());
                 }
             }
         }
