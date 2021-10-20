@@ -39,8 +39,7 @@ private:
     Item* mpItem;
     RECT itemRect;
 
-    // 타일 정보
-    TILE_INFO* tiles;
+    int elapsedChange = NULL;
 
 public:
     HRESULT Init();
@@ -52,9 +51,6 @@ public:
 
     void Collision(GameObject* tank, TILE_INFO* tile);
     void CollisionItem();
-    void FunctionItem();	
-    
-    // 타일 정보를 받아오는 함수
-    inline void SetTileMap(TILE_INFO* tiles) { this->tiles = tiles; }
+    void FunctionItem();
 };
 

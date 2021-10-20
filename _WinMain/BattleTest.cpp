@@ -14,7 +14,6 @@ HRESULT BattleTest::Init()
         cout << "Image/BattleCity/SamlpTile1.bmp 로드 실패!!" << endl;
         return E_FAIL;
     }
-
     // 배경 이미지
     ImageManager::GetSingleton()->AddImage("Image/BattleCity/mapImage.bmp", WIN_SIZE_X, WIN_SIZE_Y);
     backGround = ImageManager::GetSingleton()->FindImage("Image/BattleCity/mapImage.bmp");
@@ -43,12 +42,15 @@ HRESULT BattleTest::Init()
     mpItem->Init();
     itemRect = mpItem->GetShape();
 
+    elapsedChange = 0;
+
     return S_OK;
 }
 
 void BattleTest::Update()
 {
     //cout << boolalpha << "mpItem->GetExistItem() : " << mpItem->GetExistItem() << endl;
+    cout << "elapsedChange : " << elapsedChange << endl;
 
     // 타일 속성 확인용 코드
     for (int i = 0; i < TILE_COUNT_X * TILE_COUNT_Y; i++)
@@ -93,6 +95,25 @@ void BattleTest::Update()
 
     //플레이어 아이템 접촉
     CollisionItem();
+
+    //HQ주변 타일 되돌리기
+    if (tileInfo[609].terrain == Terrain::HQ_STEEL)
+    {
+        elapsedChange++;
+        if (elapsedChange >= 300)
+        {
+            for (int i = 600; i < TILE_COUNT_X * TILE_COUNT_Y; i++)
+            {
+                if (tileInfo[i].terrain == Terrain::HQ_STEEL)
+                {
+                    tileInfo[i].terrain = Terrain::HQ_WALL;
+                    tileInfo[i].frameX = 8;
+                    tileInfo[i].frameY = 0;
+                    elapsedChange = 0;
+                }
+            }
+        }
+    }
 }
 
 void BattleTest::Render(HDC hdc)
@@ -239,14 +260,16 @@ void BattleTest::FunctionItem()
     //삽
     if (mpItem->GetItemState() == ecFunctionItem::SHOVEL)
     {
-        ////HQ주변 타일 강철로
-        //for (int i = 0; i < TILE_COUNT_X * TILE_COUNT_Y; i++)
-        //{
-        //   if (tiles[i].terrain == Terrain::HQ_WALL)
-        //   {
-        //       cout << "변화해야해! !" << endl;
-        //   }
-        //}
+        //HQ주변 타일 강철로
+        for (int i = 600; i < TILE_COUNT_X * TILE_COUNT_Y; i++)
+        {
+           if (tileInfo[i].terrain == Terrain::HQ_WALL)
+           {
+               tileInfo[i].terrain = Terrain::HQ_STEEL;
+               tileInfo[i].frameX = 8;
+               tileInfo[i].frameY = 2;
+           }
+        }
     }
     //별
     if (mpItem->GetItemState() == ecFunctionItem::STAR)
