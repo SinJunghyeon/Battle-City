@@ -181,11 +181,12 @@ void BattleTest2::AmmoMapCollision(Tank* tank, TILE_INFO* tile)
     pos.y = 0;
     for (int j = 0; j < tank->ammoCount; j++)
     {
+        RECT TankRect = tank->ammoPack[j].GetShape();
         cout << "battletest2 pos.x : " << tank->ammoPack[j].GetPos().x << endl;
         cout << "battletest2 pos.y : " << tank->ammoPack[j].GetPos().y << endl;
         for (int i = 0; i < TILE_COUNT_X * TILE_COUNT_Y; i++)
         {
-            if (IntersectRect(&tempRect, &tank->ammoPack[j].GetShape(), &tile[i].rc)) // Ammo랑 Tile이 충돌하면
+            if (IntersectRect(&tempRect, &TankRect, &tile[i].rc)) // Ammo랑 Tile이 충돌하면
             {
                 if ((tile[i].terrain == Terrain::WALL) || (tile[i].terrain == Terrain::HQ_WALL)) // 충돌한 Tile이 벽일때
                 {
