@@ -1,33 +1,45 @@
 #include "EnemyManager.h"
 #include "Enemy.h"
-#include "MapConfig.h"
 
 HRESULT EnemyManager::Init()
 {
-	enemyMaxCount = 4;
+	enemyMaxCount = 6;
+	enemyCurrCount = 3;
+
+	enemySpawnDelay = 0;
 
 	vecEnemys.resize(enemyMaxCount);
 
 	for (int i = 0; i < enemyMaxCount; i++)
 	{
+		enemySpawnPos[i] = { 120.0f + (i % 3) * 242.0f, 120.0f };
 		vecEnemys[i] = new Enemy;
 		vecEnemys[i]->Init();
-		POINTFLOAT pos{ 300.0f + (i % 5) * 200.0f, 400.0f + (i / 5) * 80.0f };
-		vecEnemys[i]->SetPos(pos);
+		vecEnemys[i]->SetPos(enemySpawnPos[i]);
 	}
-
-	//playerSpawnPos = GetSpawnPos(tileInfo, ObjectType::PLAYER).back();
-	//player->SetPos(playerSpawnPos);
-	//player->SetTileMap(tileInfo);
 
 	return S_OK;
 }
 
 void EnemyManager::Update()
 {
-	for (int i = 0; i < enemyMaxCount; i++)
+	for (int i = 0; i < enemyCurrCount; i++)
 	{
-		for (int j = 0; j < enemyMaxCount; j++)
+		vecEnemys[i]->SetMoveSpeed(20.0f);
+	}
+	enemySpawnDelay++;
+
+	if (enemySpawnDelay >= 500)
+	{
+		AddEnemy(enemySpawnPos[enemyCurrCount]);
+
+		enemySpawnDelay = 0;
+	}
+
+	// 적끼리 충돌확인
+	for (int i = 0; i < enemyCurrCount; i++)
+	{
+		for (int j = 0; j < enemyCurrCount; j++)
 		{
 			if (i == j)
 				continue;
@@ -67,19 +79,29 @@ void EnemyManager::Update()
 		}
 	}
 
-	for (itEnemys = vecEnemys.begin();
+	for (int i = 0; i < enemyCurrCount; i++)
+	{
+		vecEnemys[i]->Update();
+	}
+	
+	/*for (itEnemys = vecEnemys.begin();
 		itEnemys != vecEnemys.end(); itEnemys++)
 	{
 		(*itEnemys)->Update();
-	}
+	}*/
 }
 
 void EnemyManager::Render(HDC hdc)
 {
-	for (itEnemys = vecEnemys.begin();
+	/*for (itEnemys = vecEnemys.begin();
 		itEnemys != vecEnemys.end(); itEnemys++)
 	{
 		(*itEnemys)->Render(hdc);
+	}*/
+
+	for (int i = 0; i < enemyCurrCount; i++)
+	{
+		vecEnemys[i]->Render(hdc);
 	}
 }
 
@@ -93,6 +115,9 @@ void EnemyManager::Release()
 	vecEnemys.clear();
 }
 
-void EnemyManager::AddEnemy(float posX, float posY)
+void EnemyManager::AddEnemy(POINTFLOAT pos)
 {
+	enemyCurrCount++;
+	if (enemyCurrCount > enemyMaxCount)
+		enemyCurrCount = enemyMaxCount;
 }
