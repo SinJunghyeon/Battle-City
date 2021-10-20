@@ -36,6 +36,11 @@ HRESULT Ammo::Init()
 
 void Ammo::Update()
 {
+	shape.left = pos.x - (bodySize / 2.0f);
+	shape.top = pos.y - (bodySize / 2.0f);
+	shape.right = pos.x + (bodySize / 2.0f);
+	shape.bottom = pos.y + (bodySize / 2.0f);
+
 	if (isFire)
 	{
 		if (moveDir == MoveDir::UP)
@@ -55,10 +60,6 @@ void Ammo::Update()
 			pos.x += moveSpeed * TimerManager::GetSingleton()->GetDeltaTime();
 		}
 
-		shape.left = pos.x - (bodySize / 2.0f);
-		shape.top = pos.y - (bodySize / 2.0f);
-		shape.right = pos.x + (bodySize / 2.0f);
-		shape.bottom = pos.y + (bodySize / 2.0f);
 
 		// È­¸éÀ» ¹þ¾î³µ´ÂÁö È®ÀÎ
 		if (shape.left > WIN_SIZE_X || shape.right < 0 ||

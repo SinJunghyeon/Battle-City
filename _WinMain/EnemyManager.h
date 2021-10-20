@@ -1,8 +1,9 @@
 #pragma once
 #include "Config.h"
 #include "GameEntity.h"
+#include "MapConfig.h"
+#include "Enemy.h"
 
-class Enemy;
 class EnemyManager : public GameEntity
 {
 private:
@@ -22,5 +23,9 @@ public:
 	void Release();
 
 	void AddEnemy(POINTFLOAT pos);
+
+	void SetTileMapManager(TILE_INFO* tile);
+	void TankState(ecTankState state);
+	void IsAlive(bool isAlive);
 };
 

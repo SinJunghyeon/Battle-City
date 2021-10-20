@@ -1,4 +1,4 @@
-#include "BattleTest.h"
+ #include "BattleTest.h"
 #include "Image.h"
 #include "Tank.h"
 #include "EnemyManager.h"
@@ -6,38 +6,38 @@
 
 HRESULT BattleTest::Init()
 {
-    // Å¸ÀÏ ¸Ê ÀÌ¹ÌÁö
+    // íƒ€ì¼ ë§µ ì´ë¯¸ì§€
     sampleImage = ImageManager::GetSingleton()->AddImage("Image/BattleCity/SamlpTile1.bmp",
         220, 220, 11, 11, true, RGB(255, 0, 255));
     if (sampleImage == nullptr)
     {
-        cout << "Image/BattleCity/SamlpTile1.bmp ·Îµå ½ÇÆĞ!!" << endl;
+        cout << "Image/BattleCity/SamlpTile1.bmp ë¡œë“œ ì‹¤íŒ¨!!" << endl;
         return E_FAIL;
     }
-    // ¹è°æ ÀÌ¹ÌÁö
+    // ë°°ê²½ ì´ë¯¸ì§€
     ImageManager::GetSingleton()->AddImage("Image/BattleCity/mapImage.bmp", WIN_SIZE_X, WIN_SIZE_Y);
     backGround = ImageManager::GetSingleton()->FindImage("Image/BattleCity/mapImage.bmp");
     if (backGround == nullptr)
     {
-        cout << "Image/BattleCity/mapImage.bmp ÆÄÀÏ ·Îµå¿¡ ½ÇÆĞÇß´Ù." << endl;
+        cout << "Image/BattleCity/mapImage.bmp íŒŒì¼ ë¡œë“œì— ì‹¤íŒ¨í–ˆë‹¤." << endl;
 
         return E_FAIL;
     }
 
-    // Àû ¸Å´ÏÀú
+    // ì  ë§¤ë‹ˆì €
     enemyMgr = new EnemyManager;
     enemyMgr->Init();
 
     Load();
 
-    // ÇÃ·¹ÀÌ¾î ÅÊÅ©
+    // í”Œë ˆì´ì–´ íƒ±í¬
     player = new Tank;
     player->Init();
     spawnPos = GetSpawnPos(tileInfo, ObjectType::PLAYER).back();
     player->SetPos(spawnPos);
     player->SetTileMap(tileInfo);
     playerTankRect = player->GetShape();
-    //¾ÆÀÌÅÛ
+    //ì•„ì´í…œ
     mpItem = new Item;
     mpItem->Init();
     itemRect = mpItem->GetShape();
@@ -50,14 +50,15 @@ HRESULT BattleTest::Init()
 void BattleTest::Update()
 {
     //cout << boolalpha << "mpItem->GetExistItem() : " << mpItem->GetExistItem() << endl;
-    cout << "elapsedChange : " << elapsedChange << endl;
+    //cout << "elapsedChange : " << elapsedChange << endl;
+    //cout << "elapsedCount : " << elapsedCount << endl;
 
-    // Å¸ÀÏ ¼Ó¼º È®ÀÎ¿ë ÄÚµå
+    // íƒ€ì¼ ì†ì„± í™•ì¸ìš© ì½”ë“œ
     for (int i = 0; i < TILE_COUNT_X * TILE_COUNT_Y; i++)
     {
         if (PtInRect(&(tileInfo[i].rc), g_ptMouse))
         {
-            if (KeyManager::GetSingleton()->IsStayKeyDown(VK_RBUTTON)) // µğ¹ö±×¿ë
+            if (KeyManager::GetSingleton()->IsStayKeyDown(VK_RBUTTON)) // ë””ë²„ê·¸ìš©
             {
                 if (tileInfo[i].terrain == Terrain::WALL) cout << "WALL" << tileInfo[i].hp << endl;
                 else if (tileInfo[i].playerSpawn) cout << "playerSpawn" << tileInfo[i].hp << endl;
@@ -73,7 +74,7 @@ void BattleTest::Update()
         }
     }
 
-    // ÇÃ·¹ÀÌ¾î ÅÊÅ©
+    // í”Œë ˆì´ì–´ íƒ±í¬
     tempPos = player->GetPos();
     player->Update();
     //if (tempPos.x != player->GetPos().x || tempPos.y != player->GetPos().y)
@@ -82,21 +83,21 @@ void BattleTest::Update()
     //}
     playerTankRect = player->GetShape();
 
-    //Àû ÅÊÅ©
+    //ì  íƒ±í¬
     if (enemyMgr)
         enemyMgr->Update();
 
-    //¾ÆÀÌÅÛ
+    //ì•„ì´í…œ
     mpItem->Update();
     if (mpItem->GetExistItem() == true)
     {
         itemRect = mpItem->GetShape();
     }
 
-    //ÇÃ·¹ÀÌ¾î ¾ÆÀÌÅÛ Á¢ÃË
+    //í”Œë ˆì´ì–´ ì•„ì´í…œ ì ‘ì´‰
     CollisionItem();
 
-    //HQÁÖº¯ Å¸ÀÏ µÇµ¹¸®±â
+    //HQì£¼ë³€ íƒ€ì¼ ë˜ëŒë¦¬ê¸°
     if (tileInfo[609].terrain == Terrain::HQ_STEEL)
     {
         elapsedChange++;
@@ -112,6 +113,16 @@ void BattleTest::Update()
                     elapsedChange = 0;
                 }
             }
+        }
+    }
+
+    //ì íƒ±í¬ì˜ ìƒíƒœê°€ IDLEì¼ ë•Œ
+    if (elapsedCount < 10000)
+    {
+        elapsedCount++;
+        if (elapsedCount >= 300)
+        {
+            enemyMgr->TankState(ecTankState::MOVE);
         }
     }
 }
@@ -141,14 +152,14 @@ void BattleTest::Render(HDC hdc)
         }
     }
 
-    // ÇÃ·¹ÀÌ¾î ÅÊÅ©
+    // í”Œë ˆì´ì–´ íƒ±í¬
     player->Render(hdc);
 
-    // Àû ÅÊÅ©
+    // ì  íƒ±í¬
     if (enemyMgr)
         enemyMgr->Render(hdc);
 
-    //¾ÆÀÌÅÛ    
+    //ì•„ì´í…œ    
     if (mpItem->GetExistItem() == true)
     {
         mpItem->Render(hdc);
@@ -157,11 +168,11 @@ void BattleTest::Render(HDC hdc)
 
 void BattleTest::Release()
 {
-    // ÇÃ·¹ÀÌ¾î ÅÊÅ©
+    // í”Œë ˆì´ì–´ íƒ±í¬
     SAFE_RELEASE(player);
-    // Àû ÅÊÅ©
+    // ì  íƒ±í¬
     SAFE_RELEASE(enemyMgr);
-    //¾ÆÀÌÅÛ
+    //ì•„ì´í…œ
     SAFE_RELEASE(mpItem);
 }
 
@@ -171,18 +182,18 @@ void BattleTest::Load(int loadIndex)
     loadFileName += ".map";
 
     HANDLE hFile = CreateFile(loadFileName.c_str(),
-        GENERIC_READ,           // ÀĞ±â, ¾²±â
-        0, NULL,                // °øÀ¯, º¸¾È ¸ğµå
-        OPEN_EXISTING,          // ÆÄÀÏ ¸¸µé°Å³ª ÀĞÀ» ¶§ ¿É¼Ç
-        FILE_ATTRIBUTE_NORMAL,  // ÆÄÀÏ ¼Ó¼º(ÀĞ±â Àü¿ë, ¼û±è µîµî)
+        GENERIC_READ,           // ì½ê¸°, ì“°ê¸°
+        0, NULL,                // ê³µìœ , ë³´ì•ˆ ëª¨ë“œ
+        OPEN_EXISTING,          // íŒŒì¼ ë§Œë“¤ê±°ë‚˜ ì½ì„ ë•Œ ì˜µì…˜
+        FILE_ATTRIBUTE_NORMAL,  // íŒŒì¼ ì†ì„±(ì½ê¸° ì „ìš©, ìˆ¨ê¹€ ë“±ë“±)
         NULL);
 
-    // ÀĞ±â
+    // ì½ê¸°
     DWORD readByte;
     if (ReadFile(hFile, tileInfo, sizeof(tagTile) * TILE_COUNT_X * TILE_COUNT_Y,
         &readByte, NULL) == false)
     {
-        MessageBox(g_hWnd, "¸Ê µ¥ÀÌÅÍ ·Îµå¿¡ ½ÇÆĞÇß½À´Ï´Ù.", "¿¡·¯", MB_OK);
+        MessageBox(g_hWnd, "ë§µ ë°ì´í„° ë¡œë“œì— ì‹¤íŒ¨í–ˆìŠµë‹ˆë‹¤.", "ì—ëŸ¬", MB_OK);
     }
 
     CloseHandle(hFile);
@@ -190,7 +201,7 @@ void BattleTest::Load(int loadIndex)
 
 void BattleTest::Collision(GameObject* tank, TILE_INFO* tile)
 {
-    POINTFLOAT pos; // SetPos¸¦ »ç¿ëÇÏ±â À§ÇØ ÀÓ½Ã·Î ¸¸µç º¯¼ö
+    POINTFLOAT pos; // SetPosë¥¼ ì‚¬ìš©í•˜ê¸° ìœ„í•´ ì„ì‹œë¡œ ë§Œë“  ë³€ìˆ˜
     pos.x = tank->GetPos().x;
     pos.y = tank->GetPos().y;
 
@@ -236,8 +247,8 @@ void BattleTest::CollisionItem()
     {
         if (IntersectRect(&a, &playerTankRect, &itemRect))
         {
-            //cout << "¾ÆÀÌÅÛ Á¢ÃË! !" << endl;
-            //cout << "±â´ÉÈ¹µæ! !" << endl;
+            //cout << "ì•„ì´í…œ ì ‘ì´‰! !" << endl;
+            //cout << "ê¸°ëŠ¥íšë“! !" << endl;
             FunctionItem();
             mpItem->SetExistItem(false);
         }
@@ -246,21 +257,23 @@ void BattleTest::CollisionItem()
 
 void BattleTest::FunctionItem()
 {
-    //Çï¸ä
+    //í—¬ë©§
     if (mpItem->GetItemState() == ecFunctionItem::HELMET)
     {
         player->SetInvincible(true);
         player->SetElapsedInvincible(0);
     }
-    //½Ã°è
+    //ì‹œê³„
     if (mpItem->GetItemState() == ecFunctionItem::WATCH)
     {
-        //ÀûÅÊÅ© ÀÏ½ÃÁ¤Áö
+        //ì íƒ±í¬ ì¼ì‹œì •ì§€
+        enemyMgr->TankState(ecTankState::IDLE);
+        elapsedCount = 0;
     }
-    //»ğ
+    //ì‚½
     if (mpItem->GetItemState() == ecFunctionItem::SHOVEL)
     {
-        //HQÁÖº¯ Å¸ÀÏ °­Ã¶·Î
+        //HQì£¼ë³€ íƒ€ì¼ ê°•ì² ë¡œ
         for (int i = 600; i < TILE_COUNT_X * TILE_COUNT_Y; i++)
         {
            if (tileInfo[i].terrain == Terrain::HQ_WALL)
@@ -271,7 +284,7 @@ void BattleTest::FunctionItem()
            }
         }
     }
-    //º°
+    //ë³„
     if (mpItem->GetItemState() == ecFunctionItem::STAR)
     {
         player->SetImgFrameY(player->GetImgFrameY() + 1);
@@ -284,12 +297,13 @@ void BattleTest::FunctionItem()
             player->SetAmmoCount(2);
         }
     }
-    //¼ö·ùÅº
+    //ìˆ˜ë¥˜íƒ„
     if (mpItem->GetItemState() == ecFunctionItem::GRENADE)
     {
-        //³ª¿ÍÀÖ´Â Àû ¸ğµÎ Á×ÀÓ
+        //ë‚˜ì™€ìˆëŠ” ì  ëª¨ë‘ ì£½ì„
+        enemyMgr->IsAlive(false);
     }
-    //ÅÊÅ©
+    //íƒ±í¬
     if (mpItem->GetItemState() == ecFunctionItem::TANK)
     {
         player->SetptLife(player->GetptLife() + 1);

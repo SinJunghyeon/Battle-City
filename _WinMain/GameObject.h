@@ -36,6 +36,7 @@ protected:	// 상속된 클래스에 노출시킨다.
 
 	// 타일 정보
 	TILE_INFO* tile;
+  
 public:
 	void Move();
 
