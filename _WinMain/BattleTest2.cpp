@@ -8,8 +8,7 @@
 HRESULT BattleTest2::Init()
 {
     // 타일 맵 이미지
-    sampleImage = ImageManager::GetSingleton()->AddImage("Image/BattleCity/SamlpTile1.bmp",
-        220, 220, 11, 11, true, RGB(255, 0, 255));
+    sampleImage = ImageManager::GetSingleton()->AddImage("Image/BattleCity/SamlpTile1.bmp", 220, 220, 11, 11, true, RGB(255, 0, 255));
     if (sampleImage == nullptr)
     {
         cout << "Image/BattleCity/SamlpTile1.bmp 로드 실패!!" << endl;
@@ -24,6 +23,29 @@ HRESULT BattleTest2::Init()
         cout << "Image/BattleCity/mapImage.bmp 파일 로드에 실패했다." << endl;
 
         return E_FAIL;
+    }
+
+    // 폭발 이미지
+    ImageManager::GetSingleton()->AddImage("Image/BattleCity/Effect/Boom_Effect.bmp", 48, 16, 3, 1, true, RGB(255, 0, 255));
+    ImageManager::GetSingleton()->AddImage("Image/BattleCity/Effect/Big_Boom_Effect.bmp", 64, 32, 2, 1, true, RGB(255, 0, 255));
+
+    for (int i = 0; i < BOOM_NUM; i++)
+    {
+        boomEffect[i].boom = ImageManager::GetSingleton()->FindImage("Image/BattleCity/Effect/Boom_Effect.bmp");
+        if (boomEffect[i].boom == nullptr)
+        {
+            cout << "Image/BattleCity/Effect/Boom_Effect.bmp 파일 로드에 실패했다." << endl;
+
+            return E_FAIL;
+        }
+
+        boomEffect[i].bigBoom = ImageManager::GetSingleton()->FindImage("Image/BattleCity/Effect/Big_Boom_Effect.bmp");
+        if (boomEffect[i].bigBoom == nullptr)
+        {
+            cout << "Image/BattleCity/Effect/Big_Boom_Effect.bmp 파일 로드에 실패했다." << endl;
+
+            return E_FAIL;
+        }
     }
 
     // 적 매니저
@@ -95,9 +117,24 @@ void BattleTest2::Update()
 
     //플레이어 아이템 접촉
     CollisionItem();
+    for (int i = 0; i < BOOM_NUM; i++)
+    {
+        if (boomEffect[i].isRender)
+        {
+            boomEffect[i].elapsedCount++;
+            if (boomEffect[i].elapsedCount >= 10)
+            {
+                boomEffect[i].boom->SetCurrFrameX(boomEffect[i].boom->GetCurrFrameX() + 1);
 
-    // 미사일 타일 접촉
-    AmmoMapCollision(player, tileInfo);
+                if (boomEffect[i].boom->GetCurrFrameX() == 2)
+                {
+                    boomEffect[i].isRender = false;
+                    boomEffect[i].boom->SetCurrFrameX(0);
+                }
+                boomEffect[i].elapsedCount = 0;
+            }
+        }
+    }
 }
 
 void BattleTest2::Render(HDC hdc)
@@ -137,6 +174,19 @@ void BattleTest2::Render(HDC hdc)
     {
         mpItem->Render(hdc);
     }
+
+    // 미사일 타일 접촉
+    AmmoMapCollision(boomEffect, player, tileInfo);
+
+    // 폭발 이펙트 렌더
+    for (int i = 0; i < BOOM_NUM; i++)
+    {
+        if (boomEffect[i].isRender)
+        {
+            boomEffect[i].boom->Render(hdc, boomEffect[i].boomPos.x, boomEffect[i].boomPos.y, boomEffect[i].boom->GetCurrFrameX(), boomEffect[i].boom->GetCurrFrameY(), 2.0f);
+            break;
+        }
+    }
 }
 
 void BattleTest2::Release()
@@ -174,7 +224,7 @@ void BattleTest2::Load(int loadIndex)
     CloseHandle(hFile);
 }
 
-void BattleTest2::AmmoMapCollision(Tank* tank, TILE_INFO* tile)
+void BattleTest2::AmmoMapCollision(Boom* boom, Tank* tank, TILE_INFO* tile)
 {
     for (int j = 0; j < tank->ammoCount; j++)
     {
@@ -188,6 +238,7 @@ void BattleTest2::AmmoMapCollision(Tank* tank, TILE_INFO* tile)
             {
                 if ((tile[i].terrain == Terrain::WALL) || (tile[i].terrain == Terrain::HQ_WALL)) // 충돌한 Tile이 벽일때
                 {
+                    BoomAnimation(boom, BoomType::SMALL_BOOM, tank->ammoPack[j].GetPos());
                     tile[i].hp--;
                     if (tile[i].hp == 0) // 파괴된 벽인 경우
                     {
@@ -283,5 +334,19 @@ void BattleTest2::FunctionItem()
     if (mpItem->GetItemState() == ecFunctionItem::TANK)
     {
         player->SetptLife(player->GetptLife() + 1);
+    }
+}
+
+void BattleTest2::BoomAnimation(Boom* boom, BoomType type, POINTFLOAT pos)
+{
+    for (int i = 0; i < BOOM_NUM; i++)
+    {
+        if (!boom[i].isRender)
+        {
+            boom[i].type = type;
+            boom[i].boomPos = pos;
+            boom[i].isRender = true;
+            break;
+        }
     }
 }
