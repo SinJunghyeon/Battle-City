@@ -65,6 +65,7 @@ public:
 	inline void SetInvincible(bool isInvincible) { this->isInvincible = isInvincible; }
 	// 타일 정보를 받아오는 함수
 	inline void SetTileMap(TILE_INFO* tile) { this->tile = tile; }
+	inline int GetAmmoCount() { return this->ammoCount; }
 
 	Tank();
 	~Tank();
