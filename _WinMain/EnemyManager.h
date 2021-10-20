@@ -1,6 +1,7 @@
 #pragma once
 #include "Config.h"
 #include "GameEntity.h"
+#include "MapConfig.h"
 
 class Enemy;
 class EnemyManager : public GameEntity
@@ -22,5 +23,7 @@ public:
 	void Release();
 
 	void AddEnemy(POINTFLOAT pos);
+
+	void SetTileMapManager(TILE_INFO* tile);
 };
 

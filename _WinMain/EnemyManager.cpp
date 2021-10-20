@@ -27,8 +27,9 @@ void EnemyManager::Update()
 	{
 		vecEnemys[i]->SetMoveSpeed(20.0f);
 	}
-	enemySpawnDelay++;
 
+	// 적 새로 리스폰
+	enemySpawnDelay++;
 	if (enemySpawnDelay >= 500)
 	{
 		AddEnemy(enemySpawnPos[enemyCurrCount]);
@@ -120,4 +121,12 @@ void EnemyManager::AddEnemy(POINTFLOAT pos)
 	enemyCurrCount++;
 	if (enemyCurrCount > enemyMaxCount)
 		enemyCurrCount = enemyMaxCount;
+}
+
+void EnemyManager::SetTileMapManager(TILE_INFO* tile)
+{
+	for (int i = 0; i < enemyMaxCount; i++)
+	{
+		vecEnemys[i]->SetTileMap(tile);
+	}
 }

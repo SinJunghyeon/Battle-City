@@ -28,7 +28,7 @@ HRESULT Enemy::Init()
 	ammoMgr->SetOwner(this);
 
 	pos.x = 0.0f;
-	pos.y = 00.0f;
+	pos.y = 0.0f;
 	moveSpeed = 0.0f;
 	bodySize = 40;
 	moveDir = MoveDir::DOWN;
@@ -64,10 +64,12 @@ void Enemy::Update()
 
 	if (isAlive)
 	{
-		AutoMove();
-		if (Collider())
+		Move(moveDir);
+		MoveFrame();
+		if (isCollision)
 		{
 			moveDir = (MoveDir)(rand() % 4);
+			isCollision = false;
 		}
 
 		fireTimer++;
@@ -102,6 +104,37 @@ void Enemy::Render(HDC hdc)
 
 		ammoMgr->Render(hdc);
 	}
+
+	// 화면 밖으로 나가는 것 체크
+	switch (moveDir)
+	{
+	case MoveDir::RIGHT:
+		if (shape.right >= 605)
+		{
+			isCollision = true;
+		}
+		break;
+	case MoveDir::LEFT:
+		if (shape.left <= 120)
+		{
+			isCollision = true;
+		}
+		break;
+	case MoveDir::UP:
+		if (shape.top <= 120)
+		{
+			isCollision = true;
+		}
+		break;
+	case MoveDir::DOWN:
+		if (shape.bottom >= 605)
+		{
+			isCollision = true;
+		}
+		break;
+	default:
+		break;
+	}
 }
 
 void Enemy::Release()
@@ -109,7 +142,8 @@ void Enemy::Release()
 	SAFE_RELEASE(ammoMgr);
 }
 
-void Enemy::AutoMove()
+// 움직이는 모양
+void Enemy::MoveFrame()
 {
 	switch (moveDir)
 	{
@@ -118,7 +152,6 @@ void Enemy::AutoMove()
 		{
 			img->SetCurrFrameX(6);
 		}
-		pos.x += moveSpeed * TimerManager::GetSingleton()->GetDeltaTime();
 		elapsedCount2++;
 
 		if (elapsedCount2 >= 2)
@@ -136,7 +169,6 @@ void Enemy::AutoMove()
 		{
 			img->SetCurrFrameX(2);
 		}
-		pos.x -= moveSpeed * TimerManager::GetSingleton()->GetDeltaTime();
 		elapsedCount2++;
 		if (elapsedCount2 >= 2)
 		{
@@ -153,7 +185,6 @@ void Enemy::AutoMove()
 		{
 			img->SetCurrFrameX(0);
 		}
-		pos.y -= moveSpeed * TimerManager::GetSingleton()->GetDeltaTime();
 		elapsedCount2++;
 		if (elapsedCount2 >= 2)
 		{
@@ -170,7 +201,6 @@ void Enemy::AutoMove()
 		{
 			img->SetCurrFrameX(4);
 		}
-		pos.y += moveSpeed * TimerManager::GetSingleton()->GetDeltaTime();
 		elapsedCount2++;
 		if (elapsedCount2 >= 2)
 		{
@@ -187,40 +217,41 @@ void Enemy::AutoMove()
 	}
 }
 
-bool Enemy::Collider()
-{
-	switch (moveDir)
-	{
-	case MoveDir::RIGHT:
-		if (shape.right >= WIN_SIZE_X)
-		{
-			return true;
-		}
-		break;
-	case MoveDir::LEFT:
-		if (shape.left <= 0)
-		{
-			return true;
-		}
-		break;
-	case MoveDir::UP:
-		if (shape.top <= 0)
-		{
-			return true;
-		}
-		break;
-	case MoveDir::DOWN:
-		if (shape.bottom >= WIN_SIZE_Y)
-		{
-			return true;
-		}
-		break;
-	default:
-		break;
-	}
-
-	return false;
-}
+// 게임 화면 밖 나가지 않게
+//bool Enemy::Collider()
+//{
+//	switch (moveDir)
+//	{
+//	case MoveDir::RIGHT:
+//		if (shape.right >= 605)
+//		{
+//			return true;
+//		}
+//		break;
+//	case MoveDir::LEFT:
+//		if (shape.left <= 120)
+//		{
+//			return true;
+//		}
+//		break;
+//	case MoveDir::UP:
+//		if (shape.top <= 120)
+//		{
+//			return true;
+//		}
+//		break;
+//	case MoveDir::DOWN:
+//		if (shape.bottom >= 605)
+//		{
+//			return true;
+//		}
+//		break;
+//	default:
+//		break;
+//	}
+//
+//	return false;
+//}
 
 void Enemy::Move(MoveDir dir)
 {
@@ -238,13 +269,6 @@ void Enemy::Move(MoveDir dir)
 	case MoveDir::DOWN: pos.y += (moveSpeed * TimerManager::GetSingleton()->GetDeltaTime()); break;
 	}
 
-
-	// 위치에 따른 모양값 갱신
-	shape.left = pos.x - (bodySize / 2) - 2;
-	shape.top = pos.y - (bodySize / 2) - 3;
-	shape.right = pos.x + (bodySize / 2);
-	shape.bottom = pos.y + (bodySize / 2) - 3;
-
 	for (int i = 0; i < TILE_COUNT_X * TILE_COUNT_Y; i++)
 	{
 		if (IntersectRect(&tempRect, &shape, &tile[i].rc))
@@ -253,6 +277,7 @@ void Enemy::Move(MoveDir dir)
 			{
 				pos = buffPos;
 				shape = buffRect;
+				isCollision = true;
 			}
 		}
 	}

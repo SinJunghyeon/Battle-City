@@ -29,7 +29,8 @@ HRESULT BattleTest2::Init()
     // 적 매니저
     enemyMgr = new EnemyManager;
     enemyMgr->Init();
-    
+    enemyMgr->SetTileMapManager(tileInfo);
+
     Load();
 
     // 플레이어 탱크
