@@ -117,6 +117,36 @@ void BattleTest2::Update()
 
     //플레이어 아이템 접촉
     CollisionItem();
+
+    //HQ주변 타일 되돌리기
+    if (tileInfo[609].terrain == Terrain::HQ_STEEL)
+    {
+        elapsedChange++;
+        if (elapsedChange >= 300)
+        {
+            for (int i = 600; i < TILE_COUNT_X * TILE_COUNT_Y; i++)
+            {
+                if (tileInfo[i].terrain == Terrain::HQ_STEEL)
+                {
+                    tileInfo[i].terrain = Terrain::HQ_WALL;
+                    tileInfo[i].frameX = 8;
+                    tileInfo[i].frameY = 0;
+                    elapsedChange = 0;
+                }
+            }
+        }
+    }
+
+    //적탱크의 상태가 IDLE일 때
+    if (elapsedCount < 10000)
+    {
+        elapsedCount++;
+        if (elapsedCount >= 300)
+        {
+            enemyMgr->TankState(ecTankState::MOVE);
+        }
+    }
+
     for (int i = 0; i < BOOM_NUM; i++)
     {
         if (boomEffect[i].isRender)
@@ -303,12 +333,23 @@ void BattleTest2::FunctionItem()
     //시계
     if (mpItem->GetItemState() == ecFunctionItem::WATCH)
     {
-
+        //적탱크 일시정지
+        enemyMgr->TankState(ecTankState::IDLE);
+        elapsedCount = 0;
     }
     //삽
     if (mpItem->GetItemState() == ecFunctionItem::SHOVEL)
     {
-
+        //HQ주변 타일 강철로
+        for (int i = 600; i < TILE_COUNT_X * TILE_COUNT_Y; i++)
+        {
+            if (tileInfo[i].terrain == Terrain::HQ_WALL)
+            {
+                tileInfo[i].terrain = Terrain::HQ_STEEL;
+                tileInfo[i].frameX = 8;
+                tileInfo[i].frameY = 2;
+            }
+        }
     }
     //별
     if (mpItem->GetItemState() == ecFunctionItem::STAR)
@@ -326,7 +367,8 @@ void BattleTest2::FunctionItem()
     //수류탄
     if (mpItem->GetItemState() == ecFunctionItem::GRENADE)
     {
-
+        //나와있는 적 모두 죽임
+        enemyMgr->IsAlive(false);
     }
     //탱크
     if (mpItem->GetItemState() == ecFunctionItem::TANK)

@@ -27,6 +27,7 @@ HRESULT BattleTest::Init()
     // 적 매니저
     enemyMgr = new EnemyManager;
     enemyMgr->Init();
+    enemyMgr->SetTileMapManager(tileInfo);
 
     Load();
 
