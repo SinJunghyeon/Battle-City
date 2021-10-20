@@ -26,7 +26,8 @@ private:
     RECT playerTankRect;
 
     // 利
-    EnemyManager* enemies;
+    EnemyManager* enemyMgr;
+    POINTFLOAT enemySpawnPos;
 
     // 面倒贸府侩 RECT
     RECT tempRect;
