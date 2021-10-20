@@ -12,12 +12,17 @@ private:
 	int elapsedCount2;
 	int fireDelay;
 	int fireTimer;
-	
+
+	ecTankState tanckState = ecTankState::IDLE;
+
+	bool isAlive = false;
 	bool isCollision;
 
 	AmmoManager* ammoMgr;
 
-	//TILE_INFO* tile;
+	Image* spawnImg;
+	int elapsedSpawn = NULL;
+	int spawnCount = NULL;
 public:
 	HRESULT Init();
 	void Update();
@@ -28,6 +33,7 @@ public:
 
 	bool Collider();
 
+	void SetMoveSpeed(float moveSpeed) { this->moveSpeed = moveSpeed; }
 	//inline void SetTileMap(TILE_INFO* tile) { this->tile = tile; }
 };
 

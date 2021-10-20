@@ -10,8 +10,10 @@ private:
 	vector<Enemy*>::iterator itEnemys;
 
 	int enemyMaxCount;
+	int enemyCurrCount;
+	int enemySpawnDelay;
 
-	POINTFLOAT enemySpawnPos[3];
+	POINTFLOAT enemySpawnPos[6];
 
 public:
 	HRESULT Init();

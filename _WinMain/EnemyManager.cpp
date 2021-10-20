@@ -3,7 +3,10 @@
 
 HRESULT EnemyManager::Init()
 {
-	enemyMaxCount = 3;
+	enemyMaxCount = 6;
+	enemyCurrCount = 3;
+
+	enemySpawnDelay = 0;
 
 	vecEnemys.resize(enemyMaxCount);
 
@@ -20,9 +23,23 @@ HRESULT EnemyManager::Init()
 
 void EnemyManager::Update()
 {
-	for (int i = 0; i < enemyMaxCount; i++)
+	for (int i = 0; i < enemyCurrCount; i++)
 	{
-		for (int j = 0; j < enemyMaxCount; j++)
+		vecEnemys[i]->SetMoveSpeed(20.0f);
+
+	}
+	enemySpawnDelay++;
+
+	if (enemySpawnDelay >= 500)
+	{
+		AddEnemy(enemySpawnPos[enemyCurrCount]);
+
+		enemySpawnDelay = 0;
+	}
+
+	for (int i = 0; i < enemyCurrCount; i++)
+	{
+		for (int j = 0; j < enemyCurrCount; j++)
 		{
 			if (i == j)
 				continue;
@@ -62,19 +79,29 @@ void EnemyManager::Update()
 		}
 	}
 
-	for (itEnemys = vecEnemys.begin();
+	for (int i = 0; i < enemyCurrCount; i++)
+	{
+		vecEnemys[i]->Update();
+	}
+	
+	/*for (itEnemys = vecEnemys.begin();
 		itEnemys != vecEnemys.end(); itEnemys++)
 	{
 		(*itEnemys)->Update();
-	}
+	}*/
 }
 
 void EnemyManager::Render(HDC hdc)
 {
-	for (itEnemys = vecEnemys.begin();
+	/*for (itEnemys = vecEnemys.begin();
 		itEnemys != vecEnemys.end(); itEnemys++)
 	{
 		(*itEnemys)->Render(hdc);
+	}*/
+
+	for (int i = 0; i < enemyCurrCount; i++)
+	{
+		vecEnemys[i]->Render(hdc);
 	}
 }
 
@@ -90,5 +117,7 @@ void EnemyManager::Release()
 
 void EnemyManager::AddEnemy(POINTFLOAT pos)
 {
-
+	enemyCurrCount++;
+	if (enemyCurrCount > enemyMaxCount)
+		enemyCurrCount = enemyMaxCount;
 }

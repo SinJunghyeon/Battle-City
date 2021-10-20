@@ -16,6 +16,8 @@
 #include "GameEntity.h"
 #include "Config.h"
 
+enum class ecTankState { IDLE, MOVE, FIRE, DAMAGED, DIE };
+
 class Image;
 class GameObject : public GameEntity
 {

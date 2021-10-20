@@ -16,15 +16,22 @@ HRESULT Enemy::Init()
 		return E_FAIL;
 	}
 
+	ImageManager::GetSingleton()->AddImage("Image/BattleCity/Effect/Spawn_Effect.bmp", 192, 48, 4, 1, true, RGB(255, 0, 255));
+	spawnImg = ImageManager::GetSingleton()->FindImage("Image/BattleCity/Effect/Spawn_Effect.bmp");
+	if (spawnImg == nullptr)
+	{
+		return E_FAIL;
+	}
+
 	ammoMgr = new AmmoManager;
 	ammoMgr->Init();
 	ammoMgr->SetOwner(this);
 
-	pos.x = WIN_SIZE_X / 2.0f;
-	pos.y = 100.0f;
+	pos.x = 0.0f;
+	pos.y = 00.0f;
 	moveSpeed = 0.0f;
 	bodySize = 40;
-	moveDir = MoveDir::RIGHT;
+	moveDir = MoveDir::DOWN;
 
 	shape.left = pos.x - bodySize / 2 + 1;
 	shape.top = pos.y - bodySize / 2 + 1;
@@ -36,34 +43,65 @@ HRESULT Enemy::Init()
 
 void Enemy::Update()
 {
-	AutoMove();
-	if (Collider())
+	if (!isAlive)
 	{
-		moveDir = (MoveDir)(rand() % 4);
+		elapsedSpawn++;
+		if (elapsedSpawn >= 5)
+		{
+			spawnImg->SetCurrFrameX(spawnImg->GetCurrFrameX() + 1);
+			elapsedSpawn = 0;
+			if (spawnImg->GetCurrFrameX() >= 4)
+			{
+				spawnImg->SetCurrFrameX(0);
+				spawnCount++;
+				if (spawnCount >= 3)
+				{
+					isAlive = !isAlive;
+				}
+			}
+		}
 	}
 
-	fireTimer++;
-	if (fireTimer >= fireDelay)
+	if (isAlive)
 	{
-		ammoMgr->Fire();
-		fireTimer = 0;
-		fireDelay = rand() % 100;
-	}
-	ammoMgr->Update();
+		AutoMove();
+		if (Collider())
+		{
+			moveDir = (MoveDir)(rand() % 4);
+		}
 
-	shape.left = pos.x - bodySize / 2 + 1;
-	shape.top = pos.y - bodySize / 2 + 1;
-	shape.right = shape.left + bodySize - 5;
-	shape.bottom = shape.top + bodySize - 5;
+		fireTimer++;
+		if (fireTimer >= fireDelay)
+		{
+			ammoMgr->Fire();
+			fireTimer = 0;
+			fireDelay = rand() % 100;
+		}
+		ammoMgr->Update();
+
+		shape.left = pos.x - bodySize / 2 + 1;
+		shape.top = pos.y - bodySize / 2 + 1;
+		shape.right = shape.left + bodySize - 5;
+		shape.bottom = shape.top + bodySize - 5;
+	}
+
 }
 
 void Enemy::Render(HDC hdc)
 {
+	// 임시 충돌
 	Rectangle(hdc, shape.left, shape.top, shape.right, shape.bottom);
 
-	img->Render(hdc, pos.x, pos.y, img->GetCurrFrameX(), img->GetCurrFrameY());
+	if (!isAlive)	//죽어있을 때 -> 스폰 이미지를 부르고 -> 살게끔
+	{
+		spawnImg->Render(hdc, pos.x, pos.y, spawnImg->GetCurrFrameX(), spawnImg->GetCurrFrameY());
+	}
+	if (isAlive)
+	{
+		img->Render(hdc, pos.x, pos.y, img->GetCurrFrameX(), img->GetCurrFrameY());
 
-	ammoMgr->Render(hdc);
+		ammoMgr->Render(hdc);
+	}
 }
 
 void Enemy::Release()

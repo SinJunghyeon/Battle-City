@@ -5,8 +5,6 @@
 #include "Image.h"
 #include "MapConfig.h"
 
-enum class ecTankState { IDLE, MOVE, FIRE, DAMAGED, DIE };
-
 class Item;
 class Tank : public GameObject
 {
@@ -17,7 +15,6 @@ public:
 	ecTankState tanckState = ecTankState::IDLE;
 	int elapsedCount = NULL;
 	bool isAlive = false;
-
 
 	float ptAttackValue = NULL;		//공격력
 	int ptLife = NULL;				//플레이어 목숨
