@@ -79,6 +79,7 @@ void Tank::Update()
 	//cout << "Player ammo pos.x : " << ammoPack->GetPos().x << endl;
 	//cout << "Player ammo pos.y : " << ammoPack->GetPos().y << endl;
 
+
 	//스폰이미지변화
 	if (!isAlive)
 	{
