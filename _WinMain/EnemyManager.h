@@ -23,6 +23,7 @@ public:
 	void Release();
 
 	void AddEnemy(POINTFLOAT pos);
+
 	void SetTileMapManager(TILE_INFO* tile);
 	void TankState(ecTankState state);
 	void IsAlive(bool isAlive);

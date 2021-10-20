@@ -76,9 +76,9 @@ void Tank::Update()
 	//cout << boolalpha << "isAlive : " << isAlive << endl;
 	//cout << "elapsedSpawn : " << elapsedSpawn << endl;
 	//cout << "spawnImg->GetCurrFrameX() : " << spawnImg->GetCurrFrameX() << endl;
+
 	//cout << "Player ammo pos.x : " << ammoPack->GetPos().x << endl;
 	//cout << "Player ammo pos.y : " << ammoPack->GetPos().y << endl;
-
 
 	//스폰이미지변화
 	if (!isAlive)

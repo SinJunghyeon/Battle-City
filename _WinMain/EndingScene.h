@@ -28,12 +28,14 @@ private:
 	
 	int scoreTextPosX = killEnemyPosX - 100;
 
-	int killEnemyNumber[4] = { 5,20,7,1 };	//나중에 에너미 죽인거 가져오기
+	int killEnemyNumber[4] = { 25,11,12,1 };	//나중에 에너미 죽인거 가져오기
 	int killEnemyNumber5[4];
 	int killEnemyNumber10[4];
-	int totalKillEnemy = 0;
+	int totalKillEnemy = killEnemyNumber[0]+ killEnemyNumber[1]+ killEnemyNumber[2]+ killEnemyNumber[3];
+	int totalKillEnemy5 = 0;
+	int totalKillEnemy10 = 0;
 
-	int test;
+	int test[4];
 public:
 	virtual HRESULT Init() override;
 	virtual void Update() override;

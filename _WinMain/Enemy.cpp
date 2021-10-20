@@ -63,7 +63,6 @@ void Enemy::Update()
 			}
 		}
 	}
-
 	if (isAlive && tankState == ecTankState::MOVE)
 	{
 		Move(moveDir);
@@ -72,6 +71,7 @@ void Enemy::Update()
 		{
 			moveDir = (MoveDir)(rand() % 4);
 			isCollision = false;
+
 		}
 
 		fireTimer++;
@@ -280,6 +280,43 @@ void Enemy::Move(MoveDir dir)
 				pos = buffPos;
 				shape = buffRect;
 				isCollision = true;
+			}
+		}
+	}
+	return false;
+}
+
+void Enemy::Move(MoveDir dir)
+{
+	POINTFLOAT buffPos; // ���� ��ǥ�� ����ϱ� ��� ����
+	buffPos.x = pos.x;
+	buffPos.y = pos.y;
+	RECT buffRect;
+	buffRect = shape;
+
+	switch (dir)
+	{
+	case MoveDir::LEFT: pos.x -= (moveSpeed * TimerManager::GetSingleton()->GetDeltaTime()); break;
+	case MoveDir::RIGHT: pos.x += (moveSpeed * TimerManager::GetSingleton()->GetDeltaTime()); break;
+	case MoveDir::UP: pos.y -= (moveSpeed * TimerManager::GetSingleton()->GetDeltaTime()); break;
+	case MoveDir::DOWN: pos.y += (moveSpeed * TimerManager::GetSingleton()->GetDeltaTime()); break;
+	}
+
+
+	// �ġ�� �� ��簪 ����
+	shape.left = pos.x - (bodySize / 2) - 2;
+	shape.top = pos.y - (bodySize / 2) - 3;
+	shape.right = pos.x + (bodySize / 2);
+	shape.bottom = pos.y + (bodySize / 2) - 3;
+
+	for (int i = 0; i < TILE_COUNT_X * TILE_COUNT_Y; i++)
+	{
+		if (IntersectRect(&tempRect, &shape, &tile[i].rc))
+		{
+			if ((tile[i].terrain == Terrain::WALL) || (tile[i].terrain == Terrain::STEEL) || (tile[i].terrain == Terrain::HQ_WALL) || (tile[i].terrain == Terrain::HQ_STEEL))
+			{
+				pos = buffPos;
+				shape = buffRect;
 			}
 		}
 	}

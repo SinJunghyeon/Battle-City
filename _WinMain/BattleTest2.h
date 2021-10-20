@@ -27,40 +27,40 @@ class Ammo;
 class BattleTest2 : public GameEntity
 {
 private:
-    // ¸Ê Å¸ÀÏ
+    // ë§µ íƒ€ì¼
     TILE_INFO tileInfo[TILE_COUNT_Y * TILE_COUNT_X];
 
-    // Å¸ÀÏ ÀÌ¹ÌÁö
+    // íƒ€ì¼ ì´ë¯¸ì§€
     Image* sampleImage;
 
-    // ¹è°æ ÀÌ¹ÌÁö
+    // ë°°ê²½ ì´ë¯¸ì§€
     Image* backGround;
 
-    // Æø¹ß ÀÌÆåÆ®
+    // í­ë°œ ì´í™íŠ¸
     Boom boomEffect[BOOM_NUM];
 
-    // ÇÃ·¹ÀÌ¾î
+    // í”Œë ˆì´ì–´
     Tank* player;
     POINTFLOAT playerSpawnPos;
     RECT playerTankRect;
 
-    // Àû
+    // ì 
     EnemyManager* enemyMgr;
 
-    // Ãæµ¹Ã³¸®¿ë RECT
+    // ì¶©ëŒì²˜ë¦¬ìš© RECT
     RECT tempRect;
 
-    // µğ¹ö±×¿ë
+    // ë””ë²„ê·¸ìš©
     POINTFLOAT tempPos;
 
-    //¾ÆÀÌÅÛ
+    //ì•„ì´í…œ
     Item* mpItem;
     RECT itemRect;
 
 public:
     HRESULT Init();
     void Update();
-    void Render(HDC hdc);	// ¿À¹ö·Îµù
+    void Render(HDC hdc);	// ì˜¤ë²„ë¡œë”©
     void Release();
 
     void Load(int loadIndex = 0);

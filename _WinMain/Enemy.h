@@ -20,7 +20,7 @@ private:
 
 	AmmoManager* ammoMgr;
 
-	// �浹ó���� RECT
+	// Ãæµ¹Ã³¸®¿ë RECT
 	RECT tempRect;
 
 	Image* spawnImg;
@@ -45,5 +45,6 @@ public:
 	inline void SetTankState(ecTankState tankState) { this->tankState = tankState; }
 
 	inline void SetIsAlive(bool isAlive) { this->isAlive = isAlive; }
+
 };
 
