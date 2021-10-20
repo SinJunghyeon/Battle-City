@@ -26,8 +26,9 @@ void EnemyManager::Update()
 	{
 		vecEnemys[i]->SetMoveSpeed(20.0f);
 	}
-	enemySpawnDelay++;
 
+	// Àû »õ·Î ¸®½ºÆù
+	enemySpawnDelay++;
 	if (enemySpawnDelay >= 500)
 	{
 		AddEnemy(enemySpawnPos[enemyCurrCount]);
@@ -35,7 +36,7 @@ void EnemyManager::Update()
 		enemySpawnDelay = 0;
 	}
 
-	// ������ �浹Ȯ��
+	// Àû³¢¸® Ãæµ¹È®ÀÎ
 	for (int i = 0; i < enemyCurrCount; i++)
 	{
 		for (int j = 0; j < enemyCurrCount; j++)
@@ -119,6 +120,14 @@ void EnemyManager::AddEnemy(POINTFLOAT pos)
 	enemyCurrCount++;
 	if (enemyCurrCount > enemyMaxCount)
 		enemyCurrCount = enemyMaxCount;
+}
+
+void EnemyManager::SetTileMapManager(TILE_INFO* tile)
+{
+	for (int i = 0; i < enemyMaxCount; i++)
+	{
+		vecEnemys[i]->SetTileMap(tile);
+	}
 }
 
 void EnemyManager::TankState(ecTankState state)

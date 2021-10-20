@@ -28,7 +28,7 @@ HRESULT Enemy::Init()
 	ammoMgr->SetOwner(this);
 
 	pos.x = 0.0f;
-	pos.y = 00.0f;
+	pos.y = 0.0f;
 	moveSpeed = 0.0f;
 	bodySize = 40;
 	moveDir = MoveDir::DOWN;
@@ -66,10 +66,12 @@ void Enemy::Update()
 
 	if (isAlive && tankState == ecTankState::MOVE)
 	{
-		AutoMove();
-		if (Collider())
+		Move(moveDir);
+		MoveFrame();
+		if (isCollision)
 		{
 			moveDir = (MoveDir)(rand() % 4);
+			isCollision = false;
 		}
 
 		fireTimer++;
@@ -90,10 +92,10 @@ void Enemy::Update()
 
 void Enemy::Render(HDC hdc)
 {
-	// ÀÓ½Ã Ãæµ¹
+	// ìž„ì‹œ ì¶©ëŒ
 	Rectangle(hdc, shape.left, shape.top, shape.right, shape.bottom);
 
-	if (!isAlive)	//Á×¾îÀÖÀ» ¶§ -> ½ºÆù ÀÌ¹ÌÁö¸¦ ºÎ¸£°í -> »ì°Ô²û
+	if (!isAlive)	//ì£½ì–´ìžˆì„ ë•Œ -> ìŠ¤í° ì´ë¯¸ì§€ë¥¼ ë¶€ë¥´ê³  -> ì‚´ê²Œë”
 	{
 		spawnImg->Render(hdc, pos.x, pos.y, spawnImg->GetCurrFrameX(), spawnImg->GetCurrFrameY());
 	}
@@ -104,6 +106,37 @@ void Enemy::Render(HDC hdc)
 
 		ammoMgr->Render(hdc);
 	}
+
+	// í™”ë©´ ë°–ìœ¼ë¡œ ë‚˜ê°€ëŠ” ê²ƒ ì²´í¬
+	switch (moveDir)
+	{
+	case MoveDir::RIGHT:
+		if (shape.right >= 605)
+		{
+			isCollision = true;
+		}
+		break;
+	case MoveDir::LEFT:
+		if (shape.left <= 120)
+		{
+			isCollision = true;
+		}
+		break;
+	case MoveDir::UP:
+		if (shape.top <= 120)
+		{
+			isCollision = true;
+		}
+		break;
+	case MoveDir::DOWN:
+		if (shape.bottom >= 605)
+		{
+			isCollision = true;
+		}
+		break;
+	default:
+		break;
+	}
 }
 
 void Enemy::Release()
@@ -111,125 +144,120 @@ void Enemy::Release()
 	SAFE_RELEASE(ammoMgr);
 }
 
-void Enemy::AutoMove()
-{
-	if (tankState == ecTankState::MOVE)
-	{
-		switch (moveDir)
-		{
-		case MoveDir::RIGHT:
-			if (img->GetCurrFrameX() <= 5 || img->GetCurrFrameX() >= 8)
-			{
-				img->SetCurrFrameX(6);
-			}
-			pos.x += moveSpeed * TimerManager::GetSingleton()->GetDeltaTime();
-			elapsedCount2++;
-
-			if (elapsedCount2 >= 2)
-			{
-				img->SetCurrFrameX(img->GetCurrFrameX() + 1);
-				if (img->GetCurrFrameX() >= 8)
-				{
-					img->SetCurrFrameX(6);
-					elapsedCount2 = 0;
-				}
-			}
-			break;
-		case MoveDir::LEFT:
-			if (img->GetCurrFrameX() <= 1 || img->GetCurrFrameX() >= 4)
-			{
-				img->SetCurrFrameX(2);
-			}
-			pos.x -= moveSpeed * TimerManager::GetSingleton()->GetDeltaTime();
-			elapsedCount2++;
-			if (elapsedCount2 >= 2)
-			{
-				img->SetCurrFrameX(img->GetCurrFrameX() + 1);
-				if (img->GetCurrFrameX() >= 4)
-				{
-					img->SetCurrFrameX(2);
-					elapsedCount2 = 0;
-				}
-			}
-			break;
-		case MoveDir::UP:
-			if (img->GetCurrFrameX() <= -1 || img->GetCurrFrameX() >= 2)
-			{
-				img->SetCurrFrameX(0);
-			}
-			pos.y -= moveSpeed * TimerManager::GetSingleton()->GetDeltaTime();
-			elapsedCount2++;
-			if (elapsedCount2 >= 2)
-			{
-				img->SetCurrFrameX(img->GetCurrFrameX() + 1);
-				if (img->GetCurrFrameX() >= 2)
-				{
-					img->SetCurrFrameX(0);
-					elapsedCount2 = 0;
-				}
-			}
-			break;
-		case MoveDir::DOWN:
-			if (img->GetCurrFrameX() <= 3 || img->GetCurrFrameX() >= 6)
-			{
-				img->SetCurrFrameX(4);
-			}
-			pos.y += moveSpeed * TimerManager::GetSingleton()->GetDeltaTime();
-			elapsedCount2++;
-			if (elapsedCount2 >= 2)
-			{
-				img->SetCurrFrameX(img->GetCurrFrameX() + 1);
-				if (img->GetCurrFrameX() >= 6)
-				{
-					img->SetCurrFrameX(4);
-					elapsedCount2 = 0;
-				}
-			}
-			break;
-		default:
-			break;
-		}
-	}
-}
-
-bool Enemy::Collider()
+// ì›€ì§ì´ëŠ” ëª¨ì–‘
+void Enemy::MoveFrame()
 {
 	switch (moveDir)
 	{
 	case MoveDir::RIGHT:
-		if (shape.right >= WIN_SIZE_X)
+		if (img->GetCurrFrameX() <= 5 || img->GetCurrFrameX() >= 8)
 		{
-			return true;
+			img->SetCurrFrameX(6);
+		}
+		elapsedCount2++;
+
+		if (elapsedCount2 >= 2)
+		{
+			img->SetCurrFrameX(img->GetCurrFrameX() + 1);
+			if (img->GetCurrFrameX() >= 8)
+			{
+				img->SetCurrFrameX(6);
+				elapsedCount2 = 0;
+			}
 		}
 		break;
 	case MoveDir::LEFT:
-		if (shape.left <= 0)
+		if (img->GetCurrFrameX() <= 1 || img->GetCurrFrameX() >= 4)
 		{
-			return true;
+			img->SetCurrFrameX(2);
+		}
+		elapsedCount2++;
+		if (elapsedCount2 >= 2)
+		{
+			img->SetCurrFrameX(img->GetCurrFrameX() + 1);
+			if (img->GetCurrFrameX() >= 4)
+			{
+				img->SetCurrFrameX(2);
+				elapsedCount2 = 0;
+			}
 		}
 		break;
 	case MoveDir::UP:
-		if (shape.top <= 0)
+		if (img->GetCurrFrameX() <= -1 || img->GetCurrFrameX() >= 2)
 		{
-			return true;
+			img->SetCurrFrameX(0);
+		}
+		elapsedCount2++;
+		if (elapsedCount2 >= 2)
+		{
+			img->SetCurrFrameX(img->GetCurrFrameX() + 1);
+			if (img->GetCurrFrameX() >= 2)
+			{
+				img->SetCurrFrameX(0);
+				elapsedCount2 = 0;
+			}
 		}
 		break;
 	case MoveDir::DOWN:
-		if (shape.bottom >= WIN_SIZE_Y)
+		if (img->GetCurrFrameX() <= 3 || img->GetCurrFrameX() >= 6)
 		{
-			return true;
+			img->SetCurrFrameX(4);
+		}
+		elapsedCount2++;
+		if (elapsedCount2 >= 2)
+		{
+			img->SetCurrFrameX(img->GetCurrFrameX() + 1);
+			if (img->GetCurrFrameX() >= 6)
+			{
+				img->SetCurrFrameX(4);
+				elapsedCount2 = 0;
+			}
 		}
 		break;
 	default:
 		break;
 	}
-
-	return false;
 }
+
+// ê²Œìž„ í™”ë©´ ë°– ë‚˜ê°€ì§€ ì•Šê²Œ
+//bool Enemy::Collider()
+//{
+//	switch (moveDir)
+//	{
+//	case MoveDir::RIGHT:
+//		if (shape.right >= 605)
+//		{
+//			return true;
+//		}
+//		break;
+//	case MoveDir::LEFT:
+//		if (shape.left <= 120)
+//		{
+//			return true;
+//		}
+//		break;
+//	case MoveDir::UP:
+//		if (shape.top <= 120)
+//		{
+//			return true;
+//		}
+//		break;
+//	case MoveDir::DOWN:
+//		if (shape.bottom >= 605)
+//		{
+//			return true;
+//		}
+//		break;
+//	default:
+//		break;
+//	}
+//
+//	return false;
+//}
 
 void Enemy::Move(MoveDir dir)
 {
-	POINTFLOAT buffPos; // ÇöÀç ÁÂÇ¥¸¦ ¹é¾÷ÇÏ±â À§ÇÑ ¹öÆÛ
+	POINTFLOAT buffPos; // í˜„ìž¬ ì¢Œí‘œë¥¼ ë°±ì—…í•˜ê¸° ìœ„í•œ ë²„í¼
 	buffPos.x = pos.x;
 	buffPos.y = pos.y;
 	RECT buffRect;
@@ -243,13 +271,6 @@ void Enemy::Move(MoveDir dir)
 	case MoveDir::DOWN: pos.y += (moveSpeed * TimerManager::GetSingleton()->GetDeltaTime()); break;
 	}
 
-
-	// À§Ä¡¿¡ µû¸¥ ¸ð¾ç°ª °»½Å
-	shape.left = pos.x - (bodySize / 2) - 2;
-	shape.top = pos.y - (bodySize / 2) - 3;
-	shape.right = pos.x + (bodySize / 2);
-	shape.bottom = pos.y + (bodySize / 2) - 3;
-
 	for (int i = 0; i < TILE_COUNT_X * TILE_COUNT_Y; i++)
 	{
 		if (IntersectRect(&tempRect, &shape, &tile[i].rc))
@@ -258,6 +279,7 @@ void Enemy::Move(MoveDir dir)
 			{
 				pos = buffPos;
 				shape = buffRect;
+				isCollision = true;
 			}
 		}
 	}

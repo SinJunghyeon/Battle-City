@@ -16,7 +16,7 @@ private:
 	ecTankState tankState = ecTankState::IDLE;
 
 	bool isAlive = false;
-	bool isCollision;
+	bool isCollision  = false;
 
 	AmmoManager* ammoMgr;
 
@@ -33,10 +33,10 @@ public:
 	void Render(HDC hdc);
 	void Release();
 	
-	void AutoMove();
+	void MoveFrame();
 	void Move(MoveDir dir);
 
-	bool Collider();
+	//bool Collider();
 
 	void SetMoveSpeed(float moveSpeed) { this->moveSpeed = moveSpeed; }
 	inline void SetTileMap(TILE_INFO* tile) { this->tile = tile; }
