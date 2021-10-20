@@ -11,6 +11,10 @@ HRESULT GameOverScene::Init()
 
 void GameOverScene::Update()
 {
+    if (KeyManager::GetSingleton()->IsOnceKeyDown(VK_RETURN))
+    {
+        SceneManager::GetSingleton()->ChangeScene("titleS");
+    }
 }
 
 void GameOverScene::Render(HDC hdc)

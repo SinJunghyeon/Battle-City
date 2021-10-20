@@ -3,9 +3,6 @@
 #include "GameObject.h"
 #include "Ammo.h"
 #include "Image.h"
-#include "MapConfig.h"
-
-enum class ecTankState { IDLE, MOVE, FIRE, DAMAGED, DIE };
 
 class Item;
 class Tank : public GameObject
@@ -18,7 +15,6 @@ public:
 	int elapsedCount = NULL;
 	bool isAlive = false;
 
-
 	float ptAttackValue = NULL;		//공격력
 	int ptLife = NULL;				//플레이어 목숨
 	int ptScore = NULL;				//플레이어 탱크 점수
@@ -26,9 +22,6 @@ public:
 	Image* effectImg = nullptr;
 	bool isInvincible = true;		//무적상태
 	int elapsedInvincible = NULL;
-
-	// 타일 정보
-	TILE_INFO* tile;
 
 	// 충돌처리용 RECT
 	RECT tempRect;
@@ -65,6 +58,7 @@ public:
 	inline void SetInvincible(bool isInvincible) { this->isInvincible = isInvincible; }
 	// 타일 정보를 받아오는 함수
 	inline void SetTileMap(TILE_INFO* tile) { this->tile = tile; }
+	inline int GetAmmoCount() { return this->ammoCount; }
 
 	Tank();
 	~Tank();

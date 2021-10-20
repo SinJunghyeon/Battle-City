@@ -2,12 +2,14 @@
 #include "Config.h"
 #include "GameEntity.h"
 #include "MapConfig.h"
+#include "Enemy.h"
 
 class GameObject;
 class EnemyManager;
 class Tank;
 class Image;
 class Item;
+class Ammo;
 class BattleTest2 : public GameEntity
 {
 private:
@@ -27,7 +29,6 @@ private:
 
     // 利
     EnemyManager* enemyMgr;
-    POINTFLOAT enemySpawnPos;
 
     // 面倒贸府侩 RECT
     RECT tempRect;
@@ -47,7 +48,7 @@ public:
 
     void Load(int loadIndex = 0);
 
-    void Collision(GameObject* tank, TILE_INFO* tile);
+    void AmmoMapCollision(Tank* tank, TILE_INFO* tile);
     void CollisionItem();
     void FunctionItem();
 };

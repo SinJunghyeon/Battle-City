@@ -3,7 +3,7 @@
 HRESULT Tank::Init()
 {
 	//스폰 이미지
-	ImageManager::GetSingleton()->AddImage("Image/BattleCity/Effect/Spawn_Effect.bmp", 64, 16, 4, 1, true, RGB(255, 0, 255));
+	ImageManager::GetSingleton()->AddImage("Image/BattleCity/Effect/Spawn_Effect.bmp", 192, 48, 4, 1, true, RGB(255, 0, 255));
 	spawnImg = ImageManager::GetSingleton()->FindImage("Image/BattleCity/Effect/Spawn_Effect.bmp");
 	if (spawnImg == nullptr)
 	{
@@ -76,6 +76,8 @@ void Tank::Update()
 	//cout << boolalpha << "isAlive : " << isAlive << endl;
 	//cout << "elapsedSpawn : " << elapsedSpawn << endl;
 	//cout << "spawnImg->GetCurrFrameX() : " << spawnImg->GetCurrFrameX() << endl;
+	cout << "Player ammo pos.x : " << ammoPack->GetPos().x << endl;
+	cout << "Player ammo pos.y : " << ammoPack->GetPos().y << endl;
 
 	//스폰이미지변화
 	if (!isAlive)
@@ -143,7 +145,7 @@ void Tank::Render(HDC hdc)
 	//플레이어스폰
 	if (!isAlive)	//죽어있을 때 -> 스폰 이미지를 부르고 -> 살게끔
 	{
-		spawnImg->Render(hdc, pos.x - 15, pos.y - 17, spawnImg->GetCurrFrameX(), spawnImg->GetCurrFrameY(), 3);
+		spawnImg->Render(hdc, pos.x, pos.y, spawnImg->GetCurrFrameX(), spawnImg->GetCurrFrameY());
 	}
 	// 플레이어
 	if (isAlive)	//살아있을 때

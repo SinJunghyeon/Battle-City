@@ -1,7 +1,6 @@
 #pragma once
 #include "Config.h"
 #include "GameEntity.h"
-#include "MapConfig.h"
 
 class Enemy;
 class EnemyManager : public GameEntity
@@ -11,8 +10,10 @@ private:
 	vector<Enemy*>::iterator itEnemys;
 
 	int enemyMaxCount;
+	int enemyCurrCount;
+	int enemySpawnDelay;
 
-	TILE_INFO* map;
+	POINTFLOAT enemySpawnPos[6];
 
 public:
 	HRESULT Init();
@@ -20,6 +21,6 @@ public:
 	void Render(HDC hdc);
 	void Release();
 
-	void AddEnemy(float posX, float posY);
+	void AddEnemy(POINTFLOAT pos);
 };
 

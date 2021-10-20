@@ -60,8 +60,8 @@ void TitleScene::Update()
 		bIsSceneIcon = true;
 		if (KeyManager::GetSingleton()->IsOnceKeyDown(VK_RETURN))
 		{
-			SceneManager::GetSingleton()->ChangeScene("stageS", "loadingS");
-			return;
+			SceneManager::GetSingleton()->ChangeScene("stageS");
+			iconPosNum = 0;
 		}
 	}
 

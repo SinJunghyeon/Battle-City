@@ -3,6 +3,7 @@
 #include "Tank.h"
 #include "EnemyManager.h"
 #include "Item.h"
+#include "Ammo.h"
 
 HRESULT BattleTest2::Init()
 {
@@ -28,7 +29,7 @@ HRESULT BattleTest2::Init()
     // 적 매니저
     enemyMgr = new EnemyManager;
     enemyMgr->Init();
-
+    
     Load();
 
     // 플레이어 탱크
@@ -94,6 +95,9 @@ void BattleTest2::Update()
 
     //플레이어 아이템 접촉
     CollisionItem();
+
+    // 미사일 타일 접촉
+    AmmoMapCollision(player, tileInfo);
 }
 
 void BattleTest2::Render(HDC hdc)
@@ -170,41 +174,52 @@ void BattleTest2::Load(int loadIndex)
     CloseHandle(hFile);
 }
 
-void BattleTest2::Collision(GameObject* tank, TILE_INFO* tile)
+void BattleTest2::AmmoMapCollision(Tank* tank, TILE_INFO* tile)
 {
-    POINTFLOAT pos; // SetPos를 사용하기 위해 임시로 만든 변수
-    pos.x = tank->GetPos().x;
-    pos.y = tank->GetPos().y;
-    
-    RECT teplayer = tank->GetShape();
-
-    int moveSpeed = tank->GetMoveSpeed();
-    for (int i = 0; i < TILE_COUNT_X * TILE_COUNT_Y; i++)
+    POINTFLOAT pos;
+    pos.x = 0;
+    pos.y = 0;
+    for (int j = 0; j < tank->ammoCount; j++)
     {
-        if (IntersectRect(&tempRect, &teplayer, &tile[i].rc))
+        RECT TankRect = tank->ammoPack[j].GetShape();
+        cout << "battletest2 pos.x : " << tank->ammoPack[j].GetPos().x << endl;
+        cout << "battletest2 pos.y : " << tank->ammoPack[j].GetPos().y << endl;
+        for (int i = 0; i < TILE_COUNT_X * TILE_COUNT_Y; i++)
         {
-            if ((tile[i].terrain == Terrain::WALL) || (tile[i].terrain == Terrain::STEEL) || (tile[i].terrain == Terrain::HQ_WALL) || (tile[i].terrain == Terrain::HQ_STEEL))
+            if (IntersectRect(&tempRect, &TankRect, &tile[i].rc)) // Ammo랑 Tile이 충돌하면
             {
-                switch (tank->GetMoveDir())
+                if ((tile[i].terrain == Terrain::WALL) || (tile[i].terrain == Terrain::HQ_WALL)) // 충돌한 Tile이 벽일때
                 {
-                case MoveDir::DOWN:
-                    pos.y -= (moveSpeed * TimerManager::GetSingleton()->GetDeltaTime());
-                    tank->SetPos(pos);
-                    break;
-                case MoveDir::UP:
-                    pos.y += (moveSpeed * TimerManager::GetSingleton()->GetDeltaTime());
-                    tank->SetPos(pos);
-                    break;
-                case MoveDir::LEFT:
-                    pos.x += (moveSpeed * TimerManager::GetSingleton()->GetDeltaTime());
-                    tank->SetPos(pos);
-                    break;
-                case MoveDir::RIGHT:
-                    pos.x -= (moveSpeed * TimerManager::GetSingleton()->GetDeltaTime());
-                    tank->SetPos(pos);
-                    break;
-                default:
-                    break;
+                    tank->ammoPack[j].SetIsFire(false);
+                    tank->ammoPack[j].SetPos(pos);
+                    if (tile[i].hp == 1) // 파괴된 벽인 경우
+                    {
+                        tile[i].frameX = 10;
+                        tile[i].frameY = 10; // ROAD로 바꾼다.
+                    }
+                    else
+                    {
+                        tile[i].hp--;
+                        tile[i].frameY = 8;
+                        switch (tank->ammoPack[j].GetMoveDir()) // Ammo의 방향에 따라 처리
+                        {
+                        case MoveDir::DOWN:
+                            tile[i].frameX = 2;
+                            break;
+                        case MoveDir::UP:
+                            tile[i].frameX = 4;
+                            break;
+                        case MoveDir::LEFT:
+                            tile[i].frameX = 3;
+                            break;
+                        case MoveDir::RIGHT:
+                            tile[i].frameX = 1;
+                            break;
+                        default:
+                            break;
+                        }
+                        
+                    }
                 }
             }
         }
