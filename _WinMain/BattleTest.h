@@ -40,6 +40,7 @@ private:
     RECT itemRect;
 
     int elapsedChange = NULL;
+    int elapsedCount = 10000;
 
 public:
     HRESULT Init();

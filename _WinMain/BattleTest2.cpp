@@ -7,25 +7,25 @@
 
 HRESULT BattleTest2::Init()
 {
-    // Å¸ÀÏ ¸Ê ÀÌ¹ÌÁö
+    // íƒ€ì¼ ë§µ ì´ë¯¸ì§€
     sampleImage = ImageManager::GetSingleton()->AddImage("Image/BattleCity/SamlpTile1.bmp", 220, 220, 11, 11, true, RGB(255, 0, 255));
     if (sampleImage == nullptr)
     {
-        cout << "Image/BattleCity/SamlpTile1.bmp ·Îµå ½ÇÆĞ!!" << endl;
+        cout << "Image/BattleCity/SamlpTile1.bmp ë¡œë“œ ì‹¤íŒ¨!!" << endl;
         return E_FAIL;
     }
 
-    // ¹è°æ ÀÌ¹ÌÁö
+    // ë°°ê²½ ì´ë¯¸ì§€
     ImageManager::GetSingleton()->AddImage("Image/BattleCity/mapImage.bmp", WIN_SIZE_X, WIN_SIZE_Y);
     backGround = ImageManager::GetSingleton()->FindImage("Image/BattleCity/mapImage.bmp");
     if (backGround == nullptr)
     {
-        cout << "Image/BattleCity/mapImage.bmp ÆÄÀÏ ·Îµå¿¡ ½ÇÆĞÇß´Ù." << endl;
+        cout << "Image/BattleCity/mapImage.bmp íŒŒì¼ ë¡œë“œì— ì‹¤íŒ¨í–ˆë‹¤." << endl;
 
         return E_FAIL;
     }
 
-    // Æø¹ß ÀÌ¹ÌÁö
+    // í­ë°œ ì´ë¯¸ì§€
     ImageManager::GetSingleton()->AddImage("Image/BattleCity/Effect/Boom_Effect.bmp", 48, 16, 3, 1, true, RGB(255, 0, 255));
     ImageManager::GetSingleton()->AddImage("Image/BattleCity/Effect/Big_Boom_Effect.bmp", 64, 32, 2, 1, true, RGB(255, 0, 255));
 
@@ -34,7 +34,7 @@ HRESULT BattleTest2::Init()
         boomEffect[i].boom = ImageManager::GetSingleton()->FindImage("Image/BattleCity/Effect/Boom_Effect.bmp");
         if (boomEffect[i].boom == nullptr)
         {
-            cout << "Image/BattleCity/Effect/Boom_Effect.bmp ÆÄÀÏ ·Îµå¿¡ ½ÇÆĞÇß´Ù." << endl;
+            cout << "Image/BattleCity/Effect/Boom_Effect.bmp íŒŒì¼ ë¡œë“œì— ì‹¤íŒ¨í–ˆë‹¤." << endl;
 
             return E_FAIL;
         }
@@ -42,19 +42,19 @@ HRESULT BattleTest2::Init()
         boomEffect[i].bigBoom = ImageManager::GetSingleton()->FindImage("Image/BattleCity/Effect/Big_Boom_Effect.bmp");
         if (boomEffect[i].bigBoom == nullptr)
         {
-            cout << "Image/BattleCity/Effect/Big_Boom_Effect.bmp ÆÄÀÏ ·Îµå¿¡ ½ÇÆĞÇß´Ù." << endl;
+            cout << "Image/BattleCity/Effect/Big_Boom_Effect.bmp íŒŒì¼ ë¡œë“œì— ì‹¤íŒ¨í–ˆë‹¤." << endl;
 
             return E_FAIL;
         }
     }
 
-    // Àû ¸Å´ÏÀú
+    // ì  ë§¤ë‹ˆì €
     enemyMgr = new EnemyManager;
     enemyMgr->Init();
     
     Load();
 
-    // ÇÃ·¹ÀÌ¾î ÅÊÅ©
+    // í”Œë ˆì´ì–´ íƒ±í¬
     player = new Tank;
     player->Init();
     playerSpawnPos = GetSpawnPos(tileInfo, ObjectType::PLAYER).back();
@@ -62,7 +62,7 @@ HRESULT BattleTest2::Init()
     player->SetTileMap(tileInfo);
     playerTankRect = player->GetShape();
     
-    // ¾ÆÀÌÅÛ
+    // ì•„ì´í…œ
     mpItem = new Item;
     mpItem->Init();
     itemRect = mpItem->GetShape();
@@ -74,12 +74,12 @@ void BattleTest2::Update()
 {
     //cout << boolalpha << "mpItem->GetExistItem() : " << mpItem->GetExistItem() << endl;
 
-    // Å¸ÀÏ ¼Ó¼º È®ÀÎ¿ë ÄÚµå
+    // íƒ€ì¼ ì†ì„± í™•ì¸ìš© ì½”ë“œ
     for (int i = 0; i < TILE_COUNT_X * TILE_COUNT_Y; i++)
     {
         if (PtInRect(&(tileInfo[i].rc), g_ptMouse))
         {
-            if (KeyManager::GetSingleton()->IsStayKeyDown(VK_RBUTTON)) // µğ¹ö±×¿ë
+            if (KeyManager::GetSingleton()->IsStayKeyDown(VK_RBUTTON)) // ë””ë²„ê·¸ìš©
             {
                 if (tileInfo[i].terrain == Terrain::WALL) cout << "WALL" << tileInfo[i].hp << endl;
                 else if (tileInfo[i].playerSpawn) cout << "playerSpawn" << tileInfo[i].hp << endl;
@@ -95,7 +95,7 @@ void BattleTest2::Update()
         }
     }
 
-    // ÇÃ·¹ÀÌ¾î ÅÊÅ©
+    // í”Œë ˆì´ì–´ íƒ±í¬
     tempPos = player->GetPos();
     player->Update();
     //if (tempPos.x != player->GetPos().x || tempPos.y != player->GetPos().y)
@@ -104,18 +104,18 @@ void BattleTest2::Update()
     //}
     playerTankRect = player->GetShape();
 
-    //Àû ÅÊÅ©
+    //ì  íƒ±í¬
     if (enemyMgr)
         enemyMgr->Update();
 
-    //¾ÆÀÌÅÛ
+    //ì•„ì´í…œ
     mpItem->Update();
     if (mpItem->GetExistItem() == true)
     {
         itemRect = mpItem->GetShape();
     }
 
-    //ÇÃ·¹ÀÌ¾î ¾ÆÀÌÅÛ Á¢ÃË
+    //í”Œë ˆì´ì–´ ì•„ì´í…œ ì ‘ì´‰
     CollisionItem();
     for (int i = 0; i < BOOM_NUM; i++)
     {
@@ -162,23 +162,23 @@ void BattleTest2::Render(HDC hdc)
         }
     }
 
-    // ÇÃ·¹ÀÌ¾î ÅÊÅ©
+    // í”Œë ˆì´ì–´ íƒ±í¬
     player->Render(hdc);
 
-    // Àû ÅÊÅ©
+    // ì  íƒ±í¬
     if (enemyMgr)
         enemyMgr->Render(hdc);
 
-    // ¾ÆÀÌÅÛ    
+    // ì•„ì´í…œ    
     if (mpItem->GetExistItem() == true)
     {
         mpItem->Render(hdc);
     }
 
-    // ¹Ì»çÀÏ Å¸ÀÏ Á¢ÃË
+    // ë¯¸ì‚¬ì¼ íƒ€ì¼ ì ‘ì´‰
     AmmoMapCollision(boomEffect, player, tileInfo);
 
-    // Æø¹ß ÀÌÆåÆ® ·»´õ
+    // í­ë°œ ì´í™íŠ¸ ë Œë”
     for (int i = 0; i < BOOM_NUM; i++)
     {
         if (boomEffect[i].isRender)
@@ -191,13 +191,13 @@ void BattleTest2::Render(HDC hdc)
 
 void BattleTest2::Release()
 {
-    // ÇÃ·¹ÀÌ¾î ÅÊÅ©
+    // í”Œë ˆì´ì–´ íƒ±í¬
     SAFE_RELEASE(player);
 
-    // Àû ÅÊÅ©
+    // ì  íƒ±í¬
     SAFE_RELEASE(enemyMgr);
     
-    // ¾ÆÀÌÅÛ
+    // ì•„ì´í…œ
     SAFE_RELEASE(mpItem);
 }
 
@@ -207,18 +207,18 @@ void BattleTest2::Load(int loadIndex)
     loadFileName += ".map";
 
     HANDLE hFile = CreateFile(loadFileName.c_str(),
-        GENERIC_READ,           // ÀĞ±â, ¾²±â
-        0, NULL,                // °øÀ¯, º¸¾È ¸ğµå
-        OPEN_EXISTING,          // ÆÄÀÏ ¸¸µé°Å³ª ÀĞÀ» ¶§ ¿É¼Ç
-        FILE_ATTRIBUTE_NORMAL,  // ÆÄÀÏ ¼Ó¼º(ÀĞ±â Àü¿ë, ¼û±è µîµî)
+        GENERIC_READ,           // ì½ê¸°, ì“°ê¸°
+        0, NULL,                // ê³µìœ , ë³´ì•ˆ ëª¨ë“œ
+        OPEN_EXISTING,          // íŒŒì¼ ë§Œë“¤ê±°ë‚˜ ì½ì„ ë•Œ ì˜µì…˜
+        FILE_ATTRIBUTE_NORMAL,  // íŒŒì¼ ì†ì„±(ì½ê¸° ì „ìš©, ìˆ¨ê¹€ ë“±ë“±)
         NULL);
 
-    // ÀĞ±â
+    // ì½ê¸°
     DWORD readByte;
     if (ReadFile(hFile, tileInfo, sizeof(tagTile) * TILE_COUNT_X * TILE_COUNT_Y,
         &readByte, NULL) == false)
     {
-        MessageBox(g_hWnd, "¸Ê µ¥ÀÌÅÍ ·Îµå¿¡ ½ÇÆĞÇß½À´Ï´Ù.", "¿¡·¯", MB_OK);
+        MessageBox(g_hWnd, "ë§µ ë°ì´í„° ë¡œë“œì— ì‹¤íŒ¨í–ˆìŠµë‹ˆë‹¤.", "ì—ëŸ¬", MB_OK);
     }
 
     CloseHandle(hFile);
@@ -229,26 +229,24 @@ void BattleTest2::AmmoMapCollision(Boom* boom, Tank* tank, TILE_INFO* tile)
     for (int j = 0; j < tank->ammoCount; j++)
     {
         RECT TankRect = tank->ammoPack[j].GetShape();
-        /*cout << "Ammo pos.x : " << tank->ammoPack[j].GetPos().x << endl;
-        cout << "Ammo pos.y : " << tank->ammoPack[j].GetPos().y << endl;
-        cout << "ÃÑ¾Ë ¹ß»ç ¿©ºÎ : " << tank->ammoPack[j].GetIsFire() << endl;*/
+
         for (int i = 0; i < TILE_COUNT_X * TILE_COUNT_Y; i++)
         {
-            if (IntersectRect(&tempRect, &TankRect, &tile[i].rc) && tank->ammoPack[j].GetIsFire()) // Ammo¶û TileÀÌ Ãæµ¹ÇÏ¸é
+            if (IntersectRect(&tempRect, &TankRect, &tile[i].rc) && tank->ammoPack[j].GetIsFire()) // Ammoë‘ Tileì´ ì¶©ëŒí•˜ë©´
             {
-                if ((tile[i].terrain == Terrain::WALL) || (tile[i].terrain == Terrain::HQ_WALL)) // Ãæµ¹ÇÑ TileÀÌ º®ÀÏ¶§
+                if ((tile[i].terrain == Terrain::WALL) || (tile[i].terrain == Terrain::HQ_WALL)) // ì¶©ëŒí•œ Tileì´ ë²½ì¼ë•Œ
                 {
                     BoomAnimation(boom, BoomType::SMALL_BOOM, tank->ammoPack[j].GetPos());
                     tile[i].hp--;
-                    if (tile[i].hp == 0) // ÆÄ±«µÈ º®ÀÎ °æ¿ì
+                    if (tile[i].hp == 0) // íŒŒê´´ëœ ë²½ì¸ ê²½ìš°
                     {
                         tile[i].frameX = 10;
-                        tile[i].frameY = 10; // ROAD·Î ¹Ù²Û´Ù.
+                        tile[i].frameY = 10; // ROADë¡œ ë°”ê¾¼ë‹¤.
                     }
                     else
                     {
                         tile[i].frameY = 8;
-                        switch (tank->ammoPack[j].GetMoveDir()) // AmmoÀÇ ¹æÇâ¿¡ µû¶ó Ã³¸®
+                        switch (tank->ammoPack[j].GetMoveDir()) // Ammoì˜ ë°©í–¥ì— ë”°ë¼ ì²˜ë¦¬
                         {
                         case MoveDir::DOWN:
                             tile[i].frameX = 2;
@@ -286,8 +284,8 @@ void BattleTest2::CollisionItem()
     {
         if (IntersectRect(&a, &playerTankRect, &itemRect))
         {
-            //cout << "¾ÆÀÌÅÛ Á¢ÃË! !" << endl;
-            //cout << "±â´ÉÈ¹µæ! !" << endl;
+            //cout << "ì•„ì´í…œ ì ‘ì´‰! !" << endl;
+            //cout << "ê¸°ëŠ¥íšë“! !" << endl;
             FunctionItem();
             mpItem->SetExistItem(false);
         }
@@ -296,23 +294,23 @@ void BattleTest2::CollisionItem()
 
 void BattleTest2::FunctionItem()
 {
-    //Çï¸ä
+    //í—¬ë©§
     if (mpItem->GetItemState() == ecFunctionItem::HELMET)
     {
         player->SetInvincible(true);
         player->SetElapsedInvincible(0);
     }
-    //½Ã°è
+    //ì‹œê³„
     if (mpItem->GetItemState() == ecFunctionItem::WATCH)
     {
 
     }
-    //»ğ
+    //ì‚½
     if (mpItem->GetItemState() == ecFunctionItem::SHOVEL)
     {
 
     }
-    //º°
+    //ë³„
     if (mpItem->GetItemState() == ecFunctionItem::STAR)
     {
         player->SetImgFrameY(player->GetImgFrameY() + 1);
@@ -325,12 +323,12 @@ void BattleTest2::FunctionItem()
             player->SetAmmoCount(2);
         }
     }
-    //¼ö·ùÅº
+    //ìˆ˜ë¥˜íƒ„
     if (mpItem->GetItemState() == ecFunctionItem::GRENADE)
     {
 
     }
-    //ÅÊÅ©
+    //íƒ±í¬
     if (mpItem->GetItemState() == ecFunctionItem::TANK)
     {
         player->SetptLife(player->GetptLife() + 1);

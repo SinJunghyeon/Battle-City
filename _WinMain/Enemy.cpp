@@ -38,6 +38,8 @@ HRESULT Enemy::Init()
 	shape.right = shape.left + bodySize - 5;
 	shape.bottom = shape.top + bodySize - 5;
 
+	tankState = ecTankState::MOVE;
+
 	return S_OK;
 }
 
@@ -62,7 +64,7 @@ void Enemy::Update()
 		}
 	}
 
-	if (isAlive)
+	if (isAlive && tankState == ecTankState::MOVE)
 	{
 		AutoMove();
 		if (Collider())
@@ -111,79 +113,82 @@ void Enemy::Release()
 
 void Enemy::AutoMove()
 {
-	switch (moveDir)
+	if (tankState == ecTankState::MOVE)
 	{
-	case MoveDir::RIGHT:
-		if (img->GetCurrFrameX() <= 5 || img->GetCurrFrameX() >= 8)
+		switch (moveDir)
 		{
-			img->SetCurrFrameX(6);
-		}
-		pos.x += moveSpeed * TimerManager::GetSingleton()->GetDeltaTime();
-		elapsedCount2++;
-
-		if (elapsedCount2 >= 2)
-		{
-			img->SetCurrFrameX(img->GetCurrFrameX() + 1);
-			if (img->GetCurrFrameX() >= 8)
+		case MoveDir::RIGHT:
+			if (img->GetCurrFrameX() <= 5 || img->GetCurrFrameX() >= 8)
 			{
 				img->SetCurrFrameX(6);
-				elapsedCount2 = 0;
 			}
-		}
-		break;
-	case MoveDir::LEFT:
-		if (img->GetCurrFrameX() <= 1 || img->GetCurrFrameX() >= 4)
-		{
-			img->SetCurrFrameX(2);
-		}
-		pos.x -= moveSpeed * TimerManager::GetSingleton()->GetDeltaTime();
-		elapsedCount2++;
-		if (elapsedCount2 >= 2)
-		{
-			img->SetCurrFrameX(img->GetCurrFrameX() + 1);
-			if (img->GetCurrFrameX() >= 4)
+			pos.x += moveSpeed * TimerManager::GetSingleton()->GetDeltaTime();
+			elapsedCount2++;
+
+			if (elapsedCount2 >= 2)
+			{
+				img->SetCurrFrameX(img->GetCurrFrameX() + 1);
+				if (img->GetCurrFrameX() >= 8)
+				{
+					img->SetCurrFrameX(6);
+					elapsedCount2 = 0;
+				}
+			}
+			break;
+		case MoveDir::LEFT:
+			if (img->GetCurrFrameX() <= 1 || img->GetCurrFrameX() >= 4)
 			{
 				img->SetCurrFrameX(2);
-				elapsedCount2 = 0;
 			}
-		}
-		break;
-	case MoveDir::UP:
-		if (img->GetCurrFrameX() <= -1 || img->GetCurrFrameX() >= 2)
-		{
-			img->SetCurrFrameX(0);
-		}
-		pos.y -= moveSpeed * TimerManager::GetSingleton()->GetDeltaTime();
-		elapsedCount2++;
-		if (elapsedCount2 >= 2)
-		{
-			img->SetCurrFrameX(img->GetCurrFrameX() + 1);
-			if (img->GetCurrFrameX() >= 2)
+			pos.x -= moveSpeed * TimerManager::GetSingleton()->GetDeltaTime();
+			elapsedCount2++;
+			if (elapsedCount2 >= 2)
+			{
+				img->SetCurrFrameX(img->GetCurrFrameX() + 1);
+				if (img->GetCurrFrameX() >= 4)
+				{
+					img->SetCurrFrameX(2);
+					elapsedCount2 = 0;
+				}
+			}
+			break;
+		case MoveDir::UP:
+			if (img->GetCurrFrameX() <= -1 || img->GetCurrFrameX() >= 2)
 			{
 				img->SetCurrFrameX(0);
-				elapsedCount2 = 0;
 			}
-		}
-		break;
-	case MoveDir::DOWN:
-		if (img->GetCurrFrameX() <= 3 || img->GetCurrFrameX() >= 6)
-		{
-			img->SetCurrFrameX(4);
-		}
-		pos.y += moveSpeed * TimerManager::GetSingleton()->GetDeltaTime();
-		elapsedCount2++;
-		if (elapsedCount2 >= 2)
-		{
-			img->SetCurrFrameX(img->GetCurrFrameX() + 1);
-			if (img->GetCurrFrameX() >= 6)
+			pos.y -= moveSpeed * TimerManager::GetSingleton()->GetDeltaTime();
+			elapsedCount2++;
+			if (elapsedCount2 >= 2)
+			{
+				img->SetCurrFrameX(img->GetCurrFrameX() + 1);
+				if (img->GetCurrFrameX() >= 2)
+				{
+					img->SetCurrFrameX(0);
+					elapsedCount2 = 0;
+				}
+			}
+			break;
+		case MoveDir::DOWN:
+			if (img->GetCurrFrameX() <= 3 || img->GetCurrFrameX() >= 6)
 			{
 				img->SetCurrFrameX(4);
-				elapsedCount2 = 0;
 			}
+			pos.y += moveSpeed * TimerManager::GetSingleton()->GetDeltaTime();
+			elapsedCount2++;
+			if (elapsedCount2 >= 2)
+			{
+				img->SetCurrFrameX(img->GetCurrFrameX() + 1);
+				if (img->GetCurrFrameX() >= 6)
+				{
+					img->SetCurrFrameX(4);
+					elapsedCount2 = 0;
+				}
+			}
+			break;
+		default:
+			break;
 		}
-		break;
-	default:
-		break;
 	}
 }
 
