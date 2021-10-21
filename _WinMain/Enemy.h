@@ -3,8 +3,8 @@
 #include "GameObject.h"
 #include "Ammo.h"
 #include "Config.h"
+#include "AmmoManager.h"
 
-class AmmoManager;
 class Enemy : public GameObject
 {
 private:
@@ -18,7 +18,7 @@ private:
 	bool isAlive = false;
 	bool isCollision;
 
-	AmmoManager* ammoMgr;
+	AmmoManager ammoMgr;
 
 	// 충돌처리용 RECT
 	RECT tempRect;
@@ -26,6 +26,8 @@ private:
 	Image* spawnImg;
 	int elapsedSpawn = NULL;
 	int spawnCount = NULL;
+
+	int hp = 1;
 
 public:
 	HRESULT Init();
@@ -45,5 +47,7 @@ public:
 	inline void SetTankState(ecTankState tankState) { this->tankState = tankState; }
 
 	inline void SetIsAlive(bool isAlive) { this->isAlive = isAlive; }
+
+	inline AmmoManager GetAmmoManager() { return this->ammoMgr; }
 };
 

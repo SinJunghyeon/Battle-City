@@ -24,5 +24,8 @@ public:
 	void AddEnemy(POINTFLOAT pos);
 	void TankState(ecTankState state);
 	void IsAlive(bool isAlive);
+
+	inline vector<Enemy*> GetEnemies() { return this->vecEnemys; }
+	inline int GetEnemyMaxCount() { return this->enemyMaxCount; }
 };
 

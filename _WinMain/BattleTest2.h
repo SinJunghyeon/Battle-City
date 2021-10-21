@@ -66,6 +66,7 @@ public:
     void Load(int loadIndex = 0);
 
     void AmmoMapCollision(Boom* boom, Tank* tank, TILE_INFO* tile);
+    void AmmoTankCollision(Boom* boom, Tank* player, EnemyManager* enemy);
     void CollisionItem();
     void FunctionItem();
 
