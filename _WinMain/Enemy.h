@@ -8,8 +8,7 @@ class AmmoManager;
 class Enemy : public GameObject
 {
 private:
-	int elapsedCount1;
-	int elapsedCount2;
+	int elapsedCount;
 	int fireDelay;
 	int fireTimer;
 
@@ -20,12 +19,14 @@ private:
 
 	AmmoManager* ammoMgr;
 
-	// Ãæµ¹Ã³¸®¿ë RECT
 	RECT tempRect;
 
 	Image* spawnImg;
 	int elapsedSpawn = NULL;
 	int spawnCount = NULL;
+
+	int elapsedTurn = 0;
+	int elapsedSpeed = 0;
 
 public:
 	HRESULT Init();
@@ -36,15 +37,16 @@ public:
 	void MoveFrame();
 	void Move(MoveDir dir);
 
-	//bool Collider();
-
 	void SetMoveSpeed(float moveSpeed) { this->moveSpeed = moveSpeed; }
-	inline void SetTileMap(TILE_INFO* tile) { this->tile = tile; }
 
-	inline ecTankState GetTankState() { return tankState; }
-	inline void SetTankState(ecTankState tankState) { this->tankState = tankState; }
+	void SetTileMap(TILE_INFO* tile) { this->tile = tile; }
 
-	inline void SetIsAlive(bool isAlive) { this->isAlive = isAlive; }
+	ecTankState GetTankState() { return tankState; }
+	void SetTankState(ecTankState tankState) { this->tankState = tankState; }
 
+	void SetIsAlive(bool isAlive) { this->isAlive = isAlive; }
+
+	bool GetIsCollision() { return this->isCollision; }
+	void SetIsCollision(bool isCollision) { this->isCollision = isCollision; }
 };
 
