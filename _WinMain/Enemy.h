@@ -3,8 +3,8 @@
 #include "GameObject.h"
 #include "Ammo.h"
 #include "Config.h"
+#include "AmmoManager.h"
 
-class AmmoManager;
 class Enemy : public GameObject
 {
 private:
@@ -18,7 +18,7 @@ private:
 	bool isAlive = false;
 	bool isCollision  = false;
 
-	AmmoManager* ammoMgr;
+	AmmoManager ammoMgr;
 
 	// Ãæµ¹Ã³¸®¿ë RECT
 	RECT tempRect;
@@ -26,6 +26,8 @@ private:
 	Image* spawnImg;
 	int elapsedSpawn = NULL;
 	int spawnCount = NULL;
+
+	int hp = 1;
 
 public:
 	HRESULT Init();
@@ -46,5 +48,9 @@ public:
 
 	inline void SetIsAlive(bool isAlive) { this->isAlive = isAlive; }
 
+<<<<<<< HEAD
+=======
+	inline AmmoManager GetAmmoManager() { return this->ammoMgr; }
+>>>>>>> main
 };
 

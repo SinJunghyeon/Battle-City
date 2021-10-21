@@ -1,6 +1,5 @@
 #include "Enemy.h"
 #include "Image.h"
-#include "AmmoManager.h"
 
 HRESULT Enemy::Init()
 {
@@ -23,9 +22,8 @@ HRESULT Enemy::Init()
 		return E_FAIL;
 	}
 
-	ammoMgr = new AmmoManager;
-	ammoMgr->Init();
-	ammoMgr->SetOwner(this);
+	ammoMgr.Init();
+	ammoMgr.SetOwner(this);
 
 	pos.x = 0.0f;
 	pos.y = 0.0f;
@@ -77,11 +75,11 @@ void Enemy::Update()
 		fireTimer++;
 		if (fireTimer >= fireDelay)
 		{
-			ammoMgr->Fire();
+			ammoMgr.Fire();
 			fireTimer = 0;
 			fireDelay = rand() % 100;
 		}
-		ammoMgr->Update();
+		ammoMgr.Update();
 
 		shape.left = pos.x - bodySize / 2 + 1;
 		shape.top = pos.y - bodySize / 2 + 1;
@@ -104,7 +102,7 @@ void Enemy::Render(HDC hdc)
 	{
 		img->Render(hdc, pos.x, pos.y, img->GetCurrFrameX(), img->GetCurrFrameY());
 
-		ammoMgr->Render(hdc);
+		ammoMgr.Render(hdc);
 	}
 
 	// 화면 밖으로 나가는 것 체크
@@ -141,7 +139,7 @@ void Enemy::Render(HDC hdc)
 
 void Enemy::Release()
 {
-	SAFE_RELEASE(ammoMgr);
+	//SAFE_RELEASE(ammoMgr);
 }
 
 // 움직이는 모양
