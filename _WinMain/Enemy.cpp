@@ -1,10 +1,17 @@
 #include "Enemy.h"
 #include "Image.h"
 
+/*
+	TO DO LIST
+	 1. 방향 전환 자연스럽게 하기
+	 2. 
+
+
+*/
+
 HRESULT Enemy::Init()
 {
-	elapsedCount1 = 0;
-	elapsedCount2 = 0;
+	elapsedCount = 0;
 	fireDelay = 100;
 	fireTimer = 0;
 
@@ -30,13 +37,12 @@ HRESULT Enemy::Init()
 	moveSpeed = 0.0f;
 	bodySize = 40;
 	moveDir = MoveDir::DOWN;
+	tankState = ecTankState::MOVE;
 
 	shape.left = pos.x - bodySize / 2 + 1;
 	shape.top = pos.y - bodySize / 2 + 1;
 	shape.right = shape.left + bodySize - 5;
 	shape.bottom = shape.top + bodySize - 5;
-
-	tankState = ecTankState::MOVE;
 
 	return S_OK;
 }
@@ -57,19 +63,116 @@ void Enemy::Update()
 				if (spawnCount >= 3)
 				{
 					isAlive = !isAlive;
+					moveSpeed = 30.0f;
 				}
 			}
 		}
 	}
+
+	// 게임 화면 충돌
+	switch (moveDir)
+	{
+	case MoveDir::RIGHT:
+		if (shape.right >= 613)
+		{
+			isCollision = true;
+		}
+		break;
+	case MoveDir::LEFT:
+		if (shape.left <= 140)
+		{
+			isCollision = true;
+		}
+		break;
+	case MoveDir::UP:
+		if (shape.top <= 100)
+		{
+			isCollision = true;
+		}
+		break;
+	case MoveDir::DOWN:
+		if (shape.bottom >= 605)
+		{
+			isCollision = true;
+		}
+		break;
+	default:
+		break;
+	}
+
 	if (isAlive && tankState == ecTankState::MOVE)
 	{
 		Move(moveDir);
 		MoveFrame();
+	// 충돌 시 방향 전환
 		if (isCollision)
 		{
-			moveDir = (MoveDir)(rand() % 4);
+			switch (moveDir)
+			{
+			case MoveDir::RIGHT:
+				moveSpeed = 0.1f;
+				elapsedTurn++;
+				if (elapsedTurn >= 30)
+				{
+					pos.x -= 2;
+					while (moveDir == MoveDir::RIGHT)
+					{
+						moveDir = (MoveDir)(rand() % 4);
+					}
+					isCollision = false;
+					moveSpeed = 30.0f;
+					elapsedTurn = 0;
+				}
+				break;
+			case MoveDir::LEFT:
+				moveSpeed = 0.1f;
+				elapsedTurn++;
+				if (elapsedTurn >= 30)
+				{
+					pos.x += 1;
+					while (moveDir == MoveDir::LEFT)
+					{
+						moveDir = (MoveDir)(rand() % 4);
+					}
+					isCollision = false;
+					moveSpeed = 30.0f;
+					elapsedTurn = 0;
+				}
+				break;
+			case MoveDir::UP:
+				moveSpeed = 0.1f;
+				elapsedTurn++;
+				if (elapsedTurn >= 30)
+				{
+					pos.y += 1;
+					while (moveDir == MoveDir::UP)
+					{
+						moveDir = (MoveDir)(rand() % 4);
+					}
+					isCollision = false;
+					moveSpeed = 30.0f;
+					elapsedTurn = 0;
+				}
+				break;
+			case MoveDir::DOWN:
+				moveSpeed = 0.1f;
+				elapsedTurn++;
+				if (elapsedTurn >= 30)
+				{
+					pos.y -= 1;
+					while (moveDir == MoveDir::DOWN)
+					{
+						moveDir = (MoveDir)(rand() % 4);
+					}
+					isCollision = false;
+					moveSpeed = 30.0f;
+					elapsedTurn = 0;
+				}
+				break;
+			default:
+				break;
+			}
 			isCollision = false;
-
 		}
 
 		fireTimer++;
@@ -81,16 +184,30 @@ void Enemy::Update()
 		}
 		ammoMgr.Update();
 
-		shape.left = pos.x - bodySize / 2 + 1;
-		shape.top = pos.y - bodySize / 2 + 1;
-		shape.right = shape.left + bodySize - 5;
-		shape.bottom = shape.top + bodySize - 5;
+	// moveSpeed가 0.1로 고정되는 오류 방지
+	if (moveSpeed == 0.1f)
+	{
+		elapsedSpeed++;
+		if (moveSpeed == 30.0f)
+		{
+			elapsedSpeed = 0;
+		}
+
+		if (elapsedSpeed >= 50)
+		{
+			moveSpeed = 30.0f;
+		}
 	}
+
+	shape.left = pos.x - bodySize / 2 + 1;
+	shape.top = pos.y - bodySize / 2 + 1;
+	shape.right = shape.left + bodySize - 5;
+	shape.bottom = shape.top + bodySize - 5;
 }
 
 void Enemy::Render(HDC hdc)
 {
-	// 임시 충돌
+	// 임시 충돌 박스
 	Rectangle(hdc, shape.left, shape.top, shape.right, shape.bottom);
 
 	if (!isAlive)	//죽어있을 때 -> 스폰 이미지를 부르고 -> 살게끔
@@ -101,6 +218,7 @@ void Enemy::Render(HDC hdc)
 	if (isAlive)
 	{
 		img->Render(hdc, pos.x, pos.y, img->GetCurrFrameX(), img->GetCurrFrameY());
+
 
 		ammoMgr.Render(hdc);
 	}
@@ -152,15 +270,15 @@ void Enemy::MoveFrame()
 		{
 			img->SetCurrFrameX(6);
 		}
-		elapsedCount2++;
+		elapsedCount++;
 
-		if (elapsedCount2 >= 2)
+		if (elapsedCount >= 2)
 		{
 			img->SetCurrFrameX(img->GetCurrFrameX() + 1);
 			if (img->GetCurrFrameX() >= 8)
 			{
 				img->SetCurrFrameX(6);
-				elapsedCount2 = 0;
+				elapsedCount = 0;
 			}
 		}
 		break;
@@ -169,14 +287,14 @@ void Enemy::MoveFrame()
 		{
 			img->SetCurrFrameX(2);
 		}
-		elapsedCount2++;
-		if (elapsedCount2 >= 2)
+		elapsedCount++;
+		if (elapsedCount >= 2)
 		{
 			img->SetCurrFrameX(img->GetCurrFrameX() + 1);
 			if (img->GetCurrFrameX() >= 4)
 			{
 				img->SetCurrFrameX(2);
-				elapsedCount2 = 0;
+				elapsedCount = 0;
 			}
 		}
 		break;
@@ -185,14 +303,14 @@ void Enemy::MoveFrame()
 		{
 			img->SetCurrFrameX(0);
 		}
-		elapsedCount2++;
-		if (elapsedCount2 >= 2)
+		elapsedCount++;
+		if (elapsedCount >= 2)
 		{
 			img->SetCurrFrameX(img->GetCurrFrameX() + 1);
 			if (img->GetCurrFrameX() >= 2)
 			{
 				img->SetCurrFrameX(0);
-				elapsedCount2 = 0;
+				elapsedCount = 0;
 			}
 		}
 		break;
@@ -201,14 +319,14 @@ void Enemy::MoveFrame()
 		{
 			img->SetCurrFrameX(4);
 		}
-		elapsedCount2++;
-		if (elapsedCount2 >= 2)
+		elapsedCount++;
+		if (elapsedCount >= 2)
 		{
 			img->SetCurrFrameX(img->GetCurrFrameX() + 1);
 			if (img->GetCurrFrameX() >= 6)
 			{
 				img->SetCurrFrameX(4);
-				elapsedCount2 = 0;
+				elapsedCount = 0;
 			}
 		}
 		break;
@@ -216,42 +334,6 @@ void Enemy::MoveFrame()
 		break;
 	}
 }
-
-// 게임 화면 밖 나가지 않게
-//bool Enemy::Collider()
-//{
-//	switch (moveDir)
-//	{
-//	case MoveDir::RIGHT:
-//		if (shape.right >= 605)
-//		{
-//			return true;
-//		}
-//		break;
-//	case MoveDir::LEFT:
-//		if (shape.left <= 120)
-//		{
-//			return true;
-//		}
-//		break;
-//	case MoveDir::UP:
-//		if (shape.top <= 120)
-//		{
-//			return true;
-//		}
-//		break;
-//	case MoveDir::DOWN:
-//		if (shape.bottom >= 605)
-//		{
-//			return true;
-//		}
-//		break;
-//	default:
-//		break;
-//	}
-//
-//	return false;
-//}
 
 void Enemy::Move(MoveDir dir)
 {
@@ -269,22 +351,20 @@ void Enemy::Move(MoveDir dir)
 	case MoveDir::DOWN: pos.y += (moveSpeed * TimerManager::GetSingleton()->GetDeltaTime()); break;
 	}
 
-
-	// 위치에 따른 모양값 갱신
-	shape.left = pos.x - (bodySize / 2) - 2;
-	shape.top = pos.y - (bodySize / 2) - 3;
-	shape.right = pos.x + (bodySize / 2);
-	shape.bottom = pos.y + (bodySize / 2) - 3;
-
 	for (int i = 0; i < TILE_COUNT_X * TILE_COUNT_Y; i++)
 	{
-		if (IntersectRect(&tempRect, &shape, &tile[i].rc))
-		{
-			if ((tile[i].terrain == Terrain::WALL) || (tile[i].terrain == Terrain::STEEL) || (tile[i].terrain == Terrain::HQ_WALL) || (tile[i].terrain == Terrain::HQ_STEEL))
+		//if (isCollision == false)
+		//{
+			if (IntersectRect(&tempRect, &shape, &tile[i].rc))
 			{
-				pos = buffPos;
-				shape = buffRect;
+				if ((tile[i].terrain == Terrain::WALL) || (tile[i].terrain == Terrain::STEEL) || (tile[i].terrain == Terrain::HQ_WALL) || (tile[i].terrain == Terrain::HQ_STEEL))
+				{
+					pos = buffPos;
+					shape = buffRect;
+					isCollision = true;
+
+				}
 			}
-		}
+		//}
 	}
 }
