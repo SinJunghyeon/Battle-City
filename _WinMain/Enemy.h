@@ -48,9 +48,6 @@ public:
 
 	inline void SetIsAlive(bool isAlive) { this->isAlive = isAlive; }
 
-<<<<<<< HEAD
-=======
 	inline AmmoManager GetAmmoManager() { return this->ammoMgr; }
->>>>>>> main
 };
 
