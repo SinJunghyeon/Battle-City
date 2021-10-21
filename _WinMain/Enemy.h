@@ -26,6 +26,7 @@ private:
 	int spawnCount = NULL;
 
 	int elapsedTurn = 0;
+	int elapsedSpeed = 0;
 
 public:
 	HRESULT Init();

@@ -117,7 +117,10 @@ void Enemy::Update()
 				if (elapsedTurn >= 30)
 				{
 					pos.x -= 2;
-					moveDir = (MoveDir)(rand() % 4);
+					while (moveDir == MoveDir::RIGHT)
+					{
+						moveDir = (MoveDir)(rand() % 4);
+					}
 					isCollision = false;
 					moveSpeed = 30.0f;
 					elapsedTurn = 0;
@@ -129,7 +132,10 @@ void Enemy::Update()
 				if (elapsedTurn >= 30)
 				{
 					pos.x += 1;
-					moveDir = (MoveDir)(rand() % 4);
+					while (moveDir == MoveDir::LEFT)
+					{
+						moveDir = (MoveDir)(rand() % 4);
+					}
 					isCollision = false;
 					moveSpeed = 30.0f;
 					elapsedTurn = 0;
@@ -141,7 +147,10 @@ void Enemy::Update()
 				if (elapsedTurn >= 30)
 				{
 					pos.y += 1;
-					moveDir = (MoveDir)(rand() % 4);
+					while (moveDir == MoveDir::UP)
+					{
+						moveDir = (MoveDir)(rand() % 4);
+					}
 					isCollision = false;
 					moveSpeed = 30.0f;
 					elapsedTurn = 0;
@@ -153,7 +162,10 @@ void Enemy::Update()
 				if (elapsedTurn >= 30)
 				{
 					pos.y -= 1;
-					moveDir = (MoveDir)(rand() % 4);
+					while (moveDir == MoveDir::DOWN)
+					{
+						moveDir = (MoveDir)(rand() % 4);
+					}
 					isCollision = false;
 					moveSpeed = 30.0f;
 					elapsedTurn = 0;
@@ -173,6 +185,21 @@ void Enemy::Update()
 			fireDelay = rand() % 100;
 		}
 		ammoMgr->Update();
+	}
+
+	// moveSpeed가 0.1로 고정되는 오류 방지
+	if (moveSpeed == 0.1f)
+	{
+		elapsedSpeed++;
+		if (moveSpeed == 30.0f)
+		{
+			elapsedSpeed = 0;
+		}
+
+		if (elapsedSpeed >= 50)
+		{
+			moveSpeed = 30.0f;
+		}
 	}
 
 	shape.left = pos.x - bodySize / 2 + 1;

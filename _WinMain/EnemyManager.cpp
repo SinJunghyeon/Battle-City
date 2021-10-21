@@ -22,11 +22,6 @@ HRESULT EnemyManager::Init()
 
 void EnemyManager::Update()
 {
-	/*for (int i = 0; i < enemyCurrCount; i++)
-	{
-		vecEnemys[i]->SetMoveSpeed(30.0f);
-	}*/
-
 	enemySpawnDelay++;
 	if (enemySpawnDelay >= 500)
 	{
