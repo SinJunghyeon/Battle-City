@@ -37,7 +37,6 @@ HRESULT EndingScene::Init()
     ImageManager::GetSingleton()->AddImage("Image/BattleCity/Text/TotalScore.bmp", WIN_SIZE_X/2, 40*1.5, true, RGB(255, 0, 255));
     textTotal = ImageManager::GetSingleton()->FindImage("Image/BattleCity/Text/TotalScore.bmp");
 
-
     return S_OK;
 }
 
@@ -48,49 +47,56 @@ void EndingScene::Update()
         SceneManager::GetSingleton()->ChangeScene("gameoverS");
     }
 
-        for (int i = 0; i < 4; i++)
-        {
-            while (killEnemyNumber[i] >= 10)  //앞(10의자리)으로 넘어가기
-            {
-                killEnemyNumber10[i] ++;
-                killEnemyNumber[i] -= 10;
-                if (killEnemyNumber[i] < 10)
-                {
-                    break;
-                }
-            }
-            if (killEnemyNumber[i] >= 5)   //앞으로 안가고 자기네에서 출력
-            {
-                killEnemyNumber5[i] ++;
-                killEnemyNumber[i] -= 5;
-            }
-        }
-
-        while (totalKillEnemy >= 10)  //앞(10의자리)으로 넘어가기
-        {
-            totalKillEnemy10 ++;
-            totalKillEnemy -= 10;
-            if (totalKillEnemy < 10)
-            {
-                break;
-            }
-        }
-        if (totalKillEnemy >= 5)   //앞으로 안가고 자기네에서 출력
-        {
-            totalKillEnemy5 ++;
-            totalKillEnemy -= 5;
-        }
-
-    if (KeyManager::GetSingleton()->IsOnceKeyDown(VK_DOWN))
+    switch (arrNum)
     {
+    case 0:
+    case 1:
+    case 2:
+    case 3:
+    if (countKillEnemy[arrNum] < killEnemyNumber[arrNum])
+    {
+        countKillEnemy[arrNum]++;
+        if (countKillEnemy[arrNum] >= 10)  //앞(10의자리)으로 넘어가기
+        {
+            killEnemyNumber10[arrNum] = countKillEnemy[arrNum] / 10;
+            killEnemyNumber5[arrNum] = 0;
+        }
+        if (countKillEnemy[arrNum] % 10 >= 5)
+        {
+            killEnemyNumber5[arrNum] = 1;
+        }
+    }
+    if (countKillEnemy[arrNum] == killEnemyNumber[arrNum])
+    {
+        arrNum++;
+    }
+    break;
+
+    case 4:
+        isAnimetion = false;
+    break;
+
+    default:
+        arrNum = 0;
+        break;
     }
 
 
-   // if(killEnemyNumber)
+    if (totalKillEnemy >= 10)  //앞(10의자리)으로 넘어가기
+    {
+        totalKillEnemy10 = totalKillEnemy / 10;
+        totalKillEnemy5 = 0;
+    }
+    if (totalKillEnemy % 10 >= 5)   //앞으로 안가고 자기네에서 출력
+    {
+        totalKillEnemy5 = 1;
+    }
 }
 
 void EndingScene::Render(HDC hdc)
 {
+    SetTimer(g_hWnd, 0, 1, NULL);
+
     hiscoreText->Render(hdc, WIN_SIZE_X / 2, WIN_SIZE_Y / 10);
     stageText->Render(hdc, WIN_SIZE_X / 2, WIN_SIZE_Y / 6);
     stageNumText->Render(hdc, WIN_SIZE_X * 3 / 5, WIN_SIZE_Y / 6, 1, 0);
@@ -102,31 +108,48 @@ void EndingScene::Render(HDC hdc)
         killEnemyArrow->Render(hdc, killEnemyPosX - 50, killEnemyPosY[i]);
         textPTS->Render(hdc, scoreTextPosX * 2 / 3, killEnemyPosY[i]);
 
-        scoreText[i]->Render(hdc, scoreTextPosX, killEnemyPosY[i], killEnemyNumber[i], killEnemyNumber5[i]);//죽인 에너미 1의 자리
+        scoreText[i]->Render(hdc, scoreTextPosX, killEnemyPosY[i], countKillEnemy[i]%5, killEnemyNumber5[i]);//죽인 에너미 1의 자리
 
         scoreText[i]->Render(hdc, scoreTextPosX / 2, killEnemyPosY[i], 0, 0);
-        if (killEnemyNumber[i] >= 1 || killEnemyNumber5[i] >= 1 || killEnemyNumber10[i] >= 1)//왼쪽 스코어
+        if (countKillEnemy[i] >= 1/* || killEnemyNumber5[i] >= 1 || killEnemyNumber10[i] >= 1*/)//왼쪽 스코어
         {
-            scoreText[i]->Render(hdc, scoreTextPosX / 2, killEnemyPosY[i], 0, 0);                                         //1의자리
-            scoreText[i]->Render(hdc, scoreTextPosX / 2 - 50, killEnemyPosY[i], 0, 0);                                    //10의 자리
-            scoreText[i]->Render(hdc, scoreTextPosX / 2 - 100, killEnemyPosY[i], killEnemyNumber[i], killEnemyNumber5[i]);//100의 자리
+            scoreText[i]->Render(hdc, scoreTextPosX / 2 - 50, killEnemyPosY[i], 0, 0);                         //10의 자리
+            scoreText[i]->Render(hdc, scoreTextPosX / 2 - 100, killEnemyPosY[i], countKillEnemy[i]%5, killEnemyNumber5[i]);//100의 자리
         }
         if (killEnemyNumber10[i] >= 1)
         {
             scoreText[i]->Render(hdc, scoreTextPosX - 50, killEnemyPosY[i], killEnemyNumber10[i], 0);      //죽인 에너미 10의 자리
             scoreText[i]->Render(hdc, scoreTextPosX / 2 - 150, killEnemyPosY[i], killEnemyNumber10[i], 0); //스코어 1000의 자리
         }
-        
     }
 
     textTotal->Render(hdc, WIN_SIZE_X / 2, WIN_SIZE_Y * 4 / 5);
-    totalKillText->Render(hdc, scoreTextPosX, WIN_SIZE_Y * 4 / 5, totalKillEnemy, totalKillEnemy5);
-    if (totalKillEnemy10 >= 1)
+    if (!isAnimetion)
     {
-        totalKillText->Render(hdc, scoreTextPosX - 50, WIN_SIZE_Y * 4 / 5, totalKillEnemy10, 0);
+        totalKillText->Render(hdc, scoreTextPosX, WIN_SIZE_Y * 4 / 5, totalKillEnemy%5, totalKillEnemy5);
+        if (totalKillEnemy10 >= 1 && totalKillEnemy10 < 5)
+        {
+            totalKillText->Render(hdc, scoreTextPosX - 50, WIN_SIZE_Y * 4 / 5, totalKillEnemy10, 0);
+        }
+        else if (totalKillEnemy10 >= 5 && totalKillEnemy10 <= 9)
+        {
+            totalKillText->Render(hdc, scoreTextPosX - 50, WIN_SIZE_Y * 4 / 5, totalKillEnemy10 % 5, 1);
+        }
     }
 }
 
 void EndingScene::Release()
 {
+    SetTimer(g_hWnd, 0, 10, NULL);
+
+    arrNum = 0;
+
+    for (int i = 0; i < 4; i++)
+    {
+        countKillEnemy[i] = 0;
+        killEnemyNumber5[i] = 0;
+        killEnemyNumber10[i] = 0;
+    }
+
+    isAnimetion = true;
 }
