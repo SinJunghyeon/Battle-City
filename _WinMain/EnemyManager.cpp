@@ -22,10 +22,10 @@ HRESULT EnemyManager::Init()
 
 void EnemyManager::Update()
 {
-	for (int i = 0; i < enemyCurrCount; i++)
+	/*for (int i = 0; i < enemyCurrCount; i++)
 	{
 		vecEnemys[i]->SetMoveSpeed(30.0f);
-	}
+	}*/
 
 	enemySpawnDelay++;
 	if (enemySpawnDelay >= 500)
@@ -46,8 +46,8 @@ void EnemyManager::Update()
 			{
 			case MoveDir::RIGHT:
 				if (//(vecEnemys[i]->GetShape().right >= vecEnemys[j]->GetShape().left) &&
-					(abs(vecEnemys[i]->GetPos().y - vecEnemys[j]->GetPos().y) <= 35)
-					&& abs(vecEnemys[i]->GetPos().x - vecEnemys[j]->GetPos().x) <= 35)
+					(abs(vecEnemys[i]->GetPos().y - vecEnemys[j]->GetPos().y) <= 40)
+					&& abs(vecEnemys[i]->GetPos().x - vecEnemys[j]->GetPos().x) <= 40)
 				{
 					vecEnemys[i]->SetIsCollision(true);
 					cout << "case right collision : " << i << "," << vecEnemys[i]->GetIsCollision() << endl;
@@ -55,8 +55,8 @@ void EnemyManager::Update()
 				break;
 			case MoveDir::LEFT:
 				if (//(vecEnemys[i]->GetShape().left <= vecEnemys[j]->GetShape().right) &&
-					(abs(vecEnemys[i]->GetPos().y - vecEnemys[j]->GetPos().y) <= 35)
-					&& abs(vecEnemys[i]->GetPos().x - vecEnemys[j]->GetPos().x) <= 35)
+					(abs(vecEnemys[i]->GetPos().y - vecEnemys[j]->GetPos().y) <= 40)
+					&& abs(vecEnemys[i]->GetPos().x - vecEnemys[j]->GetPos().x) <= 40)
 				{
 					vecEnemys[i]->SetIsCollision(true);
 					cout << "case left collision : " << i << "," << vecEnemys[i]->GetIsCollision() << endl;
@@ -64,8 +64,8 @@ void EnemyManager::Update()
 				break;
 			case MoveDir::UP:
 				if (//(vecEnemys[i]->GetShape().top <= vecEnemys[j]->GetShape().bottom) &&
-					(abs(vecEnemys[i]->GetPos().x - vecEnemys[j]->GetPos().x) <= 35)
-					&& abs(vecEnemys[i]->GetPos().y - vecEnemys[j]->GetPos().y) <= 35)
+					(abs(vecEnemys[i]->GetPos().x - vecEnemys[j]->GetPos().x) <= 40)
+					&& abs(vecEnemys[i]->GetPos().y - vecEnemys[j]->GetPos().y) <= 40)
 				{
 					vecEnemys[i]->SetIsCollision(true);
 					cout << "case up collision : " << i << "," << vecEnemys[i]->GetIsCollision() << endl;
@@ -73,8 +73,8 @@ void EnemyManager::Update()
 				break;
 			case MoveDir::DOWN:
 				if (//(vecEnemys[i]->GetShape().bottom >= vecEnemys[j]->GetShape().top) &&
-					(abs(vecEnemys[i]->GetPos().x - vecEnemys[j]->GetPos().x) <= 35)
-					&& abs(vecEnemys[i]->GetPos().y - vecEnemys[j]->GetPos().y) <= 35)
+					(abs(vecEnemys[i]->GetPos().x - vecEnemys[j]->GetPos().x) <= 40)
+					&& abs(vecEnemys[i]->GetPos().y - vecEnemys[j]->GetPos().y) <= 40)
 				{
 					vecEnemys[i]->SetIsCollision(true);
 					cout << "case down collision : " << i << "," << vecEnemys[i]->GetIsCollision() << endl;
@@ -128,8 +128,11 @@ void EnemyManager::Release()
 void EnemyManager::AddEnemy(POINTFLOAT pos)
 {
 	enemyCurrCount++;
+	//vecEnemys[enemyCurrCount-1]->SetMoveSpeed(30.0f);
 	if (enemyCurrCount > enemyMaxCount)
+	{
 		enemyCurrCount = enemyMaxCount;
+	}
 }
 
 void EnemyManager::SetTileMapManager(TILE_INFO* tile)

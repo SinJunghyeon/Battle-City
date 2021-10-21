@@ -8,8 +8,7 @@ class AmmoManager;
 class Enemy : public GameObject
 {
 private:
-	int elapsedCount1;
-	int elapsedCount2;
+	int elapsedCount;
 	int fireDelay;
 	int fireTimer;
 

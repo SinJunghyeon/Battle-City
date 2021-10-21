@@ -12,8 +12,7 @@
 
 HRESULT Enemy::Init()
 {
-	elapsedCount1 = 0;
-	elapsedCount2 = 0;
+	elapsedCount = 0;
 	fireDelay = 100;
 	fireTimer = 0;
 
@@ -66,6 +65,7 @@ void Enemy::Update()
 				if (spawnCount >= 3)
 				{
 					isAlive = !isAlive;
+					moveSpeed = 30.0f;
 				}
 			}
 		}
@@ -75,19 +75,19 @@ void Enemy::Update()
 	switch (moveDir)
 	{
 	case MoveDir::RIGHT:
-		if (shape.right >= 605)
+		if (shape.right >= 613)
 		{
 			isCollision = true;
 		}
 		break;
 	case MoveDir::LEFT:
-		if (shape.left <= 120)
+		if (shape.left <= 140)
 		{
 			isCollision = true;
 		}
 		break;
 	case MoveDir::UP:
-		if (shape.top <= 120)
+		if (shape.top <= 100)
 		{
 			isCollision = true;
 		}
@@ -109,38 +109,58 @@ void Enemy::Update()
 	// 충돌 시 방향 전환
 		if (isCollision)
 		{
-			moveSpeed = 0.0f;
-			elapsedTurn++;
-			cout << "elapsedTurn : " << elapsedTurn << endl;
-			if (elapsedTurn >= 30)
+			switch (moveDir)
 			{
-				switch (moveDir)
+			case MoveDir::RIGHT:
+				moveSpeed = 0.1f;
+				elapsedTurn++;
+				if (elapsedTurn >= 30)
 				{
-				case MoveDir::RIGHT:
-					moveDir = MoveDir::DOWN;
 					pos.x -= 2;
+					moveDir = (MoveDir)(rand() % 4);
 					isCollision = false;
-					break;
-				case MoveDir::LEFT:
-					moveDir = MoveDir::UP;
-					pos.x += 2;
-					isCollision = false;
-					break;
-				case MoveDir::UP:
-					moveDir = MoveDir::RIGHT;
-					pos.y += 2;
-					isCollision = false;
-					break;
-				case MoveDir::DOWN:
-					moveDir = MoveDir::LEFT;
-					pos.y -= 2;
-					isCollision = false;
-					cout << "elapsedTurn : " << elapsedTurn << endl;
-					break;
-				default:
-					break;
+					moveSpeed = 30.0f;
+					elapsedTurn = 0;
 				}
-			elapsedTurn = 0;
+				break;
+			case MoveDir::LEFT:
+				moveSpeed = 0.1f;
+				elapsedTurn++;
+				if (elapsedTurn >= 30)
+				{
+					pos.x += 1;
+					moveDir = (MoveDir)(rand() % 4);
+					isCollision = false;
+					moveSpeed = 30.0f;
+					elapsedTurn = 0;
+				}
+				break;
+			case MoveDir::UP:
+				moveSpeed = 0.1f;
+				elapsedTurn++;
+				if (elapsedTurn >= 30)
+				{
+					pos.y += 1;
+					moveDir = (MoveDir)(rand() % 4);
+					isCollision = false;
+					moveSpeed = 30.0f;
+					elapsedTurn = 0;
+				}
+				break;
+			case MoveDir::DOWN:
+				moveSpeed = 0.1f;
+				elapsedTurn++;
+				if (elapsedTurn >= 30)
+				{
+					pos.y -= 1;
+					moveDir = (MoveDir)(rand() % 4);
+					isCollision = false;
+					moveSpeed = 30.0f;
+					elapsedTurn = 0;
+				}
+				break;
+			default:
+				break;
 			}
 			isCollision = false;
 		}
@@ -164,7 +184,7 @@ void Enemy::Update()
 void Enemy::Render(HDC hdc)
 {
 	// 임시 충돌 박스
-	//Rectangle(hdc, shape.left, shape.top, shape.right, shape.bottom);
+	Rectangle(hdc, shape.left, shape.top, shape.right, shape.bottom);
 
 	if (!isAlive)	//죽어있을 때 -> 스폰 이미지를 부르고 -> 살게끔
 	{
@@ -194,15 +214,15 @@ void Enemy::MoveFrame()
 		{
 			img->SetCurrFrameX(6);
 		}
-		elapsedCount2++;
+		elapsedCount++;
 
-		if (elapsedCount2 >= 2)
+		if (elapsedCount >= 2)
 		{
 			img->SetCurrFrameX(img->GetCurrFrameX() + 1);
 			if (img->GetCurrFrameX() >= 8)
 			{
 				img->SetCurrFrameX(6);
-				elapsedCount2 = 0;
+				elapsedCount = 0;
 			}
 		}
 		break;
@@ -211,14 +231,14 @@ void Enemy::MoveFrame()
 		{
 			img->SetCurrFrameX(2);
 		}
-		elapsedCount2++;
-		if (elapsedCount2 >= 2)
+		elapsedCount++;
+		if (elapsedCount >= 2)
 		{
 			img->SetCurrFrameX(img->GetCurrFrameX() + 1);
 			if (img->GetCurrFrameX() >= 4)
 			{
 				img->SetCurrFrameX(2);
-				elapsedCount2 = 0;
+				elapsedCount = 0;
 			}
 		}
 		break;
@@ -227,14 +247,14 @@ void Enemy::MoveFrame()
 		{
 			img->SetCurrFrameX(0);
 		}
-		elapsedCount2++;
-		if (elapsedCount2 >= 2)
+		elapsedCount++;
+		if (elapsedCount >= 2)
 		{
 			img->SetCurrFrameX(img->GetCurrFrameX() + 1);
 			if (img->GetCurrFrameX() >= 2)
 			{
 				img->SetCurrFrameX(0);
-				elapsedCount2 = 0;
+				elapsedCount = 0;
 			}
 		}
 		break;
@@ -243,14 +263,14 @@ void Enemy::MoveFrame()
 		{
 			img->SetCurrFrameX(4);
 		}
-		elapsedCount2++;
-		if (elapsedCount2 >= 2)
+		elapsedCount++;
+		if (elapsedCount >= 2)
 		{
 			img->SetCurrFrameX(img->GetCurrFrameX() + 1);
 			if (img->GetCurrFrameX() >= 6)
 			{
 				img->SetCurrFrameX(4);
-				elapsedCount2 = 0;
+				elapsedCount = 0;
 			}
 		}
 		break;
@@ -277,8 +297,8 @@ void Enemy::Move(MoveDir dir)
 
 	for (int i = 0; i < TILE_COUNT_X * TILE_COUNT_Y; i++)
 	{
-		if (isCollision == false)
-		{
+		//if (isCollision == false)
+		//{
 			if (IntersectRect(&tempRect, &shape, &tile[i].rc))
 			{
 				if ((tile[i].terrain == Terrain::WALL) || (tile[i].terrain == Terrain::STEEL) || (tile[i].terrain == Terrain::HQ_WALL) || (tile[i].terrain == Terrain::HQ_STEEL))
@@ -286,9 +306,9 @@ void Enemy::Move(MoveDir dir)
 					pos = buffPos;
 					shape = buffRect;
 					isCollision = true;
-					
+
 				}
 			}
-		}
+		//}
 	}
 }
