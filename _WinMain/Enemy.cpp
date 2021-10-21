@@ -104,7 +104,7 @@ void Enemy::Update()
 	{
 		Move(moveDir);
 		MoveFrame();
-	// 충돌 시 방향 전환
+		// 충돌 시 방향 전환
 		if (isCollision)
 		{
 			switch (moveDir)
@@ -184,25 +184,26 @@ void Enemy::Update()
 		}
 		ammoMgr.Update();
 
-	// moveSpeed가 0.1로 고정되는 오류 방지
-	if (moveSpeed == 0.1f)
-	{
-		elapsedSpeed++;
-		if (moveSpeed == 30.0f)
+		// moveSpeed가 0.1로 고정되는 오류 방지
+		if (moveSpeed == 0.1f)
 		{
-			elapsedSpeed = 0;
+			elapsedSpeed++;
+			if (moveSpeed == 30.0f)
+			{
+				elapsedSpeed = 0;
+			}
+
+			if (elapsedSpeed >= 50)
+			{
+				moveSpeed = 30.0f;
+			}
 		}
 
-		if (elapsedSpeed >= 50)
-		{
-			moveSpeed = 30.0f;
-		}
+		shape.left = pos.x - bodySize / 2 + 1;
+		shape.top = pos.y - bodySize / 2 + 1;
+		shape.right = shape.left + bodySize - 5;
+		shape.bottom = shape.top + bodySize - 5;
 	}
-
-	shape.left = pos.x - bodySize / 2 + 1;
-	shape.top = pos.y - bodySize / 2 + 1;
-	shape.right = shape.left + bodySize - 5;
-	shape.bottom = shape.top + bodySize - 5;
 }
 
 void Enemy::Render(HDC hdc)
