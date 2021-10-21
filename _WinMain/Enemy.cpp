@@ -2,6 +2,14 @@
 #include "Image.h"
 #include "AmmoManager.h"
 
+/*
+	TO DO LIST
+	 1. 방향 전환 자연스럽게 하기
+	 2. 
+
+
+*/
+
 HRESULT Enemy::Init()
 {
 	elapsedCount1 = 0;
@@ -32,13 +40,12 @@ HRESULT Enemy::Init()
 	moveSpeed = 0.0f;
 	bodySize = 40;
 	moveDir = MoveDir::DOWN;
+	tankState = ecTankState::MOVE;
 
 	shape.left = pos.x - bodySize / 2 + 1;
 	shape.top = pos.y - bodySize / 2 + 1;
 	shape.right = shape.left + bodySize - 5;
 	shape.bottom = shape.top + bodySize - 5;
-
-	tankState = ecTankState::MOVE;
 
 	return S_OK;
 }
@@ -63,51 +70,8 @@ void Enemy::Update()
 			}
 		}
 	}
-	if (isAlive && tankState == ecTankState::MOVE)
-	{
-		Move(moveDir);
-		MoveFrame();
-		if (isCollision)
-		{
-			moveDir = (MoveDir)(rand() % 4);
-			isCollision = false;
 
-		}
-
-		fireTimer++;
-		if (fireTimer >= fireDelay)
-		{
-			ammoMgr->Fire();
-			fireTimer = 0;
-			fireDelay = rand() % 100;
-		}
-		ammoMgr->Update();
-
-		shape.left = pos.x - bodySize / 2 + 1;
-		shape.top = pos.y - bodySize / 2 + 1;
-		shape.right = shape.left + bodySize - 5;
-		shape.bottom = shape.top + bodySize - 5;
-	}
-}
-
-void Enemy::Render(HDC hdc)
-{
-	// 임시 충돌
-	Rectangle(hdc, shape.left, shape.top, shape.right, shape.bottom);
-
-	if (!isAlive)	//죽어있을 때 -> 스폰 이미지를 부르고 -> 살게끔
-	{
-		spawnImg->Render(hdc, pos.x, pos.y, spawnImg->GetCurrFrameX(), spawnImg->GetCurrFrameY());
-	}
-
-	if (isAlive)
-	{
-		img->Render(hdc, pos.x, pos.y, img->GetCurrFrameX(), img->GetCurrFrameY());
-
-		ammoMgr->Render(hdc);
-	}
-
-	// 화면 밖으로 나가는 것 체크
+	// 게임 화면 충돌
 	switch (moveDir)
 	{
 	case MoveDir::RIGHT:
@@ -137,6 +101,82 @@ void Enemy::Render(HDC hdc)
 	default:
 		break;
 	}
+
+	if (isAlive && tankState == ecTankState::MOVE)
+	{
+		Move(moveDir);
+		MoveFrame();
+	// 충돌 시 방향 전환
+		if (isCollision)
+		{
+			moveSpeed = 0.0f;
+			elapsedTurn++;
+			cout << "elapsedTurn : " << elapsedTurn << endl;
+			if (elapsedTurn >= 30)
+			{
+				switch (moveDir)
+				{
+				case MoveDir::RIGHT:
+					moveDir = MoveDir::DOWN;
+					pos.x -= 2;
+					isCollision = false;
+					break;
+				case MoveDir::LEFT:
+					moveDir = MoveDir::UP;
+					pos.x += 2;
+					isCollision = false;
+					break;
+				case MoveDir::UP:
+					moveDir = MoveDir::RIGHT;
+					pos.y += 2;
+					isCollision = false;
+					break;
+				case MoveDir::DOWN:
+					moveDir = MoveDir::LEFT;
+					pos.y -= 2;
+					isCollision = false;
+					cout << "elapsedTurn : " << elapsedTurn << endl;
+					break;
+				default:
+					break;
+				}
+			elapsedTurn = 0;
+			}
+			isCollision = false;
+		}
+
+		fireTimer++;
+		if (fireTimer >= fireDelay)
+		{
+			ammoMgr->Fire();
+			fireTimer = 0;
+			fireDelay = rand() % 100;
+		}
+		ammoMgr->Update();
+	}
+
+	shape.left = pos.x - bodySize / 2 + 1;
+	shape.top = pos.y - bodySize / 2 + 1;
+	shape.right = shape.left + bodySize - 5;
+	shape.bottom = shape.top + bodySize - 5;
+}
+
+void Enemy::Render(HDC hdc)
+{
+	// 임시 충돌 박스
+	//Rectangle(hdc, shape.left, shape.top, shape.right, shape.bottom);
+
+	if (!isAlive)	//죽어있을 때 -> 스폰 이미지를 부르고 -> 살게끔
+	{
+		spawnImg->Render(hdc, pos.x, pos.y, spawnImg->GetCurrFrameX(), spawnImg->GetCurrFrameY());
+	}
+
+	if (isAlive)
+	{
+		img->Render(hdc, pos.x, pos.y, img->GetCurrFrameX(), img->GetCurrFrameY());
+
+		ammoMgr->Render(hdc);
+	}	
 }
 
 void Enemy::Release()
@@ -219,42 +259,6 @@ void Enemy::MoveFrame()
 	}
 }
 
-// 게임 화면 밖 나가지 않게
-//bool Enemy::Collider()
-//{
-//	switch (moveDir)
-//	{
-//	case MoveDir::RIGHT:
-//		if (shape.right >= 605)
-//		{
-//			return true;
-//		}
-//		break;
-//	case MoveDir::LEFT:
-//		if (shape.left <= 120)
-//		{
-//			return true;
-//		}
-//		break;
-//	case MoveDir::UP:
-//		if (shape.top <= 120)
-//		{
-//			return true;
-//		}
-//		break;
-//	case MoveDir::DOWN:
-//		if (shape.bottom >= 605)
-//		{
-//			return true;
-//		}
-//		break;
-//	default:
-//		break;
-//	}
-//
-//	return false;
-//}
-
 void Enemy::Move(MoveDir dir)
 {
 	POINTFLOAT buffPos;  // 현재 좌표를 백업하기 위한 버퍼
@@ -271,21 +275,19 @@ void Enemy::Move(MoveDir dir)
 	case MoveDir::DOWN: pos.y += (moveSpeed * TimerManager::GetSingleton()->GetDeltaTime()); break;
 	}
 
-
-	// 위치에 따른 모양값 갱신
-	shape.left = pos.x - (bodySize / 2) - 2;
-	shape.top = pos.y - (bodySize / 2) - 3;
-	shape.right = pos.x + (bodySize / 2);
-	shape.bottom = pos.y + (bodySize / 2) - 3;
-
 	for (int i = 0; i < TILE_COUNT_X * TILE_COUNT_Y; i++)
 	{
-		if (IntersectRect(&tempRect, &shape, &tile[i].rc))
+		if (isCollision == false)
 		{
-			if ((tile[i].terrain == Terrain::WALL) || (tile[i].terrain == Terrain::STEEL) || (tile[i].terrain == Terrain::HQ_WALL) || (tile[i].terrain == Terrain::HQ_STEEL))
+			if (IntersectRect(&tempRect, &shape, &tile[i].rc))
 			{
-				pos = buffPos;
-				shape = buffRect;
+				if ((tile[i].terrain == Terrain::WALL) || (tile[i].terrain == Terrain::STEEL) || (tile[i].terrain == Terrain::HQ_WALL) || (tile[i].terrain == Terrain::HQ_STEEL))
+				{
+					pos = buffPos;
+					shape = buffRect;
+					isCollision = true;
+					
+				}
 			}
 		}
 	}
