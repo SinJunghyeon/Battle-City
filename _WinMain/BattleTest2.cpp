@@ -90,6 +90,8 @@ void BattleTest2::Update()
                 else if (tileInfo[i].playerSpawn) cout << "playerSpawn" << tileInfo[i].hp << endl;
                 else if (tileInfo[i].enemySpawn) cout << "enemySpawn" << tileInfo[i].hp << endl;
                 else if (tileInfo[i].itemSpawn) cout << "itemSpawn" << tileInfo[i].hp << endl;
+                else if (tileInfo[i].isHQWall) cout << "isHQWall" << tileInfo[i].hp << endl;
+                
                 else if (tileInfo[i].terrain == Terrain::STEEL) cout << "STEEL" << tileInfo[i].hp << endl;
                 else if (tileInfo[i].terrain == Terrain::ROAD) cout << "ROAD" << tileInfo[i].hp << endl;
                 else if (tileInfo[i].terrain == Terrain::HQ) cout << "HQ" << tileInfo[i].hp << endl;
@@ -176,16 +178,22 @@ void BattleTest2::Update()
                     boomEffect[i].isRender = false;
                     boomEffect[i].boom->SetCurrFrameX(0);
                 }
-                else if ((boomEffect[i].boom->GetCurrFrameX() == 3) && boomEffect[i].type == BoomType::BIG_BOOM)
+                else if ((boomEffect[i].boom->GetCurrFrameX() >= 3) && boomEffect[i].type == BoomType::BIG_BOOM)
                 {
                     boomEffect[i].bigBoom->SetCurrFrameX(boomEffect[i].bigBoom->GetCurrFrameX() + 1);
+                    if (boomEffect[i].bigBoom->GetCurrFrameX() == 2)
+                    {
+                        boomEffect[i].isRender = false;
+                        boomEffect[i].bigBoom->SetCurrFrameX(0);
+                        boomEffect[i].boom->SetCurrFrameX(0);
+                    }
                 }
                 boomEffect[i].elapsedCount = 0;
             }
         }
     }
 
-    if (KeyManager::GetSingleton()->IsOnceKeyDown(VK_RETURN))
+    if (playerLife == 0)
     {
         SceneManager::GetSingleton()->ChangeScene("endingS");
     }
@@ -243,8 +251,15 @@ void BattleTest2::Render(HDC hdc)
     {
         if (boomEffect[i].isRender)
         {
-            boomEffect[i].boom->Render(hdc, boomEffect[i].boomPos.x, boomEffect[i].boomPos.y, boomEffect[i].boom->GetCurrFrameX(), boomEffect[i].boom->GetCurrFrameY(), 2.0f);
+            if (boomEffect[i].boom->GetCurrFrameX() <= 2)
+            {
+                boomEffect[i].boom->Render(hdc, boomEffect[i].boomPos.x, boomEffect[i].boomPos.y, boomEffect[i].boom->GetCurrFrameX(), boomEffect[i].boom->GetCurrFrameY(), 2.0f);
 
+            }
+            else if ((boomEffect[i].bigBoom->GetCurrFrameX() <= 1) && boomEffect[i].type == BoomType::BIG_BOOM)
+            {
+                boomEffect[i].bigBoom->Render(hdc, boomEffect[i].boomPos.x, boomEffect[i].boomPos.y, boomEffect[i].bigBoom->GetCurrFrameX(), boomEffect[i].bigBoom->GetCurrFrameY(), 2.0f);
+            }
             break;
         }
     }
@@ -362,11 +377,33 @@ void BattleTest2::AmmoTankCollision(Boom* boom, Tank* player, EnemyManager* enem
             RECT enemyRect = vecEnemies[j]->GetShape();
             if (IntersectRect(&tempRect, &ammoRect, &enemyRect) && player->ammoPack[i].GetIsFire())    // 플레이어 미사일과 적 탱크가 충돌했을 경우
             {
-                BoomAnimation(boom, BoomType::SMALL_BOOM, vecEnemies[j]->GetPos());
-                vecEnemies[j]->SetIsAlive(false);
-                vecEnemies[j]->SetTankState(ecTankState::DIE);
-                player->ammoPack[i].SetIsFire(false);
-                player->ammoPack[i].SetBodySize(0);
+                vecEnemies[j]->SetHP(vecEnemies[j]->GetHP() - 1); // HP를 1 감소
+                if (vecEnemies[j]->GetHP() == 0)    // 적의 HP가 0이면 처리
+                {
+                    BoomAnimation(boom, BoomType::BIG_BOOM, vecEnemies[j]->GetPos());
+                    vecEnemies[j]->SetIsAlive(false);
+                    vecEnemies[j]->SetTankState(ecTankState::DIE);
+                    player->ammoPack[i].SetIsFire(false);
+                    player->ammoPack[i].SetBodySize(0);
+
+                    switch (vecEnemies[j]->GetEnemyType())  // 적의 타입에 따라 격추수 증가
+                    {
+                    case EnemyType::NORMAL:
+                        destroyedEnemy[0]++;
+                        break;
+                    case EnemyType::SPEED:
+                        destroyedEnemy[1]++;
+                        break;
+                    case EnemyType::RPD:
+                        destroyedEnemy[2]++;
+                        break;
+                    case EnemyType::SUPER:
+                        destroyedEnemy[3]++;
+                        break;
+                    default:
+                        break;
+                    }
+                }
             }
 
             ammoMgr = vecEnemies[j]->GetAmmoManager();
@@ -386,7 +423,26 @@ void BattleTest2::AmmoTankCollision(Boom* boom, Tank* player, EnemyManager* enem
     }
 
     // 적 미사일이 플레이어에게 히트했을 경우
+    for (int i = 0; i < vecEnemies.size(); ++i)
+    {
+        ammoMgr = vecEnemies[i]->GetAmmoManager();
+        vecAmmos = ammoMgr.GetAmmos();
+        for (int j = 0; j < vecAmmos.size(); ++j)
+        {
+            RECT enemyAmmoRect = vecAmmos[j]->GetShape();
+            if (IntersectRect(&tempRect, &playerRect, &enemyAmmoRect))  // 적 미사일과 플레이어 탱크가 충돌했을 경우
+            {
+                BoomAnimation(boom, BoomType::BIG_BOOM, player->GetPos());
+                player->SetIsAlive(false);
+                player->Init();
+                playerSpawnPos = GetSpawnPos(tileInfo, ObjectType::PLAYER).back();
+                player->SetPos(playerSpawnPos);
+                playerLife--;
+                cout << "플레이어 목숨 : " << playerLife << endl;
+            }
+        }
 
+    }
 }
 
 void BattleTest2::AmmoTankCollision(Boom* boom, Tank* player, EnemyManager* enemy)

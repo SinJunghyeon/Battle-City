@@ -10,11 +10,11 @@
 #pragma comment(linker, "/entry:WinMainCRTStartup /subsystem:console")
 #endif
 
-// Àü¿ªº¯¼ö
+// ì „ì—­ë³€ìˆ˜
 POINT		g_ptMouse;
 HINSTANCE	g_hInstance;
 HWND		g_hWnd;
-LPSTR		g_lpszClass = (LPSTR)TEXT("À©¸ŞÀÎÀÇ ½ÃÀÛ");
+LPSTR		g_lpszClass = (LPSTR)TEXT("ìœˆë©”ì¸ì˜ ì‹œì‘");
 MainGame	g_mainGame;
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage,
@@ -23,24 +23,24 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage,
 int APIENTRY WinMain(HINSTANCE _hInstance, HINSTANCE _hPrevInstance,
 	LPSTR _lpszCmdParam, int nCmdShow)
 {
-	// À©µµ¿ì¸¦ »ı¼ºÇÏ±â À§ÇÑ ±âº» ¼ÂÆÃ
+	// ìœˆë„ìš°ë¥¼ ìƒì„±í•˜ê¸° ìœ„í•œ ê¸°ë³¸ ì…‹íŒ…
 	g_hInstance = _hInstance;
 	WNDCLASS wndClass;
 	wndClass.cbClsExtra = 0;
 	wndClass.cbWndExtra = 0;
-	wndClass.hbrBackground = (HBRUSH)GetStockObject(WHITE_BRUSH); // ÇÚµéÇüº¯È¯
+	wndClass.hbrBackground = (HBRUSH)GetStockObject(WHITE_BRUSH); // í•¸ë“¤í˜•ë³€í™˜
 	wndClass.hCursor = LoadCursor(NULL, IDC_ARROW);
 	wndClass.hIcon = LoadIcon(NULL, IDI_APPLICATION);
 	wndClass.hInstance = _hInstance;
-	wndClass.lpfnWndProc = WndProc;				// ÇÔ¼öÆ÷ÀÎÅÍ(Äİ¹éÇÔ¼ö)
+	wndClass.lpfnWndProc = WndProc;				// í•¨ìˆ˜í¬ì¸í„°(ì½œë°±í•¨ìˆ˜)
 	wndClass.lpszClassName = g_lpszClass;
 	wndClass.lpszMenuName = g_lpszClass;
-	wndClass.style = CS_VREDRAW | CS_HREDRAW | CS_DBLCLKS;	// bit¿¬»ê
+	wndClass.style = CS_VREDRAW | CS_HREDRAW | CS_DBLCLKS;	// bitì—°ì‚°
 
-	// À©µµ¿ì Å¬·¡½º µî·Ï
+	// ìœˆë„ìš° í´ë˜ìŠ¤ ë“±ë¡
 	RegisterClass(&wndClass);
 
-	// À©µµ¿ì »ı¼º
+	// ìœˆë„ìš° ìƒì„±
 	g_hWnd = CreateWindow(g_lpszClass, g_lpszClass, WS_OVERLAPPEDWINDOW, 
 		WIN_START_POS_X, WIN_START_POS_Y, WIN_SIZE_X, WIN_SIZE_Y,
 		NULL, NULL, _hInstance, NULL);
@@ -52,15 +52,15 @@ int APIENTRY WinMain(HINSTANCE _hInstance, HINSTANCE _hPrevInstance,
 
 
 
-	// ¸ŞÀÎ°ÔÀÓ ÃÊ±âÈ­
+	// ë©”ì¸ê²Œì„ ì´ˆê¸°í™”
 	g_mainGame.Init();
 
 
-	// À©µµ¿ì Ãâ·Â
+	// ìœˆë„ìš° ì¶œë ¥
 	ShowWindow(g_hWnd, nCmdShow);
 
 
-	// ¸Ş½ÃÁö Å¥¿¡ ÀÖ´Â ¸Ş½ÃÁö Ã³¸®
+	// ë©”ì‹œì§€ íì— ìˆëŠ” ë©”ì‹œì§€ ì²˜ë¦¬
 	MSG message;
 	while (GetMessage(&message, 0, 0, 0))
 	{
@@ -68,7 +68,7 @@ int APIENTRY WinMain(HINSTANCE _hInstance, HINSTANCE _hPrevInstance,
 		DispatchMessage(&message);
 	}
 
-	// ¸ŞÀÎ°ÔÀÓ ÇØÁ¦
+	// ë©”ì¸ê²Œì„ í•´ì œ
 	g_mainGame.Release();
 
 	return message.wParam;
@@ -86,8 +86,9 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 	case WM_KEYDOWN:
 		switch (wParam)
 		{
-		/*case VK_RETURN:
-			break;*/
+		case VK_RETURN:
+			//isUpdate = !isUpdate;
+			break;
 		}
 		break;
 	case WM_TIMER:
@@ -97,14 +98,14 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 		}
 
 		break;
-	case WM_PAINT:		// À©µµ¿ì È­¸éÀÌ ´Ù½Ã ±×·ÁÁö´Â °æ¿ì ¹ß»ıÇÏ´Â ¸Ş½ÃÁö
+	case WM_PAINT:		// ìœˆë„ìš° í™”ë©´ì´ ë‹¤ì‹œ ê·¸ë ¤ì§€ëŠ” ê²½ìš° ë°œìƒí•˜ëŠ” ë©”ì‹œì§€
 		hdc = BeginPaint(g_hWnd, &ps);
 
 		g_mainGame.Render(hdc);
 
 		EndPaint(g_hWnd, &ps);
 		break;
-	case WM_DESTROY:	// ´İ±â ¹öÆ° ¸Ş½ÃÁöÃ³¸® (ÇÁ·Î±×·¥ Á¾·á)
+	case WM_DESTROY:	// ë‹«ê¸° ë²„íŠ¼ ë©”ì‹œì§€ì²˜ë¦¬ (í”„ë¡œê·¸ë¨ ì¢…ë£Œ)
 		PostQuitMessage(0);
 		break;
 	}
