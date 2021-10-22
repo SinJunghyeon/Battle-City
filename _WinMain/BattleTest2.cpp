@@ -160,8 +160,15 @@ void BattleTest2::Update()
 
                 if (boomEffect[i].boom->GetCurrFrameX() == 2)
                 {
-                    boomEffect[i].isRender = false;
-                    boomEffect[i].boom->SetCurrFrameX(0);
+                    if (boomEffect[i].type == BoomType::BIG_BOOM)
+                    {
+                        //boomEffect[i].bigBoom
+                    }
+                    else
+                    {
+                        boomEffect[i].isRender = false;
+                        boomEffect[i].boom->SetCurrFrameX(0);
+                    }
                 }
                 boomEffect[i].elapsedCount = 0;
             }
@@ -181,11 +188,14 @@ void BattleTest2::Render(HDC hdc)
 
             SetTerrain(&tileInfo[i * TILE_COUNT_X + j]);
 
-            sampleImage->Render(hdc,
-                tileInfo[i * TILE_COUNT_X + j].rc.left + TILE_SIZE / 2,
-                tileInfo[i * TILE_COUNT_X + j].rc.top + TILE_SIZE / 2,
-                tileInfo[i * TILE_COUNT_X + j].frameX,
-                tileInfo[i * TILE_COUNT_X + j].frameY);
+            if (tileInfo[i * TILE_COUNT_X + j].isRender)
+            {
+                sampleImage->Render(hdc,
+                    tileInfo[i * TILE_COUNT_X + j].rc.left + TILE_SIZE / 2,
+                    tileInfo[i * TILE_COUNT_X + j].rc.top + TILE_SIZE / 2,
+                    tileInfo[i * TILE_COUNT_X + j].frameX,
+                    tileInfo[i * TILE_COUNT_X + j].frameY);
+            }
 
              //Rectangle(hdc, tileInfo[i * TILE_COUNT_X + j].rc.left,
              //    tileInfo[i * TILE_COUNT_X + j].rc.top,
@@ -340,6 +350,7 @@ void BattleTest2::AmmoTankCollision(Boom* boom, Tank* player, EnemyManager* enem
                 vecEnemies[j]->SetIsAlive(false);
                 vecEnemies[j]->SetTankState(ecTankState::DIE);
                 player->ammoPack[i].SetIsFire(false);
+                player->ammoPack[i].SetBodySize(0);
             }
 
             ammoMgr = vecEnemies[j]->GetAmmoManager();
@@ -350,9 +361,9 @@ void BattleTest2::AmmoTankCollision(Boom* boom, Tank* player, EnemyManager* enem
                 if (IntersectRect(&tempRect, &ammoRect, &enemyAmmoRect))  // 플레이어 미사일과 적 미사일이 충돌했을 경우
                 {
                     player->ammoPack[i].SetIsFire(false);
-                    //player->ammoPack[i].SetBodySize(0);
+                    player->ammoPack[i].SetBodySize(0);
                     vecAmmos[k]->SetIsFire(false);
-                    //vecAmmos[k]->SetBodySize(0);
+                    vecAmmos[k]->SetBodySize(0);
                 }
             }
         }
