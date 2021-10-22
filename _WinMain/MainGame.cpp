@@ -12,7 +12,7 @@
 #include "EndingScene.h"
 #include "GameOverScene.h"
 
-//2021.10.21 최종수정
+//2021.10.22 중간수정
 
 HRESULT MainGame::Init()
 {
@@ -32,7 +32,7 @@ HRESULT MainGame::Init()
 	SceneManager::GetSingleton()->AddScene("endingS", new EndingScene());
 	SceneManager::GetSingleton()->AddScene("gameoverS", new GameOverScene());
 
-	SceneManager::GetSingleton()->ChangeScene("titleS");
+	SceneManager::GetSingleton()->ChangeScene("battleTest2");
 
 	//srand((unsigned int) time(nullptr));
 
