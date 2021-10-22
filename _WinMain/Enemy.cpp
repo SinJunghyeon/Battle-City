@@ -4,7 +4,9 @@
 /*
 	TO DO LIST
 	 1. 방향 전환 자연스럽게 하기
-	 2. 
+	 2. 게임화면 밖으로 나가지 않게
+	 3. 죽었을 때 표현
+	 4. 탄을 발사하고 적을 맞힌 후 다른곳에 탄을 쏴도 처음 맞은 적에게 폭발이 일어남
 
 
 */
@@ -49,7 +51,7 @@ HRESULT Enemy::Init()
 
 void Enemy::Update()
 {
-	if (!isAlive)
+	if (!isAlive && (tankState != ecTankState::DIE))
 	{
 		elapsedSpawn++;
 		if (elapsedSpawn >= 5)
@@ -62,46 +64,21 @@ void Enemy::Update()
 				spawnCount++;
 				if (spawnCount >= 3)
 				{
-					isAlive = !isAlive;
+					isAlive = true;
 					moveSpeed = 30.0f;
 				}
 			}
 		}
 	}
 
-	// 게임 화면 충돌
-	switch (moveDir)
+	if (!isAlive && (tankState == ecTankState::DIE))
 	{
-	case MoveDir::RIGHT:
-		if (shape.right >= 613)
-		{
-			isCollision = true;
-		}
-		break;
-	case MoveDir::LEFT:
-		if (shape.left <= 140)
-		{
-			isCollision = true;
-		}
-		break;
-	case MoveDir::UP:
-		if (shape.top <= 100)
-		{
-			isCollision = true;
-		}
-		break;
-	case MoveDir::DOWN:
-		if (shape.bottom >= 605)
-		{
-			isCollision = true;
-		}
-		break;
-	default:
-		break;
+		bodySize = 0;
 	}
 
 	if (isAlive && tankState == ecTankState::MOVE)
 	{
+		moveSpeed = 30.0f;
 		Move(moveDir);
 		MoveFrame();
 		// 충돌 시 방향 전환
@@ -204,6 +181,37 @@ void Enemy::Update()
 		shape.right = shape.left + bodySize - 5;
 		shape.bottom = shape.top + bodySize - 5;
 	}
+
+	// 게임 화면 충돌 Fix List
+	switch (moveDir)
+	{
+	case MoveDir::RIGHT:
+		if (shape.right >= 613)
+		{
+			isCollision = true;
+		}
+		break;
+	case MoveDir::LEFT:
+		if (shape.left <= 140)
+		{
+			isCollision = true;
+		}
+		break;
+	case MoveDir::UP:
+		if (shape.top <= 100)
+		{
+			isCollision = true;
+		}
+		break;
+	case MoveDir::DOWN:
+		if (shape.bottom >= 605)
+		{
+			isCollision = true;
+		}
+		break;
+	default:
+		break;
+	}
 }
 
 void Enemy::Render(HDC hdc)
@@ -220,39 +228,7 @@ void Enemy::Render(HDC hdc)
 	{
 		img->Render(hdc, pos.x, pos.y, img->GetCurrFrameX(), img->GetCurrFrameY());
 
-
 		ammoMgr.Render(hdc);
-	}
-
-	// 화면 밖으로 나가는 것 체크
-	switch (moveDir)
-	{
-	case MoveDir::RIGHT:
-		if (shape.right >= 605)
-		{
-			isCollision = true;
-		}
-		break;
-	case MoveDir::LEFT:
-		if (shape.left <= 120)
-		{
-			isCollision = true;
-		}
-		break;
-	case MoveDir::UP:
-		if (shape.top <= 120)
-		{
-			isCollision = true;
-		}
-		break;
-	case MoveDir::DOWN:
-		if (shape.bottom >= 605)
-		{
-			isCollision = true;
-		}
-		break;
-	default:
-		break;
 	}
 }
 
