@@ -23,16 +23,14 @@ HRESULT EnemyManager::Init()
 
 void EnemyManager::Update()
 {
-	for (int i = 3; i < 6; i++)
+	enemySpawnDelay++;
+	if (enemySpawnDelay >= 500)
 	{
-		enemySpawnDelay++;
-		if (enemySpawnDelay >= 500)
-		{
-			AddEnemy(enemySpawnPos[enemyCurrCount], i);
+		AddEnemy(enemySpawnPos[enemyCurrCount%3]);
 
-			enemySpawnDelay = 0;
-		}
+		enemySpawnDelay = 0;
 	}
+	
 
 	// Fix List
 	for (int i = 0; i < enemyCurrCount; i++)
@@ -120,7 +118,7 @@ void EnemyManager::Release()
 	vecEnemys.clear();
 }
 
-void EnemyManager::AddEnemy(POINTFLOAT pos, int enemyNum)
+void EnemyManager::AddEnemy(POINTFLOAT pos)
 {
 	enemyCurrCount++;
 	if (enemyCurrCount > enemyMaxCount)
@@ -131,11 +129,17 @@ void EnemyManager::AddEnemy(POINTFLOAT pos, int enemyNum)
 
 void EnemyManager::SetTileMapManager(TILE_INFO* tile)
 {
+	//for (int i = 0; i < GetSpawnPos(tile, ObjectType::ENEMY).size(); i++)
+	//{
+		enemySpawnPos = GetSpawnPos(tile, ObjectType::ENEMY);
+	//}
+	
 	for (int i = 0; i < enemyMaxCount; i++)
 	{
-		enemySpawnPos.push_back(GetSpawnPos(tile, ObjectType::ENEMY).back());
+		//enemySpawnPos[i] = GetSpawnPos(tile, ObjectType::ENEMY);
 		vecEnemys[i]->SetTileMap(tile);
-		vecEnemys[i]->SetPos(enemySpawnPos.back());
+		vecEnemys[i]->SetPos(enemySpawnPos[i % 3]);
+		//vecEnemys[i]->SetPos(enemySpawnPos[i]);
 	}
 }
 

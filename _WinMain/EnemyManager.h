@@ -23,7 +23,7 @@ public:
 	void Render(HDC hdc);
 	void Release();
 
-	void AddEnemy(POINTFLOAT pos, int enemyNum);
+	void AddEnemy(POINTFLOAT pos);
 
 	void SetTileMapManager(TILE_INFO* tile);
 	void TankState(ecTankState state);
