@@ -38,6 +38,7 @@ HRESULT BattleTest::Init()
     player->SetPos(spawnPos);
     player->SetTileMap(tileInfo);
     playerTankRect = player->GetShape();
+
     //아이템
     mpItem = new Item;
     mpItem->Init();

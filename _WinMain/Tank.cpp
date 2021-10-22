@@ -154,7 +154,7 @@ void Tank::Render(HDC hdc)
 		//몸통
 		Rectangle(hdc, shape.left, shape.top, shape.right, shape.bottom);
 		//이미지
-		img->Render(hdc, pos.x + 12, pos.y + 10, img->GetCurrFrameX(), img->GetCurrFrameY(), 0.625f);
+		img->Render(hdc, pos.x + 6, pos.y, img->GetCurrFrameX(), img->GetCurrFrameY(), 0.75f);
 		//무적상태
 		if (isInvincible)
 		{
