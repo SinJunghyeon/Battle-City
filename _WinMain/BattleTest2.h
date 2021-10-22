@@ -46,6 +46,7 @@ private:
 
     // 적
     EnemyManager* enemyMgr;
+    vector<Enemy*> vecEnemies;
 
     // 충돌처리용 RECT
     RECT tempRect;
@@ -72,8 +73,9 @@ public:
 
     void Load(int loadIndex = 0);
 
-    void AmmoMapCollision(Boom* boom, Tank* tank, TILE_INFO* tile);
-    void AmmoTankCollision(Boom* boom, Tank* player, EnemyManager* enemy);
+    void PlayerAmmoMapCollision(Boom* boom, Tank* tank, TILE_INFO* tile);
+    void EnemyAmmoMapCollision(Boom* boom, Enemy* enemy, TILE_INFO* tile);
+    void AmmoTankCollision(Boom* boom, Tank* player);
     void CollisionItem();
     void FunctionItem();
 
