@@ -3,9 +3,9 @@
 
 /*
 	TO DO LIST
-	 1. 방향 전환 자연스럽게 하기
+	 1. 방향 전환 자연스럽게 하기 
 	 2. 적 탱크 종류 추가
-
+	 3. 스폰위치 변경
 */
 
 HRESULT Enemy::Init()
@@ -70,7 +70,6 @@ void Enemy::Update()
 
 	if (!isAlive && (tankState == ecTankState::DIE))
 	{
-
 		shape.left = 0;
 		shape.top = 0;
 		shape.right = 0;

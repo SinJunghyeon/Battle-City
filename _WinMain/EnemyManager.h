@@ -14,7 +14,7 @@ private:
 	int enemyCurrCount;
 	int enemySpawnDelay;
 
-	POINTFLOAT enemySpawnPos[6];
+	vector<POINTFLOAT> enemySpawnPos;
 
 public:
 	HRESULT Init();
@@ -22,13 +22,14 @@ public:
 	void Render(HDC hdc);
 	void Release();
 
-	void AddEnemy(POINTFLOAT pos);
+	void AddEnemy(POINTFLOAT pos, int enemyNum);
 
 	void SetTileMapManager(TILE_INFO* tile);
 	void TankState(ecTankState state);
 	void IsAlive(bool isAlive);
 
-	inline vector<Enemy*> GetEnemies() { return this->vecEnemys; }
-	inline int GetEnemyMaxCount() { return this->enemyMaxCount; }
+	vector<Enemy*> GetEnemies() { return this->vecEnemys; }
+
+	int GetEnemyMaxCount() { return this->enemyMaxCount; }
 };
 

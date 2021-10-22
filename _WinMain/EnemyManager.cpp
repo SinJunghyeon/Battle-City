@@ -1,4 +1,5 @@
 #include "EnemyManager.h"
+#include "MapConfig.h"
 
 HRESULT EnemyManager::Init()
 {
@@ -11,10 +12,10 @@ HRESULT EnemyManager::Init()
 
 	for (int i = 0; i < enemyMaxCount; i++)
 	{
-		enemySpawnPos[i] = { 120.0f + (i % 3) * 242.0f, 120.0f };
+		//enemySpawnPos[i] = { 120.0f + (i % 3) * 242.0f, 120.0f };
 		vecEnemys[i] = new Enemy;
 		vecEnemys[i]->Init();
-		vecEnemys[i]->SetPos(enemySpawnPos[i]);
+		//vecEnemys[i]->SetPos(enemySpawnPos[i]);
 	}
 
 	return S_OK;
@@ -22,64 +23,77 @@ HRESULT EnemyManager::Init()
 
 void EnemyManager::Update()
 {
-	enemySpawnDelay++;
-	if (enemySpawnDelay >= 500)
+	for (int i = 3; i < 6; i++)
 	{
-		AddEnemy(enemySpawnPos[enemyCurrCount]);
+		enemySpawnDelay++;
+		if (enemySpawnDelay >= 500)
+		{
+			AddEnemy(enemySpawnPos[enemyCurrCount], i);
 
-		enemySpawnDelay = 0;
+			enemySpawnDelay = 0;
+		}
 	}
+
+
 
 	// Fix List
 	for (int i = 0; i < enemyCurrCount; i++)
 	{
-		for (int j = 0; j < enemyCurrCount; j++)
+		if (vecEnemys[i]->GetIsAilve() && vecEnemys[i]->GetTankState() != ecTankState::DIE)
 		{
-			if (i == j)
-				continue;
-			switch (vecEnemys[i]->GetMoveDir())
+			for (int j = 0; j < enemyCurrCount; j++)
 			{
-			case MoveDir::RIGHT:
-				if (//(vecEnemys[i]->GetShape().right >= vecEnemys[j]->GetShape().left) &&
-					(abs(vecEnemys[i]->GetPos().y - vecEnemys[j]->GetPos().y) <= 40)
-					&& abs(vecEnemys[i]->GetPos().x - vecEnemys[j]->GetPos().x) <= 40)
+				if (i == j)
+					continue;
+				switch (vecEnemys[i]->GetMoveDir())
 				{
-					vecEnemys[i]->SetIsCollision(true);
-					cout << "case right collision : " << i << "," << vecEnemys[i]->GetIsCollision() << endl;
-				}
-				break;
-			case MoveDir::LEFT:
-				if (//(vecEnemys[i]->GetShape().left <= vecEnemys[j]->GetShape().right) &&
-					(abs(vecEnemys[i]->GetPos().y - vecEnemys[j]->GetPos().y) <= 40)
-					&& abs(vecEnemys[i]->GetPos().x - vecEnemys[j]->GetPos().x) <= 40)
-				{
-					vecEnemys[i]->SetIsCollision(true);
-					cout << "case left collision : " << i << "," << vecEnemys[i]->GetIsCollision() << endl;
-				}
-				break;
-			case MoveDir::UP:
-				if (//(vecEnemys[i]->GetShape().top <= vecEnemys[j]->GetShape().bottom) &&
-					(abs(vecEnemys[i]->GetPos().x - vecEnemys[j]->GetPos().x) <= 40)
-					&& abs(vecEnemys[i]->GetPos().y - vecEnemys[j]->GetPos().y) <= 40)
-				{
-					vecEnemys[i]->SetIsCollision(true);
-					cout << "case up collision : " << i << "," << vecEnemys[i]->GetIsCollision() << endl;
-				}
-				break;
-			case MoveDir::DOWN:
-				if (//(vecEnemys[i]->GetShape().bottom >= vecEnemys[j]->GetShape().top) &&
-					(abs(vecEnemys[i]->GetPos().x - vecEnemys[j]->GetPos().x) <= 40)
-					&& abs(vecEnemys[i]->GetPos().y - vecEnemys[j]->GetPos().y) <= 40)
-				{
-					vecEnemys[i]->SetIsCollision(true);
-					cout << "case down collision : " << i << "," << vecEnemys[i]->GetIsCollision() << endl;
-					cout << "tank" << i << " bottom : " << vecEnemys[i]->GetShape().bottom << endl;
-					cout << "tank" << j << " top : " << vecEnemys[j]->GetShape().top << endl;
+				case MoveDir::RIGHT:
+					if (//(vecEnemys[i]->GetShape().right >= vecEnemys[j]->GetShape().left) &&
+						(abs(vecEnemys[i]->GetPos().y - vecEnemys[j]->GetPos().y) <= 40)
+						&& abs(vecEnemys[i]->GetPos().x - vecEnemys[j]->GetPos().x) <= 40)
+					{
+						vecEnemys[i]->SetIsCollision(true);
+						vecEnemys[j]->SetIsCollision(true);
+						cout << "case right collision : " << i << "," << vecEnemys[i]->GetIsCollision() << endl;
+					}
+					break;
+				case MoveDir::LEFT:
+					if (//(vecEnemys[i]->GetShape().left <= vecEnemys[j]->GetShape().right) &&
+						(abs(vecEnemys[i]->GetPos().y - vecEnemys[j]->GetPos().y) <= 40)
+						&& abs(vecEnemys[i]->GetPos().x - vecEnemys[j]->GetPos().x) <= 40)
+					{
 
+						vecEnemys[i]->SetIsCollision(true);
+						vecEnemys[j]->SetIsCollision(true);
+						cout << "case left collision : " << i << "," << vecEnemys[i]->GetIsCollision() << endl;
+					}
+					break;
+				case MoveDir::UP:
+					if (//(vecEnemys[i]->GetShape().top <= vecEnemys[j]->GetShape().bottom) &&
+						(abs(vecEnemys[i]->GetPos().x - vecEnemys[j]->GetPos().x) <= 40)
+						&& abs(vecEnemys[i]->GetPos().y - vecEnemys[j]->GetPos().y) <= 40)
+					{
+						vecEnemys[i]->SetIsCollision(true);
+						vecEnemys[j]->SetIsCollision(true);
+						cout << "case up collision : " << i << "," << vecEnemys[i]->GetIsCollision() << endl;
+					}
+					break;
+				case MoveDir::DOWN:
+					if (//(vecEnemys[i]->GetShape().bottom >= vecEnemys[j]->GetShape().top) &&
+						(abs(vecEnemys[i]->GetPos().x - vecEnemys[j]->GetPos().x) <= 40)
+						&& abs(vecEnemys[i]->GetPos().y - vecEnemys[j]->GetPos().y) <= 40)
+					{
+						vecEnemys[i]->SetIsCollision(true);
+						vecEnemys[j]->SetIsCollision(true);
+						cout << "case down collision : " << i << "," << vecEnemys[i]->GetIsCollision() << endl;
+						cout << "tank" << i << " bottom : " << vecEnemys[i]->GetShape().bottom << endl;
+						cout << "tank" << j << " top : " << vecEnemys[j]->GetShape().top << endl;
+						cout << "(abs(vecEnemys[i]->GetPos().x - vecEnemys[j]->GetPos().x) : " << (abs(vecEnemys[i]->GetPos().x - vecEnemys[j]->GetPos().x)) << endl;
+					}
+					break;
+				default:
+					break;
 				}
-				break;
-			default:
-				break;
 			}
 		}
 	}
@@ -108,7 +122,7 @@ void EnemyManager::Release()
 	vecEnemys.clear();
 }
 
-void EnemyManager::AddEnemy(POINTFLOAT pos)
+void EnemyManager::AddEnemy(POINTFLOAT pos, int enemyNum)
 {
 	enemyCurrCount++;
 	if (enemyCurrCount > enemyMaxCount)
@@ -122,7 +136,9 @@ void EnemyManager::SetTileMapManager(TILE_INFO* tile)
 	for (int i = 0; i < enemyMaxCount; i++)
 	{
 		vecEnemys[i]->SetTileMap(tile);
+		vecEnemys[i]->SetPos(enemySpawnPos[i]);
 	}
+	enemySpawnPos = GetSpawnPos(tile, ObjectType::ENEMY);
 }
 
 void EnemyManager::TankState(ecTankState state)

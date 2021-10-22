@@ -53,6 +53,8 @@ HRESULT BattleTest2::Init()
     enemyMgr = new EnemyManager;
     enemyMgr->Init();
     enemyMgr->SetTileMapManager(tileInfo);
+    //enemyMgr->EnemyPosSet(tileInfo, )
+
     Load();
 
     // 플레이어 탱크
