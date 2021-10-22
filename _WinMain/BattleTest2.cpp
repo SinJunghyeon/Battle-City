@@ -9,7 +9,8 @@
 HRESULT BattleTest2::Init()
 {
     // 타일 맵 이미지
-    sampleImage = ImageManager::GetSingleton()->AddImage("Image/BattleCity/SamlpTile1.bmp", 220, 220, 11, 11, true, RGB(255, 0, 255));
+    ImageManager::GetSingleton()->AddImage("Image/BattleCity/SamlpTile1.bmp", 220, 220, 11, 11, true, RGB(255, 0, 255));
+    sampleImage = ImageManager::GetSingleton()->FindImage("Image/BattleCity/SamlpTile1.bmp");
     if (sampleImage == nullptr)
     {
         cout << "Image/BattleCity/SamlpTile1.bmp 로드 실패!!" << endl;
@@ -73,6 +74,7 @@ HRESULT BattleTest2::Init()
 
 void BattleTest2::Update()
 {
+
     //cout << boolalpha << "mpItem->GetExistItem() : " << mpItem->GetExistItem() << endl;
     //cout << "elapsedChange : " << elapsedChange << endl;
     //cout << "elapsedCount : " << elapsedCount << endl;
@@ -181,6 +183,11 @@ void BattleTest2::Update()
                 boomEffect[i].elapsedCount = 0;
             }
         }
+    }
+
+    if (KeyManager::GetSingleton()->IsOnceKeyDown(VK_RETURN))
+    {
+        SceneManager::GetSingleton()->ChangeScene("endingS");
     }
 }
 
@@ -333,6 +340,53 @@ void BattleTest2::AmmoMapCollision(Boom* boom, Tank* tank, TILE_INFO* tile)
             }
         }
     }
+}
+
+void BattleTest2::AmmoTankCollision(Boom* boom, Tank* player, EnemyManager* enemy)
+{
+    // 적 정보들을 가져온다.
+    vector<Enemy*> vecEnemies = enemy->GetEnemies();
+    vecEnemies.resize(enemy->GetEnemyMaxCount());
+    AmmoManager ammoMgr;
+    vector<Ammo*> vecAmmos;
+
+    // 플레이어 정보들을 가져온다.
+    RECT playerRect = player->GetShape();
+
+    // 플레이어 미사일이 적이나 적 미사일에 히트했을 경우
+    for (int i = 0; i < player->ammoCount; ++i)
+    {
+        RECT ammoRect = player->ammoPack[i].GetShape();
+        for (int j = 0; j < vecEnemies.size(); ++j)
+        {
+            RECT enemyRect = vecEnemies[j]->GetShape();
+            if (IntersectRect(&tempRect, &ammoRect, &enemyRect) && player->ammoPack[i].GetIsFire())    // 플레이어 미사일과 적 탱크가 충돌했을 경우
+            {
+                BoomAnimation(boom, BoomType::SMALL_BOOM, vecEnemies[j]->GetPos());
+                vecEnemies[j]->SetIsAlive(false);
+                vecEnemies[j]->SetTankState(ecTankState::DIE);
+                player->ammoPack[i].SetIsFire(false);
+                player->ammoPack[i].SetBodySize(0);
+            }
+
+            ammoMgr = vecEnemies[j]->GetAmmoManager();
+            vecAmmos = ammoMgr.GetAmmos();
+            for (int k = 0; k < vecAmmos.size(); ++k)
+            {
+                RECT enemyAmmoRect = vecAmmos[k]->GetShape();
+                if (IntersectRect(&tempRect, &ammoRect, &enemyAmmoRect))  // 플레이어 미사일과 적 미사일이 충돌했을 경우
+                {
+                    player->ammoPack[i].SetIsFire(false);
+                    player->ammoPack[i].SetBodySize(0);
+                    vecAmmos[k]->SetIsFire(false);
+                    vecAmmos[k]->SetBodySize(0);
+                }
+            }
+        }
+    }
+
+    // 적 미사일이 플레이어에게 히트했을 경우
+
 }
 
 void BattleTest2::AmmoTankCollision(Boom* boom, Tank* player, EnemyManager* enemy)

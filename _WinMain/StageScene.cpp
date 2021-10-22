@@ -39,7 +39,7 @@ void StageScene::Update()
 
 	if (downFrameY <= WIN_SIZE_Y / 2 - WIN_SIZE_Y)
 	{
-		SceneManager::GetSingleton()->ChangeScene("endingS");
+		SceneManager::GetSingleton()->ChangeScene("battleTest2");
 		downFrameY = WIN_SIZE_Y + WIN_SIZE_Y / 2;
 		//upFrameY += 10;
 	}
