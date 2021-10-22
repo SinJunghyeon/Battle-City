@@ -158,17 +158,14 @@ void BattleTest2::Update()
             {
                 boomEffect[i].boom->SetCurrFrameX(boomEffect[i].boom->GetCurrFrameX() + 1);
 
-                if (boomEffect[i].boom->GetCurrFrameX() == 2)
+                if ((boomEffect[i].boom->GetCurrFrameX() == 2) && boomEffect[i].type == BoomType::SMALL_BOOM)
                 {
-                    if (boomEffect[i].type == BoomType::BIG_BOOM)
-                    {
-                        //boomEffect[i].bigBoom
-                    }
-                    else
-                    {
-                        boomEffect[i].isRender = false;
-                        boomEffect[i].boom->SetCurrFrameX(0);
-                    }
+                    boomEffect[i].isRender = false;
+                    boomEffect[i].boom->SetCurrFrameX(0);
+                }
+                else if ((boomEffect[i].boom->GetCurrFrameX() == 3) && boomEffect[i].type == BoomType::BIG_BOOM)
+                {
+                    boomEffect[i].bigBoom->SetCurrFrameX(boomEffect[i].bigBoom->GetCurrFrameX() + 1);
                 }
                 boomEffect[i].elapsedCount = 0;
             }
@@ -229,6 +226,7 @@ void BattleTest2::Render(HDC hdc)
         if (boomEffect[i].isRender)
         {
             boomEffect[i].boom->Render(hdc, boomEffect[i].boomPos.x, boomEffect[i].boomPos.y, boomEffect[i].boom->GetCurrFrameX(), boomEffect[i].boom->GetCurrFrameY(), 2.0f);
+
             break;
         }
     }
