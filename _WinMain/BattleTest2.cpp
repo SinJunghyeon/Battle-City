@@ -150,7 +150,7 @@ void BattleTest2::Update()
         if (elapsedCount >= 300)
         {
             enemyMgr->TankState(ecTankState::MOVE);
-            elapsedCount = 0;
+            elapsedCount = 10000;
         }
     }
 
