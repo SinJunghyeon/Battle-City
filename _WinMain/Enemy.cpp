@@ -1,6 +1,5 @@
 #include "Enemy.h"
 #include "Image.h"
-#include "AmmoManager.h"
 
 /*
 	TO DO LIST
@@ -30,9 +29,8 @@ HRESULT Enemy::Init()
 		return E_FAIL;
 	}
 
-	ammoMgr = new AmmoManager;
-	ammoMgr->Init();
-	ammoMgr->SetOwner(this);
+	ammoMgr.Init();
+	ammoMgr.SetOwner(this);
 
 	pos.x = 0.0f;
 	pos.y = 0.0f;
@@ -106,7 +104,7 @@ void Enemy::Update()
 	{
 		Move(moveDir);
 		MoveFrame();
-	// 충돌 시 방향 전환
+		// 충돌 시 방향 전환
 		if (isCollision)
 		{
 			switch (moveDir)
@@ -180,32 +178,32 @@ void Enemy::Update()
 		fireTimer++;
 		if (fireTimer >= fireDelay)
 		{
-			ammoMgr->Fire();
+			ammoMgr.Fire();
 			fireTimer = 0;
 			fireDelay = rand() % 100;
 		}
-		ammoMgr->Update();
-	}
+		ammoMgr.Update();
 
-	// moveSpeed가 0.1로 고정되는 오류 방지
-	if (moveSpeed == 0.1f)
-	{
-		elapsedSpeed++;
-		if (moveSpeed == 30.0f)
+		// moveSpeed가 0.1로 고정되는 오류 방지
+		if (moveSpeed == 0.1f)
 		{
-			elapsedSpeed = 0;
+			elapsedSpeed++;
+			if (moveSpeed == 30.0f)
+			{
+				elapsedSpeed = 0;
+			}
+
+			if (elapsedSpeed >= 50)
+			{
+				moveSpeed = 30.0f;
+			}
 		}
 
-		if (elapsedSpeed >= 50)
-		{
-			moveSpeed = 30.0f;
-		}
+		shape.left = pos.x - bodySize / 2 + 1;
+		shape.top = pos.y - bodySize / 2 + 1;
+		shape.right = shape.left + bodySize - 5;
+		shape.bottom = shape.top + bodySize - 5;
 	}
-
-	shape.left = pos.x - bodySize / 2 + 1;
-	shape.top = pos.y - bodySize / 2 + 1;
-	shape.right = shape.left + bodySize - 5;
-	shape.bottom = shape.top + bodySize - 5;
 }
 
 void Enemy::Render(HDC hdc)
@@ -222,13 +220,45 @@ void Enemy::Render(HDC hdc)
 	{
 		img->Render(hdc, pos.x, pos.y, img->GetCurrFrameX(), img->GetCurrFrameY());
 
-		ammoMgr->Render(hdc);
-	}	
+
+		ammoMgr.Render(hdc);
+	}
+
+	// 화면 밖으로 나가는 것 체크
+	switch (moveDir)
+	{
+	case MoveDir::RIGHT:
+		if (shape.right >= 605)
+		{
+			isCollision = true;
+		}
+		break;
+	case MoveDir::LEFT:
+		if (shape.left <= 120)
+		{
+			isCollision = true;
+		}
+		break;
+	case MoveDir::UP:
+		if (shape.top <= 120)
+		{
+			isCollision = true;
+		}
+		break;
+	case MoveDir::DOWN:
+		if (shape.bottom >= 605)
+		{
+			isCollision = true;
+		}
+		break;
+	default:
+		break;
+	}
 }
 
 void Enemy::Release()
 {
-	SAFE_RELEASE(ammoMgr);
+	//SAFE_RELEASE(ammoMgr);
 }
 
 // 움직이는 모양

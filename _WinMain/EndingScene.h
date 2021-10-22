@@ -28,14 +28,18 @@ private:
 	
 	int scoreTextPosX = killEnemyPosX - 100;
 
-	int killEnemyNumber[4] = { 25,11,12,1 };	//나중에 에너미 죽인거 가져오기
+	int killEnemyNumber[4] = { 25,11,12,14 };	//나중에 에너미 죽인거 가져오기
 	int killEnemyNumber5[4];
 	int killEnemyNumber10[4];
 	int totalKillEnemy = killEnemyNumber[0]+ killEnemyNumber[1]+ killEnemyNumber[2]+ killEnemyNumber[3];
 	int totalKillEnemy5 = 0;
 	int totalKillEnemy10 = 0;
 
-	int test[4];
+	int countKillEnemy[4] = { 0,0,0,0 };
+	int arrNum = 0;
+
+	bool isAnimetion = true;
+
 public:
 	virtual HRESULT Init() override;
 	virtual void Update() override;
