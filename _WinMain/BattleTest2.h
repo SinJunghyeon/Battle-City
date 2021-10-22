@@ -60,6 +60,10 @@ private:
     int elapsedChange = NULL;
     int elapsedCount = 10000;
 
+    // UI
+    int playerLife = 2;
+    int destroyedEnemy[4] = {}; // 1 : 일반형  2 : 속도형   3 : 속사형   4 : 슈퍼탱크
+
 public:
     HRESULT Init();
     void Update();
@@ -74,5 +78,7 @@ public:
     void FunctionItem();
 
     void BoomAnimation(Boom* boom, BoomType type, POINTFLOAT pos);
+
+    inline int* GetDestroyedEnemy() { return this->destroyedEnemy; }
 };
 
