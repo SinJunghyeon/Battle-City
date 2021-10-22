@@ -74,6 +74,7 @@ HRESULT BattleTest2::Init()
 void BattleTest2::Update()
 {
     //cout << boolalpha << "mpItem->GetExistItem() : " << mpItem->GetExistItem() << endl;
+    
 
     // 타일 속성 확인용 코드
     for (int i = 0; i < TILE_COUNT_X * TILE_COUNT_Y; i++)
@@ -178,6 +179,11 @@ void BattleTest2::Update()
                 boomEffect[i].elapsedCount = 0;
             }
         }
+    }
+
+    if (playerLife == 0)
+    {
+        SceneManager::GetSingleton()->ChangeScene("endingS");
     }
 }
 
@@ -420,10 +426,7 @@ void BattleTest2::AmmoTankCollision(Boom* boom, Tank* player, EnemyManager* enem
                 playerSpawnPos = GetSpawnPos(tileInfo, ObjectType::PLAYER).back();
                 player->SetPos(playerSpawnPos);
                 playerLife--;
-                if (playerLife == 0)
-                {
-                    //SceneManager::GetSingleton()->ChangeScene("endingS");
-                }
+                cout << "플레이어 목숨 : " << playerLife << endl;
             }
         }
 
