@@ -12,7 +12,7 @@
 #include "EndingScene.h"
 #include "GameOverScene.h"
 
-//2021.10.20 최종수정
+//2021.10.21 최종수정
 
 HRESULT MainGame::Init()
 {
