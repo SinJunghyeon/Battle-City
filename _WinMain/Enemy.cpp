@@ -4,11 +4,7 @@
 /*
 	TO DO LIST
 	 1. 방향 전환 자연스럽게 하기
-	 2. 게임화면 밖으로 나가지 않게
-	 3. 죽었을 때 표현
-	 4. 탄을 발사하고 적을 맞힌 후 다른곳에 탄을 쏴도 처음 맞은 적에게 폭발이 일어남
-	 5. 적 탱크 종류 추가
-
+	 2. 적 탱크 종류 추가
 */
 
 HRESULT Enemy::Init()
@@ -73,7 +69,6 @@ void Enemy::Update()
 
 	if (!isAlive && (tankState == ecTankState::DIE))
 	{
-
 		shape.left = 0;
 		shape.top = 0;
 		shape.right = 0;

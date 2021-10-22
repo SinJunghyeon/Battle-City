@@ -49,6 +49,7 @@ HRESULT BattleTest2::Init()
             return E_FAIL;
         }
     }
+    Load();
 
     // 적 매니저
     enemyMgr = new EnemyManager;
@@ -305,8 +306,6 @@ void BattleTest2::Load(int loadIndex)
     {
         MessageBox(g_hWnd, "맵 데이터 로드에 실패했습니다.", "에러", MB_OK);
     }
-
-
 
     CloseHandle(hFile);
 }
