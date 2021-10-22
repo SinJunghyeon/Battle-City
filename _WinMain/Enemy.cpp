@@ -49,7 +49,7 @@ HRESULT Enemy::Init()
 
 void Enemy::Update()
 {
-	if (!isAlive)
+	if (!isAlive && (tankState != ecTankState::DIE))
 	{
 		elapsedSpawn++;
 		if (elapsedSpawn >= 5)
