@@ -2,44 +2,77 @@
 #include "Config.h"
 #include "GameEntity.h"
 #include "MapConfig.h"
+#include "Enemy.h"
+
+#define BOOM_NUM 10
+
+enum class BoomType { SMALL_BOOM, BIG_BOOM };
+
+struct Boom
+{
+    Image* boom;
+    Image* bigBoom;
+    bool isRender = false;
+    int elapsedCount = 0;
+    BoomType type = BoomType::SMALL_BOOM;
+    POINTFLOAT boomPos = {};
+};
 
 class GameObject;
 class EnemyManager;
 class Tank;
 class Image;
+class Item;
+class Ammo;
 class BattleTest2 : public GameEntity
 {
 private:
-    // ¸Ê Å¸ÀÏ
+    // ë§µ íƒ€ì¼
     TILE_INFO tileInfo[TILE_COUNT_Y * TILE_COUNT_X];
 
-    // Å¸ÀÏ ÀÌ¹ÌÁö
+    // íƒ€ì¼ ì´ë¯¸ì§€
     Image* sampleImage;
 
-    // ¹è°æ ÀÌ¹ÌÁö
+    // ë°°ê²½ ì´ë¯¸ì§€
     Image* backGround;
 
-    // ÇÃ·¹ÀÌ¾î
+    // í­ë°œ ì´í™íŠ¸
+    Boom boomEffect[BOOM_NUM];
+
+    // í”Œë ˆì´ì–´
     Tank* player;
-    POINTFLOAT spawnPos;
+    POINTFLOAT playerSpawnPos;
+    RECT playerTankRect;
 
-    // Àû
-    EnemyManager* enemies;
+    // ì 
+    EnemyManager* enemyMgr;
 
-    // Ãæµ¹Ã³¸®¿ë RECT
+    // ì¶©ëŒì²˜ë¦¬ìš© RECT
     RECT tempRect;
 
-    // µğ¹ö±×¿ë
+    // ë””ë²„ê·¸ìš©
     POINTFLOAT tempPos;
+
+    //ì•„ì´í…œ
+    Item* mpItem;
+    RECT itemRect;
+
+    int elapsedChange = NULL;
+    int elapsedCount = 10000;
 
 public:
     HRESULT Init();
     void Update();
-    void Render(HDC hdc);	// ¿À¹ö·Îµù
+    void Render(HDC hdc);	// ì˜¤ë²„ë¡œë”©
     void Release();
 
     void Load(int loadIndex = 0);
 
-    void Collision(GameObject* tank, TILE_INFO* tile);
+    void AmmoMapCollision(Boom* boom, Tank* tank, TILE_INFO* tile);
+    void AmmoTankCollision(Boom* boom, Tank* player, EnemyManager* enemy);
+    void CollisionItem();
+    void FunctionItem();
+
+    void BoomAnimation(Boom* boom, BoomType type, POINTFLOAT pos);
 };
 

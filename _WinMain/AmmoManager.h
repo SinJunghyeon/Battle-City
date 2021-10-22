@@ -31,5 +31,7 @@ public:
 	void Fire();
 
 	inline void SetOwner(GameObject* owner) { this->owner = owner; }
+
+	inline vector<Ammo*> GetAmmos() { return this->vecAmmos; }
 };
 

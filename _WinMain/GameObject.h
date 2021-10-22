@@ -13,8 +13,11 @@
 	클래스 추상화 : 클래스 간 공통되는 내용들을 추려낸 것.
 */
 
-#include "GameEntity.h"
 #include "Config.h"
+#include "GameEntity.h"
+#include "MapConfig.h"
+
+enum class ecTankState { IDLE, MOVE, FIRE, DAMAGED, DIE };
 
 class Image;
 class GameObject : public GameEntity
@@ -31,6 +34,9 @@ protected:	// 상속된 클래스에 노출시킨다.
 
 	Image* img;
 
+	// 타일 정보
+	TILE_INFO* tile;
+  
 public:
 	void Move();
 
