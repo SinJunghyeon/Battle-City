@@ -50,8 +50,10 @@ public:
 	ecTankState GetTankState() { return tankState; }
 	void SetTankState(ecTankState tankState) { this->tankState = tankState; }
 
+	bool GetIsAilve() { return this->isAlive; }
 	void SetIsAlive(bool isAlive) { this->isAlive = isAlive; }
 
+	AmmoManager GetAmmoManager() { return this->ammoMgr; }
 
 	inline AmmoManager GetAmmoManager() { return this->ammoMgr; }
 	inline bool GetIsCollision() { return this->isCollision; }
