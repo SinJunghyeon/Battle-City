@@ -325,6 +325,32 @@ void Tank::Move(MoveDir dir)
 			{
 				pos = buffPos;
 				shape = buffRect;
+				//cout << tile[i].rc.left << "\t" << shape.right << endl;
+				//cout << tile[i].rc.right << "\t" << shape.left << endl;
+				cout << tile[i].rc.top << "\t" << shape.bottom << endl;
+				//cout << tile[i].rc.bottom << "\t" << shape.top << endl;
+				if (moveDir == MoveDir::UP || moveDir == MoveDir::DOWN)
+				{
+					if (tile[i].rc.left + 10 > shape.right)
+					{
+						pos.x = tile[i - 1].rc.left;
+					}
+					if (tile[i].rc.right - 10 < shape.left)
+					{
+						pos.x = tile[i + 1].rc.right;
+					}
+				}
+				if (moveDir == MoveDir::LEFT || moveDir == MoveDir::RIGHT)
+				{
+					if (tile[i].rc.top + 10 > shape.bottom)
+					{
+						pos.y = tile[i - TILE_COUNT_X].rc.top;
+					}
+					if (tile[i].rc.bottom - 10 < shape.top)
+					{
+						pos.y = tile[i + TILE_COUNT_X].rc.bottom;
+					}
+				}
 			}
 		}
 	}
