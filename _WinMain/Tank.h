@@ -42,23 +42,24 @@ public:
 	void Move(MoveDir dir);
 
 	inline void SetIsAlive(bool alive) { this->isAlive = alive; }
+
+	inline int GetAmmoCount() { return this->ammoCount; }
 	inline void SetAmmoCount(int ammoCount) { this->ammoCount = ammoCount; }
 
-	inline void SetptAttackValue(float ptAttackValue) { this->ptAttackValue = ptAttackValue; }
 	inline float GetptAttackValue() { return ptAttackValue; }
+	inline void SetptAttackValue(float ptAttackValue) { this->ptAttackValue = ptAttackValue; }
 
-	inline void SetptLife(int ptLife) { this->ptLife = ptLife; }
 	inline int GetptLife() { return ptLife; }
+	inline void SetptLife(int ptLife) { this->ptLife = ptLife; }
 
-	inline void SetImgFrameY(int frameY) { this->img->SetCurrFrameY(frameY); }
 	inline int GetImgFrameY() { return img->GetCurrFrameY(); }
+	inline void SetImgFrameY(int frameY) { this->img->SetCurrFrameY(frameY); }
 
 	inline void SetElapsedInvincible(int elapsedInvincible) { this->elapsedInvincible = elapsedInvincible; }
 
 	inline void SetInvincible(bool isInvincible) { this->isInvincible = isInvincible; }
 	// 타일 정보를 받아오는 함수
 	inline void SetTileMap(TILE_INFO* tile) { this->tile = tile; }
-	inline int GetAmmoCount() { return this->ammoCount; }
 
 	Tank();
 	~Tank();

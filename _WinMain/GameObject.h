@@ -49,8 +49,8 @@ public:
 	inline float GetMoveSpeed() { return this->moveSpeed; }
 	inline void SetMoveSpeed(float speed) { this->moveSpeed = speed; }
 	
-	inline int GetBodySize() { return this->bodySize; }
 
+	inline int GetBodySize() { return this->bodySize; }
 	inline void SetBodySize(int bodySize) { this->bodySize = bodySize; }
 
 	inline MoveDir GetMoveDir() { return this->moveDir; }

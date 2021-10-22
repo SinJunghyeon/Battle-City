@@ -303,11 +303,13 @@ void BattleTest2::AmmoMapCollision(Boom* boom, Tank* tank, TILE_INFO* tile)
                     }
                     tank->ammoPack[j].SetIsFire(false);
                     tank->ammoPack[j].SetPos(tank->GetPos());
+                    tank->ammoPack[j].SetBodySize(0);
                 }
                 else if ((tile[i].terrain == Terrain::STEEL) || (tile[i].terrain == Terrain::HQ_STEEL))
                 {
                     tank->ammoPack[j].SetIsFire(false);
                     tank->ammoPack[j].SetPos(tank->GetPos());
+                    tank->ammoPack[j].SetBodySize(0);
                 }
             }
         }
@@ -348,7 +350,9 @@ void BattleTest2::AmmoTankCollision(Boom* boom, Tank* player, EnemyManager* enem
                 if (IntersectRect(&tempRect, &ammoRect, &enemyAmmoRect))  // 플레이어 미사일과 적 미사일이 충돌했을 경우
                 {
                     player->ammoPack[i].SetIsFire(false);
+                    //player->ammoPack[i].SetBodySize(0);
                     vecAmmos[k]->SetIsFire(false);
+                    //vecAmmos[k]->SetBodySize(0);
                 }
             }
         }
