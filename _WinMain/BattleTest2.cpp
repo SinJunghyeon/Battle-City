@@ -48,6 +48,7 @@ HRESULT BattleTest2::Init()
             return E_FAIL;
         }
     }
+    Load();
 
     // 적 매니저
     enemyMgr = new EnemyManager;
@@ -55,7 +56,6 @@ HRESULT BattleTest2::Init()
     enemyMgr->SetTileMapManager(tileInfo);
     //enemyMgr->EnemyPosSet(tileInfo, )
 
-    Load();
 
     // 플레이어 탱크
     player = new Tank;

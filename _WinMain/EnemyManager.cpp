@@ -12,10 +12,10 @@ HRESULT EnemyManager::Init()
 
 	for (int i = 0; i < enemyMaxCount; i++)
 	{
-		enemySpawnPos[i] = { 120.0f + (i % 3) * 242.0f, 120.0f };
+		//enemySpawnPos[i] = { 120.0f + (i % 3) * 242.0f, 120.0f };
 		vecEnemys[i] = new Enemy;
 		vecEnemys[i]->Init();
-		vecEnemys[i]->SetPos(enemySpawnPos[i]);
+		//vecEnemys[i]->SetPos(enemySpawnPos[i]);
 	}
 
 	return S_OK;
@@ -33,8 +33,6 @@ void EnemyManager::Update()
 			enemySpawnDelay = 0;
 		}
 	}
-
-
 
 	// Fix List
 	for (int i = 0; i < enemyCurrCount; i++)
@@ -135,10 +133,10 @@ void EnemyManager::SetTileMapManager(TILE_INFO* tile)
 {
 	for (int i = 0; i < enemyMaxCount; i++)
 	{
+		enemySpawnPos.push_back(GetSpawnPos(tile, ObjectType::ENEMY).back());
 		vecEnemys[i]->SetTileMap(tile);
-		//vecEnemys[i]->SetPos(enemySpawnPos[i]);
+		vecEnemys[i]->SetPos(enemySpawnPos.back());
 	}
-	//enemySpawnPos = GetSpawnPos(tile, ObjectType::ENEMY);
 }
 
 void EnemyManager::TankState(ecTankState state)

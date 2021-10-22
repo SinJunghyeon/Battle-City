@@ -14,8 +14,8 @@ private:
 	int enemyCurrCount;
 	int enemySpawnDelay;
 
-	//vector<POINTFLOAT> enemySpawnPos;
-	POINTFLOAT enemySpawnPos[6];
+	vector<POINTFLOAT> enemySpawnPos;
+	//POINTFLOAT enemySpawnPos[6];
 
 public:
 	HRESULT Init();
