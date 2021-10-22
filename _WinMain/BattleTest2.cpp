@@ -340,6 +340,7 @@ void BattleTest2::AmmoTankCollision(Boom* boom, Tank* player, EnemyManager* enem
                 vecEnemies[j]->SetIsAlive(false);
                 vecEnemies[j]->SetTankState(ecTankState::DIE);
                 player->ammoPack[i].SetIsFire(false);
+                player->ammoPack[i].SetBodySize(0);
             }
 
             ammoMgr = vecEnemies[j]->GetAmmoManager();
@@ -350,9 +351,9 @@ void BattleTest2::AmmoTankCollision(Boom* boom, Tank* player, EnemyManager* enem
                 if (IntersectRect(&tempRect, &ammoRect, &enemyAmmoRect))  // 플레이어 미사일과 적 미사일이 충돌했을 경우
                 {
                     player->ammoPack[i].SetIsFire(false);
-                    //player->ammoPack[i].SetBodySize(0);
+                    player->ammoPack[i].SetBodySize(0);
                     vecAmmos[k]->SetIsFire(false);
-                    //vecAmmos[k]->SetBodySize(0);
+                    vecAmmos[k]->SetBodySize(0);
                 }
             }
         }

@@ -4,10 +4,7 @@
 /*
 	TO DO LIST
 	 1. 방향 전환 자연스럽게 하기
-	 2. 게임화면 밖으로 나가지 않게
-	 3. 죽었을 때 표현
-	 4. 탄을 발사하고 적을 맞힌 후 다른곳에 탄을 쏴도 처음 맞은 적에게 폭발이 일어남
-
+	 2. 적 탱크 종류 추가
 
 */
 
@@ -73,7 +70,11 @@ void Enemy::Update()
 
 	if (!isAlive && (tankState == ecTankState::DIE))
 	{
-		bodySize = 0;
+
+		shape.left = 0;
+		shape.top = 0;
+		shape.right = 0;
+		shape.bottom = 0;
 	}
 
 	if (isAlive && tankState == ecTankState::MOVE)
@@ -219,7 +220,7 @@ void Enemy::Render(HDC hdc)
 	// 임시 충돌 박스
 	Rectangle(hdc, shape.left, shape.top, shape.right, shape.bottom);
 
-	if (!isAlive)	//죽어있을 때 -> 스폰 이미지를 부르고 -> 살게끔
+	if (!isAlive && (tankState != ecTankState::DIE))	//죽어있을 때 -> 스폰 이미지를 부르고 -> 살게끔
 	{
 		spawnImg->Render(hdc, pos.x, pos.y, spawnImg->GetCurrFrameX(), spawnImg->GetCurrFrameY());
 	}
