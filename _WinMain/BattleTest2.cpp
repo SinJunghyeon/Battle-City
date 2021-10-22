@@ -443,7 +443,7 @@ void BattleTest2::AmmoTankCollision(Boom* boom, Tank* player)
             RECT enemyRect = vecEnemies[j]->GetShape();
             if (IntersectRect(&tempRect, &ammoRect, &enemyRect) && player->ammoPack[i].GetIsFire())    // 플레이어 미사일과 적 탱크가 충돌했을 경우
             {
-                BoomAnimation(boom, BoomType::SMALL_BOOM, vecEnemies[j]->GetPos());
+                BoomAnimation(boom, BoomType::BIG_BOOM, vecEnemies[j]->GetPos());
                 vecEnemies[j]->SetIsAlive(false);
                 vecEnemies[j]->SetTankState(ecTankState::DIE);
                 player->ammoPack[i].SetIsFire(false);
@@ -467,7 +467,25 @@ void BattleTest2::AmmoTankCollision(Boom* boom, Tank* player)
     }
 
     // 적 미사일이 플레이어에게 히트했을 경우
-
+    for (int i = 0; i < vecEnemies.size(); ++i)
+    {
+        ammoMgr = vecEnemies[i]->GetAmmoManager();
+        vecAmmos = ammoMgr.GetAmmos();
+        for (int j = 0; j < vecAmmos.size(); ++j)
+        {
+            RECT enemyAmmoRect = vecAmmos[j]->GetShape();
+            if (IntersectRect(&tempRect, &playerRect, &enemyAmmoRect))  // 적 미사일과 플레이어 탱크가 충돌했을 경우
+            {
+                BoomAnimation(boom, BoomType::BIG_BOOM, player->GetPos());
+                player->SetIsAlive(false);
+                player->Init();
+                playerSpawnPos = GetSpawnPos(tileInfo, ObjectType::PLAYER).back();
+                player->SetPos(playerSpawnPos);
+                playerLife--;
+                cout << "플레이어 목숨 : " << playerLife << endl;
+            }
+        }
+    }
 }
 
 void BattleTest2::CollisionItem()
