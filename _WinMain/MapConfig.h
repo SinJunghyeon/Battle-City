@@ -3,8 +3,8 @@ enum class Terrain { ROAD, WALL, WATER, GRASS, STEEL, ICE, HQ, HQ_WALL, HQ_STEEL
 enum class ObjectType { PLAYER, ENEMY, ITEM };
 
 #define TILE_SIZE	20
-#define TILE_COUNT_X	26
-#define TILE_COUNT_Y	26
+#define TILE_COUNT_X	28
+#define TILE_COUNT_Y	28
 #define SAMPLE_TILE_COUNT_X	11
 #define SAMPLE_TILE_COUNT_Y	11
 
@@ -25,12 +25,17 @@ typedef struct tagTile
     bool playerSpawn = false;
     bool enemySpawn = false;
     bool itemSpawn = false;
+    bool isRender = true;
+    bool isHQWall = false;
 } TILE_INFO;
 
 inline void SetTerrain(TILE_INFO* rc)
 {
     if (0 <= rc->frameX && rc->frameX <= 1)
     {
+        rc->playerSpawn = false;
+        rc->enemySpawn = false;
+        rc->itemSpawn = false;
         if (0 <= rc->frameY && rc->frameY <= 1)
         {
             rc->terrain = Terrain::WALL;
@@ -50,6 +55,9 @@ inline void SetTerrain(TILE_INFO* rc)
     }
     else if (4 <= rc->frameY && rc->frameY <= 5)
     {
+        rc->playerSpawn = false;
+        rc->enemySpawn = false;
+        rc->itemSpawn = false;
         if (2 <= rc->frameX && rc->frameX <= 3)
         {
             rc->terrain = Terrain::GRASS;
@@ -68,25 +76,43 @@ inline void SetTerrain(TILE_INFO* rc)
     }
     else if (rc->frameX == 8)
     {
+        rc->playerSpawn = false;
+        rc->enemySpawn = false;
+        rc->itemSpawn = false;
         if (rc->frameY == 0)
         {
             rc->terrain = Terrain::HQ_WALL;
             rc->hp = 2;
+            rc->isHQWall = true;
         }
         else if (rc->frameY == 2)
         {
             rc->terrain = Terrain::HQ_STEEL;
             rc->hp = 1;
+            rc->isHQWall = true;
         }
     }
     else if ((rc->frameY == 8) && ((1 <= rc->frameX) || (rc->frameX <= 4))) // ±úÁø º®
     {
+        rc->playerSpawn = false;
+        rc->enemySpawn = false;
+        rc->itemSpawn = false;
         rc->hp = 1;
         if (rc->terrain != Terrain::HQ_WALL)
             rc->terrain = Terrain::WALL;
     }
+    else if ((rc->frameX == 9) && (rc->frameY == 2))    // ¸Ê Å×µÎ¸®¿ë º®
+    {
+        rc->isRender = false;
+        rc->playerSpawn = false;
+        rc->enemySpawn = false;
+        rc->itemSpawn = false;
+        rc->hp = 1000;
+        rc->terrain = Terrain::STEEL;
+    }
     else
     {
+        rc->isRender = true;
         rc->terrain = Terrain::ROAD;
         rc->hp = 0;
     }

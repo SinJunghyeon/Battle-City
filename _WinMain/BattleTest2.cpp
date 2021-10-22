@@ -4,6 +4,7 @@
 #include "EnemyManager.h"
 #include "Item.h"
 #include "Ammo.h"
+#include "AmmoManager.h"
 
 HRESULT BattleTest2::Init()
 {
@@ -72,7 +73,10 @@ HRESULT BattleTest2::Init()
 
 void BattleTest2::Update()
 {
+
     //cout << boolalpha << "mpItem->GetExistItem() : " << mpItem->GetExistItem() << endl;
+    //cout << "elapsedChange : " << elapsedChange << endl;
+    //cout << "elapsedCount : " << elapsedCount << endl;
 
     // 타일 속성 확인용 코드
     for (int i = 0; i < TILE_COUNT_X * TILE_COUNT_Y; i++)
@@ -119,19 +123,22 @@ void BattleTest2::Update()
     CollisionItem();
 
     //HQ주변 타일 되돌리기
-    if (tileInfo[609].terrain == Terrain::HQ_STEEL)
+    for (int i = 680; i < 750; i++)
     {
-        elapsedChange++;
-        if (elapsedChange >= 300)
+        if (tileInfo[i].terrain == Terrain::HQ_STEEL) //684, 685, 686, 687, 712, 715, 740, 743 -> HQ_STEEL
         {
-            for (int i = 600; i < TILE_COUNT_X * TILE_COUNT_Y; i++)
+            elapsedChange++;
+            if (elapsedChange >= 2400)
             {
-                if (tileInfo[i].terrain == Terrain::HQ_STEEL)
+                for (int i = 600; i < TILE_COUNT_X * TILE_COUNT_Y; i++)
                 {
-                    tileInfo[i].terrain = Terrain::HQ_WALL;
-                    tileInfo[i].frameX = 8;
-                    tileInfo[i].frameY = 0;
-                    elapsedChange = 0;
+                    if (tileInfo[i].terrain == Terrain::HQ_STEEL)
+                    {
+                        tileInfo[i].terrain = Terrain::HQ_WALL;
+                        tileInfo[i].frameX = 8;
+                        tileInfo[i].frameY = 0;
+                        elapsedChange = 0;
+                    }
                 }
             }
         }
@@ -144,26 +151,37 @@ void BattleTest2::Update()
         if (elapsedCount >= 300)
         {
             enemyMgr->TankState(ecTankState::MOVE);
+            elapsedCount = 10000;
         }
     }
 
+    // 폭발 이펙트 업데이트
     for (int i = 0; i < BOOM_NUM; i++)
     {
         if (boomEffect[i].isRender)
         {
             boomEffect[i].elapsedCount++;
-            if (boomEffect[i].elapsedCount >= 10)
+            if (boomEffect[i].elapsedCount >= 5)
             {
                 boomEffect[i].boom->SetCurrFrameX(boomEffect[i].boom->GetCurrFrameX() + 1);
 
-                if (boomEffect[i].boom->GetCurrFrameX() == 2)
+                if ((boomEffect[i].boom->GetCurrFrameX() == 2) && boomEffect[i].type == BoomType::SMALL_BOOM)
                 {
                     boomEffect[i].isRender = false;
                     boomEffect[i].boom->SetCurrFrameX(0);
                 }
+                else if ((boomEffect[i].boom->GetCurrFrameX() == 3) && boomEffect[i].type == BoomType::BIG_BOOM)
+                {
+                    boomEffect[i].bigBoom->SetCurrFrameX(boomEffect[i].bigBoom->GetCurrFrameX() + 1);
+                }
                 boomEffect[i].elapsedCount = 0;
             }
         }
+    }
+
+    if (KeyManager::GetSingleton()->IsOnceKeyDown(VK_RETURN))
+    {
+        SceneManager::GetSingleton()->ChangeScene("endingS");
     }
 }
 
@@ -179,11 +197,14 @@ void BattleTest2::Render(HDC hdc)
 
             SetTerrain(&tileInfo[i * TILE_COUNT_X + j]);
 
-            sampleImage->Render(hdc,
-                tileInfo[i * TILE_COUNT_X + j].rc.left + TILE_SIZE / 2,
-                tileInfo[i * TILE_COUNT_X + j].rc.top + TILE_SIZE / 2,
-                tileInfo[i * TILE_COUNT_X + j].frameX,
-                tileInfo[i * TILE_COUNT_X + j].frameY);
+            if (tileInfo[i * TILE_COUNT_X + j].isRender)
+            {
+                sampleImage->Render(hdc,
+                    tileInfo[i * TILE_COUNT_X + j].rc.left + TILE_SIZE / 2,
+                    tileInfo[i * TILE_COUNT_X + j].rc.top + TILE_SIZE / 2,
+                    tileInfo[i * TILE_COUNT_X + j].frameX,
+                    tileInfo[i * TILE_COUNT_X + j].frameY);
+            }
 
              //Rectangle(hdc, tileInfo[i * TILE_COUNT_X + j].rc.left,
              //    tileInfo[i * TILE_COUNT_X + j].rc.top,
@@ -208,12 +229,16 @@ void BattleTest2::Render(HDC hdc)
     // 미사일 타일 접촉
     AmmoMapCollision(boomEffect, player, tileInfo);
 
+    // 미사일 탱크 접촉
+    AmmoTankCollision(boomEffect, player, enemyMgr);
+
     // 폭발 이펙트 렌더
     for (int i = 0; i < BOOM_NUM; i++)
     {
         if (boomEffect[i].isRender)
         {
             boomEffect[i].boom->Render(hdc, boomEffect[i].boomPos.x, boomEffect[i].boomPos.y, boomEffect[i].boom->GetCurrFrameX(), boomEffect[i].boom->GetCurrFrameY(), 2.0f);
+
             break;
         }
     }
@@ -251,6 +276,8 @@ void BattleTest2::Load(int loadIndex)
         MessageBox(g_hWnd, "맵 데이터 로드에 실패했습니다.", "에러", MB_OK);
     }
 
+
+
     CloseHandle(hFile);
 }
 
@@ -258,11 +285,11 @@ void BattleTest2::AmmoMapCollision(Boom* boom, Tank* tank, TILE_INFO* tile)
 {
     for (int j = 0; j < tank->ammoCount; j++)
     {
-        RECT TankRect = tank->ammoPack[j].GetShape();
+        RECT ammoRect = tank->ammoPack[j].GetShape();
 
         for (int i = 0; i < TILE_COUNT_X * TILE_COUNT_Y; i++)
         {
-            if (IntersectRect(&tempRect, &TankRect, &tile[i].rc) && tank->ammoPack[j].GetIsFire()) // Ammo랑 Tile이 충돌하면
+            if (IntersectRect(&tempRect, &ammoRect, &tile[i].rc) && tank->ammoPack[j].GetIsFire()) // Ammo랑 Tile이 충돌하면
             {
                 if ((tile[i].terrain == Terrain::WALL) || (tile[i].terrain == Terrain::HQ_WALL)) // 충돌한 Tile이 벽일때
                 {
@@ -296,15 +323,64 @@ void BattleTest2::AmmoMapCollision(Boom* boom, Tank* tank, TILE_INFO* tile)
                     }
                     tank->ammoPack[j].SetIsFire(false);
                     tank->ammoPack[j].SetPos(tank->GetPos());
+                    tank->ammoPack[j].SetBodySize(0);
                 }
                 else if ((tile[i].terrain == Terrain::STEEL) || (tile[i].terrain == Terrain::HQ_STEEL))
                 {
                     tank->ammoPack[j].SetIsFire(false);
                     tank->ammoPack[j].SetPos(tank->GetPos());
+                    tank->ammoPack[j].SetBodySize(0);
                 }
             }
         }
     }
+}
+
+void BattleTest2::AmmoTankCollision(Boom* boom, Tank* player, EnemyManager* enemy)
+{
+    // 적 정보들을 가져온다.
+    vector<Enemy*> vecEnemies = enemy->GetEnemies();
+    vecEnemies.resize(enemy->GetEnemyMaxCount());
+    AmmoManager ammoMgr;
+    vector<Ammo*> vecAmmos;
+
+    // 플레이어 정보들을 가져온다.
+    RECT playerRect = player->GetShape();
+
+    // 플레이어 미사일이 적이나 적 미사일에 히트했을 경우
+    for (int i = 0; i < player->ammoCount; ++i)
+    {
+        RECT ammoRect = player->ammoPack[i].GetShape();
+        for (int j = 0; j < vecEnemies.size(); ++j)
+        {
+            RECT enemyRect = vecEnemies[j]->GetShape();
+            if (IntersectRect(&tempRect, &ammoRect, &enemyRect) && player->ammoPack[i].GetIsFire())    // 플레이어 미사일과 적 탱크가 충돌했을 경우
+            {
+                BoomAnimation(boom, BoomType::SMALL_BOOM, vecEnemies[j]->GetPos());
+                vecEnemies[j]->SetIsAlive(false);
+                vecEnemies[j]->SetTankState(ecTankState::DIE);
+                player->ammoPack[i].SetIsFire(false);
+                player->ammoPack[i].SetBodySize(0);
+            }
+
+            ammoMgr = vecEnemies[j]->GetAmmoManager();
+            vecAmmos = ammoMgr.GetAmmos();
+            for (int k = 0; k < vecAmmos.size(); ++k)
+            {
+                RECT enemyAmmoRect = vecAmmos[k]->GetShape();
+                if (IntersectRect(&tempRect, &ammoRect, &enemyAmmoRect))  // 플레이어 미사일과 적 미사일이 충돌했을 경우
+                {
+                    player->ammoPack[i].SetIsFire(false);
+                    player->ammoPack[i].SetBodySize(0);
+                    vecAmmos[k]->SetIsFire(false);
+                    vecAmmos[k]->SetBodySize(0);
+                }
+            }
+        }
+    }
+
+    // 적 미사일이 플레이어에게 히트했을 경우
+
 }
 
 void BattleTest2::CollisionItem()
@@ -340,16 +416,34 @@ void BattleTest2::FunctionItem()
     //삽
     if (mpItem->GetItemState() == ecFunctionItem::SHOVEL)
     {
-        //HQ주변 타일 강철로
-        for (int i = 600; i < TILE_COUNT_X * TILE_COUNT_Y; i++)
+        for (int i = 684; i < 688; i++)
         {
-            if (tileInfo[i].terrain == Terrain::HQ_WALL)
-            {
-                tileInfo[i].terrain = Terrain::HQ_STEEL;
-                tileInfo[i].frameX = 8;
-                tileInfo[i].frameY = 2;
-            }
+            tileInfo[i].terrain = Terrain::HQ_STEEL;
+            tileInfo[i].frameX = 8;
+            tileInfo[i].frameY = 2;
         }
+        tileInfo[712].terrain = Terrain::HQ_STEEL;
+        tileInfo[712].frameX = 8;
+        tileInfo[712].frameY = 2;
+        tileInfo[715].terrain = Terrain::HQ_STEEL;
+        tileInfo[715].frameX = 8;
+        tileInfo[715].frameY = 2;
+        tileInfo[740].terrain = Terrain::HQ_STEEL;
+        tileInfo[740].frameX = 8;
+        tileInfo[740].frameY = 2;
+        tileInfo[743].terrain = Terrain::HQ_STEEL;
+        tileInfo[743].frameX = 8;
+        tileInfo[743].frameY = 2;
+        ////HQ주변 타일 강철로
+        //for (int i = 600; i < TILE_COUNT_X * TILE_COUNT_Y; i++)
+        //{
+        //    if (tileInfo[i].terrain == Terrain::HQ_WALL)
+        //    {
+        //        tileInfo[i].terrain = Terrain::HQ_STEEL;
+        //        tileInfo[i].frameX = 8;
+        //        tileInfo[i].frameY = 2;
+        //    }
+        //}
     }
     //별
     if (mpItem->GetItemState() == ecFunctionItem::STAR)
