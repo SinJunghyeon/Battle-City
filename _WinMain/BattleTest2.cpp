@@ -53,6 +53,9 @@ HRESULT BattleTest2::Init()
     enemyMgr = new EnemyManager;
     enemyMgr->Init();
     enemyMgr->SetTileMapManager(tileInfo);
+    vecEnemies = enemyMgr->GetEnemies();
+
+    // 맵 로드
     Load();
 
     // 플레이어 탱크
@@ -228,11 +231,17 @@ void BattleTest2::Render(HDC hdc)
         mpItem->Render(hdc);
     }
 
-    // 미사일 타일 접촉
-    AmmoMapCollision(boomEffect, player, tileInfo);
+    // 플레이어 미사일 타일 접촉
+    PlayerAmmoMapCollision(boomEffect, player, tileInfo);
+
+    // 적 미사일 타일 접촉
+    for (int i = 0; i < vecEnemies.size(); ++i)
+    {
+        EnemyAmmoMapCollision(boomEffect, vecEnemies[i], tileInfo);
+    }
 
     // 미사일 탱크 접촉
-    AmmoTankCollision(boomEffect, player, enemyMgr);
+    AmmoTankCollision(boomEffect, player);
 
     // 폭발 이펙트 렌더
     for (int i = 0; i < BOOM_NUM; i++)
@@ -290,7 +299,7 @@ void BattleTest2::Load(int loadIndex)
     CloseHandle(hFile);
 }
 
-void BattleTest2::AmmoMapCollision(Boom* boom, Tank* tank, TILE_INFO* tile)
+void BattleTest2::PlayerAmmoMapCollision(Boom* boom, Tank* tank, TILE_INFO* tile)
 {
     for (int j = 0; j < tank->ammoCount; j++)
     {
@@ -345,11 +354,68 @@ void BattleTest2::AmmoMapCollision(Boom* boom, Tank* tank, TILE_INFO* tile)
     }
 }
 
-void BattleTest2::AmmoTankCollision(Boom* boom, Tank* player, EnemyManager* enemy)
+void BattleTest2::EnemyAmmoMapCollision(Boom* boom, Enemy* enemy, TILE_INFO* tile)
+{
+    AmmoManager ammoMgr = enemy->GetAmmoManager();
+    vector<Ammo*> ammoPack = ammoMgr.GetAmmos();
+
+    for (int j = 0; j < ammoPack.size(); j++)
+    {
+        RECT ammoRect = ammoPack[j]->GetShape();
+
+        for (int i = 0; i < TILE_COUNT_X * TILE_COUNT_Y; i++)
+        {
+            if (IntersectRect(&tempRect, &ammoRect, &tile[i].rc) && ammoPack[j]->GetIsFire()) // Ammo랑 Tile이 충돌하면
+            {
+                if ((tile[i].terrain == Terrain::WALL) || (tile[i].terrain == Terrain::HQ_WALL)) // 충돌한 Tile이 벽일때
+                {
+                    BoomAnimation(boom, BoomType::SMALL_BOOM, ammoPack[j]->GetPos());
+                    tile[i].hp--;
+                    if (tile[i].hp == 0) // 파괴된 벽인 경우
+                    {
+                        tile[i].frameX = 10;
+                        tile[i].frameY = 10; // ROAD로 바꾼다.
+                    }
+                    else
+                    {
+                        tile[i].frameY = 8;
+                        switch (ammoPack[j]->GetMoveDir()) // Ammo의 방향에 따라 처리
+                        {
+                        case MoveDir::DOWN:
+                            tile[i].frameX = 2;
+                            break;
+                        case MoveDir::UP:
+                            tile[i].frameX = 4;
+                            break;
+                        case MoveDir::LEFT:
+                            tile[i].frameX = 3;
+                            break;
+                        case MoveDir::RIGHT:
+                            tile[i].frameX = 1;
+                            break;
+                        default:
+                            break;
+                        }
+                    }
+                    ammoPack[j]->SetIsFire(false);
+                    ammoPack[j]->SetPos(enemy->GetPos());
+                    ammoPack[j]->SetBodySize(0);
+                }
+                else if ((tile[i].terrain == Terrain::STEEL) || (tile[i].terrain == Terrain::HQ_STEEL))
+                {
+                    ammoPack[j]->SetIsFire(false);
+                    ammoPack[j]->SetPos(enemy->GetPos());
+                    ammoPack[j]->SetBodySize(0);
+                }
+            }
+        }
+    }
+}
+
+void BattleTest2::AmmoTankCollision(Boom* boom, Tank* player)
 {
     // 적 정보들을 가져온다.
-    vector<Enemy*> vecEnemies = enemy->GetEnemies();
-    vecEnemies.resize(enemy->GetEnemyMaxCount());
+    vecEnemies.resize(enemyMgr->GetEnemyMaxCount());
     AmmoManager ammoMgr;
     vector<Ammo*> vecAmmos;
 
