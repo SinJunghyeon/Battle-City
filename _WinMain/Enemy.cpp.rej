@@ -1,0 +1,10 @@
+diff a/_WinMain/Enemy.cpp b/_WinMain/Enemy.cpp	(rejected hunks)
+@@ -104,7 +104,7 @@
+ 	{
+ 		Move(moveDir);
+ 		MoveFrame();
+-	// 충돌 시 방향 전환
++		// 충돌 시 방향 전환
+ 		if (isCollision)
+ 		{
+ 			switch (moveDir)

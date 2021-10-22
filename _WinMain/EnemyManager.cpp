@@ -88,22 +88,10 @@ void EnemyManager::Update()
 	{
 		vecEnemys[i]->Update();
 	}
-	
-	/*for (itEnemys = vecEnemys.begin();
-		itEnemys != vecEnemys.end(); itEnemys++)
-	{
-		(*itEnemys)->Update();
-	}*/
 }
 
 void EnemyManager::Render(HDC hdc)
 {
-	/*for (itEnemys = vecEnemys.begin();
-		itEnemys != vecEnemys.end(); itEnemys++)
-	{
-		(*itEnemys)->Render(hdc);
-	}*/
-
 	for (int i = 0; i < enemyCurrCount; i++)
 	{
 		vecEnemys[i]->Render(hdc);
@@ -123,7 +111,6 @@ void EnemyManager::Release()
 void EnemyManager::AddEnemy(POINTFLOAT pos)
 {
 	enemyCurrCount++;
-	//vecEnemys[enemyCurrCount-1]->SetMoveSpeed(30.0f);
 	if (enemyCurrCount > enemyMaxCount)
 	{
 		enemyCurrCount = enemyMaxCount;

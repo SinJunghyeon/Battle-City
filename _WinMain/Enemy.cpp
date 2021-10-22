@@ -4,8 +4,7 @@
 /*
 	TO DO LIST
 	 1. 방향 전환 자연스럽게 하기
-	 2. 
-
+	 2. 적 탱크 종류 추가
 
 */
 
@@ -49,7 +48,7 @@ HRESULT Enemy::Init()
 
 void Enemy::Update()
 {
-	if (!isAlive)
+	if (!isAlive && (tankState != ecTankState::DIE))
 	{
 		elapsedSpawn++;
 		if (elapsedSpawn >= 5)
@@ -62,46 +61,25 @@ void Enemy::Update()
 				spawnCount++;
 				if (spawnCount >= 3)
 				{
-					isAlive = !isAlive;
+					isAlive = true;
 					moveSpeed = 30.0f;
 				}
 			}
 		}
 	}
 
-	// 게임 화면 충돌
-	switch (moveDir)
+	if (!isAlive && (tankState == ecTankState::DIE))
 	{
-	case MoveDir::RIGHT:
-		if (shape.right >= 613)
-		{
-			isCollision = true;
-		}
-		break;
-	case MoveDir::LEFT:
-		if (shape.left <= 140)
-		{
-			isCollision = true;
-		}
-		break;
-	case MoveDir::UP:
-		if (shape.top <= 100)
-		{
-			isCollision = true;
-		}
-		break;
-	case MoveDir::DOWN:
-		if (shape.bottom >= 605)
-		{
-			isCollision = true;
-		}
-		break;
-	default:
-		break;
+
+		shape.left = 0;
+		shape.top = 0;
+		shape.right = 0;
+		shape.bottom = 0;
 	}
 
 	if (isAlive && tankState == ecTankState::MOVE)
 	{
+		moveSpeed = 30.0f;
 		Move(moveDir);
 		MoveFrame();
 		// 충돌 시 방향 전환
@@ -204,43 +182,24 @@ void Enemy::Update()
 		shape.right = shape.left + bodySize - 5;
 		shape.bottom = shape.top + bodySize - 5;
 	}
-}
 
-void Enemy::Render(HDC hdc)
-{
-	// 임시 충돌 박스
-	Rectangle(hdc, shape.left, shape.top, shape.right, shape.bottom);
-
-	if (!isAlive)	//죽어있을 때 -> 스폰 이미지를 부르고 -> 살게끔
-	{
-		spawnImg->Render(hdc, pos.x, pos.y, spawnImg->GetCurrFrameX(), spawnImg->GetCurrFrameY());
-	}
-
-	if (isAlive)
-	{
-		img->Render(hdc, pos.x, pos.y, img->GetCurrFrameX(), img->GetCurrFrameY());
-
-
-		ammoMgr.Render(hdc);
-	}
-
-	// 화면 밖으로 나가는 것 체크
+	// 게임 화면 충돌 Fix List
 	switch (moveDir)
 	{
 	case MoveDir::RIGHT:
-		if (shape.right >= 605)
+		if (shape.right >= 613)
 		{
 			isCollision = true;
 		}
 		break;
 	case MoveDir::LEFT:
-		if (shape.left <= 120)
+		if (shape.left <= 140)
 		{
 			isCollision = true;
 		}
 		break;
 	case MoveDir::UP:
-		if (shape.top <= 120)
+		if (shape.top <= 100)
 		{
 			isCollision = true;
 		}
@@ -253,6 +212,24 @@ void Enemy::Render(HDC hdc)
 		break;
 	default:
 		break;
+	}
+}
+
+void Enemy::Render(HDC hdc)
+{
+	// 임시 충돌 박스
+	Rectangle(hdc, shape.left, shape.top, shape.right, shape.bottom);
+
+	if (!isAlive && (tankState != ecTankState::DIE))	//죽어있을 때 -> 스폰 이미지를 부르고 -> 살게끔
+	{
+		spawnImg->Render(hdc, pos.x, pos.y, spawnImg->GetCurrFrameX(), spawnImg->GetCurrFrameY());
+	}
+
+	if (isAlive)
+	{
+		img->Render(hdc, pos.x, pos.y, img->GetCurrFrameX(), img->GetCurrFrameY());
+
+		ammoMgr.Render(hdc);
 	}
 }
 
