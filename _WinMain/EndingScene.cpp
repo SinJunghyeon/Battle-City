@@ -4,9 +4,8 @@
 
 HRESULT EndingScene::Init()
 {
-    hiscoreTextPos.x = 470;
+    hiscoreTextPos.x = 370;
     hiscoreTextPos.y = 50;
-
 
     ImageManager::GetSingleton()->AddImage("Image/BattleCity/Text/HISocre.bmp", hiscoreTextPos.x, hiscoreTextPos.y, true, RGB(255, 0, 255));
     hiscoreText = ImageManager::GetSingleton()->FindImage("Image/BattleCity/Text/HISocre.bmp");
@@ -105,7 +104,7 @@ void EndingScene::Render(HDC hdc)
     for (int i = 0; i < 4; i++)
     {
         killEnemy->Render(hdc, killEnemyPosX, killEnemyPosY[i], 0, i);
-        killEnemyArrow->Render(hdc, killEnemyPosX - 50, killEnemyPosY[i]);
+        killEnemyArrow->Render(hdc, killEnemyPosX - 40, killEnemyPosY[i]);
         textPTS->Render(hdc, scoreTextPosX * 2 / 3, killEnemyPosY[i]);
 
         scoreText[i]->Render(hdc, scoreTextPosX, killEnemyPosY[i], countKillEnemy[i]%5, killEnemyNumber5[i]);//죽인 에너미 1의 자리
@@ -113,13 +112,13 @@ void EndingScene::Render(HDC hdc)
         scoreText[i]->Render(hdc, scoreTextPosX / 2, killEnemyPosY[i], 0, 0);
         if (countKillEnemy[i] >= 1/* || killEnemyNumber5[i] >= 1 || killEnemyNumber10[i] >= 1*/)//왼쪽 스코어
         {
-            scoreText[i]->Render(hdc, scoreTextPosX / 2 - 50, killEnemyPosY[i], 0, 0);                         //10의 자리
-            scoreText[i]->Render(hdc, scoreTextPosX / 2 - 100, killEnemyPosY[i], countKillEnemy[i]%5, killEnemyNumber5[i]);//100의 자리
+            scoreText[i]->Render(hdc, scoreTextPosX / 2 - 40, killEnemyPosY[i], 0, 0);                         //10의 자리
+            scoreText[i]->Render(hdc, scoreTextPosX / 2 - 80, killEnemyPosY[i], countKillEnemy[i]%5, killEnemyNumber5[i]);//100의 자리
         }
         if (killEnemyNumber10[i] >= 1)
         {
-            scoreText[i]->Render(hdc, scoreTextPosX - 50, killEnemyPosY[i], killEnemyNumber10[i], 0);      //죽인 에너미 10의 자리
-            scoreText[i]->Render(hdc, scoreTextPosX / 2 - 150, killEnemyPosY[i], killEnemyNumber10[i], 0); //스코어 1000의 자리
+            scoreText[i]->Render(hdc, scoreTextPosX - 40, killEnemyPosY[i], killEnemyNumber10[i], 0);      //죽인 에너미 10의 자리
+            scoreText[i]->Render(hdc, scoreTextPosX / 2 - 120, killEnemyPosY[i], killEnemyNumber10[i], 0); //스코어 1000의 자리
         }
     }
 
@@ -129,11 +128,11 @@ void EndingScene::Render(HDC hdc)
         totalKillText->Render(hdc, scoreTextPosX, WIN_SIZE_Y * 4 / 5, totalKillEnemy%5, totalKillEnemy5);
         if (totalKillEnemy10 >= 1 && totalKillEnemy10 < 5)
         {
-            totalKillText->Render(hdc, scoreTextPosX - 50, WIN_SIZE_Y * 4 / 5, totalKillEnemy10, 0);
+            totalKillText->Render(hdc, scoreTextPosX - 40, WIN_SIZE_Y * 4 / 5, totalKillEnemy10, 0);
         }
         else if (totalKillEnemy10 >= 5 && totalKillEnemy10 <= 9)
         {
-            totalKillText->Render(hdc, scoreTextPosX - 50, WIN_SIZE_Y * 4 / 5, totalKillEnemy10 % 5, 1);
+            totalKillText->Render(hdc, scoreTextPosX - 40, WIN_SIZE_Y * 4 / 5, totalKillEnemy10 % 5, 1);
         }
     }
 }
