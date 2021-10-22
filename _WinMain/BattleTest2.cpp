@@ -148,6 +148,7 @@ void BattleTest2::Update()
         }
     }
 
+    // 폭발 이펙트 업데이트
     for (int i = 0; i < BOOM_NUM; i++)
     {
         if (boomEffect[i].isRender)
@@ -255,6 +256,8 @@ void BattleTest2::Load(int loadIndex)
         MessageBox(g_hWnd, "맵 데이터 로드에 실패했습니다.", "에러", MB_OK);
     }
 
+
+
     CloseHandle(hFile);
 }
 
@@ -331,10 +334,12 @@ void BattleTest2::AmmoTankCollision(Boom* boom, Tank* player, EnemyManager* enem
         for (int j = 0; j < vecEnemies.size(); ++j)
         {
             RECT enemyRect = vecEnemies[j]->GetShape();
-            if (IntersectRect(&tempRect, &ammoRect, &enemyRect))    // 플레이어 미사일과 적 탱크가 충돌했을 경우
+            if (IntersectRect(&tempRect, &ammoRect, &enemyRect) && player->ammoPack[i].GetIsFire())    // 플레이어 미사일과 적 탱크가 충돌했을 경우
             {
                 BoomAnimation(boom, BoomType::SMALL_BOOM, vecEnemies[j]->GetPos());
                 vecEnemies[j]->SetIsAlive(false);
+                vecEnemies[j]->SetTankState(ecTankState::DIE);
+                player->ammoPack[i].SetIsFire(false);
             }
 
             ammoMgr = vecEnemies[j]->GetAmmoManager();
