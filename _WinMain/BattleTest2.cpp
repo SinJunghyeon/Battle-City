@@ -142,15 +142,20 @@ void BattleTest2::Update()
             }
         }
     }
-
-    //적탱크의 상태가 IDLE일 때
-    if (elapsedCount < 10000)
+    // 적 정보들을 가져온다.
+    vector<Enemy*> vecEnemies = enemyMgr->GetEnemies();
+    vecEnemies.resize(enemyMgr->GetEnemyMaxCount());
+    for (int i = 0; i < vecEnemies.size(); ++i)
     {
-        elapsedCount++;
-        if (elapsedCount >= 300)
+        //적탱크의 상태가 IDLE일 때
+        if (elapsedCount < 10000)
         {
-            enemyMgr->TankState(ecTankState::MOVE);
-            elapsedCount = 10000;
+            elapsedCount++;
+            if ((vecEnemies[i]->GetTankState() != ecTankState::DIE) && elapsedCount >= 300)
+            {
+                (vecEnemies[i]->SetTankState(ecTankState::MOVE));
+                elapsedCount = 10000;
+            }
         }
     }
 
