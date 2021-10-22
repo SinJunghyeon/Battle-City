@@ -7,7 +7,7 @@ HRESULT TitleScene::Init()
 	ImageManager::GetSingleton()->AddImage("Image/BattleCity/Title.bmp", WIN_SIZE_X, WIN_SIZE_Y);
 	backGround = ImageManager::GetSingleton()->FindImage("Image/BattleCity/Title.bmp");
 
-	ImageManager::GetSingleton()->AddImage("Image/BattleCity/Player/Player.bmp", 512, 256, 8, 4, true, RGB(255, 0, 255));
+	ImageManager::GetSingleton()->AddImage("Image/BattleCity/Player/Player.bmp", WIN_SIZE_X/2, WIN_SIZE_X/4, 8, 4, true, RGB(255, 0, 255));
 	selectIcon = ImageManager::GetSingleton()->FindImage("Image/BattleCity/Player/Player.bmp");
 
 	return S_OK;
