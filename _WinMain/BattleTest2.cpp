@@ -9,7 +9,8 @@
 HRESULT BattleTest2::Init()
 {
     // 타일 맵 이미지
-    sampleImage = ImageManager::GetSingleton()->AddImage("Image/BattleCity/SamlpTile1.bmp", 220, 220, 11, 11, true, RGB(255, 0, 255));
+    ImageManager::GetSingleton()->AddImage("Image/BattleCity/SamlpTile1.bmp", 220, 220, 11, 11, true, RGB(255, 0, 255));
+    sampleImage = ImageManager::GetSingleton()->FindImage("Image/BattleCity/SamlpTile1.bmp");
     if (sampleImage == nullptr)
     {
         cout << "Image/BattleCity/SamlpTile1.bmp 로드 실패!!" << endl;
