@@ -74,6 +74,8 @@ HRESULT BattleTest2::Init()
 void BattleTest2::Update()
 {
     //cout << boolalpha << "mpItem->GetExistItem() : " << mpItem->GetExistItem() << endl;
+    //cout << "elapsedChange : " << elapsedChange << endl;
+    //cout << "elapsedCount : " << elapsedCount << endl;
 
     // 타일 속성 확인용 코드
     for (int i = 0; i < TILE_COUNT_X * TILE_COUNT_Y; i++)
@@ -120,19 +122,22 @@ void BattleTest2::Update()
     CollisionItem();
 
     //HQ주변 타일 되돌리기
-    if (tileInfo[609].terrain == Terrain::HQ_STEEL)
+    for (int i = 680; i < 750; i++)
     {
-        elapsedChange++;
-        if (elapsedChange >= 300)
+        if (tileInfo[i].terrain == Terrain::HQ_STEEL) //684, 685, 686, 687, 712, 715, 740, 743 -> HQ_STEEL
         {
-            for (int i = 600; i < TILE_COUNT_X * TILE_COUNT_Y; i++)
+            elapsedChange++;
+            if (elapsedChange >= 2400)
             {
-                if (tileInfo[i].terrain == Terrain::HQ_STEEL)
+                for (int i = 600; i < TILE_COUNT_X * TILE_COUNT_Y; i++)
                 {
-                    tileInfo[i].terrain = Terrain::HQ_WALL;
-                    tileInfo[i].frameX = 8;
-                    tileInfo[i].frameY = 0;
-                    elapsedChange = 0;
+                    if (tileInfo[i].terrain == Terrain::HQ_STEEL)
+                    {
+                        tileInfo[i].terrain = Terrain::HQ_WALL;
+                        tileInfo[i].frameX = 8;
+                        tileInfo[i].frameY = 0;
+                        elapsedChange = 0;
+                    }
                 }
             }
         }
@@ -145,6 +150,7 @@ void BattleTest2::Update()
         if (elapsedCount >= 300)
         {
             enemyMgr->TankState(ecTankState::MOVE);
+            elapsedCount = 10000;
         }
     }
 
@@ -404,16 +410,34 @@ void BattleTest2::FunctionItem()
     //삽
     if (mpItem->GetItemState() == ecFunctionItem::SHOVEL)
     {
-        //HQ주변 타일 강철로
-        for (int i = 600; i < TILE_COUNT_X * TILE_COUNT_Y; i++)
+        for (int i = 684; i < 688; i++)
         {
-            if (tileInfo[i].terrain == Terrain::HQ_WALL)
-            {
-                tileInfo[i].terrain = Terrain::HQ_STEEL;
-                tileInfo[i].frameX = 8;
-                tileInfo[i].frameY = 2;
-            }
+            tileInfo[i].terrain = Terrain::HQ_STEEL;
+            tileInfo[i].frameX = 8;
+            tileInfo[i].frameY = 2;
         }
+        tileInfo[712].terrain = Terrain::HQ_STEEL;
+        tileInfo[712].frameX = 8;
+        tileInfo[712].frameY = 2;
+        tileInfo[715].terrain = Terrain::HQ_STEEL;
+        tileInfo[715].frameX = 8;
+        tileInfo[715].frameY = 2;
+        tileInfo[740].terrain = Terrain::HQ_STEEL;
+        tileInfo[740].frameX = 8;
+        tileInfo[740].frameY = 2;
+        tileInfo[743].terrain = Terrain::HQ_STEEL;
+        tileInfo[743].frameX = 8;
+        tileInfo[743].frameY = 2;
+        ////HQ주변 타일 강철로
+        //for (int i = 600; i < TILE_COUNT_X * TILE_COUNT_Y; i++)
+        //{
+        //    if (tileInfo[i].terrain == Terrain::HQ_WALL)
+        //    {
+        //        tileInfo[i].terrain = Terrain::HQ_STEEL;
+        //        tileInfo[i].frameX = 8;
+        //        tileInfo[i].frameY = 2;
+        //    }
+        //}
     }
     //별
     if (mpItem->GetItemState() == ecFunctionItem::STAR)
