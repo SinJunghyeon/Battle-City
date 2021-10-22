@@ -32,8 +32,8 @@ HRESULT TilemapToolScene::Init()
         for (int j = 0; j < TILE_COUNT_X; j++)    // xÃà
         {
             SetRect(&(tileInfo[i * TILE_COUNT_X + j].rc),
-                j * TILE_SIZE + 100, i * TILE_SIZE + 100,
-                j * TILE_SIZE + TILE_SIZE + 100, i * TILE_SIZE + TILE_SIZE + 100);
+                j * TILE_SIZE + 50, i * TILE_SIZE + 20,
+                j * TILE_SIZE + TILE_SIZE + 50, i * TILE_SIZE + TILE_SIZE + 20);
             
             tileInfo[i * TILE_COUNT_X + j].frameX = 0;
             tileInfo[i * TILE_COUNT_X + j].frameY = 0;
