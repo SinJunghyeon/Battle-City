@@ -31,7 +31,6 @@ void EnemyManager::Update()
 		enemySpawnDelay = 0;
 	}
 	
-
 	// Fix List
 	for (int i = 0; i < enemyCurrCount; i++)
 	{
