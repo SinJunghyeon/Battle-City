@@ -12,10 +12,8 @@ HRESULT EnemyManager::Init()
 
 	for (int i = 0; i < enemyMaxCount; i++)
 	{
-		//enemySpawnPos[i] = { 120.0f + (i % 3) * 242.0f, 120.0f };
 		vecEnemys[i] = new Enemy;
 		vecEnemys[i]->Init();
-		//vecEnemys[i]->SetPos(enemySpawnPos[i]);
 	}
 
 	return S_OK;
