@@ -26,6 +26,7 @@ typedef struct tagTile
     bool enemySpawn = false;
     bool itemSpawn = false;
     bool isRender = true;
+    bool isHQWall = false;
 } TILE_INFO;
 
 inline void SetTerrain(TILE_INFO* rc)
@@ -82,11 +83,13 @@ inline void SetTerrain(TILE_INFO* rc)
         {
             rc->terrain = Terrain::HQ_WALL;
             rc->hp = 2;
+            rc->isHQWall = true;
         }
         else if (rc->frameY == 2)
         {
             rc->terrain = Terrain::HQ_STEEL;
             rc->hp = 1;
+            rc->isHQWall = true;
         }
     }
     else if ((rc->frameY == 8) && ((1 <= rc->frameX) || (rc->frameX <= 4))) // ±úÁø º®
@@ -109,6 +112,7 @@ inline void SetTerrain(TILE_INFO* rc)
     }
     else
     {
+        rc->isRender = true;
         rc->terrain = Terrain::ROAD;
         rc->hp = 0;
     }
