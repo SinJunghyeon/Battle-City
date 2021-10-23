@@ -1,25 +1,27 @@
 #pragma once
 #include "Config.h"
 #include "GameEntity.h"
+#include "StageScene.h"
+#include "BattleTest2.h"
 
-class StageScene;
 class Image;
 class EndingScene : public GameEntity
 {
 private:
-	Image* hiscoreText = nullptr;
-	Image* stageText = nullptr;
-	Image* stageNumText = nullptr;
-	Image* player1Text = nullptr;
-	Image* textPTS = nullptr;
-	Image* killEnemy = nullptr;
-	Image* killEnemyArrow = nullptr;
-	Image* textTotal = nullptr;
-	Image* totalKillText = nullptr;
+	Image* hiscoreText;
+	Image* stageText;
+	Image* stageNumText;
+	Image* player1Text;
+	Image* textPTS;
+	Image* killEnemy;
+	Image* killEnemyArrow;
+	Image* textTotal;
+	Image* totalKillText;
 	Image* scoreText[4];
 
+	BattleTest2 destroyEnemy;
 
-	StageScene* stageTextSize = nullptr;;
+	StageScene stageScene;
 	
 	POINT hiscoreTextPos;
 
@@ -28,7 +30,7 @@ private:
 	
 	int scoreTextPosX = killEnemyPosX - 100;
 
-	int killEnemyNumber[4] = { 25,11,12,14 };	//나중에 에너미 죽인거 가져오기
+	int killEnemyNumber[4] = { destroyEnemy.GetDestroyedEnemy(0),destroyEnemy.GetDestroyedEnemy(1),destroyEnemy.GetDestroyedEnemy(2),destroyEnemy.GetDestroyedEnemy(3) };
 	int killEnemyNumber5[4];
 	int killEnemyNumber10[4];
 	int totalKillEnemy = killEnemyNumber[0]+ killEnemyNumber[1]+ killEnemyNumber[2]+ killEnemyNumber[3];
