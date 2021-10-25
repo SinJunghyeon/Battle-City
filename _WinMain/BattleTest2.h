@@ -64,18 +64,26 @@ private:
 
     // UI
     int UIposX = TILE_SIZE * TILE_COUNT_X + 100;
-    int destroyedEnemy[4] = { 10,20,5,1 }; // 1 : 일반형  2 : 속도형   3 : 속사형   4 : 슈퍼탱크
+    int destroyedEnemy[4] = { 10,20,15,1 }; // 1 : 일반형  2 : 속도형   3 : 속사형   4 : 슈퍼탱크
     int iconSize = 30;
 
     Image* enemyIcon;           //에너미 탱크
     int enemyCount = 0;
 
     Image* P1Life;
-    Image* UIText;
     int playerLife = 2;
+    int playerLife5 = 0;    //5~9까지 출력
+    int playerLife10 = 0;   //10의 자리
+
+    Image* UIText;
 
     Image* stageFlag;
     StageScene stagescene;
+    
+    //게임 오버 이미지
+    Image* gameOverImg;
+    POINT gameOverImgSize;
+    int gameOverPosY = WIN_SIZE_Y*3/2;
 
 public:
     HRESULT Init();

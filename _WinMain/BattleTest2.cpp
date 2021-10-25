@@ -84,6 +84,12 @@ HRESULT BattleTest2::Init()
     ImageManager::GetSingleton()->AddImage("Image/BattleCity/Icon/StageFlag.bmp", iconSize*2, iconSize*1.5, true, RGB(255, 0, 255));
     stageFlag = ImageManager::GetSingleton()->FindImage("Image/BattleCity/Icon/StageFlag.bmp");
 
+    //게임 오버
+    gameOverImgSize.x = WIN_SIZE_X / 8;
+    gameOverImgSize.y = WIN_SIZE_Y / 12;
+    ImageManager::GetSingleton()->AddImage("Image/BattleCity/Text/Game_Over.bmp", gameOverImgSize.x, gameOverImgSize.y, true, RGB(255, 0, 255));
+    gameOverImg = ImageManager::GetSingleton()->FindImage("Image/BattleCity/Text/Game_Over.bmp");
+
     return S_OK;
 }
 
@@ -170,10 +176,13 @@ void BattleTest2::Update()
         if (elapsedCount < 10000)
         {
             elapsedCount++;
-            if ((vecEnemies[i]->GetTankState() != ecTankState::DIE) && elapsedCount >= 300)
+            if ((vecEnemies[i]->GetTankState() == ecTankState::IDLE) && elapsedCount >= 300)
             {
                 (vecEnemies[i]->SetTankState(ecTankState::MOVE));
-                elapsedCount = 10000;
+                if (elapsedCount >= 500)
+                {
+                    elapsedCount = 10000;
+                }
             }
         }
     }
@@ -208,19 +217,34 @@ void BattleTest2::Update()
             }
         }
     }
-
+    
     //테스트
     if (KeyManager::GetSingleton()->IsOnceKeyDown(VK_LBUTTON))
     {
-        enemyMgr->SetEnemyMaxCount(enemyMgr->GetEnemyMaxCount() - 1);//에너미 탱크 죽을 경우 UI숫자 감소
-        cout  << enemyMgr->GetEnemyMaxCount() << endl;
-       // playerLife--;
+        playerLife--;
+        
+    }
+
+    if (playerLife >= 10)  //플레이어 라이프 10의 자리
+    {
+        playerLife10 = playerLife / 10;
+        playerLife5 = 0;
+    }
+    if (playerLife % 10 >= 5)   //플레이어 라이프 5이상
+    {
+        playerLife5 = 1;
     }
 
     if (playerLife == 0|| enemyMgr->GetEnemyMaxCount()==0)
     {
-        SceneManager::GetSingleton()->ChangeScene("endingS");
+        gameOverPosY -= 10;
+        if (gameOverPosY <= WIN_SIZE_Y / 2)
+        {
+            Sleep(1000);
+            SceneManager::GetSingleton()->ChangeScene("endingS");
+        }
     }
+
 }
 
 void BattleTest2::Render(HDC hdc)
@@ -312,10 +336,22 @@ void BattleTest2::Render(HDC hdc)
 
     //라이프 UI
     P1Life->Render(hdc, UIposX + iconSize / 2, WIN_SIZE_Y / 2);
-    UIText->Render(hdc, UIposX + iconSize, WIN_SIZE_Y / 2 + iconSize / 2, playerLife, 0);
+    UIText->Render(hdc, UIposX + iconSize*2, WIN_SIZE_Y / 2 + iconSize/2, playerLife%5, playerLife5);
+
+    if (playerLife10 >= 1 && playerLife10<5)
+    {
+        UIText->Render(hdc, UIposX + iconSize, WIN_SIZE_Y / 2 + iconSize / 2, playerLife10, 0);
+    }
+    else if (playerLife10 >= 5)
+    {
+        UIText->Render(hdc, UIposX + iconSize, WIN_SIZE_Y / 2 + iconSize / 2, playerLife10%5, 1);
+    }
 
     stageFlag->Render(hdc, UIposX + iconSize / 2, WIN_SIZE_Y * 4 / 5);
     UIText->Render(hdc, UIposX + iconSize, WIN_SIZE_Y * 4 / 5 + iconSize, stagescene.stageN, 0);
+
+    //게임 오버
+    gameOverImg->Render(hdc, 330, gameOverPosY);
 }
 
 void BattleTest2::Release()
@@ -358,7 +394,6 @@ void BattleTest2::PlayerAmmoMapCollision(Boom* boom, Tank* tank, TILE_INFO* tile
     for (int j = 0; j < tank->ammoCount; j++)
     {
         RECT ammoRect = tank->ammoPack[j].GetShape();
-
         for (int i = 0; i < TILE_COUNT_X * TILE_COUNT_Y; i++)
         {
             if (IntersectRect(&tempRect, &ammoRect, &tile[i].rc) && tank->ammoPack[j].GetIsFire()) // Ammo랑 Tile이 충돌하면
@@ -397,11 +432,36 @@ void BattleTest2::PlayerAmmoMapCollision(Boom* boom, Tank* tank, TILE_INFO* tile
                     tank->ammoPack[j].SetPos(tank->GetPos());
                     tank->ammoPack[j].SetBodySize(0);
                 }
-                else if ((tile[i].terrain == Terrain::STEEL) || (tile[i].terrain == Terrain::HQ_STEEL))
+                if (tank->GetImgFrameY() < 3)                                                   //21.10.25 플레이어 탱크 최종렙보다 아래일 때 강철 못 부심
                 {
-                    tank->ammoPack[j].SetIsFire(false);
-                    tank->ammoPack[j].SetPos(tank->GetPos());
-                    tank->ammoPack[j].SetBodySize(0);
+                    if ((tile[i].terrain == Terrain::STEEL) || (tile[i].terrain == Terrain::HQ_STEEL))
+                    {
+                        tank->ammoPack[j].SetIsFire(false);
+                        tank->ammoPack[j].SetPos(tank->GetPos());
+                        tank->ammoPack[j].SetBodySize(0);
+                    }
+                }
+            }
+        }
+        if (player->GetImgFrameY() >= 3)                                                        //21.10.25 플레이어 탱크 최종렙일 때 강철 부심
+        {
+            for (int i = 0; i < TILE_COUNT_X * TILE_COUNT_Y; i++)
+            {
+                if (IntersectRect(&tempRect, &ammoRect, &tile[i].rc) && tank->ammoPack[j].GetIsFire()) // Ammo랑 Tile이 충돌하면
+                {
+                    if ((tile[i].terrain == Terrain::STEEL) || (tile[i].terrain == Terrain::HQ_STEEL)) // 충돌한 Tile이 벽일때
+                    {
+                        BoomAnimation(boom, BoomType::SMALL_BOOM, tank->ammoPack[j].GetPos());
+                        tile[i].hp--;
+                        if (tile[i].hp <= 0) // 파괴된 벽인 경우
+                        {
+                            tile[i].frameX = 10;
+                            tile[i].frameY = 10; // ROAD로 바꾼다.
+                        }
+                        tank->ammoPack[j].SetIsFire(false);
+                        tank->ammoPack[j].SetPos(tank->GetPos());
+                        tank->ammoPack[j].SetBodySize(0);
+                    }
                 }
             }
         }
@@ -508,7 +568,6 @@ void BattleTest2::AmmoTankCollision(Boom* boom, Tank* player)
         }
     }
 
-
     // 적 미사일이 플레이어에게 히트했을 경우
     for (int i = 0; i < vecEnemies.size(); ++i)
     {
@@ -522,6 +581,8 @@ void BattleTest2::AmmoTankCollision(Boom* boom, Tank* player)
                 BoomAnimation(boom, BoomType::BIG_BOOM, player->GetPos());
                 player->SetIsAlive(false);
                 player->Init();
+                player->SetImgFrameX(0);                                                //21.10.25 플레이어 죽었을 때 리스폰 위로 보게끔
+                player->SetplayerLife(playerLife - 1);                                  //21.10.25 플레이어 탱크아이템 먹었을 때 생명 수정
                 playerSpawnPos = GetSpawnPos(tileInfo, ObjectType::PLAYER).back();
                 player->SetPos(playerSpawnPos);
                 playerLife--;
@@ -597,13 +658,17 @@ void BattleTest2::FunctionItem()
     if (mpItem->GetItemState() == ecFunctionItem::STAR)
     {
         player->SetImgFrameY(player->GetImgFrameY() + 1);
-        if (player->GetImgFrameY() >= 3)
+        if (player->GetImgFrameY() >= 1)
         {
-            player->SetImgFrameY(3);
+            player->SetAmmoCount(2);            //탄수 2개
         }
         if (player->GetImgFrameY() >= 2)
         {
-            player->SetAmmoCount(2);
+            player->SetptAttackValue(2.5);      //공격력 증가
+        }
+        if (player->GetImgFrameY() >= 3)
+        {
+            player->SetImgFrameY(3);            //최대 레벨업일 때 이미지 그대로
         }
     }
     //수류탄
@@ -615,7 +680,8 @@ void BattleTest2::FunctionItem()
     //탱크
     if (mpItem->GetItemState() == ecFunctionItem::TANK)
     {
-        player->SetptLife(player->GetptLife() + 1);
+        player->SetplayerLife(player->GetplayerLife() + 1);
+        playerLife = player->GetplayerLife();
     }
 }
 

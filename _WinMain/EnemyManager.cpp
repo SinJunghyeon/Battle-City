@@ -14,6 +14,7 @@ HRESULT EnemyManager::Init()
 	{
 		vecEnemys[i] = new Enemy;
 		vecEnemys[i]->Init();
+		vecEnemys[i]->SetEnemyType((EnemyType)(rand() % 4));
 	}
 
 	return S_OK;

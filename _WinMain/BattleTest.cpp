@@ -308,6 +308,6 @@ void BattleTest::FunctionItem()
     //탱크
     if (mpItem->GetItemState() == ecFunctionItem::TANK)
     {
-        player->SetptLife(player->GetptLife() + 1);
+        player->SetplayerLife(player->GetplayerLife() + 1);
     }
 }
