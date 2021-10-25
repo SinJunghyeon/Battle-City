@@ -159,10 +159,13 @@ void BattleTest2::Update()
         if (elapsedCount < 10000)
         {
             elapsedCount++;
-            if ((vecEnemies[i]->GetTankState() != ecTankState::DIE) && elapsedCount >= 300)
+            if ((vecEnemies[i]->GetTankState() == ecTankState::IDLE) && elapsedCount >= 300)
             {
                 (vecEnemies[i]->SetTankState(ecTankState::MOVE));
-                elapsedCount = 10000;
+                if (elapsedCount >= 500)
+                {
+                    elapsedCount = 10000;
+                }
             }
         }
     }
@@ -197,7 +200,7 @@ void BattleTest2::Update()
         }
     }
 
-    if (playerLife == 0)
+    if (playerLife <= 0)
     {
         SceneManager::GetSingleton()->ChangeScene("endingS");
     }
@@ -465,7 +468,6 @@ void BattleTest2::AmmoTankCollision(Boom* boom, Tank* player)
         }
     }
 
-
     // 적 미사일이 플레이어에게 히트했을 경우
     for (int i = 0; i < vecEnemies.size(); ++i)
     {
@@ -479,6 +481,8 @@ void BattleTest2::AmmoTankCollision(Boom* boom, Tank* player)
                 BoomAnimation(boom, BoomType::BIG_BOOM, player->GetPos());
                 player->SetIsAlive(false);
                 player->Init();
+                player->SetImgFrameX(0);                                                //21.10.25 플레이어 죽었을 때 리스폰 위로 보게끔
+                player->SetplayerLife(playerLife - 1);                                  //21.10.25 플레이어 탱크아이템 먹었을 때 생명 수정
                 playerSpawnPos = GetSpawnPos(tileInfo, ObjectType::PLAYER).back();
                 player->SetPos(playerSpawnPos);
                 playerLife--;
@@ -554,13 +558,17 @@ void BattleTest2::FunctionItem()
     if (mpItem->GetItemState() == ecFunctionItem::STAR)
     {
         player->SetImgFrameY(player->GetImgFrameY() + 1);
-        if (player->GetImgFrameY() >= 3)
+        if (player->GetImgFrameY() >= 1)
         {
-            player->SetImgFrameY(3);
+            player->SetAmmoCount(2);            //탄수 2개
         }
         if (player->GetImgFrameY() >= 2)
         {
-            player->SetAmmoCount(2);
+            player->SetptAttackValue(2.5);      //공격력 증가
+        }
+        if (player->GetImgFrameY() >= 3)
+        {
+            player->SetImgFrameY(3);            //최대 레벨업일 때 이미지 그대로
         }
     }
     //수류탄
@@ -572,7 +580,8 @@ void BattleTest2::FunctionItem()
     //탱크
     if (mpItem->GetItemState() == ecFunctionItem::TANK)
     {
-        player->SetptLife(player->GetptLife() + 1);
+        player->SetplayerLife(player->GetplayerLife() + 1);
+        playerLife = player->GetplayerLife();
     }
 }
 

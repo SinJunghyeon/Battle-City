@@ -16,7 +16,7 @@ public:
 	bool isAlive = false;
 
 	float ptAttackValue = NULL;		//공격력
-	int ptLife = NULL;				//플레이어 목숨
+	int playerLife = NULL;				//플레이어 목숨
 	int ptScore = NULL;				//플레이어 탱크 점수
 
 	Image* effectImg = nullptr;
@@ -49,8 +49,12 @@ public:
 	inline float GetptAttackValue() { return ptAttackValue; }
 	inline void SetptAttackValue(float ptAttackValue) { this->ptAttackValue = ptAttackValue; }
 
-	inline int GetptLife() { return ptLife; }
-	inline void SetptLife(int ptLife) { this->ptLife = ptLife; }
+	inline int GetplayerLife() { return playerLife; }
+	inline void SetplayerLife(int playerLife) { this->playerLife = playerLife; }
+
+
+	inline int GetImgFrameX() { return img->GetCurrFrameX(); }
+	inline void SetImgFrameX(int frameX) { this->img->SetCurrFrameX(frameX); }
 
 	inline int GetImgFrameY() { return img->GetCurrFrameY(); }
 	inline void SetImgFrameY(int frameY) { this->img->SetCurrFrameY(frameY); }

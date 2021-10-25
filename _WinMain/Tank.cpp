@@ -35,6 +35,7 @@ HRESULT Tank::Init()
 	shape.right = pos.x + (bodySize / 2) - 2.0f;
 	shape.bottom = pos.y + (bodySize / 2) - 2.0f;
 
+
 	moveDir = MoveDir::UP;
 	tanckState = ecTankState::IDLE;
 	elapsedCount = 0;
@@ -50,7 +51,7 @@ HRESULT Tank::Init()
 
 	ptAttackValue = 1;	//공격력
 
-	ptLife = 2;			//총 목숨
+	playerLife = 2;			//총 목숨
 
 	ptScore = 0;		//점수
 
@@ -76,9 +77,11 @@ void Tank::Update()
 	//cout << boolalpha << "isAlive : " << isAlive << endl;
 	//cout << "elapsedSpawn : " << elapsedSpawn << endl;
 	//cout << "spawnImg->GetCurrFrameX() : " << spawnImg->GetCurrFrameX() << endl;
-	cout << "pos.x : " << pos.x << "\t" << "pos.y : " << pos.y << endl;
+	//cout << "pos.x : " << pos.x << "\t" << "pos.y : " << pos.y << endl;
 	//cout << "Player ammo pos.x : " << ammoPack->GetPos().x << endl;
 	//cout << "Player ammo pos.y : " << ammoPack->GetPos().y << endl;
+	//cout << "ptAttackValue : " << ptAttackValue << endl;
+	cout << "playerLife : " << playerLife << endl;
 
 	//스폰이미지변화
 	if (!isAlive)
@@ -153,14 +156,15 @@ void Tank::Render(HDC hdc)
 	{
 		//몸통
 		Rectangle(hdc, shape.left, shape.top, shape.right, shape.bottom);
-		//이미지
+		// 플레이어 이미지
 		img->Render(hdc, pos.x + 10, pos.y + 10, img->GetCurrFrameX(), img->GetCurrFrameY(), 0.625f);
-		//무적상태
 		if (isInvincible)
 		{
+			//무적상태 이미지
 			effectImg->Render(hdc, pos.x - 17, pos.y - 17, effectImg->GetCurrFrameX(), effectImg->GetCurrFrameY(), 3);
 		}
 	}
+
 }
 
 void Tank::Release()
