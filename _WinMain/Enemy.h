@@ -28,11 +28,9 @@ private:
 	int elapsedSpawn = NULL;
 	int spawnCount = NULL;
 
-
 	int hp = 1;
 	int elapsedTurn = 0;
 	int elapsedSpeed = 0;
-
 
 public:
 	HRESULT Init();
@@ -42,6 +40,7 @@ public:
 	
 	void MoveFrame();
 	void Move(MoveDir dir);
+	void TankAbilitySetting();
 
 	void SetMoveSpeed(float moveSpeed) { this->moveSpeed = moveSpeed; }
 
@@ -62,5 +61,6 @@ public:
 
 	inline EnemyType GetEnemyType() { return this->tankType; }
 	inline void SetEnemyType(EnemyType type) { this->tankType = type; }
+
 };
 

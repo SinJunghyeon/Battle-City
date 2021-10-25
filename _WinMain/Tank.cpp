@@ -24,16 +24,17 @@ HRESULT Tank::Init()
 		return E_FAIL;
 	}
 
-	pos.x = WIN_SIZE_X / 2.0f;
-	pos.y = WIN_SIZE_Y - 100.0f;
+	pos.x = 250.0f;
+	pos.y = 540.0f;
 
 	bodySize = 35;
 	moveSpeed = 100.0f;
 
-	shape.left = pos.x - (bodySize / 2) - 2;
-	shape.top = pos.y - (bodySize / 2) - 3;
-	shape.right = pos.x + (bodySize / 2);
-	shape.bottom = pos.y + (bodySize / 2) - 3;
+	shape.left = pos.x - (bodySize / 2) - 5.0f;
+	shape.top = pos.y - (bodySize / 2) - 5.0f;
+	shape.right = pos.x + (bodySize / 2) - 2.0f;
+	shape.bottom = pos.y + (bodySize / 2) - 2.0f;
+
 
 	moveDir = MoveDir::UP;
 	tanckState = ecTankState::IDLE;
@@ -50,7 +51,7 @@ HRESULT Tank::Init()
 
 	ptAttackValue = 1;	//공격력
 
-	ptLife = 2;			//총 목숨
+	playerLife = 2;			//총 목숨
 
 	ptScore = 0;		//점수
 
@@ -76,9 +77,11 @@ void Tank::Update()
 	//cout << boolalpha << "isAlive : " << isAlive << endl;
 	//cout << "elapsedSpawn : " << elapsedSpawn << endl;
 	//cout << "spawnImg->GetCurrFrameX() : " << spawnImg->GetCurrFrameX() << endl;
-
+	//cout << "pos.x : " << pos.x << "\t" << "pos.y : " << pos.y << endl;
 	//cout << "Player ammo pos.x : " << ammoPack->GetPos().x << endl;
 	//cout << "Player ammo pos.y : " << ammoPack->GetPos().y << endl;
+	//cout << "ptAttackValue : " << ptAttackValue << endl;
+	//cout << "playerLife : " << playerLife << endl;
 
 	//스폰이미지변화
 	if (!isAlive)
@@ -153,14 +156,15 @@ void Tank::Render(HDC hdc)
 	{
 		//몸통
 		Rectangle(hdc, shape.left, shape.top, shape.right, shape.bottom);
-		//이미지
-		img->Render(hdc, pos.x + 6, pos.y, img->GetCurrFrameX(), img->GetCurrFrameY(), 0.75f);
-		//무적상태
+		// 플레이어 이미지
+		img->Render(hdc, pos.x + 10, pos.y + 10, img->GetCurrFrameX(), img->GetCurrFrameY(), 0.625f);
 		if (isInvincible)
 		{
+			//무적상태 이미지
 			effectImg->Render(hdc, pos.x - 17, pos.y - 17, effectImg->GetCurrFrameX(), effectImg->GetCurrFrameY(), 3);
 		}
 	}
+
 }
 
 void Tank::Release()
@@ -310,12 +314,11 @@ void Tank::Move(MoveDir dir)
 	case MoveDir::DOWN: pos.y += (moveSpeed * TimerManager::GetSingleton()->GetDeltaTime()); break;
 	}
 
-
 	// 위치에 따른 모양값 갱신
-	shape.left = pos.x - (bodySize / 2) - 2;
-	shape.top = pos.y - (bodySize / 2) - 3;
-	shape.right = pos.x + (bodySize / 2);
-	shape.bottom = pos.y + (bodySize / 2) - 3;
+	shape.left = pos.x - (bodySize / 2) - 5.0f;
+	shape.top = pos.y - (bodySize / 2) - 5.0f;
+	shape.right = pos.x + (bodySize / 2) - 2.0f;
+	shape.bottom = pos.y + (bodySize / 2) - 2.0f;
 
 	for (int i = 0; i < TILE_COUNT_X * TILE_COUNT_Y; i++)
 	{
@@ -325,33 +328,44 @@ void Tank::Move(MoveDir dir)
 			{
 				pos = buffPos;
 				shape = buffRect;
-				//cout << tile[i].rc.left << "\t" << shape.right << endl;
-				//cout << tile[i].rc.right << "\t" << shape.left << endl;
-				cout << tile[i].rc.top << "\t" << shape.bottom << endl;
-				//cout << tile[i].rc.bottom << "\t" << shape.top << endl;
 				if (moveDir == MoveDir::UP || moveDir == MoveDir::DOWN)
 				{
-					if (tile[i].rc.left + 10 > shape.right)
+					//cout << tile[i].rc.right << "\t" << shape.left  << "\t" << tile[i + 1].rc.right << endl;
+					if (tile[i].rc.right - 10 < shape.left && tile[i + 1].terrain == Terrain::ROAD && tile[i + 2].terrain == Terrain::ROAD)
 					{
-						pos.x = tile[i - 1].rc.left;
+						pos.x = tile[i + 1].rc.right + 3;
 					}
-					if (tile[i].rc.right - 10 < shape.left)
+					//cout << tile[i].rc.left << "\t" << shape.right << "\t" << tile[i - 1].rc.left << endl;
+					if (tile[i].rc.left + 10 > shape.right && tile[i - 1].terrain == Terrain::ROAD && tile[i - 2].terrain == Terrain::ROAD)
 					{
-						pos.x = tile[i + 1].rc.right;
+						pos.x = tile[i - 1].rc.left + 3;
 					}
 				}
 				if (moveDir == MoveDir::LEFT || moveDir == MoveDir::RIGHT)
 				{
-					if (tile[i].rc.top + 10 > shape.bottom)
+					//cout << tile[i].rc.bottom << "\t" << shape.top << "\t" << tile[i + TILE_COUNT_X].rc.bottom << endl;
+					if (tile[i].rc.bottom - 10 < shape.top && tile[i + (TILE_COUNT_X * 1)].terrain == Terrain::ROAD && tile[i + (TILE_COUNT_X * 2)].terrain == Terrain::ROAD)
 					{
-						pos.y = tile[i - TILE_COUNT_X].rc.top;
+						pos.y = tile[i + TILE_COUNT_X].rc.bottom + 3;
 					}
-					if (tile[i].rc.bottom - 10 < shape.top)
+					//cout << tile[i].rc.top << "\t" << shape.bottom  << "\t" << tile[i - TILE_COUNT_X].rc.top << endl;
+					if (tile[i].rc.top + 10 > shape.bottom && tile[i - (TILE_COUNT_X * 1)].terrain == Terrain::ROAD && tile[i - (TILE_COUNT_X * 2)].terrain == Terrain::ROAD)
 					{
-						pos.y = tile[i + TILE_COUNT_X].rc.bottom;
+						pos.y = tile[i - TILE_COUNT_X].rc.top + 3;
 					}
 				}
 			}
+			//if (moveDir == MoveDir::LEFT || moveDir == MoveDir::RIGHT)
+			//{
+			//	if (tile[i].rc.top + 10 > shape.bottom)
+			//	{
+			//		pos.y = tile[i - TILE_COUNT_X].rc.top;
+			//	}
+			//	if (tile[i].rc.bottom - 10 < shape.top)
+			//	{
+			//		pos.y = tile[i + TILE_COUNT_X].rc.bottom;
+			//	}
+			//}
 		}
 	}
 }
