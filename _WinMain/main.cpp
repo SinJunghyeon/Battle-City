@@ -89,6 +89,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 		case VK_RETURN:
 			isUpdate = !isUpdate;
 			break;
+		/*case VK_RETURN:
+			break;*/
 		}
 		break;
 	case WM_TIMER:

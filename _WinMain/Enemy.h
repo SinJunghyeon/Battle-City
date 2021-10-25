@@ -25,11 +25,9 @@ private:
 	int elapsedSpawn = NULL;
 	int spawnCount = NULL;
 
-
 	int hp = 1;
 	int elapsedTurn = 0;
 	int elapsedSpeed = 0;
-
 
 public:
 	HRESULT Init();

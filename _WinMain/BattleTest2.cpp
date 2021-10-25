@@ -73,6 +73,7 @@ HRESULT BattleTest2::Init()
 
 void BattleTest2::Update()
 {
+
     //cout << boolalpha << "mpItem->GetExistItem() : " << mpItem->GetExistItem() << endl;
     //cout << "elapsedChange : " << elapsedChange << endl;
     //cout << "elapsedCount : " << elapsedCount << endl;
@@ -177,6 +178,11 @@ void BattleTest2::Update()
             }
         }
     }
+
+    if (KeyManager::GetSingleton()->IsOnceKeyDown(VK_RETURN))
+    {
+        SceneManager::GetSingleton()->ChangeScene("endingS");
+    }
 }
 
 void BattleTest2::Render(HDC hdc)
@@ -269,6 +275,8 @@ void BattleTest2::Load(int loadIndex)
     {
         MessageBox(g_hWnd, "맵 데이터 로드에 실패했습니다.", "에러", MB_OK);
     }
+
+
 
     CloseHandle(hFile);
 }
