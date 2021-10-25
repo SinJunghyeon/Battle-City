@@ -3,6 +3,7 @@
 #include "GameEntity.h"
 #include "MapConfig.h"
 #include "Enemy.h"
+#include "StageScene.h"
 
 #define BOOM_NUM 10
 
@@ -62,8 +63,19 @@ private:
     int elapsedCount = 10000;
 
     // UI
+    int UIposX = TILE_SIZE * TILE_COUNT_X + 100;
+    int destroyedEnemy[4] = { 10,20,5,1 }; // 1 : 일반형  2 : 속도형   3 : 속사형   4 : 슈퍼탱크
+    int iconSize = 30;
+
+    Image* enemyIcon;           //에너미 탱크
+    int enemyCount = 0;
+
+    Image* P1Life;
+    Image* UIText;
     int playerLife = 2;
-    int destroyedEnemy[4] = {}; // 1 : 일반형  2 : 속도형   3 : 속사형   4 : 슈퍼탱크
+
+    Image* stageFlag;
+    StageScene stagescene;
 
 public:
     HRESULT Init();
@@ -81,6 +93,6 @@ public:
 
     void BoomAnimation(Boom* boom, BoomType type, POINTFLOAT pos);
 
-    inline int* GetDestroyedEnemy() { return this->destroyedEnemy; }
+    inline int GetDestroyedEnemy(int arr) { return destroyedEnemy[arr]; }
 };
 

@@ -4,7 +4,11 @@
 /*
 	TO DO LIST
 	 1. 방향 전환 자연스럽게 하기
-	 2. 적 탱크 종류 추가
+	 2. 게임화면 밖으로 나가지 않게
+	 3. 죽었을 때 표현
+	 4. 탄을 발사하고 적을 맞힌 후 다른곳에 탄을 쏴도 처음 맞은 적에게 폭발이 일어남
+	 5. 적 탱크 종류 추가
+
 */
 
 HRESULT Enemy::Init()
@@ -61,23 +65,15 @@ void Enemy::Update()
 				if (spawnCount >= 3)
 				{
 					isAlive = true;
-					TankAbilitySetting();
+					moveSpeed = 30.0f;
 				}
 			}
 		}
 	}
 
-	fireTimer++;
-	if (fireTimer >= fireDelay)
-	{
-		ammoMgr.Fire();
-		fireTimer = 0;
-		fireDelay = rand() % 100;
-	}
-	ammoMgr.Update();
-
 	if (!isAlive && (tankState == ecTankState::DIE))
 	{
+
 		shape.left = 0;
 		shape.top = 0;
 		shape.right = 0;
@@ -86,7 +82,7 @@ void Enemy::Update()
 
 	if (isAlive && tankState == ecTankState::MOVE)
 	{
-		TankAbilitySetting();
+		moveSpeed = 30.0f;
 		Move(moveDir);
 		MoveFrame();
 		// 충돌 시 방향 전환
@@ -105,7 +101,7 @@ void Enemy::Update()
 						moveDir = (MoveDir)(rand() % 4);
 					}
 					isCollision = false;
-					TankAbilitySetting();
+					moveSpeed = 30.0f;
 					elapsedTurn = 0;
 				}
 				break;
@@ -120,7 +116,7 @@ void Enemy::Update()
 						moveDir = (MoveDir)(rand() % 4);
 					}
 					isCollision = false;
-					TankAbilitySetting();
+					moveSpeed = 30.0f;
 					elapsedTurn = 0;
 				}
 				break;
@@ -135,7 +131,7 @@ void Enemy::Update()
 						moveDir = (MoveDir)(rand() % 4);
 					}
 					isCollision = false;
-					TankAbilitySetting();
+					moveSpeed = 30.0f;
 					elapsedTurn = 0;
 				}
 				break;
@@ -150,7 +146,7 @@ void Enemy::Update()
 						moveDir = (MoveDir)(rand() % 4);
 					}
 					isCollision = false;
-					TankAbilitySetting();
+					moveSpeed = 30.0f;
 					elapsedTurn = 0;
 				}
 				break;
@@ -160,19 +156,27 @@ void Enemy::Update()
 			isCollision = false;
 		}
 
+		fireTimer++;
+		if (fireTimer >= fireDelay)
+		{
+			ammoMgr.Fire();
+			fireTimer = 0;
+			fireDelay = rand() % 100;
+		}
+		ammoMgr.Update();
 
 		// moveSpeed가 0.1로 고정되는 오류 방지
 		if (moveSpeed == 0.1f)
 		{
 			elapsedSpeed++;
-			if (moveSpeed != 0.1f)
+			if (moveSpeed == 30.0f)
 			{
 				elapsedSpeed = 0;
 			}
 
 			if (elapsedSpeed >= 50)
 			{
-				TankAbilitySetting();
+				moveSpeed = 30.0f;
 			}
 		}
 
@@ -182,36 +186,36 @@ void Enemy::Update()
 		shape.bottom = shape.top + bodySize - 5;
 	}
 
-	//// 게임 화면 충돌 Fix List
-	//switch (moveDir)
-	//{
-	//case MoveDir::RIGHT:
-	//	if (shape.right >= 613)
-	//	{
-	//		isCollision = true;
-	//	}
-	//	break;
-	//case MoveDir::LEFT:
-	//	if (shape.left <= 140)
-	//	{
-	//		isCollision = true;
-	//	}
-	//	break;
-	//case MoveDir::UP:
-	//	if (shape.top <= 100)
-	//	{
-	//		isCollision = true;
-	//	}
-	//	break;
-	//case MoveDir::DOWN:
-	//	if (shape.bottom >= 605)
-	//	{
-	//		isCollision = true;
-	//	}
-	//	break;
-	//default:
-	//	break;
-	//}
+	// 게임 화면 충돌 Fix List
+	switch (moveDir)
+	{
+	case MoveDir::RIGHT:
+		if (shape.right >= 613)
+		{
+			isCollision = true;
+		}
+		break;
+	case MoveDir::LEFT:
+		if (shape.left <= 140)
+		{
+			isCollision = true;
+		}
+		break;
+	case MoveDir::UP:
+		if (shape.top <= 100)
+		{
+			isCollision = true;
+		}
+		break;
+	case MoveDir::DOWN:
+		if (shape.bottom >= 605)
+		{
+			isCollision = true;
+		}
+		break;
+	default:
+		break;
+	}
 }
 
 void Enemy::Render(HDC hdc)
@@ -306,32 +310,6 @@ void Enemy::MoveFrame()
 				elapsedCount = 0;
 			}
 		}
-		break;
-	default:
-		break;
-	}
-}
-
-void Enemy::TankAbilitySetting()
-{
-	switch (tankType)
-	{
-	case EnemyType::NORMAL:
-		moveSpeed = 50.0f;
-		break;
-	case EnemyType::SPEED:
-		moveSpeed = 100.0f;
-		img->SetCurrFrameY(1);
-		break;
-	case EnemyType::RPD:
-		moveSpeed = 50.0f;
-		img->SetCurrFrameY(2);
-		fireDelay = 1;
-		break;
-	case EnemyType::SUPER:
-		moveSpeed = 100.0f;
-		img->SetCurrFrameY(3);
-		hp = 3;
 		break;
 	default:
 		break;

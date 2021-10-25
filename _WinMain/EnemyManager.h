@@ -32,5 +32,6 @@ public:
 	vector<Enemy*> GetEnemies() { return this->vecEnemys; }
 
 	int GetEnemyMaxCount() { return this->enemyMaxCount; }
+	void SetEnemyMaxCount(int EmaxCount) { this->enemyMaxCount = EmaxCount; }
 };
 

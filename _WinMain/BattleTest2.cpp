@@ -51,6 +51,7 @@ HRESULT BattleTest2::Init()
     }
     Load();
 
+   
     // 적 매니저
     enemyMgr = new EnemyManager;
     enemyMgr->Init();
@@ -72,6 +73,16 @@ HRESULT BattleTest2::Init()
     mpItem = new Item;
     mpItem->Init();
     itemRect = mpItem->GetShape();
+
+    //UI
+    ImageManager::GetSingleton()->AddImage("Image/BattleCity/Icon/Icon_Enemy.bmp", iconSize, iconSize);
+    enemyIcon = ImageManager::GetSingleton()->FindImage("Image/BattleCity/Icon/Icon_Enemy.bmp");
+    ImageManager::GetSingleton()->AddImage("Image/BattleCity/Icon/player1Life.bmp", iconSize * 2, iconSize * 2, true, RGB(255, 0, 255));
+    P1Life = ImageManager::GetSingleton()->FindImage("Image/BattleCity/Icon/player1Life.bmp");
+    ImageManager::GetSingleton()->AddImage("Image/BattleCity/Text/Number.bmp", 40*3.5, 14*3.5, 5, 2);
+    UIText = ImageManager::GetSingleton()->FindImage("Image/BattleCity/Text/Number.bmp");
+    ImageManager::GetSingleton()->AddImage("Image/BattleCity/Icon/StageFlag.bmp", iconSize*2, iconSize*1.5, true, RGB(255, 0, 255));
+    stageFlag = ImageManager::GetSingleton()->FindImage("Image/BattleCity/Icon/StageFlag.bmp");
 
     return S_OK;
 }
@@ -170,6 +181,7 @@ void BattleTest2::Update()
         }
     }
 
+
     // 폭발 이펙트 업데이트
     for (int i = 0; i < BOOM_NUM; i++)
     {
@@ -200,7 +212,19 @@ void BattleTest2::Update()
         }
     }
 
+<<<<<<< HEAD
     if (playerLife <= 0)
+=======
+    //테스트
+    if (KeyManager::GetSingleton()->IsOnceKeyDown(VK_LBUTTON))
+    {
+        enemyMgr->SetEnemyMaxCount(enemyMgr->GetEnemyMaxCount() - 1);//에너미 탱크 죽을 경우 UI숫자 감소
+        cout  << enemyMgr->GetEnemyMaxCount() << endl;
+       // playerLife--;
+    }
+
+    if (playerLife == 0|| enemyMgr->GetEnemyMaxCount()==0)
+>>>>>>> origin/CH
     {
         SceneManager::GetSingleton()->ChangeScene("endingS");
     }
@@ -276,6 +300,29 @@ void BattleTest2::Render(HDC hdc)
             break;
         }
     }
+
+    //에너미탱크 UI
+    for (int i = 0; i < enemyMgr->GetEnemyMaxCount(); i++)
+    {
+        switch (i % 2)
+        {
+        case 0:
+            enemyIcon->Render(hdc, UIposX, 100 + (i * 15));
+            break;
+        case 1:
+            enemyIcon->Render(hdc, UIposX+ iconSize, 100 + (i - 1) * 15);
+            break;
+        default:
+            break;
+        }
+    }
+
+    //라이프 UI
+    P1Life->Render(hdc, UIposX + iconSize / 2, WIN_SIZE_Y / 2);
+    UIText->Render(hdc, UIposX + iconSize, WIN_SIZE_Y / 2 + iconSize / 2, playerLife, 0);
+
+    stageFlag->Render(hdc, UIposX + iconSize / 2, WIN_SIZE_Y * 4 / 5);
+    UIText->Render(hdc, UIposX + iconSize, WIN_SIZE_Y * 4 / 5 + iconSize, stagescene.stageN, 0);
 }
 
 void BattleTest2::Release()

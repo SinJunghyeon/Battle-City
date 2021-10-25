@@ -32,7 +32,7 @@ HRESULT MainGame::Init()
 	SceneManager::GetSingleton()->AddScene("endingS", new EndingScene());
 	SceneManager::GetSingleton()->AddScene("gameoverS", new GameOverScene());
 
-	SceneManager::GetSingleton()->ChangeScene("titleS");
+	SceneManager::GetSingleton()->ChangeScene("battleTest2");
 
 	//srand((unsigned int) time(nullptr));
 
