@@ -92,7 +92,7 @@ void BattleTest2::Update()
 
     //cout << boolalpha << "mpItem->GetExistItem() : " << mpItem->GetExistItem() << endl;
     //cout << "elapsedChange : " << elapsedChange << endl;
-    cout << "elapsedCount : " << elapsedCount << endl;
+    //cout << "elapsedCount : " << elapsedCount << endl;
 
     // 타일 속성 확인용 코드
     for (int i = 0; i < TILE_COUNT_X * TILE_COUNT_Y; i++)
@@ -545,15 +545,20 @@ void BattleTest2::AmmoTankCollision(Boom* boom, Tank* player)
             RECT enemyAmmoRect = vecAmmos[j]->GetShape();
             if (IntersectRect(&tempRect, &playerRect, &enemyAmmoRect))  // 적 미사일과 플레이어 탱크가 충돌했을 경우
             {
-                BoomAnimation(boom, BoomType::BIG_BOOM, player->GetPos());
-                player->SetIsAlive(false);
-                player->Init();
-                player->SetImgFrameX(0);                                                //21.10.25 플레이어 죽었을 때 리스폰 위로 보게끔
-                player->SetplayerLife(playerLife - 1);                                  //21.10.25 플레이어 탱크아이템 먹었을 때 생명 수정
-                playerSpawnPos = GetSpawnPos(tileInfo, ObjectType::PLAYER).back();
-                player->SetPos(playerSpawnPos);
-                playerLife--;
-                cout << "플레이어 목숨 : " << playerLife << endl;
+                vecAmmos[j]->SetIsFire(false);
+                vecAmmos[j]->SetBodySize(0);
+                if (player->GetInVincible() == false)
+                {
+                    BoomAnimation(boom, BoomType::BIG_BOOM, player->GetPos());
+                    player->SetIsAlive(false);
+                    player->Init();
+                    player->SetImgFrameX(0);                                                //21.10.25 플레이어 죽었을 때 리스폰 위로 보게끔
+                    player->SetplayerLife(playerLife - 1);                                  //21.10.25 플레이어 탱크아이템 먹었을 때 생명 수정
+                    playerSpawnPos = GetSpawnPos(tileInfo, ObjectType::PLAYER).back();
+                    player->SetPos(playerSpawnPos);
+                    playerLife--;
+                    cout << "플레이어 목숨 : " << playerLife << endl;
+                }
             }
         }
     }
