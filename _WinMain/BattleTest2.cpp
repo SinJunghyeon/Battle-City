@@ -211,10 +211,7 @@ void BattleTest2::Update()
             }
         }
     }
-
-<<<<<<< HEAD
     if (playerLife <= 0)
-=======
     //테스트
     if (KeyManager::GetSingleton()->IsOnceKeyDown(VK_LBUTTON))
     {
@@ -224,7 +221,6 @@ void BattleTest2::Update()
     }
 
     if (playerLife == 0|| enemyMgr->GetEnemyMaxCount()==0)
->>>>>>> origin/CH
     {
         SceneManager::GetSingleton()->ChangeScene("endingS");
     }
