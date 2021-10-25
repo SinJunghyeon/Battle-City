@@ -46,6 +46,7 @@ private:
 
     // 적
     EnemyManager* enemyMgr;
+    vector<Enemy*> vecEnemies;
 
     // 충돌처리용 RECT
     RECT tempRect;
@@ -60,6 +61,10 @@ private:
     int elapsedChange = NULL;
     int elapsedCount = 10000;
 
+    // UI
+    int playerLife = 2;
+    int destroyedEnemy[4] = {}; // 1 : 일반형  2 : 속도형   3 : 속사형   4 : 슈퍼탱크
+
 public:
     HRESULT Init();
     void Update();
@@ -68,11 +73,14 @@ public:
 
     void Load(int loadIndex = 0);
 
-    void AmmoMapCollision(Boom* boom, Tank* tank, TILE_INFO* tile);
-    void AmmoTankCollision(Boom* boom, Tank* player, EnemyManager* enemy);
+    void PlayerAmmoMapCollision(Boom* boom, Tank* tank, TILE_INFO* tile);
+    void EnemyAmmoMapCollision(Boom* boom, Enemy* enemy, TILE_INFO* tile);
+    void AmmoTankCollision(Boom* boom, Tank* player);
     void CollisionItem();
     void FunctionItem();
 
     void BoomAnimation(Boom* boom, BoomType type, POINTFLOAT pos);
+
+    inline int* GetDestroyedEnemy() { return this->destroyedEnemy; }
 };
 

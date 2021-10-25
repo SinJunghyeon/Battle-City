@@ -5,6 +5,8 @@
 #include "Config.h"
 #include "AmmoManager.h"
 
+enum class EnemyType { NORMAL, SPEED, RPD, SUPER };
+
 class Enemy : public GameObject
 {
 private:
@@ -13,6 +15,7 @@ private:
 	int fireTimer;
 
 	ecTankState tankState = ecTankState::IDLE;
+	EnemyType tankType = EnemyType::NORMAL;
 
 	bool isAlive = false;
 	bool isCollision  = false;
@@ -47,10 +50,23 @@ public:
 
 	bool GetIsAilve() { return this->isAlive; }
 	void SetIsAlive(bool isAlive) { this->isAlive = isAlive; }
+<<<<<<< HEAD
+=======
 
-	AmmoManager GetAmmoManager() { return this->ammoMgr; }
+	inline AmmoManager GetAmmoManager() { return this->ammoMgr; }
+	inline bool GetIsCollision() { return this->isCollision; }
+	inline void SetIsCollision(bool isCollision) { this->isCollision = isCollision; }
+>>>>>>> origin/main
 
+	inline int GetHP() { return this->hp; }
+	inline void SetHP(int hp) { this->hp = hp; }
+
+<<<<<<< HEAD
 	bool GetIsCollision() { return this->isCollision; }
 	void SetIsCollision(bool isCollision) { this->isCollision = isCollision; }
+=======
+	inline EnemyType GetEnemyType() { return this->tankType; }
+	inline void SetEnemyType(EnemyType type) { this->tankType = type; }
+>>>>>>> origin/main
 };
 

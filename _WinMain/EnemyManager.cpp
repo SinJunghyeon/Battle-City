@@ -46,8 +46,7 @@ void EnemyManager::Update()
 						&& abs(vecEnemys[i]->GetPos().x - vecEnemys[j]->GetPos().x) <= 40)
 					{
 						vecEnemys[i]->SetIsCollision(true);
-						vecEnemys[j]->SetIsCollision(true);
-						cout << "case right collision : " << i << "," << vecEnemys[i]->GetIsCollision() << endl;
+						//cout << "case right collision : " << i << "," << vecEnemys[i]->GetIsCollision() << endl;
 					}
 					break;
 				case MoveDir::LEFT:
@@ -55,10 +54,8 @@ void EnemyManager::Update()
 						(abs(vecEnemys[i]->GetPos().y - vecEnemys[j]->GetPos().y) <= 40)
 						&& abs(vecEnemys[i]->GetPos().x - vecEnemys[j]->GetPos().x) <= 40)
 					{
-
 						vecEnemys[i]->SetIsCollision(true);
-						vecEnemys[j]->SetIsCollision(true);
-						cout << "case left collision : " << i << "," << vecEnemys[i]->GetIsCollision() << endl;
+						//cout << "case left collision : " << i << "," << vecEnemys[i]->GetIsCollision() << endl;
 					}
 					break;
 				case MoveDir::UP:
@@ -67,8 +64,7 @@ void EnemyManager::Update()
 						&& abs(vecEnemys[i]->GetPos().y - vecEnemys[j]->GetPos().y) <= 40)
 					{
 						vecEnemys[i]->SetIsCollision(true);
-						vecEnemys[j]->SetIsCollision(true);
-						cout << "case up collision : " << i << "," << vecEnemys[i]->GetIsCollision() << endl;
+						//cout << "case up collision : " << i << "," << vecEnemys[i]->GetIsCollision() << endl;
 					}
 					break;
 				case MoveDir::DOWN:
@@ -77,15 +73,10 @@ void EnemyManager::Update()
 						&& abs(vecEnemys[i]->GetPos().y - vecEnemys[j]->GetPos().y) <= 40)
 					{
 						vecEnemys[i]->SetIsCollision(true);
-						vecEnemys[j]->SetIsCollision(true);
-						cout << "case down collision : " << i << "," << vecEnemys[i]->GetIsCollision() << endl;
+						/*cout << "case down collision : " << i << "," << vecEnemys[i]->GetIsCollision() << endl;
 						cout << "tank" << i << " bottom : " << vecEnemys[i]->GetShape().bottom << endl;
-						cout << "tank" << j << " top : " << vecEnemys[j]->GetShape().top << endl;
-						cout << "(abs(vecEnemys[i]->GetPos().x - vecEnemys[j]->GetPos().x) : " << (abs(vecEnemys[i]->GetPos().x - vecEnemys[j]->GetPos().x)) << endl;
+						cout << "tank" << j << " top : " << vecEnemys[j]->GetShape().top << endl;*/
 					}
-					break;
-				default:
-					break;
 				}
 			}
 		}
