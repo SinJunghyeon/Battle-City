@@ -105,13 +105,13 @@ void Tank::Update()
 
 	//무적상태변화
 	elapsedInvincible++;
-	if (elapsedInvincible >= 100)
+	if (elapsedInvincible >= 300)
 	{
 		isInvincible = false;
 	}
-	if (elapsedInvincible >= 106)
+	if (elapsedInvincible >= 306)
 	{
-		elapsedInvincible = 105;
+		elapsedInvincible = 305;
 	}
 	//무적상태
 	if (isInvincible)
