@@ -84,6 +84,12 @@ HRESULT BattleTest2::Init()
     ImageManager::GetSingleton()->AddImage("Image/BattleCity/Icon/StageFlag.bmp", iconSize*2, iconSize*1.5, true, RGB(255, 0, 255));
     stageFlag = ImageManager::GetSingleton()->FindImage("Image/BattleCity/Icon/StageFlag.bmp");
 
+    //게임 오버
+    gameOverImgSize.x = WIN_SIZE_X / 8;
+    gameOverImgSize.y = WIN_SIZE_Y / 12;
+    ImageManager::GetSingleton()->AddImage("Image/BattleCity/Text/Game_Over.bmp", gameOverImgSize.x, gameOverImgSize.y, true, RGB(255, 0, 255));
+    gameOverImg = ImageManager::GetSingleton()->FindImage("Image/BattleCity/Text/Game_Over.bmp");
+
     return S_OK;
 }
 
@@ -173,7 +179,7 @@ void BattleTest2::Update()
             if ((vecEnemies[i]->GetTankState() == ecTankState::IDLE) && elapsedCount >= 300)
             {
                 (vecEnemies[i]->SetTankState(ecTankState::MOVE));
-            }                
+            }
             if (elapsedCount >= 500)
             {
                elapsedCount = 10000;
@@ -211,19 +217,33 @@ void BattleTest2::Update()
             }
         }
     }
-    if (playerLife <= 0)
     //테스트
     if (KeyManager::GetSingleton()->IsOnceKeyDown(VK_LBUTTON))
     {
-        enemyMgr->SetEnemyMaxCount(enemyMgr->GetEnemyMaxCount() - 1);//에너미 탱크 죽을 경우 UI숫자 감소
-        cout  << enemyMgr->GetEnemyMaxCount() << endl;
-       // playerLife--;
+        playerLife--;
+        
+    }
+
+    if (playerLife >= 10)  //플레이어 라이프 10의 자리
+    {
+        playerLife10 = playerLife / 10;
+        playerLife5 = 0;
+    }
+    if (playerLife % 10 >= 5)   //플레이어 라이프 5이상
+    {
+        playerLife5 = 1;
     }
 
     if (playerLife == 0|| enemyMgr->GetEnemyMaxCount()==0)
     {
-        SceneManager::GetSingleton()->ChangeScene("endingS");
+        gameOverPosY -= 10;
+        if (gameOverPosY <= WIN_SIZE_Y / 2)
+        {
+            Sleep(1000);
+            SceneManager::GetSingleton()->ChangeScene("endingS");
+        }
     }
+
 }
 
 void BattleTest2::Render(HDC hdc)
@@ -315,10 +335,22 @@ void BattleTest2::Render(HDC hdc)
 
     //라이프 UI
     P1Life->Render(hdc, UIposX + iconSize / 2, WIN_SIZE_Y / 2);
-    UIText->Render(hdc, UIposX + iconSize, WIN_SIZE_Y / 2 + iconSize / 2, playerLife, 0);
+    UIText->Render(hdc, UIposX + iconSize*2, WIN_SIZE_Y / 2 + iconSize/2, playerLife%5, playerLife5);
+
+    if (playerLife10 >= 1 && playerLife10<5)
+    {
+        UIText->Render(hdc, UIposX + iconSize, WIN_SIZE_Y / 2 + iconSize / 2, playerLife10, 0);
+    }
+    else if (playerLife10 >= 5)
+    {
+        UIText->Render(hdc, UIposX + iconSize, WIN_SIZE_Y / 2 + iconSize / 2, playerLife10%5, 1);
+    }
 
     stageFlag->Render(hdc, UIposX + iconSize / 2, WIN_SIZE_Y * 4 / 5);
     UIText->Render(hdc, UIposX + iconSize, WIN_SIZE_Y * 4 / 5 + iconSize, stagescene.stageN, 0);
+
+    //게임 오버
+    gameOverImg->Render(hdc, 330, gameOverPosY);
 }
 
 void BattleTest2::Release()

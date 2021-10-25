@@ -19,6 +19,7 @@ public:
 	int playerLife = NULL;				//플레이어 목숨
 	int playerScore = NULL;				//플레이어 탱크 점수
 
+
 	Image* effectImg = nullptr;
 	bool isInvincible = true;		//무적상태
 	int elapsedInvincible = NULL;

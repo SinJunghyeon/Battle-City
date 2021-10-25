@@ -71,11 +71,19 @@ private:
     int enemyCount = 0;
 
     Image* P1Life;
-    Image* UIText;
     int playerLife = 2;
+    int playerLife5 = 0;    //5~9까지 출력
+    int playerLife10 = 0;   //10의 자리
+
+    Image* UIText;
 
     Image* stageFlag;
     StageScene stagescene;
+    
+    //게임 오버 이미지
+    Image* gameOverImg;
+    POINT gameOverImgSize;
+    int gameOverPosY = WIN_SIZE_Y*3/2;
 
 public:
     HRESULT Init();
