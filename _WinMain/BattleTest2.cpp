@@ -510,21 +510,50 @@ void BattleTest2::AmmoTankCollision(Boom* boom, Tank* player)
         for (int j = 0; j < vecEnemies.size(); ++j)
         {
             RECT enemyRect = vecEnemies[j]->GetShape();
+            ammoMgr = vecEnemies[j]->GetAmmoManager();
+            vecAmmos = ammoMgr.GetAmmos();
+
             if (IntersectRect(&tempRect, &ammoRect, &enemyRect) && player->ammoPack[i].GetIsFire())    // 플레이어 미사일과 적 탱크가 충돌했을 경우
             {
                 BoomAnimation(boom, BoomType::BIG_BOOM, vecEnemies[j]->GetPos());
                 vecEnemies[j]->SetIsAlive(false);
                 vecEnemies[j]->SetTankState(ecTankState::DIE);
+
                 player->ammoPack[i].SetIsFire(false);
                 player->ammoPack[i].SetBodySize(0);
+                /*for (int k = 0; k < vecAmmos.size(); ++k)
+                {
+                    vecAmmos[k]->SetIsFire(false);
+                    vecAmmos[k]->SetBodySize(0);
+                }*/
+                switch (vecEnemies[j]->GetEnemyType())
+                {
+                case EnemyType::NORMAL:
+                    destroyedEnemy[0]++;
+                    cout << "파괴한 NORMAL : " << destroyedEnemy[0] << endl;
+                    break;
+                case EnemyType::SPEED:
+                    destroyedEnemy[1]++;
+                    cout << "파괴한 SPEED : " << destroyedEnemy[1] << endl;
+                    break;
+                case EnemyType::RPD:
+                    destroyedEnemy[2]++;
+                    cout << "파괴한 RPD : " << destroyedEnemy[2] << endl;
+                    break;
+                case EnemyType::SUPER:
+                    destroyedEnemy[3]++;
+                    cout << "파괴한 SUPER : " << destroyedEnemy[3] << endl;
+                    break;
+                default:
+                    break;
+                }
             }
 
-            ammoMgr = vecEnemies[j]->GetAmmoManager();
-            vecAmmos = ammoMgr.GetAmmos();
             for (int k = 0; k < vecAmmos.size(); ++k)
             {
                 RECT enemyAmmoRect = vecAmmos[k]->GetShape();
-                if (IntersectRect(&tempRect, &ammoRect, &enemyAmmoRect))  // 플레이어 미사일과 적 미사일이 충돌했을 경우
+                // 플레이어 미사일과 적 미사일이 충돌했을 경우
+                if (IntersectRect(&tempRect, &ammoRect, &enemyAmmoRect) && player->ammoPack[i].GetIsFire() && vecAmmos[k]->GetIsFire()) 
                 {
                     player->ammoPack[i].SetIsFire(false);
                     player->ammoPack[i].SetBodySize(0);
@@ -543,7 +572,7 @@ void BattleTest2::AmmoTankCollision(Boom* boom, Tank* player)
         for (int j = 0; j < vecAmmos.size(); ++j)
         {
             RECT enemyAmmoRect = vecAmmos[j]->GetShape();
-            if (IntersectRect(&tempRect, &playerRect, &enemyAmmoRect))  // 적 미사일과 플레이어 탱크가 충돌했을 경우
+            if (vecAmmos[j]->GetIsFire() && IntersectRect(&tempRect, &playerRect, &enemyAmmoRect))  // 적 미사일과 플레이어 탱크가 충돌했을 경우
             {
                 BoomAnimation(boom, BoomType::BIG_BOOM, player->GetPos());
                 player->SetIsAlive(false);
