@@ -37,46 +37,39 @@ void EnemyManager::Update()
 		{
 			for (int j = 0; j < enemyCurrCount; j++)
 			{
+				RECT tempCollisionRect;
+				RECT enemyTankRect1 = vecEnemys[i]->GetShape();
+				RECT enemtTankRect2 = vecEnemys[j]->GetShape();
 				if (i == j)
-					continue;
+					continue;				
 				switch (vecEnemys[i]->GetMoveDir())
 				{
 				case MoveDir::RIGHT:
-					if (//(vecEnemys[i]->GetShape().right >= vecEnemys[j]->GetShape().left) &&
-						(abs(vecEnemys[i]->GetPos().y - vecEnemys[j]->GetPos().y) <= 40)
-						&& abs(vecEnemys[i]->GetPos().x - vecEnemys[j]->GetPos().x) <= 40)
+					if (IntersectRect(&tempCollisionRect, &enemyTankRect1, &enemtTankRect2))
 					{
 						vecEnemys[i]->SetIsCollision(true);
-						//cout << "case right collision : " << i << "," << vecEnemys[i]->GetIsCollision() << endl;
+						cout << 1 << endl;
 					}
 					break;
 				case MoveDir::LEFT:
-					if (//(vecEnemys[i]->GetShape().left <= vecEnemys[j]->GetShape().right) &&
-						(abs(vecEnemys[i]->GetPos().y - vecEnemys[j]->GetPos().y) <= 40)
-						&& abs(vecEnemys[i]->GetPos().x - vecEnemys[j]->GetPos().x) <= 40)
+					if (IntersectRect(&tempCollisionRect, &enemyTankRect1, &enemtTankRect2))
 					{
 						vecEnemys[i]->SetIsCollision(true);
-						//cout << "case left collision : " << i << "," << vecEnemys[i]->GetIsCollision() << endl;
+						cout << 2 << endl;
 					}
 					break;
 				case MoveDir::UP:
-					if (//(vecEnemys[i]->GetShape().top <= vecEnemys[j]->GetShape().bottom) &&
-						(abs(vecEnemys[i]->GetPos().x - vecEnemys[j]->GetPos().x) <= 40)
-						&& abs(vecEnemys[i]->GetPos().y - vecEnemys[j]->GetPos().y) <= 40)
+					if (IntersectRect(&tempCollisionRect, &enemyTankRect1, &enemtTankRect2))
 					{
 						vecEnemys[i]->SetIsCollision(true);
-						//cout << "case up collision : " << i << "," << vecEnemys[i]->GetIsCollision() << endl;
+						cout << 3 << endl;
 					}
 					break;
 				case MoveDir::DOWN:
-					if (//(vecEnemys[i]->GetShape().bottom >= vecEnemys[j]->GetShape().top) &&
-						(abs(vecEnemys[i]->GetPos().x - vecEnemys[j]->GetPos().x) <= 40)
-						&& abs(vecEnemys[i]->GetPos().y - vecEnemys[j]->GetPos().y) <= 40)
+					if (IntersectRect(&tempCollisionRect, &enemyTankRect1, &enemtTankRect2))
 					{
 						vecEnemys[i]->SetIsCollision(true);
-						/*cout << "case down collision : " << i << "," << vecEnemys[i]->GetIsCollision() << endl;
-						cout << "tank" << i << " bottom : " << vecEnemys[i]->GetShape().bottom << endl;
-						cout << "tank" << j << " top : " << vecEnemys[j]->GetShape().top << endl;*/
+						cout << 4 << endl;
 					}
 				}
 			}
@@ -118,17 +111,12 @@ void EnemyManager::AddEnemy(POINTFLOAT pos)
 
 void EnemyManager::SetTileMapManager(TILE_INFO* tile)
 {
-	//for (int i = 0; i < GetSpawnPos(tile, ObjectType::ENEMY).size(); i++)
-	//{
-		enemySpawnPos = GetSpawnPos(tile, ObjectType::ENEMY);
-	//}
-	
+	enemySpawnPos = GetSpawnPos(tile, ObjectType::ENEMY);
+
 	for (int i = 0; i < enemyMaxCount; i++)
 	{
-		//enemySpawnPos[i] = GetSpawnPos(tile, ObjectType::ENEMY);
 		vecEnemys[i]->SetTileMap(tile);
 		vecEnemys[i]->SetPos(enemySpawnPos[i % 3]);
-		//vecEnemys[i]->SetPos(enemySpawnPos[i]);
 	}
 }
 

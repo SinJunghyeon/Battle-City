@@ -179,10 +179,10 @@ void BattleTest2::Update()
             if ((vecEnemies[i]->GetTankState() == ecTankState::IDLE) && elapsedCount >= 300)
             {
                 (vecEnemies[i]->SetTankState(ecTankState::MOVE));
-                if (elapsedCount >= 500)
-                {
-                    elapsedCount = 10000;
-                }
+            }
+            if (elapsedCount >= 500)
+            {
+               elapsedCount = 10000;
             }
         }
     }
@@ -217,7 +217,6 @@ void BattleTest2::Update()
             }
         }
     }
-    
     //테스트
     if (KeyManager::GetSingleton()->IsOnceKeyDown(VK_LBUTTON))
     {
@@ -543,21 +542,50 @@ void BattleTest2::AmmoTankCollision(Boom* boom, Tank* player)
         for (int j = 0; j < vecEnemies.size(); ++j)
         {
             RECT enemyRect = vecEnemies[j]->GetShape();
+            ammoMgr = vecEnemies[j]->GetAmmoManager();
+            vecAmmos = ammoMgr.GetAmmos();
+
             if (IntersectRect(&tempRect, &ammoRect, &enemyRect) && player->ammoPack[i].GetIsFire())    // 플레이어 미사일과 적 탱크가 충돌했을 경우
             {
                 BoomAnimation(boom, BoomType::BIG_BOOM, vecEnemies[j]->GetPos());
                 vecEnemies[j]->SetIsAlive(false);
                 vecEnemies[j]->SetTankState(ecTankState::DIE);
+
                 player->ammoPack[i].SetIsFire(false);
                 player->ammoPack[i].SetBodySize(0);
+                /*for (int k = 0; k < vecAmmos.size(); ++k)
+                {
+                    vecAmmos[k]->SetIsFire(false);
+                    vecAmmos[k]->SetBodySize(0);
+                }*/
+                switch (vecEnemies[j]->GetEnemyType())
+                {
+                case EnemyType::NORMAL:
+                    destroyedEnemy[0]++;
+                    cout << "파괴한 NORMAL : " << destroyedEnemy[0] << endl;
+                    break;
+                case EnemyType::SPEED:
+                    destroyedEnemy[1]++;
+                    cout << "파괴한 SPEED : " << destroyedEnemy[1] << endl;
+                    break;
+                case EnemyType::RPD:
+                    destroyedEnemy[2]++;
+                    cout << "파괴한 RPD : " << destroyedEnemy[2] << endl;
+                    break;
+                case EnemyType::SUPER:
+                    destroyedEnemy[3]++;
+                    cout << "파괴한 SUPER : " << destroyedEnemy[3] << endl;
+                    break;
+                default:
+                    break;
+                }
             }
 
-            ammoMgr = vecEnemies[j]->GetAmmoManager();
-            vecAmmos = ammoMgr.GetAmmos();
             for (int k = 0; k < vecAmmos.size(); ++k)
             {
                 RECT enemyAmmoRect = vecAmmos[k]->GetShape();
-                if (IntersectRect(&tempRect, &ammoRect, &enemyAmmoRect))  // 플레이어 미사일과 적 미사일이 충돌했을 경우
+                // 플레이어 미사일과 적 미사일이 충돌했을 경우
+                if (IntersectRect(&tempRect, &ammoRect, &enemyAmmoRect) && player->ammoPack[i].GetIsFire() && vecAmmos[k]->GetIsFire()) 
                 {
                     player->ammoPack[i].SetIsFire(false);
                     player->ammoPack[i].SetBodySize(0);
@@ -576,17 +604,22 @@ void BattleTest2::AmmoTankCollision(Boom* boom, Tank* player)
         for (int j = 0; j < vecAmmos.size(); ++j)
         {
             RECT enemyAmmoRect = vecAmmos[j]->GetShape();
-            if (IntersectRect(&tempRect, &playerRect, &enemyAmmoRect))  // 적 미사일과 플레이어 탱크가 충돌했을 경우
+            if (vecAmmos[j]->GetIsFire() && IntersectRect(&tempRect, &playerRect, &enemyAmmoRect))  // 적 미사일과 플레이어 탱크가 충돌했을 경우
             {
-                BoomAnimation(boom, BoomType::BIG_BOOM, player->GetPos());
-                player->SetIsAlive(false);
-                player->Init();
-                player->SetImgFrameX(0);                                                //21.10.25 플레이어 죽었을 때 리스폰 위로 보게끔
-                player->SetplayerLife(playerLife - 1);                                  //21.10.25 플레이어 탱크아이템 먹었을 때 생명 수정
-                playerSpawnPos = GetSpawnPos(tileInfo, ObjectType::PLAYER).back();
-                player->SetPos(playerSpawnPos);
-                playerLife--;
-                cout << "플레이어 목숨 : " << playerLife << endl;
+                vecAmmos[j]->SetIsFire(false);
+                vecAmmos[j]->SetBodySize(0);
+                if (player->GetInVincible() == false)
+                {
+                    BoomAnimation(boom, BoomType::BIG_BOOM, player->GetPos());
+                    player->SetIsAlive(false);
+                    player->Init();
+                    player->SetImgFrameX(0);                                                //21.10.25 플레이어 죽었을 때 리스폰 위로 보게끔
+                    player->SetplayerLife(playerLife - 1);                                  //21.10.25 플레이어 탱크아이템 먹었을 때 생명 수정
+                    playerSpawnPos = GetSpawnPos(tileInfo, ObjectType::PLAYER).back();
+                    player->SetPos(playerSpawnPos);
+                    playerLife--;
+                    cout << "플레이어 목숨 : " << playerLife << endl;
+                }
             }
         }
     }
@@ -609,6 +642,8 @@ void BattleTest2::CollisionItem()
 
 void BattleTest2::FunctionItem()
 {
+    vector<Enemy*> vecEnemies = enemyMgr->GetEnemies();
+    vecEnemies.resize(enemyMgr->GetEnemyMaxCount());
     //헬멧
     if (mpItem->GetItemState() == ecFunctionItem::HELMET)
     {
@@ -619,8 +654,15 @@ void BattleTest2::FunctionItem()
     if (mpItem->GetItemState() == ecFunctionItem::WATCH)
     {
         //적탱크 일시정지
-        enemyMgr->TankState(ecTankState::IDLE);
+        for (int i = 0; i < vecEnemies.size(); ++i)
+        {
+            if (vecEnemies[i]->GetIsAilve() == true)
+            {
+                vecEnemies[i]->SetTankState(ecTankState::IDLE);
+            }
         elapsedCount = 0;
+        }
+        //enemyMgr->TankState(ecTankState::IDLE);
     }
     //삽
     if (mpItem->GetItemState() == ecFunctionItem::SHOVEL)
@@ -674,8 +716,18 @@ void BattleTest2::FunctionItem()
     //수류탄
     if (mpItem->GetItemState() == ecFunctionItem::GRENADE)
     {
-        //나와있는 적 모두 죽임
-        enemyMgr->IsAlive(false);
+        //나와있는 적 모두 죽임  
+        for (int i = 0; i < vecEnemies.size(); ++i)
+        {
+            if (vecEnemies[i]->GetIsAilve() == true)
+            {
+                vecEnemies[i]->SetIsAlive(false);
+                vecEnemies[i]->SetTankState(ecTankState::DIE);
+            }
+            
+        }
+
+        //enemyMgr->IsAlive(false);
     }
     //탱크
     if (mpItem->GetItemState() == ecFunctionItem::TANK)

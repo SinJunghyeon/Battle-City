@@ -28,10 +28,10 @@ HRESULT Item::Init()
 	shape.right = pos.x + (bodySize / 2);
 	shape.bottom = pos.y + (bodySize / 2);
 
-	//아이템 랜덤 설정
+	//아이템 랜덤 설정 0 : 헬멧, 1 : 시계, 2 : 삽, 3 : 별, 4 : 수류탄, 5 : 탱크
 	srand(time(NULL));
 	selectItem = rand() % 6;
-	//selectItem = 5;
+	//selectItem = 0;
 
 	bExistItem = true;
 
@@ -99,6 +99,7 @@ void Item::Update()
 			bExistItem = !bExistItem;
 			selectItem = rand() % 6;
 			//selectItem = 5;
+
 			tempElapsedCount = 0;
 		}
 	}

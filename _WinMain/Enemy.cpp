@@ -160,7 +160,6 @@ void Enemy::Update()
 			isCollision = false;
 		}
 
-
 		// moveSpeed가 0.1로 고정되는 오류 방지
 		if (moveSpeed == 0.1f)
 		{
@@ -175,6 +174,22 @@ void Enemy::Update()
 				TankAbilitySetting();
 			}
 		}
+
+		fireTimer++;
+		if (fireTimer >= fireDelay)
+		{
+			ammoMgr.Fire();
+			fireTimer = 0;
+			if (tankType == EnemyType::RPD)
+			{
+				fireDelay = 0;
+			}
+			else
+			{
+				fireDelay = rand() % 100;
+			}
+		}
+		ammoMgr.Update();
 
 		shape.left = pos.x - bodySize / 2 + 1;
 		shape.top = pos.y - bodySize / 2 + 1;
@@ -318,6 +333,7 @@ void Enemy::TankAbilitySetting()
 	{
 	case EnemyType::NORMAL:
 		moveSpeed = 50.0f;
+		img->SetCurrFrameY(0);
 		break;
 	case EnemyType::SPEED:
 		moveSpeed = 100.0f;
@@ -365,7 +381,6 @@ void Enemy::Move(MoveDir dir)
 					pos = buffPos;
 					shape = buffRect;
 					isCollision = true;
-
 				}
 			}
 		//}
