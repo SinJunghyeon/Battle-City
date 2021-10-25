@@ -318,7 +318,6 @@ void BattleTest2::PlayerAmmoMapCollision(Boom* boom, Tank* tank, TILE_INFO* tile
     for (int j = 0; j < tank->ammoCount; j++)
     {
         RECT ammoRect = tank->ammoPack[j].GetShape();
-
         for (int i = 0; i < TILE_COUNT_X * TILE_COUNT_Y; i++)
         {
             if (IntersectRect(&tempRect, &ammoRect, &tile[i].rc) && tank->ammoPack[j].GetIsFire()) // Ammo랑 Tile이 충돌하면
@@ -357,11 +356,36 @@ void BattleTest2::PlayerAmmoMapCollision(Boom* boom, Tank* tank, TILE_INFO* tile
                     tank->ammoPack[j].SetPos(tank->GetPos());
                     tank->ammoPack[j].SetBodySize(0);
                 }
-                else if ((tile[i].terrain == Terrain::STEEL) || (tile[i].terrain == Terrain::HQ_STEEL))
+                if (tank->GetImgFrameY() < 3)                                                   //21.10.25 플레이어 탱크 최종렙보다 아래일 때 강철 못 부심
                 {
-                    tank->ammoPack[j].SetIsFire(false);
-                    tank->ammoPack[j].SetPos(tank->GetPos());
-                    tank->ammoPack[j].SetBodySize(0);
+                    if ((tile[i].terrain == Terrain::STEEL) || (tile[i].terrain == Terrain::HQ_STEEL))
+                    {
+                        tank->ammoPack[j].SetIsFire(false);
+                        tank->ammoPack[j].SetPos(tank->GetPos());
+                        tank->ammoPack[j].SetBodySize(0);
+                    }
+                }
+            }
+        }
+        if (player->GetImgFrameY() >= 3)                                                        //21.10.25 플레이어 탱크 최종렙일 때 강철 부심
+        {
+            for (int i = 0; i < TILE_COUNT_X * TILE_COUNT_Y; i++)
+            {
+                if (IntersectRect(&tempRect, &ammoRect, &tile[i].rc) && tank->ammoPack[j].GetIsFire()) // Ammo랑 Tile이 충돌하면
+                {
+                    if ((tile[i].terrain == Terrain::STEEL) || (tile[i].terrain == Terrain::HQ_STEEL)) // 충돌한 Tile이 벽일때
+                    {
+                        BoomAnimation(boom, BoomType::SMALL_BOOM, tank->ammoPack[j].GetPos());
+                        tile[i].hp--;
+                        if (tile[i].hp <= 0) // 파괴된 벽인 경우
+                        {
+                            tile[i].frameX = 10;
+                            tile[i].frameY = 10; // ROAD로 바꾼다.
+                        }
+                        tank->ammoPack[j].SetIsFire(false);
+                        tank->ammoPack[j].SetPos(tank->GetPos());
+                        tank->ammoPack[j].SetBodySize(0);
+                    }
                 }
             }
         }
