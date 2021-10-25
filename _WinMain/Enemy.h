@@ -40,6 +40,7 @@ public:
 	
 	void MoveFrame();
 	void Move(MoveDir dir);
+	void TankAbilitySetting();
 
 	void SetMoveSpeed(float moveSpeed) { this->moveSpeed = moveSpeed; }
 
@@ -50,23 +51,16 @@ public:
 
 	bool GetIsAilve() { return this->isAlive; }
 	void SetIsAlive(bool isAlive) { this->isAlive = isAlive; }
-<<<<<<< HEAD
-=======
 
 	inline AmmoManager GetAmmoManager() { return this->ammoMgr; }
 	inline bool GetIsCollision() { return this->isCollision; }
 	inline void SetIsCollision(bool isCollision) { this->isCollision = isCollision; }
->>>>>>> origin/main
 
 	inline int GetHP() { return this->hp; }
 	inline void SetHP(int hp) { this->hp = hp; }
 
-<<<<<<< HEAD
-	bool GetIsCollision() { return this->isCollision; }
-	void SetIsCollision(bool isCollision) { this->isCollision = isCollision; }
-=======
 	inline EnemyType GetEnemyType() { return this->tankType; }
 	inline void SetEnemyType(EnemyType type) { this->tankType = type; }
->>>>>>> origin/main
+
 };
 
