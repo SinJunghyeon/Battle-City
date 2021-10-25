@@ -67,15 +67,6 @@ void Enemy::Update()
 		}
 	}
 
-	fireTimer++;
-	if (fireTimer >= fireDelay)
-	{
-		ammoMgr.Fire();
-		fireTimer = 0;
-		fireDelay = rand() % 100;
-	}
-	ammoMgr.Update();
-
 	if (!isAlive && (tankState == ecTankState::DIE))
 	{
 		shape.left = 0;
@@ -160,7 +151,6 @@ void Enemy::Update()
 			isCollision = false;
 		}
 
-
 		// moveSpeed가 0.1로 고정되는 오류 방지
 		if (moveSpeed == 0.1f)
 		{
@@ -176,42 +166,27 @@ void Enemy::Update()
 			}
 		}
 
+		fireTimer++;
+		if (fireTimer >= fireDelay)
+		{
+			ammoMgr.Fire();
+			fireTimer = 0;
+			if (tankType == EnemyType::RPD)
+			{
+				fireDelay = 0;
+			}
+			else
+			{
+				fireDelay = rand() % 100;
+			}
+		}
+		ammoMgr.Update();
+
 		shape.left = pos.x - bodySize / 2 + 1;
 		shape.top = pos.y - bodySize / 2 + 1;
 		shape.right = shape.left + bodySize - 5;
 		shape.bottom = shape.top + bodySize - 5;
 	}
-
-	//// 게임 화면 충돌 Fix List
-	//switch (moveDir)
-	//{
-	//case MoveDir::RIGHT:
-	//	if (shape.right >= 613)
-	//	{
-	//		isCollision = true;
-	//	}
-	//	break;
-	//case MoveDir::LEFT:
-	//	if (shape.left <= 140)
-	//	{
-	//		isCollision = true;
-	//	}
-	//	break;
-	//case MoveDir::UP:
-	//	if (shape.top <= 100)
-	//	{
-	//		isCollision = true;
-	//	}
-	//	break;
-	//case MoveDir::DOWN:
-	//	if (shape.bottom >= 605)
-	//	{
-	//		isCollision = true;
-	//	}
-	//	break;
-	//default:
-	//	break;
-	//}
 }
 
 void Enemy::Render(HDC hdc)
@@ -318,6 +293,7 @@ void Enemy::TankAbilitySetting()
 	{
 	case EnemyType::NORMAL:
 		moveSpeed = 50.0f;
+		img->SetCurrFrameY(0);
 		break;
 	case EnemyType::SPEED:
 		moveSpeed = 100.0f;
@@ -326,12 +302,10 @@ void Enemy::TankAbilitySetting()
 	case EnemyType::RPD:
 		moveSpeed = 50.0f;
 		img->SetCurrFrameY(2);
-		fireDelay = 1;
 		break;
 	case EnemyType::SUPER:
 		moveSpeed = 100.0f;
 		img->SetCurrFrameY(3);
-		hp = 3;
 		break;
 	default:
 		break;
@@ -365,7 +339,6 @@ void Enemy::Move(MoveDir dir)
 					pos = buffPos;
 					shape = buffRect;
 					isCollision = true;
-
 				}
 			}
 		//}
