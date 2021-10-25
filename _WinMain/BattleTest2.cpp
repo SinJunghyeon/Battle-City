@@ -92,7 +92,7 @@ void BattleTest2::Update()
 
     //cout << boolalpha << "mpItem->GetExistItem() : " << mpItem->GetExistItem() << endl;
     //cout << "elapsedChange : " << elapsedChange << endl;
-    //cout << "elapsedCount : " << elapsedCount << endl;
+    cout << "elapsedCount : " << elapsedCount << endl;
 
     // 타일 속성 확인용 코드
     for (int i = 0; i < TILE_COUNT_X * TILE_COUNT_Y; i++)
@@ -173,10 +173,10 @@ void BattleTest2::Update()
             if ((vecEnemies[i]->GetTankState() == ecTankState::IDLE) && elapsedCount >= 300)
             {
                 (vecEnemies[i]->SetTankState(ecTankState::MOVE));
-                if (elapsedCount >= 500)
-                {
-                    elapsedCount = 10000;
-                }
+            }                
+            if (elapsedCount >= 500)
+            {
+               elapsedCount = 10000;
             }
         }
     }
@@ -576,6 +576,8 @@ void BattleTest2::CollisionItem()
 
 void BattleTest2::FunctionItem()
 {
+    vector<Enemy*> vecEnemies = enemyMgr->GetEnemies();
+    vecEnemies.resize(enemyMgr->GetEnemyMaxCount());
     //헬멧
     if (mpItem->GetItemState() == ecFunctionItem::HELMET)
     {
@@ -586,8 +588,15 @@ void BattleTest2::FunctionItem()
     if (mpItem->GetItemState() == ecFunctionItem::WATCH)
     {
         //적탱크 일시정지
-        enemyMgr->TankState(ecTankState::IDLE);
+        for (int i = 0; i < vecEnemies.size(); ++i)
+        {
+            if (vecEnemies[i]->GetIsAilve() == true)
+            {
+                vecEnemies[i]->SetTankState(ecTankState::IDLE);
+            }
         elapsedCount = 0;
+        }
+        //enemyMgr->TankState(ecTankState::IDLE);
     }
     //삽
     if (mpItem->GetItemState() == ecFunctionItem::SHOVEL)
@@ -641,8 +650,18 @@ void BattleTest2::FunctionItem()
     //수류탄
     if (mpItem->GetItemState() == ecFunctionItem::GRENADE)
     {
-        //나와있는 적 모두 죽임
-        enemyMgr->IsAlive(false);
+        //나와있는 적 모두 죽임  
+        for (int i = 0; i < vecEnemies.size(); ++i)
+        {
+            if (vecEnemies[i]->GetIsAilve() == true)
+            {
+                vecEnemies[i]->SetIsAlive(false);
+                vecEnemies[i]->SetTankState(ecTankState::DIE);
+            }
+            
+        }
+
+        //enemyMgr->IsAlive(false);
     }
     //탱크
     if (mpItem->GetItemState() == ecFunctionItem::TANK)
