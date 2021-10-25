@@ -53,7 +53,7 @@ HRESULT Tank::Init()
 
 	playerLife = 2;			//총 목숨
 
-	ptScore = 0;		//점수
+	playerScore = 0;		//점수
 
 	isInvincible = true;	//무적상태
 	elapsedInvincible = 0;
