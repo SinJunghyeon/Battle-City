@@ -98,7 +98,7 @@ void EndingScene::Render(HDC hdc)
 
     hiscoreText->Render(hdc, WIN_SIZE_X / 2, WIN_SIZE_Y / 10);
     stageText->Render(hdc, WIN_SIZE_X / 2, WIN_SIZE_Y / 6);
-    stageNumText->Render(hdc, WIN_SIZE_X * 3 / 5, WIN_SIZE_Y / 6, 1, 0);
+    stageNumText->Render(hdc, WIN_SIZE_X * 3 / 5, WIN_SIZE_Y / 6, stageScene.stageN, 0);
     player1Text->Render(hdc, WIN_SIZE_X / 2, WIN_SIZE_Y / 4);
 
     for (int i = 0; i < 4; i++)
@@ -110,7 +110,7 @@ void EndingScene::Render(HDC hdc)
         scoreText[i]->Render(hdc, scoreTextPosX, killEnemyPosY[i], countKillEnemy[i]%5, killEnemyNumber5[i]);//죽인 에너미 1의 자리
 
         scoreText[i]->Render(hdc, scoreTextPosX / 2, killEnemyPosY[i], 0, 0);
-        if (countKillEnemy[i] >= 1/* || killEnemyNumber5[i] >= 1 || killEnemyNumber10[i] >= 1*/)//왼쪽 스코어
+        if (countKillEnemy[i] >= 1)//왼쪽 스코어
         {
             scoreText[i]->Render(hdc, scoreTextPosX / 2 - 40, killEnemyPosY[i], 0, 0);                         //10의 자리
             scoreText[i]->Render(hdc, scoreTextPosX / 2 - 80, killEnemyPosY[i], countKillEnemy[i]%5, killEnemyNumber5[i]);//100의 자리
@@ -151,4 +151,5 @@ void EndingScene::Release()
     }
 
     isAnimetion = true;
+
 }
