@@ -66,6 +66,7 @@ private:
     int UIposX = TILE_SIZE * TILE_COUNT_X + 100;
     int destroyedEnemy[4] = {}; // 1 : 일반형  2 : 속도형   3 : 속사형   4 : 슈퍼탱크
     int iconSize = 30;
+    int currEnemyCount=0;
 
     Image* enemyIcon;           //에너미 탱크
     int enemyCount = 0;

@@ -234,14 +234,19 @@ void BattleTest2::Update()
         playerLife5 = 1;
     }
 
-    if (playerLife == 0|| enemyMgr->GetEnemyMaxCount()==0)
+    if (playerLife == 0)
     {
-        gameOverPosY -= 10;
+        gameOverPosY -= 5;
         if (gameOverPosY <= WIN_SIZE_Y / 2)
         {
             Sleep(1000);
             SceneManager::GetSingleton()->ChangeScene("endingS");
         }
+    }
+    else if (currEnemyCount == enemyMgr->GetEnemyMaxCount())
+    {
+        Sleep(1000);
+        SceneManager::GetSingleton()->ChangeScene("endingS");
     }
 
 }
@@ -318,7 +323,7 @@ void BattleTest2::Render(HDC hdc)
     }
 
     //에너미탱크 UI
-    for (int i = 0; i < enemyMgr->GetEnemyMaxCount(); i++)
+    for (int i = 0; i < enemyMgr->GetEnemyMaxCount()-currEnemyCount; i++)
     {
         switch (i % 2)
         {
@@ -562,19 +567,27 @@ void BattleTest2::AmmoTankCollision(Boom* boom, Tank* player)
                 {
                 case EnemyType::NORMAL:
                     destroyedEnemy[0]++;
-                    cout << "파괴한 NORMAL : " << destroyedEnemy[0] << endl;
+                    cout << "destroy NORMAL : " << destroyedEnemy[0] << endl;
+                    currEnemyCount++;
+                    cout << currEnemyCount << endl;
                     break;
                 case EnemyType::SPEED:
                     destroyedEnemy[1]++;
-                    cout << "파괴한 SPEED : " << destroyedEnemy[1] << endl;
+                    cout << "destroy SPEED : " << destroyedEnemy[1] << endl;
+                    currEnemyCount++;
+                    cout << currEnemyCount << endl;
                     break;
                 case EnemyType::RPD:
                     destroyedEnemy[2]++;
-                    cout << "파괴한 RPD : " << destroyedEnemy[2] << endl;
+                    cout << "destroy RPD : " << destroyedEnemy[2] << endl;
+                    currEnemyCount++;
+                    cout << currEnemyCount << endl;
                     break;
                 case EnemyType::SUPER:
                     destroyedEnemy[3]++;
-                    cout << "파괴한 SUPER : " << destroyedEnemy[3] << endl;
+                    cout << "destroy SUPER : " << destroyedEnemy[3] << endl;
+                    currEnemyCount++;
+                    cout << currEnemyCount << endl;
                     break;
                 default:
                     break;
