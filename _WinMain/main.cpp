@@ -24,6 +24,11 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage,
 int APIENTRY WinMain(HINSTANCE _hInstance, HINSTANCE _hPrevInstance,
 	LPSTR _lpszCmdParam, int nCmdShow)
 {
+#ifdef _DEBUG
+	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
+
+	_CrtSetBreakAlloc(293);
+#endif
 	// 윈도우를 생성하기 위한 기본 셋팅
 	g_hInstance = _hInstance;
 	WNDCLASS wndClass;
@@ -77,9 +82,6 @@ int APIENTRY WinMain(HINSTANCE _hInstance, HINSTANCE _hPrevInstance,
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 {
-#ifdef _DEBUG
-	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
-
 	HDC hdc;
 	PAINTSTRUCT ps;
 
@@ -91,7 +93,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 		switch (wParam)
 		{
 		case VK_RETURN:
-			//isUpdate = !isUpdate;
+			isUpdate = !isUpdate;
 			break;
 		}
 		break;
@@ -115,5 +117,4 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 	}
 
 	return g_mainGame.MainProc(hWnd, iMessage, wParam, lParam);
-#endif
 }

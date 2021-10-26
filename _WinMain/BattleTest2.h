@@ -60,7 +60,7 @@ private:
     RECT itemRect;
 
     int elapsedChange = NULL;
-    int elapsedCount = 10000;
+    int elapsedCount = 1005;
 
     // UI
     int UIposX = TILE_SIZE * TILE_COUNT_X + 100;
@@ -102,7 +102,7 @@ public:
     void EnemyAmmoMapCollision(Boom* boom, Enemy* enemy, TILE_INFO* tile);
     void AmmoTankCollision(Boom* boom, Tank* player);
     void CollisionItem();
-    void FunctionItem();
+    void FunctionItem(Boom* boom);
 
     void BoomAnimation(Boom* boom, BoomType type, POINTFLOAT pos);
 

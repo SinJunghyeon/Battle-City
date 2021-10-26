@@ -19,9 +19,6 @@ HRESULT Ammo::Init()
 
 	moveSpeed = 300.0f;
 
-	pPlayerTank = new Tank;
-	pEnemyTank = new Enemy;
-
 	isFire = false;
 
 	ImageManager::GetSingleton()->AddImage("Image/BattleCity/Bullet/Missile.bmp", bodySize, bodySize);

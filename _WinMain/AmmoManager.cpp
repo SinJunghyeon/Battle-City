@@ -38,6 +38,7 @@ void AmmoManager::Render(HDC hdc)
 	}
 }
 
+// TO DO : Release 호출해야 함
 void AmmoManager::Release()
 {
 	for (itAmmos = vecAmmos.begin();

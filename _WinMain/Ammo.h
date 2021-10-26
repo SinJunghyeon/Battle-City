@@ -8,8 +8,6 @@ class Enemy;
 class Ammo : public GameObject
 {
 private:
-	Tank* pPlayerTank = nullptr;
-	Enemy* pEnemyTank = nullptr;
 	bool isFire = false;
 
 	Image* img = nullptr;

@@ -35,7 +35,6 @@ HRESULT Tank::Init()
 	shape.right = pos.x + (bodySize / 2) - 2.0f;
 	shape.bottom = pos.y + (bodySize / 2) - 2.0f;
 
-
 	moveDir = MoveDir::UP;
 	tanckState = ecTankState::IDLE;
 	elapsedCount = 0;
@@ -49,13 +48,13 @@ HRESULT Tank::Init()
 		ammoPack[i].Init();
 	}
 
-	ptAttackValue = 1;	//공격력
+	ptAttackValue = 1;		// 공격력
 
-	playerLife = 2;			//총 목숨
+	playerLife = 2;			// 총 목숨
 
-	playerScore = 0;		//점수
+	playerScore = 0;		// 점수
 
-	isInvincible = true;	//무적상태
+	isInvincible = true;	// 무적상태
 	elapsedInvincible = 0;
 
 	elapsedSpawn = 0;
@@ -104,15 +103,15 @@ void Tank::Update()
 	}
 
 	//무적상태변화
-	elapsedInvincible++;
-	if (elapsedInvincible >= 300)
+	if (elapsedInvincible <= 200)
 	{
-		isInvincible = false;
+		elapsedInvincible++;
+		if (elapsedInvincible >= 200)
+		{
+			isInvincible = false;
+		}
 	}
-	if (elapsedInvincible >= 306)
-	{
-		elapsedInvincible = 305;
-	}
+
 	//무적상태
 	if (isInvincible)
 	{
@@ -155,7 +154,7 @@ void Tank::Render(HDC hdc)
 	if (isAlive)	//살아있을 때
 	{
 		//몸통
-		Rectangle(hdc, shape.left, shape.top, shape.right, shape.bottom);
+		//Rectangle(hdc, shape.left, shape.top, shape.right, shape.bottom);
 		// 플레이어 이미지
 		img->Render(hdc, pos.x + 10, pos.y + 10, img->GetCurrFrameX(), img->GetCurrFrameY(), 0.625f);
 		if (isInvincible)
@@ -164,7 +163,6 @@ void Tank::Render(HDC hdc)
 			effectImg->Render(hdc, pos.x - 17, pos.y - 17, effectImg->GetCurrFrameX(), effectImg->GetCurrFrameY(), 3);
 		}
 	}
-
 }
 
 void Tank::Release()
@@ -201,7 +199,7 @@ void Tank::ProcessInputKey()
 	{
 		moveDir = MoveDir::UP;
 		img->SetCurrFrameX(0);
-		Move(MoveDir::UP);
+		Move(moveDir);
 		tanckState = ecTankState::MOVE;
 		//프레임 움직임
 		elapsedCount++;
@@ -220,7 +218,7 @@ void Tank::ProcessInputKey()
 	{
 		moveDir = MoveDir::DOWN;
 		img->SetCurrFrameX(4);
-		Move(MoveDir::DOWN);
+		Move(moveDir);
 		tanckState = ecTankState::MOVE;
 		//프레임 움직임
 		elapsedCount++;
@@ -239,7 +237,7 @@ void Tank::ProcessInputKey()
 	{
 		moveDir = MoveDir::LEFT;
 		img->SetCurrFrameX(2);
-		Move(MoveDir::LEFT);
+		Move(moveDir);
 		tanckState = ecTankState::MOVE;
 		//프레임 움직임					
 		elapsedCount++;					
@@ -258,7 +256,7 @@ void Tank::ProcessInputKey()
 	{
 		moveDir = MoveDir::RIGHT;
 		img->SetCurrFrameX(6);
-		Move(MoveDir::RIGHT);
+		Move(moveDir);
 		tanckState = ecTankState::MOVE;
 		//프레임 움직임
 		elapsedCount++;
@@ -330,7 +328,7 @@ void Tank::Move(MoveDir dir)
 				shape = buffRect;
 				if (moveDir == MoveDir::UP || moveDir == MoveDir::DOWN)
 				{
-					//cout << tile[i].rc.right << "\t" << shape.left  << "\t" << tile[i + 1].rc.right << endl;
+					cout << tile[i].rc.right << "\t" << shape.left  << "\t" << tile[i + 1].rc.right << endl;
 					if (tile[i].rc.right - 10 < shape.left && tile[i + 1].terrain == Terrain::ROAD && tile[i + 2].terrain == Terrain::ROAD)
 					{
 						pos.x = tile[i + 1].rc.right + 3;
@@ -355,17 +353,6 @@ void Tank::Move(MoveDir dir)
 					}
 				}
 			}
-			//if (moveDir == MoveDir::LEFT || moveDir == MoveDir::RIGHT)
-			//{
-			//	if (tile[i].rc.top + 10 > shape.bottom)
-			//	{
-			//		pos.y = tile[i - TILE_COUNT_X].rc.top;
-			//	}
-			//	if (tile[i].rc.bottom - 10 < shape.top)
-			//	{
-			//		pos.y = tile[i + TILE_COUNT_X].rc.bottom;
-			//	}
-			//}
 		}
 	}
 }
