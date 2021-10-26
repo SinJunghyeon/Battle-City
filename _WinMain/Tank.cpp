@@ -373,7 +373,3 @@ void Tank::Move(MoveDir dir)
 Tank::Tank()
 {
 }
-
-Tank::~Tank()
-{
-}

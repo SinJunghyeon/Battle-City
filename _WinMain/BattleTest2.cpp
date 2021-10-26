@@ -220,8 +220,8 @@ void BattleTest2::Update()
     //테스트
     if (KeyManager::GetSingleton()->IsOnceKeyDown(VK_LBUTTON))
     {
-        playerLife--;
-        
+        //playerLife--;
+        //destroyedEnemyCount++;
     }
 
     if (playerLife >= 10)  //플레이어 라이프 10의 자리
@@ -234,7 +234,7 @@ void BattleTest2::Update()
         playerLife5 = 1;
     }
 
-    if (playerLife == 0)
+    if (playerLife <= 0)
     {
         gameOverPosY -= 5;
         if (gameOverPosY <= WIN_SIZE_Y / 2)
@@ -243,10 +243,15 @@ void BattleTest2::Update()
             SceneManager::GetSingleton()->ChangeScene("endingS");
         }
     }
-    else if (currEnemyCount == enemyMgr->GetEnemyMaxCount())
+    else if (destroyedEnemyCount == enemyMgr->GetEnemyMaxCount())
     {
-        Sleep(1000);
-        SceneManager::GetSingleton()->ChangeScene("endingS");
+        player->SetMoveSpeed(0.0f);                                 // 21.10.26 게임이 끝났을 때 스피드 0으로 -> 다음 스테이지로 넘어갈 시 스피드 초기화하기
+        elapsedEnding++;
+        if (elapsedEnding >= 100)
+        {
+            SceneManager::GetSingleton()->ChangeScene("endingS");
+            elapsedEnding = 0;
+        }
     }
 
 }
@@ -323,7 +328,7 @@ void BattleTest2::Render(HDC hdc)
     }
 
     //에너미탱크 UI
-    for (int i = 0; i < enemyMgr->GetEnemyMaxCount()-currEnemyCount; i++)
+    for (int i = 0; i < (enemyMgr->GetEnemyMaxCount() - destroyedEnemyCount); i++)
     {
         switch (i % 2)
         {
@@ -340,19 +345,20 @@ void BattleTest2::Render(HDC hdc)
 
     //라이프 UI
     P1Life->Render(hdc, UIposX + iconSize / 2, WIN_SIZE_Y / 2);
-    UIText->Render(hdc, UIposX + iconSize*2, WIN_SIZE_Y / 2 + iconSize/2, playerLife%5, playerLife5);
+    UIText->Render(hdc, UIposX + iconSize*2, WIN_SIZE_Y / 2 + iconSize/2, playerLife%5, playerLife5);   // 1의 자리
 
-    if (playerLife10 >= 1 && playerLife10<5)
+    if (playerLife10 >= 1 && playerLife10 < 5)
     {
-        UIText->Render(hdc, UIposX + iconSize, WIN_SIZE_Y / 2 + iconSize / 2, playerLife10, 0);
+        UIText->Render(hdc, UIposX + iconSize, WIN_SIZE_Y / 2 + iconSize / 2, playerLife10, 0);         // 10의 자리
     }
     else if (playerLife10 >= 5)
     {
-        UIText->Render(hdc, UIposX + iconSize, WIN_SIZE_Y / 2 + iconSize / 2, playerLife10%5, 1);
+        UIText->Render(hdc, UIposX + iconSize, WIN_SIZE_Y / 2 + iconSize / 2, playerLife10 % 5, 1);     // 10의 자리(5이상)
     }
+    // -> img->GetCurrFrameX, GetCurrFrameY를 사용하여 변수 줄이기
 
-    stageFlag->Render(hdc, UIposX + iconSize / 2, WIN_SIZE_Y * 4 / 5);
-    UIText->Render(hdc, UIposX + iconSize, WIN_SIZE_Y * 4 / 5 + iconSize, stagescene.stageN, 0);
+    stageFlag->Render(hdc, UIposX + iconSize / 2, WIN_SIZE_Y * 4 / 5);                                  // 스테이지 깃발
+    UIText->Render(hdc, UIposX + iconSize, WIN_SIZE_Y * 4 / 5 + iconSize, stagescene.stageN, 0);        // 스테이지 숫자
 
     //게임 오버
     gameOverImg->Render(hdc, 330, gameOverPosY);
@@ -568,26 +574,26 @@ void BattleTest2::AmmoTankCollision(Boom* boom, Tank* player)
                 case EnemyType::NORMAL:
                     destroyedEnemy[0]++;
                     cout << "destroy NORMAL : " << destroyedEnemy[0] << endl;
-                    currEnemyCount++;
-                    cout << currEnemyCount << endl;
+                    destroyedEnemyCount++;
+                    cout << destroyedEnemyCount << endl;
                     break;
                 case EnemyType::SPEED:
                     destroyedEnemy[1]++;
                     cout << "destroy SPEED : " << destroyedEnemy[1] << endl;
-                    currEnemyCount++;
-                    cout << currEnemyCount << endl;
+                    destroyedEnemyCount++;
+                    cout << destroyedEnemyCount << endl;
                     break;
                 case EnemyType::RPD:
                     destroyedEnemy[2]++;
                     cout << "destroy RPD : " << destroyedEnemy[2] << endl;
-                    currEnemyCount++;
-                    cout << currEnemyCount << endl;
+                    destroyedEnemyCount++;
+                    cout << destroyedEnemyCount << endl;
                     break;
                 case EnemyType::SUPER:
                     destroyedEnemy[3]++;
                     cout << "destroy SUPER : " << destroyedEnemy[3] << endl;
-                    currEnemyCount++;
-                    cout << currEnemyCount << endl;
+                    destroyedEnemyCount++;
+                    cout << destroyedEnemyCount << endl;
                     break;
                 default:
                     break;

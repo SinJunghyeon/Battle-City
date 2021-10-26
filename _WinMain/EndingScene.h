@@ -8,16 +8,16 @@ class Image;
 class EndingScene : public GameEntity
 {
 private:
-	Image* hiscoreText;
-	Image* stageText;
-	Image* stageNumText;
-	Image* player1Text;
-	Image* textPTS;
-	Image* killEnemy;
-	Image* killEnemyArrow;
-	Image* textTotal;
-	Image* totalKillText;
-	Image* scoreText[4];
+	Image* highScoreText = nullptr;
+	Image* stageText = nullptr;
+	Image* stageNumText = nullptr;
+	Image* player1Text = nullptr;
+	Image* textPTS = nullptr;
+	Image* killEnemy = nullptr;
+	Image* killEnemyArrow = nullptr;
+	Image* textTotal = nullptr;
+	Image* totalKillText = nullptr;
+	Image* scoreText[4] = {};
 
 	BattleTest2 destroyEnemy;
 
@@ -30,22 +30,24 @@ private:
 	
 	int scoreTextPosX = killEnemyPosX - 100;
 
-	int killEnemyNumber[4] = { destroyEnemy.GetDestroyedEnemy(0),destroyEnemy.GetDestroyedEnemy(1),destroyEnemy.GetDestroyedEnemy(2),destroyEnemy.GetDestroyedEnemy(3) };
+	int killEnemyNumber[4] = { 10,15,20,3 };
 	int killEnemyNumber5[4];
 	int killEnemyNumber10[4];
 	int totalKillEnemy = killEnemyNumber[0]+ killEnemyNumber[1]+ killEnemyNumber[2]+ killEnemyNumber[3];
 	int totalKillEnemy5 = 0;
 	int totalKillEnemy10 = 0;
 
-	int countKillEnemy[4] = { 0,0,0,0 };
+	int countKillEnemy[4] = { 0, 0, 0, 0 };
 	int arrNum = 0;
 
-	bool isAnimetion = true;
+	bool isAnimation = true;
 
 public:
 	virtual HRESULT Init() override;
 	virtual void Update() override;
 	virtual void Render(HDC hdc) override;
 	virtual void Release() override;
+
+	virtual ~EndingScene() = default;
 };
 

@@ -18,10 +18,10 @@ private:
 	//POINTFLOAT enemySpawnPos[6];
 
 public:
-	HRESULT Init();
-	void Update();
-	void Render(HDC hdc);
-	void Release();
+	virtual HRESULT Init() override;
+	virtual void Update() override;
+	virtual void Render(HDC hdc) override;
+	virtual void Release() override;
 
 	void AddEnemy(POINTFLOAT pos);
 
@@ -33,5 +33,7 @@ public:
 
 	int GetEnemyMaxCount() { return this->enemyMaxCount; }
 	void SetEnemyMaxCount(int EmaxCount) { this->enemyMaxCount = EmaxCount; }
+
+	virtual ~EnemyManager() = default;
 };
 

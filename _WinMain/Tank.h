@@ -16,8 +16,8 @@ public:
 	bool isAlive = false;
 
 	float ptAttackValue = NULL;		//공격력
-	int playerLife = NULL;				//플레이어 목숨
-	int playerScore = NULL;				//플레이어 탱크 점수
+	int playerLife = NULL;			//플레이어 목숨
+	int playerScore = NULL;			//플레이어 탱크 점수
 
 
 	Image* effectImg = nullptr;
@@ -32,10 +32,10 @@ public:
 	int spawnCount = NULL;
 
 public:
-	HRESULT Init();
-	void Update();
-	void Render(HDC hdc);
-	void Release();
+	virtual HRESULT Init() override;
+	virtual void Update() override;
+	virtual void Render(HDC hdc) override;
+	virtual void Release() override;
 
 	void Fire();
 	void ProcessInputKey();
@@ -68,6 +68,6 @@ public:
 	inline void SetTileMap(TILE_INFO* tile) { this->tile = tile; }
 
 	Tank();
-	~Tank();
+	virtual ~Tank() = default;
 };
 

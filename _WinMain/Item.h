@@ -32,5 +32,7 @@ public:
 	inline bool GetExistItem() { return bExistItem; }
 
 	inline ecFunctionItem GetItemState() { return functionItem;	}
+
+	virtual ~Item() = default;
 };
 

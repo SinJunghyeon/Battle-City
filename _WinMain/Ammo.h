@@ -8,22 +8,22 @@ class Enemy;
 class Ammo : public GameObject
 {
 private:
-	Tank* pPlayerTank;
-	Enemy* pEnemyTank;
-	bool isFire;
+	Tank* pPlayerTank = nullptr;
+	Enemy* pEnemyTank = nullptr;
+	bool isFire = false;
 
-	Image* img;
+	Image* img = nullptr;
 
 public:
-	HRESULT Init();
-	void Update();
-	void Render(HDC hdc);
-	void Release();
+	virtual HRESULT Init() override;
+	virtual void Update() override;
+	virtual void Render(HDC hdc) override;
+	virtual void Release() override;
 
 	void SetIsFire(bool fire);
 	inline bool GetIsFire() { return this->isFire; }
 
 	Ammo();
-	~Ammo();
+	virtual ~Ammo() = default;
 };
 

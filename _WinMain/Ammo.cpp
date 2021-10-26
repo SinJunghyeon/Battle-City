@@ -7,8 +7,8 @@
 
 HRESULT Ammo::Init()
 {
-	pos.x = 0.0f;
-	pos.y = 0.0f;
+	pos.x = 250.0f;
+	pos.y = 540.0f;
 
 	bodySize = 8;
 
@@ -90,9 +90,5 @@ void Ammo::Release()
 }
 
 Ammo::Ammo()
-{
-}
-
-Ammo::~Ammo()
 {
 }
