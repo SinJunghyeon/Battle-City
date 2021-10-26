@@ -7,9 +7,6 @@ HRESULT AmmoManager::Init()
 {
 	owner = nullptr;
 
-	//owner->Reload();	// x
-	//((Tank*)owner)->Reload();	// o
-
 	ammoMaxCount = 1;
 	vecAmmos.resize(ammoMaxCount);
 
@@ -41,6 +38,7 @@ void AmmoManager::Render(HDC hdc)
 	}
 }
 
+// TO DO : Release 호출해야 함
 void AmmoManager::Release()
 {
 	for (itAmmos = vecAmmos.begin();
@@ -63,7 +61,6 @@ void AmmoManager::Fire()
 		(*itAmmos)->SetIsFire(true);
 		(*itAmmos)->SetPos(owner->GetPos());
 		(*itAmmos)->SetMoveDir(owner->GetMoveDir());
-		//cout << "AmmoManager에서 moveDir : " << owner->GetMoveDir() << endl;
 		break;
 	}
 }

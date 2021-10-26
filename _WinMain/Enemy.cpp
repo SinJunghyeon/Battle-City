@@ -250,6 +250,9 @@ void Enemy::Render(HDC hdc)
 void Enemy::Release()
 {
 	//SAFE_RELEASE(ammoMgr);
+	ammoMgr.Release();
+	SAFE_RELEASE(img);
+
 }
 
 // 움직이는 모양

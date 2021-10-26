@@ -24,5 +24,7 @@ public:
 
 	void Save(int saveIndex = 0);
 	void Load(int loadIndex = 0);
+
+	virtual ~TilemapToolScene() = default;
 };
 

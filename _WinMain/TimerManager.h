@@ -16,5 +16,7 @@ public:
 	void Release();
 
 	float GetDeltaTime();
+
+	virtual ~TimerManager() = default;
 };
 

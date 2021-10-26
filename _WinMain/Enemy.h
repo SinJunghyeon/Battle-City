@@ -33,10 +33,10 @@ private:
 	int elapsedSpeed = 0;
 
 public:
-	HRESULT Init();
-	void Update();
-	void Render(HDC hdc);
-	void Release();
+	virtual HRESULT Init() override;
+	virtual void Update() override;
+	virtual void Render(HDC hdc) override;
+	virtual void Release() override;
 	
 	void MoveFrame();
 	void Move(MoveDir dir);
@@ -62,5 +62,6 @@ public:
 	inline EnemyType GetEnemyType() { return this->tankType; }
 	inline void SetEnemyType(EnemyType type) { this->tankType = type; }
 
+	virtual ~Enemy() = default;
 };
 

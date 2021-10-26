@@ -4,10 +4,10 @@
 class GameEntity
 {
 public:
-	virtual HRESULT Init();
-	virtual void Update();
-	virtual void Render(HDC hdc);
-	virtual void Release();
+	virtual HRESULT Init() = 0;
+	virtual void Update() = 0;
+	virtual void Render(HDC hdc) = 0;
+	virtual void Release() = 0;
 
 	virtual ~GameEntity() = default;
 };

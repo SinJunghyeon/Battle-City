@@ -27,6 +27,7 @@ public:
 	void Init();
 	void Release();
 
+	virtual ~ImageManager() = default;
 	/*
 	HRESULT Init(const char* fileName, int width, int height,
 		bool isTrans = false, COLORREF transColor = NULL); // File 프레임이 없는 이미지

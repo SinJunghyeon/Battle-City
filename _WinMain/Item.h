@@ -8,7 +8,7 @@ class Image;
 class Item : public GameObject
 {
 protected:
-	int selectItem = NULL;				//아이템 선택
+	int currItem = NULL;				//아이템 선택
 	bool bExistItem = true;				//아이템 존재여부
 
 	Image* mpImgHelmet = nullptr;		//헬멧
@@ -32,5 +32,7 @@ public:
 	inline bool GetExistItem() { return bExistItem; }
 
 	inline ecFunctionItem GetItemState() { return functionItem;	}
+
+	virtual ~Item() = default;
 };
 
