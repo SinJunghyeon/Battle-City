@@ -1,7 +1,7 @@
 #pragma once
 #include "Config.h"
 #include "GameEntity.h"
-#include "BattleTest2.h"
+#include "BattleScene.h"
 //#include "StageScene.h"
 
 class StageScene;
@@ -24,7 +24,7 @@ private:
 	Image* scoreNumber[4] = {};
 
 
-	BattleTest2 destroyEnemy;
+	BattleScene destroyEnemy;
 
 	StageScene stageScene;
 
