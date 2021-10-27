@@ -22,6 +22,14 @@ HRESULT Enemy::Init()
 		return E_FAIL;
 	}
 
+	itemTankImg = new Image;
+	itemTankImg->Init("Image/BattleCity/Enemy/Enemy_Item.bmp", 320, 320, 8, 8, true, RGB(255, 0, 255));	
+	if (img == nullptr)
+	{
+		return E_FAIL;
+	}
+
+
 	ImageManager::GetSingleton()->AddImage("Image/BattleCity/Effect/Spawn_Effect.bmp", 192, 48, 4, 1, true, RGB(255, 0, 255));
 	spawnImg = ImageManager::GetSingleton()->FindImage("Image/BattleCity/Effect/Spawn_Effect.bmp");
 	if (spawnImg == nullptr)
@@ -227,6 +235,9 @@ void Enemy::Update()
 		shape.right = shape.left + bodySize - 5;
 		shape.bottom = shape.top + bodySize - 5;
 	}
+
+	//아이템 가지고 있는 적 탱크 이미지 변화
+	ChangeItemTankImage();
 }
 
 void Enemy::Render(HDC hdc)
@@ -243,6 +254,10 @@ void Enemy::Render(HDC hdc)
 	{
 		img->Render(hdc, pos.x, pos.y, img->GetCurrFrameX(), img->GetCurrFrameY());
 
+		if (haveItem)
+		{
+			itemTankImg->Render(hdc, pos.x, pos.y, itemTankImg->GetCurrFrameX(), itemTankImg->GetCurrFrameY());
+		}
 		ammoMgr.Render(hdc);
 	}
 }
@@ -252,7 +267,7 @@ void Enemy::Release()
 	//SAFE_RELEASE(ammoMgr);
 	ammoMgr.Release();
 	SAFE_RELEASE(img);
-
+	SAFE_RELEASE(itemTankImg);
 }
 
 // 움직이는 모양
@@ -266,7 +281,6 @@ void Enemy::MoveFrame()
 			img->SetCurrFrameX(6);
 		}
 		elapsedCount++;
-
 		if (elapsedCount >= 2)
 		{
 			img->SetCurrFrameX(img->GetCurrFrameX() + 1);
@@ -274,6 +288,20 @@ void Enemy::MoveFrame()
 			{
 				img->SetCurrFrameX(6);
 				elapsedCount = 0;
+			}
+		}
+		if (itemTankImg->GetCurrFrameX() <= 5 || itemTankImg->GetCurrFrameX() >= 8)
+		{
+			itemTankImg->SetCurrFrameX(6);
+		}
+		elapseditemTankFrameX++;
+		if (elapseditemTankFrameX >= 2)
+		{
+			itemTankImg->SetCurrFrameX(itemTankImg->GetCurrFrameX() + 1);
+			if (itemTankImg->GetCurrFrameX() >= 8)
+			{
+				itemTankImg->SetCurrFrameX(6);
+				elapseditemTankFrameX = 0;
 			}
 		}
 		break;
@@ -292,6 +320,20 @@ void Enemy::MoveFrame()
 				elapsedCount = 0;
 			}
 		}
+		if (itemTankImg->GetCurrFrameX() <= 1 || itemTankImg->GetCurrFrameX() >= 4)
+		{
+			itemTankImg->SetCurrFrameX(2);
+		}
+		elapseditemTankFrameX++;
+		if (elapseditemTankFrameX >= 2)
+		{
+			itemTankImg->SetCurrFrameX(itemTankImg->GetCurrFrameX() + 1);
+			if (itemTankImg->GetCurrFrameX() >= 4)
+			{
+				itemTankImg->SetCurrFrameX(2);
+				elapseditemTankFrameX = 0;
+			}
+		}
 		break;
 	case MoveDir::UP:
 		if (img->GetCurrFrameX() <= -1 || img->GetCurrFrameX() >= 2)
@@ -308,6 +350,20 @@ void Enemy::MoveFrame()
 				elapsedCount = 0;
 			}
 		}
+		if (itemTankImg->GetCurrFrameX() <= -1 || itemTankImg->GetCurrFrameX() >= 2)
+		{
+			itemTankImg->SetCurrFrameX(0);
+		}
+		elapseditemTankFrameX++;
+		if (elapseditemTankFrameX >= 2)
+		{
+			itemTankImg->SetCurrFrameX(itemTankImg->GetCurrFrameX() + 1);
+			if (itemTankImg->GetCurrFrameX() >= 2)
+			{
+				itemTankImg->SetCurrFrameX(0);
+				elapseditemTankFrameX = 0;
+			}
+		}
 		break;
 	case MoveDir::DOWN:
 		if (img->GetCurrFrameX() <= 3 || img->GetCurrFrameX() >= 6)
@@ -322,6 +378,20 @@ void Enemy::MoveFrame()
 			{
 				img->SetCurrFrameX(4);
 				elapsedCount = 0;
+			}
+		}
+		if (itemTankImg->GetCurrFrameX() <= 3 || itemTankImg->GetCurrFrameX() >= 6)
+		{
+			itemTankImg->SetCurrFrameX(4);
+		}
+		elapseditemTankFrameX++;
+		if (elapseditemTankFrameX >= 2)
+		{
+			itemTankImg->SetCurrFrameX(itemTankImg->GetCurrFrameX() + 1);
+			if (itemTankImg->GetCurrFrameX() >= 6)
+			{
+				itemTankImg->SetCurrFrameX(4);
+				elapseditemTankFrameX = 0;
 			}
 		}
 		break;
@@ -372,29 +442,93 @@ void Enemy::Move(MoveDir dir)
 void Enemy::SetEnemyType(EnemyType type)
 {
 	tankType = type;
-
 	switch (tankType)
 	{
 	case EnemyType::NORMAL:
 		moveSpeed = 50.0f;
 		img->SetCurrFrameY(0);
+		itemTankImg->SetCurrFrameY(0);
 		break;
 	case EnemyType::SPEED:
 		moveSpeed = 100.0f;
 		img->SetCurrFrameY(1);
+		itemTankImg->SetCurrFrameX(2);
 		break;
 	case EnemyType::RPD:
 		moveSpeed = 50.0f;
 		img->SetCurrFrameY(2);
+		itemTankImg->SetCurrFrameX(4);
 		fireDelay = 50;
 		ammoMgr.SetAmmoSpeed(600.0f);
 		break;
 	case EnemyType::SUPER:
 		moveSpeed = 50.0f;
 		img->SetCurrFrameY(3);
+		itemTankImg->SetCurrFrameX(6);
 		hp = 3;
 		break;
 	default:
 		break;
+	}
+}
+
+void Enemy::ChangeItemTankImage()
+{
+	if (haveItem)
+	{
+		cout << "elapseditemTankFrameY : " << elapseditemTankFrameY << endl;
+		switch (tankType)
+		{
+		case EnemyType::NORMAL:
+			elapseditemTankFrameY++;
+			if (elapseditemTankFrameY >= 20)
+			{
+				itemTankImg->SetCurrFrameY(1);
+			}
+			if (elapseditemTankFrameY >= 40)
+			{
+				itemTankImg->SetCurrFrameY(0);
+				elapseditemTankFrameY = 0;
+			}
+			break;
+		case EnemyType::SPEED:
+			elapseditemTankFrameY++;
+			if (elapseditemTankFrameY >= 20)
+			{
+				itemTankImg->SetCurrFrameY(3);
+			}
+			if (elapseditemTankFrameY >= 40)
+			{
+				itemTankImg->SetCurrFrameY(2);
+				elapseditemTankFrameY = 0;
+			}
+			break;
+		case EnemyType::RPD:
+			elapseditemTankFrameY++;
+			if (elapseditemTankFrameY >= 20)
+			{
+				itemTankImg->SetCurrFrameY(5);
+			}
+			if (elapseditemTankFrameY >= 40)
+			{
+				itemTankImg->SetCurrFrameY(4);
+				elapseditemTankFrameY = 0;
+			}
+			break;
+		case EnemyType::SUPER:
+			elapseditemTankFrameY++;
+			if (elapseditemTankFrameY >= 20)
+			{
+				itemTankImg->SetCurrFrameY(7);
+			}
+			if (elapseditemTankFrameY >= 40)
+			{
+				itemTankImg->SetCurrFrameY(6);
+				elapseditemTankFrameY = 0;
+			}
+			break;
+		default:
+			break;
+		}
 	}
 }

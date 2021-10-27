@@ -30,10 +30,10 @@ HRESULT Item::Init()
 
 	//아이템 랜덤 설정 0 : 헬멧, 1 : 시계, 2 : 삽, 3 : 별, 4 : 수류탄, 5 : 탱크
 	srand(time(NULL));
-	//currItem = rand() % 6;
-	currItem = 0;
+	currItem = rand() % 6;
+	//currItem = 0;
 
-	bExistItem = true;
+	bExistItem = false;
 
 	//헬멧 이미지
 	ImageManager::GetSingleton()->AddImage("Image/BattleCity/Item/Item1.bmp", bodySize, bodySize, 1, 1, true, RGB(255, 0, 255));
@@ -94,9 +94,9 @@ void Item::Update()
 		tempElapsedCount++;
 		if (tempElapsedCount >= 100)
 		{
-			bExistItem = !bExistItem;
-			//currItem = rand() % 6;
-			currItem = 0;
+			//bExistItem = !bExistItem;
+			currItem = rand() % 6;
+			//currItem = 0;
 
 			tempElapsedCount = 0;
 		}
@@ -105,7 +105,7 @@ void Item::Update()
 
 void Item::Render(HDC hdc)
 {
-	//Rectangle(hdc, shape.left, shape.top, shape.right, shape.bottom);
+	Rectangle(hdc, shape.left, shape.top, shape.right, shape.bottom);
 
 	if (bExistItem)
 	{

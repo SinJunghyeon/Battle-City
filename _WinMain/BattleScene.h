@@ -58,6 +58,7 @@ private:
 
     // æ∆¿Ã≈€
     Item* mpItem;
+    POINTFLOAT itemSpawnPos;
     RECT itemRect;
 
     int elapsedChange = NULL;
@@ -99,7 +100,6 @@ public:
 
     void PlayerAmmoMapCollision(Boom* boom, Tank* tank, TILE_INFO* tile);
     void EnemyAmmoMapCollision(Boom* boom, Enemy* enemy, TILE_INFO* tile);
-    //void EnemyCollision();
     void AmmoTankCollision(Boom* boom, Tank* player);
     void CollisionItem();
     void FunctionItem(Boom* boom);
