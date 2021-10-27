@@ -23,6 +23,7 @@ public:
 	void Fire();
 
 	inline void SetOwner(GameObject* owner) { this->owner = owner; }
+	void SetAmmoSpeed(float ammoSpeed);
 
 	inline vector<Ammo*> GetAmmos() { return this->vecAmmos; }
 
