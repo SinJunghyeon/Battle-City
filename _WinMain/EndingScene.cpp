@@ -46,7 +46,6 @@ HRESULT EndingScene::Init()
     for (int i = 0; i < 4; i++)
     {
         enemyCount[i] = 0;
-        scoreCount[i] = 0;
     }
 
     return S_OK;
@@ -68,7 +67,6 @@ void EndingScene::Update()
         if (enemyCount[enemyCountArrNum] < destroyedEnemy[enemyCountArrNum])
         {
             enemyCount[enemyCountArrNum] ++;
-            scoreCount[enemyCountArrNum] += enemyCountArrNum + 1;
         }
         if (enemyCount[enemyCountArrNum] == destroyedEnemy[enemyCountArrNum])
         {
@@ -115,30 +113,30 @@ void EndingScene::Render(HDC hdc)
         // 스코어
         scoreNumber[i]->Render(hdc, scoreNumberPosX / 2, enemyTankImagePosY[i], 0, 0);           // 1의 자리
 
-        if (scoreCount[i] >= 1)
+        if (enemyCount[i] >= 1)
         {
             scoreNumber[i]->Render(hdc, scoreNumberPosX / 2 - 40, enemyTankImagePosY[i], 0, 0);  // 10의 자리
 
             // 100의 자리
-            if (scoreCount[i] < 5)
+            if (enemyCount[i] < 5)
             {
-                scoreNumber[i]->Render(hdc, scoreNumberPosX / 2 - 80, enemyTankImagePosY[i], scoreCount[i] % 5, 0);
+                scoreNumber[i]->Render(hdc, scoreNumberPosX / 2 - 80, enemyTankImagePosY[i], enemyCount[i] % 5, 0);
             }
-            else if (scoreCount[i] >= 5)
+            else if (enemyCount[i] >= 5)
             {
-                scoreNumber[i]->Render(hdc, scoreNumberPosX / 2 - 80, enemyTankImagePosY[i], scoreCount[i] % 5, 1);
+                scoreNumber[i]->Render(hdc, scoreNumberPosX / 2 - 80, enemyTankImagePosY[i], enemyCount[i] % 5, 1);
             }
         }
 
-        if (scoreCount[i] >= 10)
+        if (enemyCount[i] >= 10)
         {
-            scoreNumber[i]->Render(hdc, scoreNumberPosX - 40, enemyTankImagePosY[i], scoreCount[i] / 10, 0);      // 죽인 에너미 10의 자리
-            scoreNumber[i]->Render(hdc, scoreNumberPosX / 2 - 120, enemyTankImagePosY[i], scoreCount[i] / 10, 0); // 스코어 1000의 자리
+            scoreNumber[i]->Render(hdc, scoreNumberPosX - 40, enemyTankImagePosY[i], enemyCount[i] / 10, 0);      // 죽인 에너미 10의 자리
+            scoreNumber[i]->Render(hdc, scoreNumberPosX / 2 - 120, enemyTankImagePosY[i], enemyCount[i] / 10, 0); // 스코어 1000의 자리
         }
-        else if (scoreCount[i] >= 50)
+        else if (enemyCount[i] >= 50)
         {
-            scoreNumber[i]->Render(hdc, scoreNumberPosX - 40, enemyTankImagePosY[i], (scoreCount[i] / 10) % 5, 1);      // 죽인 에너미 10의 자리
-            scoreNumber[i]->Render(hdc, scoreNumberPosX / 2 - 120, enemyTankImagePosY[i], (scoreCount[i] / 10) % 5, 1); // 스코어 1000의 자리
+            scoreNumber[i]->Render(hdc, scoreNumberPosX - 40, enemyTankImagePosY[i], (enemyCount[i] / 10) % 5, 1);      // 죽인 에너미 10의 자리
+            scoreNumber[i]->Render(hdc, scoreNumberPosX / 2 - 120, enemyTankImagePosY[i], (enemyCount[i] / 10) % 5, 1); // 스코어 1000의 자리
         }
     }
 
