@@ -476,7 +476,7 @@ void Enemy::ChangeItemTankImage()
 {
 	if (haveItem)
 	{
-		cout << "elapseditemTankFrameY : " << elapseditemTankFrameY << endl;
+		//cout << "elapseditemTankFrameY : " << elapseditemTankFrameY << endl;
 		switch (tankType)
 		{
 		case EnemyType::NORMAL:

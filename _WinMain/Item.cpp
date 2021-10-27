@@ -31,7 +31,6 @@ HRESULT Item::Init()
 	//아이템 랜덤 설정 0 : 헬멧, 1 : 시계, 2 : 삽, 3 : 별, 4 : 수류탄, 5 : 탱크
 	srand(time(NULL));
 	currItem = rand() % 6;
-	//currItem = 0;
 
 	bExistItem = false;
 
@@ -91,15 +90,7 @@ void Item::Update()
 
 	if (!bExistItem)
 	{
-		tempElapsedCount++;
-		if (tempElapsedCount >= 100)
-		{
-			//bExistItem = !bExistItem;
-			currItem = rand() % 6;
-			//currItem = 0;
-
-			tempElapsedCount = 0;
-		}
+		currItem = rand() % 6;
 	}
 }
 
