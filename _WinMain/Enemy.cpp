@@ -49,6 +49,9 @@ HRESULT Enemy::Init()
 
 void Enemy::Update()
 {
+	RECT buffRect = shape;
+	POINTFLOAT buffPos = pos;
+
 	if (!isAlive && (tankState != ecTankState::DIE))
 	{
 		elapsedSpawn++;
@@ -88,11 +91,12 @@ void Enemy::Update()
 			switch (moveDir)
 			{
 			case MoveDir::RIGHT:
-				moveSpeed = 0.1f;
+				moveSpeed = 0.0f;
+				pos = buffPos;
+				shape = buffRect;
 				elapsedTurn++;
 				if (elapsedTurn >= 30)
 				{
-					pos.x -= 2;
 					while (moveDir == MoveDir::RIGHT)
 					{
 						moveDir = (MoveDir)(rand() % 4);
@@ -103,7 +107,9 @@ void Enemy::Update()
 				}
 				break;
 			case MoveDir::LEFT:
-				moveSpeed = 0.1f;
+				moveSpeed = 0.0f;
+				pos = buffPos;
+				shape = buffRect;
 				elapsedTurn++;
 				if (elapsedTurn >= 30)
 				{
@@ -118,7 +124,9 @@ void Enemy::Update()
 				}
 				break;
 			case MoveDir::UP:
-				moveSpeed = 0.1f;
+				moveSpeed = 0.0f;
+				pos = buffPos;
+				shape = buffRect;
 				elapsedTurn++;
 				if (elapsedTurn >= 30)
 				{
@@ -133,7 +141,9 @@ void Enemy::Update()
 				}
 				break;
 			case MoveDir::DOWN:
-				moveSpeed = 0.1f;
+				moveSpeed = 0.0f;
+				pos = buffPos;
+				shape = buffRect;
 				elapsedTurn++;
 				if (elapsedTurn >= 30)
 				{
@@ -154,10 +164,10 @@ void Enemy::Update()
 		}
 
 		// moveSpeed가 0.1로 고정되는 오류 방지
-		if (moveSpeed == 0.1f)
+		if (moveSpeed == 0.0f)
 		{
 			elapsedSpeed++;
-			if (moveSpeed != 0.1f)
+			if (moveSpeed != 0.0f)
 			{
 				elapsedSpeed = 0;
 			}
