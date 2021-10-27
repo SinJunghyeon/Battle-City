@@ -96,7 +96,7 @@ void Item::Update()
 
 void Item::Render(HDC hdc)
 {
-	Rectangle(hdc, shape.left, shape.top, shape.right, shape.bottom);
+	//Rectangle(hdc, shape.left, shape.top, shape.right, shape.bottom);
 
 	if (bExistItem)
 	{

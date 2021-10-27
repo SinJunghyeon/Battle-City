@@ -48,6 +48,8 @@ HRESULT EndingScene::Init()
         enemyCount[i] = 0;
     }
 
+    enemyTotal = 0;
+
     return S_OK;
 }
 
