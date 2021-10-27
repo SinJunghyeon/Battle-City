@@ -93,7 +93,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 		switch (wParam)
 		{
 		case VK_RETURN:
-			isUpdate = !isUpdate;
+			//isUpdate = !isUpdate;
 			break;
 		}
 		break;

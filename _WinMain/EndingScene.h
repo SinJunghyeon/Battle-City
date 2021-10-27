@@ -2,7 +2,6 @@
 #include "Config.h"
 #include "GameEntity.h"
 #include "BattleScene.h"
-//#include "StageScene.h"
 
 class StageScene;
 class Image;
@@ -33,8 +32,10 @@ private:
 	
 	int scoreNumberPosX = enemyTankImagePosX - 100;
 
-	// destroyedEnemy[0] *1, killEnemyNumber[1]*2, killEnemyNumber[2]*3, killEnemyNumber[3]*4 ÇØ¾ßÇÔ
-	int destroyedEnemy[4] = { 10,15,20,3 };
+
+	// destroyedEnemy[0] *1, killEnemyNumber[1]*2, killEnemyNumber[2]*3, killEnemyNumber[3]*4 ï¿½Ø¾ï¿½ï¿½ï¿½
+	int tempArr[4] = { 0, 0, 0, 0 };
+	int* destroyedEnemy = tempArr;
 
 	Image* textTotal = nullptr;
 	Image* enemyTotalText = nullptr;

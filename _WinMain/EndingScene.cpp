@@ -1,6 +1,7 @@
 #include "EndingScene.h"
 #include "Image.h"
 #include "StageScene.h"
+#include "DestroyCountManager.h"
 
 HRESULT EndingScene::Init()
 {
@@ -35,6 +36,8 @@ HRESULT EndingScene::Init()
 
     ImageManager::GetSingleton()->AddImage("Image/BattleCity/Text/TotalScore.bmp", WIN_SIZE_X/2, 40*1.5, true, RGB(255, 0, 255));
     textTotal = ImageManager::GetSingleton()->FindImage("Image/BattleCity/Text/TotalScore.bmp");
+
+    destroyedEnemy = DestroyCountManager::GetSingleton()->GetDestroyCount();
 
     return S_OK;
 }
