@@ -5,7 +5,7 @@
 #include "Enemy.h"
 #include "StageScene.h"
 
-#define BOOM_NUM 40
+#define BOOM_NUM 30
 
 enum class BoomType { SMALL_BOOM, BIG_BOOM };
 
@@ -103,7 +103,7 @@ public:
     void EnemyAmmoMapCollision(Boom* boom, Enemy* enemy, TILE_INFO* tile);
     void AmmoTankCollision(Boom* boom, Tank* player);
     void CollisionItem();
-    void FunctionItem(Boom* boom);
+    void FunctionItem();
 
     void BoomAnimation(Boom* boom, BoomType type, POINTFLOAT pos);
 

@@ -72,6 +72,8 @@ HRESULT BattleScene::Init()
 
             return E_FAIL;
         }
+
+        boomEffect[i].bigBoom->SetCurrFrameX(-1); // 큰 폭발이 0번프레임부터 시작할 수 있게 하기 위함.
     }
 
     // 타일맵 로드
@@ -231,7 +233,7 @@ void BattleScene::Update()
             {
                 boomEffect[i].boom->SetCurrFrameX(boomEffect[i].boom->GetCurrFrameX() + 1);
 
-                if ((boomEffect[i].boom->GetCurrFrameX() == 2) && boomEffect[i].type == BoomType::SMALL_BOOM)
+                if ((boomEffect[i].boom->GetCurrFrameX() >= 2) && boomEffect[i].type == BoomType::SMALL_BOOM)
                 {
                     boomEffect[i].isRender = false;
                     boomEffect[i].boom->SetCurrFrameX(0);
@@ -239,10 +241,10 @@ void BattleScene::Update()
                 else if ((boomEffect[i].boom->GetCurrFrameX() >= 3) && boomEffect[i].type == BoomType::BIG_BOOM)
                 {
                     boomEffect[i].bigBoom->SetCurrFrameX(boomEffect[i].bigBoom->GetCurrFrameX() + 1);
-                    if (boomEffect[i].bigBoom->GetCurrFrameX() == 2)
+                    if (boomEffect[i].bigBoom->GetCurrFrameX() >= 2)
                     {
                         boomEffect[i].isRender = false;
-                        boomEffect[i].bigBoom->SetCurrFrameX(0);
+                        boomEffect[i].bigBoom->SetCurrFrameX(-1);
                         boomEffect[i].boom->SetCurrFrameX(0);
                     }
                 }
@@ -733,13 +735,13 @@ void BattleScene::CollisionItem()
     {
         if (IntersectRect(&tempRect, &playerTankRect, &itemRect))
         {
-            FunctionItem(boomEffect);
+            FunctionItem();
             mpItem->SetExistItem(false);
         }
     }
 }
 
-void BattleScene::FunctionItem(Boom* boom)
+void BattleScene::FunctionItem()
 {
     //헬멧
     if (mpItem->GetItemState() == ecFunctionItem::HELMET)
@@ -813,7 +815,7 @@ void BattleScene::FunctionItem(Boom* boom)
         {
             if (vecEnemies[i]->GetIsAilve() == true)
             {
-                BoomAnimation(boom, BoomType::BIG_BOOM, vecEnemies[i]->GetPos());
+                BoomAnimation(boomEffect, BoomType::BIG_BOOM, vecEnemies[i]->GetPos());
                 vecEnemies[i]->SetIsAlive(false);
                 vecEnemies[i]->SetTankState(ecTankState::DIE);
                 count++;

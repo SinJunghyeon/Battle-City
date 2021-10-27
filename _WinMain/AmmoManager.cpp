@@ -72,3 +72,11 @@ void AmmoManager::SetAmmoSpeed(float ammoSpeed)
 		vecAmmos[i]->SetMoveSpeed(ammoSpeed);
 	}
 }
+
+void AmmoManager::SetAmmoDisabled()
+{
+	for (int i = 0; i < vecAmmos.size(); ++i)
+	{
+		vecAmmos[i]->SetIsFire(false);
+	}
+}
