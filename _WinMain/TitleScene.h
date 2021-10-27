@@ -13,7 +13,7 @@ private:
 	Image* selectIcon = nullptr;
 
 	int iconPosY[2] = { WIN_SIZE_Y * 12/21, WIN_SIZE_Y * 13 / 20 };
-	int iconPosNum = 0;
+	int iconPosArr = 0;
 
 	int countFrameY = WIN_SIZE_Y + WIN_SIZE_Y / 2;
 	int iconFrameX = 7;
