@@ -136,7 +136,7 @@ void Enemy::Update()
 void Enemy::Render(HDC hdc)
 {
 	// 임시 충돌 박스
-	Rectangle(hdc, shape.left, shape.top, shape.right, shape.bottom);
+	//Rectangle(hdc, shape.left, shape.top, shape.right, shape.bottom);
 
 	if (!isAlive && (tankState != ecTankState::DIE))	//죽어있을 때 -> 스폰 이미지를 부르고 -> 살게끔
 	{
@@ -377,7 +377,7 @@ void Enemy::Move(MoveDir dir)
 	}  
 	if (IntersectRect(&tempRect, &shape, &playerTankShape))
 	{
-		cout << "적탱크 플레이어탱크랑 접촉! !" << endl;
+		//cout << "적탱크 플레이어탱크랑 접촉! !" << endl;
 		pos = buffPos;
 		shape = buffRect;
 		isCollision = true;
