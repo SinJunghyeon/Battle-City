@@ -5,7 +5,7 @@
 #include "Enemy.h"
 #include "StageScene.h"
 
-#define BOOM_NUM 30
+#define BOOM_NUM 40
 
 enum class BoomType { SMALL_BOOM, BIG_BOOM };
 
@@ -58,9 +58,10 @@ private:
 
     // 아이템
     Item* mpItem;
+    POINTFLOAT itemSpawnPos;
     RECT itemRect;
 
-    int elapsedChange = NULL;
+    int elapsedChange = NULL;;
     int elapsedCount = 1005;
 
     // UI
@@ -70,10 +71,10 @@ private:
     int destroyedEnemyCount = 0;
 
     Image* enemyIcon;           // 에너미 탱크
-    int enemyCount = 0;
+    int enemyCount;
 
     Image* P1LifeImage;
-    int playerLife = 2;
+    int playerLife=2;
 
     Image* numberText;
 
@@ -88,6 +89,7 @@ private:
     bool isHQDestroyed = false;
 
     int elapsedEnding = NULL;
+ 
 
 public:
     virtual HRESULT Init() override;
@@ -99,7 +101,6 @@ public:
 
     void PlayerAmmoMapCollision(Boom* boom, Tank* tank, TILE_INFO* tile);
     void EnemyAmmoMapCollision(Boom* boom, Enemy* enemy, TILE_INFO* tile);
-    //void EnemyCollision();
     void AmmoTankCollision(Boom* boom, Tank* player);
     void CollisionItem();
     void FunctionItem(Boom* boom);

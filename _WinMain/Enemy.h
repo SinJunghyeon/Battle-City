@@ -18,7 +18,7 @@ private:
 
 	bool isAlive = false;
 	bool isCollision  = false;
-	bool isItem = false;
+	bool haveItem = false;
 
 	AmmoManager ammoMgr;
 
@@ -34,13 +34,22 @@ private:
 
 	Tank* player;
 
+
+	POINTFLOAT buffPos;
+	RECT buffRect;
+
+	Image* itemTankImg = nullptr;
+	int elapseditemTankFrameX = NULL;
+	int elapseditemTankFrameY = NULL;
+
+
 public:
 	virtual HRESULT Init() override;
 	virtual void Update() override;
 	virtual void Render(HDC hdc) override;
 	virtual void Release() override;
 	
-	void MoveFrame();
+	void MoveAnimation();
 	void Move(MoveDir dir);
 
 	void SetMoveSpeed(float moveSpeed) { this->moveSpeed = moveSpeed; }
@@ -65,6 +74,18 @@ public:
 
 	// 플레이어의 정보를 가져오는 함수
 	inline void SetPlayer(Tank* player) { this->player = player; }
+
+
+	// 버퍼의 정보를 가져오는 함수
+	inline POINTFLOAT GetBuffPos() { return this->buffPos; }
+	inline RECT GetBuffRect() { return this->buffRect; }
+
+	inline void SetImage(Image* img) { this->itemTankImg = img; }
+
+	void ChangeItemTankImage();
+
+	inline void SetHaveItem(bool haveItem) { this->haveItem = haveItem; }
+
 
 	virtual ~Enemy() = default;
 };
