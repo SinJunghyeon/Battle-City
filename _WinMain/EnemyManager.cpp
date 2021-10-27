@@ -47,28 +47,44 @@ void EnemyManager::Update()
 				case MoveDir::RIGHT:
 					if (IntersectRect(&tempCollisionRect, &enemyTankRect1, &enemtTankRect2))
 					{
+						POINTFLOAT pos;
+						pos.x = vecEnemys[i]->GetPos().x - (tempCollisionRect.right - tempCollisionRect.left);
+						pos.y = vecEnemys[i]->GetPos().y;
 						vecEnemys[i]->SetIsCollision(true);
+						vecEnemys[i]->SetPos(pos);
 						cout << 1 << endl;
 					}
 					break;
 				case MoveDir::LEFT:
 					if (IntersectRect(&tempCollisionRect, &enemyTankRect1, &enemtTankRect2))
 					{
+						POINTFLOAT pos;
+						pos.x = vecEnemys[i]->GetPos().x + (tempCollisionRect.right - tempCollisionRect.left);
+						pos.y = vecEnemys[i]->GetPos().y;
 						vecEnemys[i]->SetIsCollision(true);
+						vecEnemys[i]->SetPos(pos);
 						cout << 2 << endl;
 					}
 					break;
 				case MoveDir::UP:
 					if (IntersectRect(&tempCollisionRect, &enemyTankRect1, &enemtTankRect2))
 					{
+						POINTFLOAT pos;
+						pos.x = vecEnemys[i]->GetPos().x;
+						pos.y = vecEnemys[i]->GetPos().y + (tempCollisionRect.bottom - tempCollisionRect.top);
 						vecEnemys[i]->SetIsCollision(true);
+						vecEnemys[i]->SetPos(pos);
 						cout << 3 << endl;
 					}
 					break;
 				case MoveDir::DOWN:
 					if (IntersectRect(&tempCollisionRect, &enemyTankRect1, &enemtTankRect2))
 					{
+						POINTFLOAT pos;
+						pos.x = vecEnemys[i]->GetPos().x;
+						pos.y = vecEnemys[i]->GetPos().y - (tempCollisionRect.bottom - tempCollisionRect.top);
 						vecEnemys[i]->SetIsCollision(true);
+						vecEnemys[i]->SetPos(pos);
 						cout << 4 << endl;
 					}
 				}
