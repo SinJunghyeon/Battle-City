@@ -1,8 +1,7 @@
 #pragma once
 #include "Config.h"
 #include "GameEntity.h"
-#include "BattleTest2.h"
-//#include "StageScene.h"
+#include "BattleScene.h"
 
 class StageScene;
 class Image;
@@ -24,7 +23,7 @@ private:
 	Image* scoreNumber[4] = {};
 
 
-	BattleTest2 destroyEnemy;
+	BattleScene destroyEnemy;
 
 	StageScene stageScene;
 
@@ -33,6 +32,7 @@ private:
 	
 	int scoreNumberPosX = enemyTankImagePosX - 100;
 
+	//싱글톤으로 정보 가져오는 매니저를 하나 제작
 	// destroyedEnemy[0] *1, killEnemyNumber[1]*2, killEnemyNumber[2]*3, killEnemyNumber[3]*4 해야함
 	int destroyedEnemy[4] = { 10,15,20,3 };
 

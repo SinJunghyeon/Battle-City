@@ -62,9 +62,6 @@
     <ClCompile Include="Tank.cpp">
       <Filter>MainGame\Player</Filter>
     </ClCompile>
-    <ClCompile Include="BattleTest2.cpp">
-      <Filter>MainGame\Scene</Filter>
-    </ClCompile>
     <ClCompile Include="StageScene.cpp">
       <Filter>MainGame\Scene</Filter>
     </ClCompile>
@@ -153,9 +150,6 @@
     </ClInclude>
     <ClInclude Include="Tank.h">
       <Filter>MainGame\Player</Filter>
-    </ClInclude>
-    <ClInclude Include="BattleTest2.h">
-      <Filter>MainGame\Scene</Filter>
     </ClInclude>
     <ClInclude Include="StageScene.h">
       <Filter>MainGame\Scene</Filter>

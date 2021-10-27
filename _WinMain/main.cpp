@@ -27,7 +27,7 @@ int APIENTRY WinMain(HINSTANCE _hInstance, HINSTANCE _hPrevInstance,
 #ifdef _DEBUG
 	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 
-	_CrtSetBreakAlloc(293);
+	//_CrtSetBreakAlloc();
 #endif
 	// 윈도우를 생성하기 위한 기본 셋팅
 	g_hInstance = _hInstance;
@@ -93,7 +93,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 		switch (wParam)
 		{
 		case VK_RETURN:
-			isUpdate = !isUpdate;
+			//isUpdate = !isUpdate;
 			break;
 		}
 		break;

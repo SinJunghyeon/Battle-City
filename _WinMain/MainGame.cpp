@@ -4,7 +4,6 @@
 #include "BattleScene.h"
 #include "LoadingScene.h"
 #include "TilemapToolScene.h"
-#include "BattleTest2.h"
 #include "StageScene.h"
 #include "EndingScene.h"
 #include "GameOverScene.h"
@@ -21,12 +20,11 @@ HRESULT MainGame::Init()
 	SceneManager::GetSingleton()->AddScene("titleS", new TitleScene());
 	SceneManager::GetSingleton()->AddScene("stageS", new StageScene());
 	SceneManager::GetSingleton()->AddScene("battleS", new BattleScene());
-	SceneManager::GetSingleton()->AddScene("battleTest2", new BattleTest2());
 	SceneManager::GetSingleton()->AddScene("tilemapS", new TilemapToolScene());
 	SceneManager::GetSingleton()->AddScene("endingS", new EndingScene());
 	SceneManager::GetSingleton()->AddScene("gameoverS", new GameOverScene());
 
-	SceneManager::GetSingleton()->ChangeScene("battleTest2");
+	SceneManager::GetSingleton()->ChangeScene("stageS");
 
 	//srand((unsigned int) time(nullptr));
 
