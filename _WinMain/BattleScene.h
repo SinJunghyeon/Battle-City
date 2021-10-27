@@ -5,7 +5,7 @@
 #include "Enemy.h"
 #include "StageScene.h"
 
-#define BOOM_NUM 10
+#define BOOM_NUM 30
 
 enum class BoomType { SMALL_BOOM, BIG_BOOM };
 
@@ -82,9 +82,10 @@ private:
 
     //게임 오버 이미지
     Image* gameOverImg;
-    POINT gameOverImgSize;
     int gameOverPosY = WIN_SIZE_Y * 3 / 2;
 
+    // HQ 파괴 여부
+    bool isHQDestroyed = false;
 
     int elapsedEnding = NULL;
 
@@ -103,8 +104,6 @@ public:
     void FunctionItem(Boom* boom);
 
     void BoomAnimation(Boom* boom, BoomType type, POINTFLOAT pos);
-
-    inline int GetDestroyedEnemy(int arr) { return destroyedEnemy[arr]; }
 
     virtual ~BattleScene() = default;
 };

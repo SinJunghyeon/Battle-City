@@ -6,6 +6,7 @@
 #include "Ammo.h"
 #include "AmmoManager.h"
 #include "StageScene.h"
+#include "DestroyCountManager.h"
 
 HRESULT BattleScene::Init()
 {
@@ -110,6 +111,7 @@ void BattleScene::Update()
             if (KeyManager::GetSingleton()->IsStayKeyDown(VK_RBUTTON)) // 디버그용
             {
                 cout << i << " tile" << endl;
+                cout << "mouse x : " << g_ptMouse.x << "mouse y : " << g_ptMouse.y << endl;
                 if (tileInfo[i].terrain == Terrain::WALL) cout << "WALL" << tileInfo[i].hp << endl;
                 else if (tileInfo[i].playerSpawn) cout << "playerSpawn" << tileInfo[i].hp << endl;
                 else if (tileInfo[i].enemySpawn) cout << "enemySpawn" << tileInfo[i].hp << endl;
@@ -225,13 +227,15 @@ void BattleScene::Update()
     // 미사일 탱크 접촉
     AmmoTankCollision(boomEffect, player);
 
+    // �� ���߼� �ֽ�ȭ
+    DestroyCountManager::GetSingleton()->SetDestroyCount(destroyedEnemy);
+
     //테스트
     if (KeyManager::GetSingleton()->IsOnceKeyDown(VK_LBUTTON))
     {
         playerLife++;
         //destroyedEnemyCount++;
         cout << "P1L:" << playerLife << endl << "GetcurrFrameX:" << numberText->GetCurrFrameX() << endl;
-
     }
     if (KeyManager::GetSingleton()->IsOnceKeyDown(VK_RBUTTON))
     {
@@ -243,7 +247,8 @@ void BattleScene::Update()
     //탱크 라이프 초기화        //숫자를 높여줘야하는데 init에 사용할 시 한번밖에 안불러와서 playerLife가 2로 계속 유지된다.
     numberText->SetCurrFrameX(playerLife);
 
-    if (playerLife < 0)
+    // ���ӿ�� ���� Ȯ��
+    if ((playerLife < 0) || isHQDestroyed)
     {
         gameOverPosY -= 5;
         if (gameOverPosY <= WIN_SIZE_Y / 2)
@@ -455,8 +460,8 @@ void BattleScene::PlayerAmmoMapCollision(Boom* boom, Tank* tank, TILE_INFO* tile
                     else if (tile[i].terrain == Terrain::HQ)    // 충돌한 타일이 HQ일때
                     {
                         POINTFLOAT hqPos;
-                        hqPos.x = tile[713].rc.right;
-                        hqPos.y = tile[713].rc.top;
+                        hqPos.x = tile[713].rc.left;
+                        hqPos.y = tile[713].rc.bottom;
 
                         BoomAnimation(boom, BoomType::BIG_BOOM, hqPos);
                         tile[713].frameX += 2;
@@ -466,6 +471,8 @@ void BattleScene::PlayerAmmoMapCollision(Boom* boom, Tank* tank, TILE_INFO* tile
                         tank->ammoPack[j].SetIsFire(false);
                         tank->ammoPack[j].SetPos(tank->GetPos());
                         tank->ammoPack[j].SetBodySize(0);
+
+                        isHQDestroyed = true;
                     }
                 }
             }
@@ -552,7 +559,7 @@ void BattleScene::EnemyAmmoMapCollision(Boom* boom, Enemy* enemy, TILE_INFO* til
                 else if (tile[i].terrain == Terrain::HQ)    // 충돌한 타일이 HQ일때
                 {
                     POINTFLOAT hqPos;
-                    hqPos.x = tile[713].rc.right;
+                    hqPos.x = tile[713].rc.left;
                     hqPos.y = tile[713].rc.bottom;
 
                     BoomAnimation(boom, BoomType::BIG_BOOM, hqPos);
@@ -563,6 +570,8 @@ void BattleScene::EnemyAmmoMapCollision(Boom* boom, Enemy* enemy, TILE_INFO* til
                     ammoPack[j]->SetIsFire(false);
                     ammoPack[j]->SetPos(enemy->GetPos());
                     ammoPack[j]->SetBodySize(0);
+
+                    isHQDestroyed = true;
                 }
             }
         }
