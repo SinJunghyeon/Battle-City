@@ -29,7 +29,7 @@ void EnemyManager::Update()
 
 		enemySpawnDelay = 0;
 	}
-	
+
 	// Fix List
 	for (int i = 0; i < enemyCurrCount; i++)
 	{
@@ -48,28 +48,24 @@ void EnemyManager::Update()
 					if (IntersectRect(&tempCollisionRect, &enemyTankRect1, &enemtTankRect2))
 					{
 						vecEnemys[i]->SetIsCollision(true);
-						cout << 1 << endl;
 					}
 					break;
 				case MoveDir::LEFT:
 					if (IntersectRect(&tempCollisionRect, &enemyTankRect1, &enemtTankRect2))
 					{
 						vecEnemys[i]->SetIsCollision(true);
-						cout << 2 << endl;
 					}
 					break;
 				case MoveDir::UP:
 					if (IntersectRect(&tempCollisionRect, &enemyTankRect1, &enemtTankRect2))
 					{
 						vecEnemys[i]->SetIsCollision(true);
-						cout << 3 << endl;
 					}
 					break;
 				case MoveDir::DOWN:
 					if (IntersectRect(&tempCollisionRect, &enemyTankRect1, &enemtTankRect2))
 					{
 						vecEnemys[i]->SetIsCollision(true);
-						cout << 4 << endl;
 					}
 				}
 			}

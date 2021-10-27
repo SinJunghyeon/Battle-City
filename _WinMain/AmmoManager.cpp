@@ -64,3 +64,11 @@ void AmmoManager::Fire()
 		break;
 	}
 }
+
+void AmmoManager::SetAmmoSpeed(float ammoSpeed)
+{
+	for (int i = 0; i < vecAmmos.size(); ++i)
+	{
+		vecAmmos[i]->SetMoveSpeed(ammoSpeed);
+	}
+}

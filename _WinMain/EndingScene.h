@@ -21,7 +21,6 @@ private:
 
 	Image* scoreNumber[4] = {};
 
-
 	StageScene stageScene;
 
 	int enemyTankImagePosX = WIN_SIZE_X * 4 / 5;

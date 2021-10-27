@@ -18,6 +18,7 @@ private:
 
 	bool isAlive = false;
 	bool isCollision  = false;
+	bool isItem = false;
 
 	AmmoManager ammoMgr;
 
@@ -41,7 +42,6 @@ public:
 	
 	void MoveFrame();
 	void Move(MoveDir dir);
-	void TankAbilitySetting();
 
 	void SetMoveSpeed(float moveSpeed) { this->moveSpeed = moveSpeed; }
 
@@ -61,8 +61,9 @@ public:
 	inline void SetHP(int hp) { this->hp = hp; }
 
 	inline EnemyType GetEnemyType() { return this->tankType; }
-	inline void SetEnemyType(EnemyType type) { this->tankType = type; }
-	// ÇÃ·¹ÀÌ¾îÀÇ Á¤º¸¸¦ °¡Á®¿À´Â ÇÔ¼ö
+	void SetEnemyType(EnemyType type);
+
+	// í”Œë ˆì´ì–´ì˜ ì •ë³´ë¥¼ ê°€ì ¸ì˜¤ëŠ” í•¨ìˆ˜
 	inline void SetPlayer(Tank* player) { this->player = player; }
 
 	virtual ~Enemy() = default;

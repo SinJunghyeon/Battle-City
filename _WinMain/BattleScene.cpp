@@ -459,7 +459,7 @@ void BattleScene::PlayerAmmoMapCollision(Boom* boom, Tank* tank, TILE_INFO* tile
                         tank->ammoPack[j].SetPos(tank->GetPos());
                         tank->ammoPack[j].SetBodySize(0);
                     }
-                    if ((tile[i].terrain == Terrain::STEEL) || (tile[i].terrain == Terrain::HQ_STEEL))
+                    if ((tile[i].terrain == Terrain::STEEL) || (tile[i].terrain == Terrain::HQ_STEEL) || (tile[i].terrain == Terrain::DESTROYED_HQ))
                     {
                         tank->ammoPack[j].SetIsFire(false);
                         tank->ammoPack[j].SetPos(tank->GetPos());
@@ -476,6 +476,10 @@ void BattleScene::PlayerAmmoMapCollision(Boom* boom, Tank* tank, TILE_INFO* tile
                         tile[714].frameX += 2;
                         tile[741].frameX += 2;
                         tile[742].frameX += 2;
+                        tile[713].terrain = Terrain::DESTROYED_HQ;
+                        tile[714].terrain = Terrain::DESTROYED_HQ;
+                        tile[741].terrain = Terrain::DESTROYED_HQ;
+                        tile[742].terrain = Terrain::DESTROYED_HQ;
                         tank->ammoPack[j].SetIsFire(false);
                         tank->ammoPack[j].SetPos(tank->GetPos());
                         tank->ammoPack[j].SetBodySize(0);
@@ -558,7 +562,7 @@ void BattleScene::EnemyAmmoMapCollision(Boom* boom, Enemy* enemy, TILE_INFO* til
                     ammoPack[j]->SetPos(enemy->GetPos());
                     ammoPack[j]->SetBodySize(0);
                 }
-                else if ((tile[i].terrain == Terrain::STEEL) || (tile[i].terrain == Terrain::HQ_STEEL))
+                else if ((tile[i].terrain == Terrain::STEEL) || (tile[i].terrain == Terrain::HQ_STEEL) || (tile[i].terrain == Terrain::DESTROYED_HQ))
                 {
                     ammoPack[j]->SetIsFire(false);
                     ammoPack[j]->SetPos(enemy->GetPos());
@@ -575,6 +579,10 @@ void BattleScene::EnemyAmmoMapCollision(Boom* boom, Enemy* enemy, TILE_INFO* til
                     tile[714].frameX += 2;
                     tile[741].frameX += 2;
                     tile[742].frameX += 2;
+                    tile[713].terrain = Terrain::DESTROYED_HQ;
+                    tile[714].terrain = Terrain::DESTROYED_HQ;
+                    tile[741].terrain = Terrain::DESTROYED_HQ;
+                    tile[742].terrain = Terrain::DESTROYED_HQ;
                     ammoPack[j]->SetIsFire(false);
                     ammoPack[j]->SetPos(enemy->GetPos());
                     ammoPack[j]->SetBodySize(0);

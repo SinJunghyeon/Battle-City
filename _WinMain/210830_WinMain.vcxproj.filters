@@ -160,7 +160,9 @@
     <ClInclude Include="EndingScene.h">
       <Filter>MainGame\Scene</Filter>
     </ClInclude>
-    <ClInclude Include="DestroyCountManager.h" />
+    <ClInclude Include="DestroyCountManager.h">
+      <Filter>2D FrameWork\Manager</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="2D FrameWork">
