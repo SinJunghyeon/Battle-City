@@ -1,9 +1,8 @@
 #pragma once
 #include "Config.h"
 #include "GameEntity.h"
-#include "BattleScene.h"
+#include "StageScene.h"
 
-class StageScene;
 class Image;
 class EndingScene : public GameEntity
 {
@@ -21,9 +20,6 @@ private:
 	Image* arrowImage = nullptr;
 
 	Image* scoreNumber[4] = {};
-
-
-	BattleScene destroyEnemy;
 
 	StageScene stageScene;
 

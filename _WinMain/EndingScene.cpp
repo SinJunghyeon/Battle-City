@@ -1,6 +1,5 @@
 #include "EndingScene.h"
 #include "Image.h"
-#include "StageScene.h"
 #include "DestroyCountManager.h"
 
 HRESULT EndingScene::Init()
