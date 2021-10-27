@@ -29,6 +29,7 @@ public:
 	inline void SetPos(POINTFLOAT pos) { this->pos = pos; }
 
 	inline RECT GetShape() { return this->shape; }
+	inline void SetShape(RECT shape) { this->shape = shape; }
 	
 	// 21.10.18 WJ - GetMoveSpeed() 추가했습니다.
 	inline float GetMoveSpeed() { return this->moveSpeed; }

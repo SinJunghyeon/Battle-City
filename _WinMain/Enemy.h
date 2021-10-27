@@ -2,7 +2,6 @@
 #include "Config.h"
 #include "GameObject.h"
 #include "Ammo.h"
-#include "Config.h"
 #include "AmmoManager.h"
 
 enum class EnemyType { NORMAL, SPEED, RPD, SUPER };
@@ -31,6 +30,8 @@ private:
 	int hp = 1;
 	int elapsedTurn = 0;
 	int elapsedSpeed = 0;
+
+	Tank* player;
 
 public:
 	virtual HRESULT Init() override;
@@ -61,6 +62,8 @@ public:
 
 	inline EnemyType GetEnemyType() { return this->tankType; }
 	inline void SetEnemyType(EnemyType type) { this->tankType = type; }
+	// 플레이어의 정보를 가져오는 함수
+	inline void SetPlayer(Tank* player) { this->player = player; }
 
 	virtual ~Enemy() = default;
 };
