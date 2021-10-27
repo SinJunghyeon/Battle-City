@@ -369,8 +369,6 @@ void Enemy::Move(MoveDir dir)
 	}
 }
 
-}
-
 void Enemy::SetEnemyType(EnemyType type)
 {
 	tankType = type;

@@ -14,8 +14,8 @@ private:
 	int stageImageSizeX = 37 * 5;
 	int stageImageSizeY = 7 * 5;
 
-	int startTopPosY = -(WIN_SIZE_Y / 2);
-	int startBottomPosY = WIN_SIZE_Y + WIN_SIZE_Y / 2;
+	int startTopImagePosY = -(WIN_SIZE_Y / 2);
+	int startBottomImagePosY = WIN_SIZE_Y + WIN_SIZE_Y / 2;
 
 	bool isAnimation = true;
 

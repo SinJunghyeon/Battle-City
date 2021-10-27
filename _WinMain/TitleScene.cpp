@@ -3,7 +3,9 @@
 #include "Image.h"
 
 HRESULT TitleScene::Init()
-{	
+{
+	iconPosArr = 0;
+
 	// 배경 이미지
 	ImageManager::GetSingleton()->AddImage("Image/BattleCity/Title.bmp", WIN_SIZE_X, WIN_SIZE_Y);
 	backGround = ImageManager::GetSingleton()->FindImage("Image/BattleCity/Title.bmp");
@@ -19,21 +21,21 @@ void TitleScene::Update()
 	// 아래로 눌렀을 때 아이콘 아래로 이동
 	if (KeyManager::GetSingleton()->IsStayKeyDown(VK_DOWN))
 	{
-		iconPosNum++;
-		iconPosY[iconPosNum];
-		if (iconPosNum > 1)
+		iconPosArr++;
+		iconPosY[iconPosArr];
+		if (iconPosArr > 1)
 		{
-			iconPosNum = 0;
+			iconPosArr = 0;
 		}
 	}
 	// 위로 눌렀을 때 아이콘 위로 이동
 	else if (KeyManager::GetSingleton()->IsStayKeyDown(VK_UP))
 	{
-		iconPosNum--;
-		iconPosY[iconPosNum];
-		if (iconPosNum < 0)
+		iconPosArr--;
+		iconPosY[iconPosArr];
+		if (iconPosArr < 0)
 		{
-			iconPosNum = 1;
+			iconPosArr = 1;
 		}
 	}
 	// 타이틀 애니메이션
@@ -52,7 +54,7 @@ void TitleScene::Update()
 		if (KeyManager::GetSingleton()->IsOnceKeyDown(VK_RETURN))
 		{
 			SceneManager::GetSingleton()->ChangeScene("stageS");
-			iconPosNum = 0;
+			iconPosArr = 0;
 		}
 	}
 	// 탱크의 애니메이션 재생
@@ -75,7 +77,8 @@ void TitleScene::Render(HDC hdc)
 	if (bIsSceneIcon)
 	{
 		timeLate = (HANDLE)SetTimer(g_hWnd, 0, 100, NULL);	// 탱크 프레임 조정
-		selectIcon->Render(hdc, WIN_SIZE_X / 4, iconPosY[iconPosNum], iconFrameX, 0, 0.8f);
+		selectIcon->Render(hdc, WIN_SIZE_X / 4, iconPosY[iconPosArr], iconFrameX, 0, 0.8f);
+
 	}
 }
 

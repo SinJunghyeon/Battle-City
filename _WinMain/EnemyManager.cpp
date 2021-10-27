@@ -3,7 +3,7 @@
 
 HRESULT EnemyManager::Init()
 {
-	enemyMaxCount = 6;
+	enemyMaxCount = 18;
 	enemyCurrCount = 3;
 
 	enemySpawnDelay = 0;

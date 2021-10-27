@@ -60,7 +60,7 @@ private:
     Item* mpItem;
     RECT itemRect;
 
-    int elapsedChange = NULL;
+    int elapsedChange = NULL;;
     int elapsedCount = 1005;
 
     // UI
@@ -70,10 +70,10 @@ private:
     int destroyedEnemyCount = 0;
 
     Image* enemyIcon;           // ø°≥ πÃ ≈ ≈©
-    int enemyCount = 0;
+    int enemyCount;
 
     Image* P1LifeImage;
-    int playerLife = 2;
+    int playerLife=2;
 
     Image* numberText;
 
@@ -88,6 +88,7 @@ private:
     bool isHQDestroyed = false;
 
     int elapsedEnding = NULL;
+ 
 
 public:
     virtual HRESULT Init() override;

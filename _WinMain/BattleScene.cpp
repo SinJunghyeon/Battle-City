@@ -10,6 +10,28 @@
 
 HRESULT BattleScene::Init()
 {
+    // 아이템
+    elapsedChange = NULL;
+    elapsedCount = 1005;
+
+
+    UIposX = TILE_SIZE * TILE_COUNT_X + 120;
+    iconSize = 30;
+
+    playerLife = 2;
+
+    //파괴한 에너미 숫자
+    destroyedEnemyCount = 0;
+
+
+    //게임 오버 이미지 y값
+    gameOverPosY = WIN_SIZE_Y * 3 / 2;
+
+    // HQ 파괴 여부
+    isHQDestroyed = false;
+    elapsedEnding = NULL;
+
+
     // 타일 맵 이미지
     ImageManager::GetSingleton()->AddImage("Image/BattleCity/SamlpTile1.bmp", 220, 220, 11, 11, true, RGB(255, 0, 255));
     sampleImage = ImageManager::GetSingleton()->FindImage("Image/BattleCity/SamlpTile1.bmp");
@@ -91,7 +113,7 @@ HRESULT BattleScene::Init()
     ImageManager::GetSingleton()->AddImage("Image/BattleCity/Icon/player1Life.bmp", iconSize * 2, iconSize * 2, true, RGB(255, 0, 255));
     P1LifeImage = ImageManager::GetSingleton()->FindImage("Image/BattleCity/Icon/player1Life.bmp");
 
-    ImageManager::GetSingleton()->AddImage("Image/BattleCity/Text/Number.bmp", 40, 14, 5, 2,true,RGB(255,0,255));
+    ImageManager::GetSingleton()->AddImage("Image/BattleCity/Text/Number.bmp", 40, 14, 5, 2, true, RGB(255,0,255));
     numberText = ImageManager::GetSingleton()->FindImage("Image/BattleCity/Text/Number.bmp");
 
     ImageManager::GetSingleton()->AddImage("Image/BattleCity/Icon/StageFlag.bmp", iconSize * 2, iconSize * 1.5, true, RGB(255, 0, 255));
@@ -342,10 +364,10 @@ void BattleScene::Render(HDC hdc)
         switch (i % 2)
         {
         case 0:
-            enemyIcon->Render(hdc, UIposX, 15 + (i * 15));
+            enemyIcon->Render(hdc, UIposX, 50 + (i * 15));
             break;
         case 1:
-            enemyIcon->Render(hdc, UIposX + iconSize-5, 15 + (i - 1) * 15);
+            enemyIcon->Render(hdc, UIposX + iconSize-5, 50 + (i - 1) * 15);
             break;
         default:
             break;
@@ -353,24 +375,24 @@ void BattleScene::Render(HDC hdc)
     }
 
     //라이프 UI
-    P1LifeImage->Render(hdc, UIposX + iconSize / 2, WIN_SIZE_Y / 2);
+    P1LifeImage->Render(hdc, UIposX + iconSize / 2, WIN_SIZE_Y * 3 / 5);
 
     if (playerLife % 10 < 5)  // 1의 자리(5미만)
     {
-        numberText->Render(hdc, UIposX + iconSize * 2, WIN_SIZE_Y / 2 + iconSize / 2, playerLife % 5, 0, 4.0f);
+        numberText->Render(hdc, UIposX + iconSize * 3 / 2, WIN_SIZE_Y * 3 / 5 + iconSize / 2, playerLife % 5, 0, 3.0f);
     }
     else if (playerLife % 10 >= 5)  // 1의 자리(5이상)
     {
-        numberText->Render(hdc, UIposX + iconSize * 2, WIN_SIZE_Y / 2 + iconSize / 2, playerLife % 5, 1, 4.0f);
+        numberText->Render(hdc, UIposX + iconSize * 3 / 2, WIN_SIZE_Y * 3 / 5 + iconSize / 2, playerLife % 5, 1, 3.0f);
     }
 
     if (playerLife / 10 >= 1 && playerLife / 10 < 5)   // 10의 자리 (50미만)
     {
-        numberText->Render(hdc, UIposX + iconSize/ 2 + 10, WIN_SIZE_Y / 2 + iconSize / 2, numberText->GetCurrFrameX() / 10, 0, 4.0f);
+        numberText->Render(hdc, UIposX + iconSize/ 2, WIN_SIZE_Y * 3 / 5 + iconSize / 2, numberText->GetCurrFrameX() / 10, 0, 3.0f);
     }
     else if (playerLife / 10 >= 5)   // 10의 자리 (50이상)
     {
-        numberText->Render(hdc, UIposX + iconSize/ 2 + 10, WIN_SIZE_Y / 2 + iconSize / 2, (numberText->GetCurrFrameX() / 10) % 5, 1, 4.0f);
+        numberText->Render(hdc, UIposX + iconSize/ 2, WIN_SIZE_Y * 3 / 5 + iconSize / 2, (numberText->GetCurrFrameX() / 10) % 5, 1, 3.0f);
     }
     // -> img->GetCurrFrameX, GetCurrFrameY를 사용하여 변수 줄이기
 
