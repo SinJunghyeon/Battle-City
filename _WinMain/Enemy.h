@@ -2,7 +2,6 @@
 #include "Config.h"
 #include "GameObject.h"
 #include "Ammo.h"
-#include "Config.h"
 #include "AmmoManager.h"
 
 enum class EnemyType { NORMAL, SPEED, RPD, SUPER };
@@ -32,6 +31,8 @@ private:
 	int hp = 1;
 	int elapsedTurn = 0;
 	int elapsedSpeed = 0;
+
+	Tank* player;
 
 public:
 	virtual HRESULT Init() override;

@@ -1,6 +1,8 @@
 #include "Enemy.h"
 #include "Image.h"
 
+#include "Tank.h"
+
 /*
 	TO DO LIST
 	 1. 방향 전환 자연스럽게 하기
@@ -65,15 +67,6 @@ void Enemy::Update()
 			}
 		}
 	}
-
-	fireTimer++;
-	if (fireTimer >= fireDelay)
-	{
-		ammoMgr.Fire();
-		fireTimer = 0;
-		fireDelay = rand() % 100;
-	}
-	ammoMgr.Update();
 
 	if (!isAlive && (tankState == ecTankState::DIE))
 	{
@@ -190,37 +183,6 @@ void Enemy::Update()
 		shape.right = shape.left + bodySize - 5;
 		shape.bottom = shape.top + bodySize - 5;
 	}
-
-	//// 게임 화면 충돌 Fix List
-	//switch (moveDir)
-	//{
-	//case MoveDir::RIGHT:
-	//	if (shape.right >= 613)
-	//	{
-	//		isCollision = true;
-	//	}
-	//	break;
-	//case MoveDir::LEFT:
-	//	if (shape.left <= 140)
-	//	{
-	//		isCollision = true;
-	//	}
-	//	break;
-	//case MoveDir::UP:
-	//	if (shape.top <= 100)
-	//	{
-	//		isCollision = true;
-	//	}
-	//	break;
-	//case MoveDir::DOWN:
-	//	if (shape.bottom >= 605)
-	//	{
-	//		isCollision = true;
-	//	}
-	//	break;
-	//default:
-	//	break;
-	//}
 }
 
 void Enemy::Render(HDC hdc)

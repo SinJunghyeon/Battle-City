@@ -24,7 +24,7 @@ HRESULT MainGame::Init()
 	SceneManager::GetSingleton()->AddScene("endingS", new EndingScene());
 	SceneManager::GetSingleton()->AddScene("gameoverS", new GameOverScene());
 
-	SceneManager::GetSingleton()->ChangeScene("battleS");
+	SceneManager::GetSingleton()->ChangeScene("titleS");
 
 	//srand((unsigned int) time(nullptr));
 

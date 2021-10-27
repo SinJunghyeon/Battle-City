@@ -6,6 +6,7 @@ HRESULT StageScene::Init()
 {
 	ImageManager::GetSingleton()->AddImage("Image/BattleCity/mapImage.bmp", WIN_SIZE_X, WIN_SIZE_Y);
 	background = ImageManager::GetSingleton()->FindImage("Image/BattleCity/mapImage.bmp");
+	background2 = ImageManager::GetSingleton()->FindImage("Image/BattleCity/mapImage.bmp");
 
 	ImageManager::GetSingleton()->AddImage("Image/BattleCity/Text/Stage.bmp", stageImageSizeX, stageImageSizeY);
 	stageImage = ImageManager::GetSingleton()->FindImage("Image/BattleCity/Text/Stage.bmp");
@@ -19,11 +20,12 @@ HRESULT StageScene::Init()
 void StageScene::Update()
 {
 	// 처음 배경 이미지 올라오게끔 하고 배경 이미지 중간에 왔을때 멈춤
-	if (isAnimation)
+	if(isAnimation)
 	{
-		downFrameY -= WIN_SIZE_Y/60;
-
-		if (downFrameY == WIN_SIZE_Y / 2)
+		startBottomPosY -= 10;
+		startTopPosY += 10;
+	
+		if (startBottomPosY == WIN_SIZE_Y*3/4 && startTopPosY== WIN_SIZE_Y*1/4)
 		{
 			isAnimation = false;
 		}
@@ -33,20 +35,20 @@ void StageScene::Update()
 	{
 		isAnimation = true;
 	}
-	// 배경 이미지 다 올라 갔을 때 씬 전환, 배경 이미지 아래로 위치 설정
-	if (downFrameY <= WIN_SIZE_Y / 2 - WIN_SIZE_Y)
+	// 배경 이미지 다 올라 갔을 때 씬 전환
+	if (startBottomPosY <= WIN_SIZE_Y / 2 - WIN_SIZE_Y)
 	{
-		SceneManager::GetSingleton()->ChangeScene("battleTest2");
-		downFrameY = WIN_SIZE_Y + WIN_SIZE_Y / 2;
+		SceneManager::GetSingleton()->ChangeScene("battleS");
 	}
 
 }
 
 void StageScene::Render(HDC hdc)
 {
-	background->Render(hdc, WIN_SIZE_X / 2, downFrameY);
+	background->Render(hdc, WIN_SIZE_X / 2, startBottomPosY);
+	background2->Render(hdc, WIN_SIZE_X / 2, startTopPosY);
 
-	if (downFrameY == WIN_SIZE_Y / 2)
+	if (!isAnimation)
 	{
 		stageImage->Render(hdc, WIN_SIZE_X / 2, WIN_SIZE_Y / 2);
 		stageNum->Render(hdc, WIN_SIZE_X / 2 + stageImageSizeX*2/3, WIN_SIZE_Y / 2, stageN, 0);
@@ -55,4 +57,7 @@ void StageScene::Render(HDC hdc)
 
 void StageScene::Release()
 {
+	//배경 이미지 초기 위치로 설정
+	startTopPosY = -(WIN_SIZE_Y / 2);
+	startBottomPosY = WIN_SIZE_Y + WIN_SIZE_Y / 2;
 }
