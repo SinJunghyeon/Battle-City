@@ -70,7 +70,6 @@ HRESULT BattleScene::Init()
     player->SetPos(playerSpawnPos);
     player->SetTileMap(tileInfo);
     playerTankRect = player->GetShape();
-    player->SetEnemyManager(enemyMgr);
     player->SetEnemy(vecEnemies);
 
     // 적이 플레이어의 정보 가져오기
@@ -78,6 +77,7 @@ HRESULT BattleScene::Init()
     {
         vecEnemies[i]->SetPlayer(player);
     }
+
     // 아이템
     mpItem = new Item;
     mpItem->Init();
@@ -233,6 +233,8 @@ void BattleScene::Update()
 
     // 미사일 탱크 접촉
     AmmoTankCollision(boomEffect, player);
+
+    //EnemyCollision();
 
     //테스트
     if (KeyManager::GetSingleton()->IsOnceKeyDown(VK_LBUTTON))
@@ -578,6 +580,33 @@ void BattleScene::EnemyAmmoMapCollision(Boom* boom, Enemy* enemy, TILE_INFO* til
         }
     }
 }
+
+//void BattleScene::EnemyCollision()
+//{
+//    for (int i = 0; i < vecEnemies.size(); ++i)
+//    {
+//        for (int j = 0; j < vecEnemies.size(); ++j)
+//        {
+//            if (i != j)
+//            {
+//                POINTFLOAT buffPos1 = vecEnemies[i]->GetPos();
+//                POINTFLOAT buffPos2 = vecEnemies[j]->GetPos();
+//                RECT enemyRect1 = vecEnemies[i]->GetShape();
+//                RECT enemyRect2 = vecEnemies[j]->GetShape();
+//                RECT buffRect1 = enemyRect1;
+//                RECT buffRect2 = enemyRect2;
+//                if (IntersectRect(&tempRect, &enemyRect1, &enemyRect2))
+//                {
+//                    cout << "c" << endl;
+//                    vecEnemies[i]->SetPos(buffPos1);
+//                    vecEnemies[i]->SetShape(buffRect1);
+//                    vecEnemies[j]->SetPos(buffPos2);
+//                    vecEnemies[j]->SetShape(buffRect2);
+//                }
+//            }
+//        }
+//    }
+//}
 
 void BattleScene::AmmoTankCollision(Boom* boom, Tank* player)
 {

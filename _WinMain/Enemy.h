@@ -2,7 +2,6 @@
 #include "Config.h"
 #include "GameObject.h"
 #include "Ammo.h"
-#include "Config.h"
 #include "AmmoManager.h"
 
 enum class EnemyType { NORMAL, SPEED, RPD, SUPER };

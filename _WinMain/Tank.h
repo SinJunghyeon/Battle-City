@@ -3,7 +3,6 @@
 #include "GameObject.h"
 #include "Ammo.h"
 #include "Image.h"
-#include "EnemyManager.h"
 
 class Item;
 class Tank : public GameObject
@@ -32,7 +31,6 @@ public:
 	int elapsedSpawn = NULL;
 	int spawnCount = NULL;
 
-	EnemyManager* enemyManager;
 	vector<Enemy*> enemies;
 
 public:
@@ -71,7 +69,6 @@ public:
 	// 타일 정보를 받아오는 함수
 	inline void SetTileMap(TILE_INFO* tile) { this->tile = tile; }
 	// 적의 정보를 받아오는 함수
-	inline void SetEnemyManager(EnemyManager* enemyManager) { this->enemyManager = enemyManager; }
 	inline void SetEnemy(vector<Enemy*> enemies) { this->enemies = enemies; }
 
 	Tank();

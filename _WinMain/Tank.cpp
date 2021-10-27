@@ -1,5 +1,7 @@
 #include "Tank.h"
 
+#include "Enemy.h"
+
 HRESULT Tank::Init()
 {
 	//스폰 이미지
@@ -360,13 +362,13 @@ void Tank::Move(MoveDir dir)
 		}
 	}
 
-	enemies = enemyManager->GetEnemies();
 	for (int i = 0; i < enemies.size(); ++i)
 	{
+		
 		RECT enemyRect = enemies[i]->GetShape();
 		if (IntersectRect(&tempRect, &shape, &enemyRect))
 		{
-			cout << "a" << endl;
+			cout << "플레이어탱크 적탱크랑 접촉! !" << endl;
 			pos = buffPos;
 			shape = buffRect;
 		}
