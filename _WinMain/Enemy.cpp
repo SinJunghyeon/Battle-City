@@ -49,6 +49,9 @@ HRESULT Enemy::Init()
 
 void Enemy::Update()
 {
+	RECT buffRect = shape;
+	POINTFLOAT buffPos = pos;
+
 	if (!isAlive && (tankState != ecTankState::DIE))
 	{
 		elapsedSpawn++;
@@ -63,7 +66,6 @@ void Enemy::Update()
 				if (spawnCount >= 3)
 				{
 					isAlive = true;
-					TankAbilitySetting();
 				}
 			}
 		}
@@ -79,7 +81,6 @@ void Enemy::Update()
 
 	if (isAlive && tankState == ecTankState::MOVE)
 	{
-		TankAbilitySetting();
 		Move(moveDir);
 		MoveFrame();
 		// 충돌 시 방향 전환
@@ -88,22 +89,34 @@ void Enemy::Update()
 			switch (moveDir)
 			{
 			case MoveDir::RIGHT:
-				moveSpeed = 0.1f;
+				moveSpeed = 0.0f;
+				pos = buffPos;
+				shape = buffRect;
 				elapsedTurn++;
 				if (elapsedTurn >= 30)
 				{
-					pos.x -= 2;
 					while (moveDir == MoveDir::RIGHT)
 					{
 						moveDir = (MoveDir)(rand() % 4);
 					}
+
+					if(tankType == EnemyType::SPEED)
+					{
+						moveSpeed = 100.0f;
+					}
+					else
+					{
+						moveSpeed = 50.0f;
+					}
+
 					isCollision = false;
-					TankAbilitySetting();
 					elapsedTurn = 0;
 				}
 				break;
 			case MoveDir::LEFT:
-				moveSpeed = 0.1f;
+				moveSpeed = 0.0f;
+				pos = buffPos;
+				shape = buffRect;
 				elapsedTurn++;
 				if (elapsedTurn >= 30)
 				{
@@ -112,13 +125,22 @@ void Enemy::Update()
 					{
 						moveDir = (MoveDir)(rand() % 4);
 					}
+					if (tankType == EnemyType::SPEED)
+					{
+						moveSpeed = 100.0f;
+					}
+					else
+					{
+						moveSpeed = 50.0f;
+					}
 					isCollision = false;
-					TankAbilitySetting();
 					elapsedTurn = 0;
 				}
 				break;
 			case MoveDir::UP:
-				moveSpeed = 0.1f;
+				moveSpeed = 0.0f;
+				pos = buffPos;
+				shape = buffRect;
 				elapsedTurn++;
 				if (elapsedTurn >= 30)
 				{
@@ -127,13 +149,22 @@ void Enemy::Update()
 					{
 						moveDir = (MoveDir)(rand() % 4);
 					}
+					if (tankType == EnemyType::SPEED)
+					{
+						moveSpeed = 100.0f;
+					}
+					else
+					{
+						moveSpeed = 50.0f;
+					}
 					isCollision = false;
-					TankAbilitySetting();
 					elapsedTurn = 0;
 				}
 				break;
 			case MoveDir::DOWN:
-				moveSpeed = 0.1f;
+				moveSpeed = 0.0f;
+				pos = buffPos;
+				shape = buffRect;
 				elapsedTurn++;
 				if (elapsedTurn >= 30)
 				{
@@ -142,8 +173,15 @@ void Enemy::Update()
 					{
 						moveDir = (MoveDir)(rand() % 4);
 					}
+					if (tankType == EnemyType::SPEED)
+					{
+						moveSpeed = 100.0f;
+					}
+					else
+					{
+						moveSpeed = 50.0f;
+					}
 					isCollision = false;
-					TankAbilitySetting();
 					elapsedTurn = 0;
 				}
 				break;
@@ -154,17 +192,17 @@ void Enemy::Update()
 		}
 
 		// moveSpeed가 0.1로 고정되는 오류 방지
-		if (moveSpeed == 0.1f)
+		if (moveSpeed == 0.0f)
 		{
 			elapsedSpeed++;
-			if (moveSpeed != 0.1f)
+			if (moveSpeed != 0.0f)
 			{
 				elapsedSpeed = 0;
 			}
 
 			if (elapsedSpeed >= 50)
 			{
-				TankAbilitySetting();
+				//TankAbilitySetting();
 			}
 		}
 
@@ -292,33 +330,6 @@ void Enemy::MoveFrame()
 	}
 }
 
-void Enemy::TankAbilitySetting()
-{
-	switch (tankType)
-	{
-	case EnemyType::NORMAL:
-		moveSpeed = 50.0f;
-		img->SetCurrFrameY(0);
-		break;
-	case EnemyType::SPEED:
-		moveSpeed = 100.0f;
-		img->SetCurrFrameY(1);
-		break;
-	case EnemyType::RPD:
-		moveSpeed = 50.0f;
-		img->SetCurrFrameY(2);
-		fireDelay = 1;
-		break;
-	case EnemyType::SUPER:
-		moveSpeed = 100.0f;
-		img->SetCurrFrameY(3);
-		hp = 3;
-		break;
-	default:
-		break;
-	}
-}
-
 void Enemy::Move(MoveDir dir)
 {
 	POINTFLOAT buffPos;  // 현재 좌표를 백업하기 위한 버퍼
@@ -350,13 +361,34 @@ void Enemy::Move(MoveDir dir)
 			}
 		//}
 	}
+}
 
-	RECT playerTankShape = player->GetShape();
-	if (IntersectRect(&tempRect, &shape, &playerTankShape))
+void Enemy::SetEnemyType(EnemyType type)
+{
+	tankType = type;
+
+	switch (tankType)
 	{
-		cout << "적탱크 플레이어탱크랑 접촉! !" << endl;
-		pos = buffPos;
-		shape = buffRect;
-		isCollision = true;
+	case EnemyType::NORMAL:
+		moveSpeed = 50.0f;
+		img->SetCurrFrameY(0);
+		break;
+	case EnemyType::SPEED:
+		moveSpeed = 100.0f;
+		img->SetCurrFrameY(1);
+		break;
+	case EnemyType::RPD:
+		moveSpeed = 50.0f;
+		img->SetCurrFrameY(2);
+		fireDelay = 50;
+		ammoMgr.SetAmmoSpeed(600.0f);
+		break;
+	case EnemyType::SUPER:
+		moveSpeed = 50.0f;
+		img->SetCurrFrameY(3);
+		hp = 3;
+		break;
+	default:
+		break;
 	}
 }

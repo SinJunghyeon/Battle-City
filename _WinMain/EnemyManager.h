@@ -15,7 +15,6 @@ private:
 	int enemySpawnDelay;
 
 	vector<POINTFLOAT> enemySpawnPos;
-	//POINTFLOAT enemySpawnPos[6];
 
 public:
 	virtual HRESULT Init() override;
