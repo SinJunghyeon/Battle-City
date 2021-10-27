@@ -19,6 +19,7 @@ struct Boom
     POINTFLOAT boomPos = {};
 };
 
+class StageScene;
 class GameObject;
 class EnemyManager;
 class Tank;
@@ -55,28 +56,26 @@ private:
     // 디버그용
     POINTFLOAT tempPos;
 
-    //아이템
+    // 아이템
     Item* mpItem;
     RECT itemRect;
 
     int elapsedChange = NULL;
-    int elapsedCount = 10000;
+    int elapsedCount = 1005;
 
     // UI
     int UIposX = TILE_SIZE * TILE_COUNT_X + 100;
     int destroyedEnemy[4] = {}; // 1 : 일반형  2 : 속도형   3 : 속사형   4 : 슈퍼탱크
     int iconSize = 30;
-    int currEnemyCount=0;
+    int destroyedEnemyCount = 0;
 
-    Image* enemyIcon;           //에너미 탱크
+    Image* enemyIcon;           // 에너미 탱크
     int enemyCount = 0;
 
-    Image* P1Life;
+    Image* P1LifeImage;
     int playerLife = 2;
-    int playerLife5 = 0;    //5~9까지 출력
-    int playerLife10 = 0;   //10의 자리
 
-    Image* UIText;
+    Image* numberText;
 
     Image* stageFlag;
     StageScene stagescene;
@@ -86,11 +85,14 @@ private:
     POINT gameOverImgSize;
     int gameOverPosY = WIN_SIZE_Y*3/2;
 
+
+    int elapsedEnding = NULL;
+
 public:
-    HRESULT Init();
-    void Update();
-    void Render(HDC hdc);	// 오버로딩
-    void Release();
+    virtual HRESULT Init() override;
+    virtual void Update() override;
+    virtual void Render(HDC hdc) override;
+    virtual void Release() override;
 
     void Load(int loadIndex = 0);
 
@@ -98,10 +100,12 @@ public:
     void EnemyAmmoMapCollision(Boom* boom, Enemy* enemy, TILE_INFO* tile);
     void AmmoTankCollision(Boom* boom, Tank* player);
     void CollisionItem();
-    void FunctionItem();
+    void FunctionItem(Boom* boom);
 
     void BoomAnimation(Boom* boom, BoomType type, POINTFLOAT pos);
 
     inline int GetDestroyedEnemy(int arr) { return destroyedEnemy[arr]; }
+
+    virtual ~BattleTest2() = default;
 };
 

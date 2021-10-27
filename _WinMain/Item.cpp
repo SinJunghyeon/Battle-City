@@ -18,8 +18,8 @@
 
 HRESULT Item::Init()
 {
-	pos.x = 280;
-	pos.y = 386;
+	pos.x = 280.0f;
+	pos.y = 386.0f;
 
 	bodySize = 32;
 
@@ -30,12 +30,10 @@ HRESULT Item::Init()
 
 	//아이템 랜덤 설정 0 : 헬멧, 1 : 시계, 2 : 삽, 3 : 별, 4 : 수류탄, 5 : 탱크
 	srand(time(NULL));
-	selectItem = rand() % 6;
-	//selectItem = 0;
+	//currItem = rand() % 6;
+	currItem = 3;
 
 	bExistItem = true;
-
-	functionItem = ecFunctionItem::NOTHING;
 
 	//헬멧 이미지
 	ImageManager::GetSingleton()->AddImage("Image/BattleCity/Item/Item1.bmp", bodySize, bodySize, 1, 1, true, RGB(255, 0, 255));
@@ -97,8 +95,8 @@ void Item::Update()
 		if (tempElapsedCount >= 100)
 		{
 			bExistItem = !bExistItem;
-			selectItem = rand() % 6;
-			//selectItem = 5;
+			//currItem = rand() % 6;
+			currItem = 3;
 
 			tempElapsedCount = 0;
 		}
@@ -111,7 +109,7 @@ void Item::Render(HDC hdc)
 
 	if (bExistItem)
 	{
-		switch (selectItem)
+		switch (currItem)
 		{
 		case 0:
 			mpImgHelmet->Render(hdc, pos.x, pos.y);
@@ -138,7 +136,7 @@ void Item::Render(HDC hdc)
 			functionItem = ecFunctionItem::TANK;
 			break;
 		default:
-			selectItem = rand() % 6;
+			currItem = rand() % 6;
 		}
 	}
 }

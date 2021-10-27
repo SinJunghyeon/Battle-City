@@ -7,8 +7,8 @@
 
 HRESULT Ammo::Init()
 {
-	pos.x = 0.0f;
-	pos.y = 0.0f;
+	pos.x = 250.0f;
+	pos.y = 540.0f;
 
 	bodySize = 8;
 
@@ -18,9 +18,6 @@ HRESULT Ammo::Init()
 	shape.bottom = 0;
 
 	moveSpeed = 300.0f;
-
-	pPlayerTank = new Tank;
-	pEnemyTank = new Enemy;
 
 	isFire = false;
 
@@ -90,9 +87,5 @@ void Ammo::Release()
 }
 
 Ammo::Ammo()
-{
-}
-
-Ammo::~Ammo()
 {
 }

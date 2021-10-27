@@ -91,20 +91,6 @@ void TilemapToolScene::Update()
         }
     }
 
-
-    //for (int i = 0; i < SAMPLE_TILE_COUNT_X * SAMPLE_TILE_COUNT_Y; i++)
-    //{
-    //    if (PtInRect(&(sampleTileInfo[i].rc), g_ptMouse))
-    //    {
-    //        if (KeyManager::GetSingleton()->IsOnceKeyDown(VK_LBUTTON))
-    //        {
-    //            selectedSampleTile.frameX = sampleTileInfo[i].frameX;
-    //            selectedSampleTile.frameY = sampleTileInfo[i].frameY;
-    //            break;
-    //        }
-    //    }
-    //}
-
     // 메인영역에서 선택된 샘플 정보로 수정
     for (int i = 0; i < TILE_COUNT_X * TILE_COUNT_Y; i++)
     {
@@ -191,6 +177,7 @@ void TilemapToolScene::Render(HDC hdc)
 
 void TilemapToolScene::Release()
 {
+    //21.10.26 누수 확인!
 }
 
 void TilemapToolScene::Save(int saveIndex)

@@ -32,25 +32,16 @@
     <ClCompile Include="GameEntity.cpp">
       <Filter>2D FrameWork</Filter>
     </ClCompile>
-    <ClCompile Include="MainGame.cpp">
-      <Filter>MainGame</Filter>
-    </ClCompile>
     <ClCompile Include="Ammo.cpp">
       <Filter>MainGame\Ammo</Filter>
     </ClCompile>
     <ClCompile Include="AmmoManager.cpp">
       <Filter>MainGame\Ammo</Filter>
     </ClCompile>
-    <ClCompile Include="AStarScene.cpp">
-      <Filter>MainGame\Scene</Filter>
-    </ClCompile>
     <ClCompile Include="BattleScene.cpp">
       <Filter>MainGame\Scene</Filter>
     </ClCompile>
     <ClCompile Include="LoadingScene.cpp">
-      <Filter>MainGame\Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="PixelCollisionScene.cpp">
       <Filter>MainGame\Scene</Filter>
     </ClCompile>
     <ClCompile Include="TilemapToolScene.cpp">
@@ -59,17 +50,11 @@
     <ClCompile Include="TitleScene.cpp">
       <Filter>MainGame\Scene</Filter>
     </ClCompile>
-    <ClCompile Include="BattleTest.cpp">
-      <Filter>MainGame\Scene\실험방</Filter>
-    </ClCompile>
     <ClCompile Include="Enemy.cpp">
       <Filter>MainGame\Enemy</Filter>
     </ClCompile>
     <ClCompile Include="EnemyManager.cpp">
       <Filter>MainGame\Enemy</Filter>
-    </ClCompile>
-    <ClCompile Include="EnemyTank.cpp">
-      <Filter>MainGame\Enemy\실헝방</Filter>
     </ClCompile>
     <ClCompile Include="Item.cpp">
       <Filter>MainGame\Item</Filter>
@@ -78,16 +63,19 @@
       <Filter>MainGame\Player</Filter>
     </ClCompile>
     <ClCompile Include="BattleTest2.cpp">
-      <Filter>MainGame\Scene\실험방</Filter>
+      <Filter>MainGame\Scene</Filter>
     </ClCompile>
     <ClCompile Include="StageScene.cpp">
-      <Filter>MainGame\Scene\실험방</Filter>
-    </ClCompile>
-    <ClCompile Include="EndingScene.cpp">
-      <Filter>MainGame\Scene\실험방</Filter>
+      <Filter>MainGame\Scene</Filter>
     </ClCompile>
     <ClCompile Include="GameOverScene.cpp">
-      <Filter>MainGame\Scene\실험방</Filter>
+      <Filter>MainGame\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="EndingScene.cpp">
+      <Filter>MainGame\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="MainGame.cpp">
+      <Filter>MainGame</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -133,16 +121,10 @@
     <ClInclude Include="AmmoManager.h">
       <Filter>MainGame\Ammo</Filter>
     </ClInclude>
-    <ClInclude Include="AStarScene.h">
-      <Filter>MainGame\Scene</Filter>
-    </ClInclude>
     <ClInclude Include="BattleScene.h">
       <Filter>MainGame\Scene</Filter>
     </ClInclude>
     <ClInclude Include="LoadingScene.h">
-      <Filter>MainGame\Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="PixelCollisionScene.h">
       <Filter>MainGame\Scene</Filter>
     </ClInclude>
     <ClInclude Include="TilemapToolScene.h">
@@ -151,17 +133,11 @@
     <ClInclude Include="TitleScene.h">
       <Filter>MainGame\Scene</Filter>
     </ClInclude>
-    <ClInclude Include="BattleTest.h">
-      <Filter>MainGame\Scene\실험방</Filter>
-    </ClInclude>
     <ClInclude Include="Enemy.h">
       <Filter>MainGame\Enemy</Filter>
     </ClInclude>
     <ClInclude Include="EnemyManager.h">
       <Filter>MainGame\Enemy</Filter>
-    </ClInclude>
-    <ClInclude Include="EnemyTank.h">
-      <Filter>MainGame\Enemy\실헝방</Filter>
     </ClInclude>
     <ClInclude Include="Item.h">
       <Filter>MainGame\Item</Filter>
@@ -179,16 +155,16 @@
       <Filter>MainGame\Player</Filter>
     </ClInclude>
     <ClInclude Include="BattleTest2.h">
-      <Filter>MainGame\Scene\실험방</Filter>
+      <Filter>MainGame\Scene</Filter>
     </ClInclude>
     <ClInclude Include="StageScene.h">
-      <Filter>MainGame\Scene\실험방</Filter>
-    </ClInclude>
-    <ClInclude Include="EndingScene.h">
-      <Filter>MainGame\Scene\실험방</Filter>
+      <Filter>MainGame\Scene</Filter>
     </ClInclude>
     <ClInclude Include="GameOverScene.h">
-      <Filter>MainGame\Scene\실험방</Filter>
+      <Filter>MainGame\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="EndingScene.h">
+      <Filter>MainGame\Scene</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -212,12 +188,6 @@
     </Filter>
     <Filter Include="MainGame\Scene">
       <UniqueIdentifier>{26403387-866e-4d5c-b507-d2006eb2427b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="MainGame\Scene\실험방">
-      <UniqueIdentifier>{9bb65b2f-afc9-43bb-8b29-1acfdc8153c2}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="MainGame\Enemy\실헝방">
-      <UniqueIdentifier>{116ed9cd-684b-453c-b4c4-8e6bcd3f7322}</UniqueIdentifier>
     </Filter>
     <Filter Include="MainGame\Item">
       <UniqueIdentifier>{5c1be100-d096-4c6b-a4ef-01383077ef47}</UniqueIdentifier>

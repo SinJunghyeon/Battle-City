@@ -10,28 +10,22 @@ private:
 	vector<Ammo*> vecAmmos;
 	vector<Ammo*>::iterator itAmmos;
 
-	int ammoMaxCount;
+	int ammoMaxCount = 1;
 
-	GameObject* owner;		// 상속을 통한 업캐스팅 사용
-
-	/*
-		GameObject
-
-		Enemy			Tank
-
-		Orc		Dragon		Warrior ...
-	*/
+	GameObject* owner = nullptr;
 
 public:
-	HRESULT Init();
-	void Update();
-	void Render(HDC hdc);
-	void Release();
+	virtual HRESULT Init() override;
+	virtual void Update() override;
+	virtual void Render(HDC hdc) override;
+	virtual void Release() override;
 
 	void Fire();
 
 	inline void SetOwner(GameObject* owner) { this->owner = owner; }
 
 	inline vector<Ammo*> GetAmmos() { return this->vecAmmos; }
+
+	virtual ~AmmoManager() = default;
 };
 
