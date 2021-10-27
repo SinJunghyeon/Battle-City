@@ -10,26 +10,26 @@
 
 HRESULT BattleScene::Init()
 {
-    // Å¸ÀÏ ¸Ê ÀÌ¹ÌÁö
+    // íƒ€ì¼ ë§µ ì´ë¯¸ì§€
     ImageManager::GetSingleton()->AddImage("Image/BattleCity/SamlpTile1.bmp", 220, 220, 11, 11, true, RGB(255, 0, 255));
     sampleImage = ImageManager::GetSingleton()->FindImage("Image/BattleCity/SamlpTile1.bmp");
     if (sampleImage == nullptr)
     {
-        cout << "Image/BattleCity/SamlpTile1.bmp ·Îµå ½ÇÆĞ!!" << endl;
+        cout << "Image/BattleCity/SamlpTile1.bmp ë¡œë“œ ì‹¤íŒ¨!!" << endl;
         return E_FAIL;
     }
 
-    // ¹è°æ ÀÌ¹ÌÁö
+    // ë°°ê²½ ì´ë¯¸ì§€
     ImageManager::GetSingleton()->AddImage("Image/BattleCity/mapImage.bmp", WIN_SIZE_X, WIN_SIZE_Y);
     backGround = ImageManager::GetSingleton()->FindImage("Image/BattleCity/mapImage.bmp");
     if (backGround == nullptr)
     {
-        cout << "Image/BattleCity/mapImage.bmp ÆÄÀÏ ·Îµå¿¡ ½ÇÆĞÇß´Ù." << endl;
+        cout << "Image/BattleCity/mapImage.bmp íŒŒì¼ ë¡œë“œì— ì‹¤íŒ¨í–ˆë‹¤." << endl;
 
         return E_FAIL;
     }
 
-    // Æø¹ß ÀÌ¹ÌÁö
+    // í­ë°œ ì´ë¯¸ì§€
     ImageManager::GetSingleton()->AddImage("Image/BattleCity/Effect/Boom_Effect.bmp", 48, 16, 3, 1, true, RGB(255, 0, 255));
     ImageManager::GetSingleton()->AddImage("Image/BattleCity/Effect/Big_Boom_Effect.bmp", 64, 32, 2, 1, true, RGB(255, 0, 255));
 
@@ -38,7 +38,7 @@ HRESULT BattleScene::Init()
         boomEffect[i].boom = ImageManager::GetSingleton()->FindImage("Image/BattleCity/Effect/Boom_Effect.bmp");
         if (boomEffect[i].boom == nullptr)
         {
-            cout << "Image/BattleCity/Effect/Boom_Effect.bmp ÆÄÀÏ ·Îµå¿¡ ½ÇÆĞÇß´Ù." << endl;
+            cout << "Image/BattleCity/Effect/Boom_Effect.bmp íŒŒì¼ ë¡œë“œì— ì‹¤íŒ¨í–ˆë‹¤." << endl;
 
             return E_FAIL;
         }
@@ -46,17 +46,17 @@ HRESULT BattleScene::Init()
         boomEffect[i].bigBoom = ImageManager::GetSingleton()->FindImage("Image/BattleCity/Effect/Big_Boom_Effect.bmp");
         if (boomEffect[i].bigBoom == nullptr)
         {
-            cout << "Image/BattleCity/Effect/Big_Boom_Effect.bmp ÆÄÀÏ ·Îµå¿¡ ½ÇÆĞÇß´Ù." << endl;
+            cout << "Image/BattleCity/Effect/Big_Boom_Effect.bmp íŒŒì¼ ë¡œë“œì— ì‹¤íŒ¨í–ˆë‹¤." << endl;
 
             return E_FAIL;
         }
     }
 
-    // Å¸ÀÏ¸Ê ·Îµå
+    // íƒ€ì¼ë§µ ë¡œë“œ
     Load();
 
 
-    // Àû ¸Å´ÏÀú
+    // ì  ë§¤ë‹ˆì €
     enemyMgr = new EnemyManager;
     enemyMgr->Init();
     enemyMgr->SetTileMapManager(tileInfo);
@@ -64,7 +64,7 @@ HRESULT BattleScene::Init()
     vecEnemies.resize(enemyMgr->GetEnemyMaxCount());
 
 
-    // ÇÃ·¹ÀÌ¾î ÅÊÅ©
+    // í”Œë ˆì´ì–´ íƒ±í¬
     player = new Tank;
     player->Init();
     playerSpawnPos = GetSpawnPos(tileInfo, ObjectType::PLAYER).back();
@@ -72,7 +72,7 @@ HRESULT BattleScene::Init()
     player->SetTileMap(tileInfo);
     playerTankRect = player->GetShape();
 
-    // ¾ÆÀÌÅÛ
+    // ì•„ì´í…œ
     mpItem = new Item;
     mpItem->Init();
     itemRect = mpItem->GetShape();
@@ -90,8 +90,8 @@ HRESULT BattleScene::Init()
     ImageManager::GetSingleton()->AddImage("Image/BattleCity/Icon/StageFlag.bmp", iconSize * 2, iconSize * 1.5, true, RGB(255, 0, 255));
     stageFlag = ImageManager::GetSingleton()->FindImage("Image/BattleCity/Icon/StageFlag.bmp");
 
-    //°ÔÀÓ ¿À¹ö
-    ImageManager::GetSingleton()->AddImage("Image/BattleCity/Text/Game_Over.bmp", WIN_SIZE_X / 8, WIN_SIZE_Y / 12, true, RGB(255, 0, 255));
+    //ê²Œì„ ì˜¤ë²„
+    ImageManager::GetSingleton()->AddImage("Image/BattleCity/Text/Game_Over.bmp", WIN_SIZE_X / 8 , WIN_SIZE_Y / 12, true, RGB(255, 0, 255));
     gameOverImg = ImageManager::GetSingleton()->FindImage("Image/BattleCity/Text/Game_Over.bmp");
 
     return S_OK;
@@ -103,12 +103,12 @@ void BattleScene::Update()
     //cout << "elapsedChange : " << elapsedChange << endl;
     //cout << "elapsedCount : " << elapsedCount << endl;
 
-    // Å¸ÀÏ ¼Ó¼º È®ÀÎ¿ë ÄÚµå
+    // íƒ€ì¼ ì†ì„± í™•ì¸ìš© ì½”ë“œ
     for (int i = 0; i < TILE_COUNT_X * TILE_COUNT_Y; i++)
     {
         if (PtInRect(&(tileInfo[i].rc), g_ptMouse))
         {
-            if (KeyManager::GetSingleton()->IsStayKeyDown(VK_RBUTTON)) // µğ¹ö±×¿ë
+            if (KeyManager::GetSingleton()->IsStayKeyDown(VK_RBUTTON)) // ë””ë²„ê·¸ìš©
             {
                 cout << i << " tile" << endl;
                 cout << "mouse x : " << g_ptMouse.x << "mouse y : " << g_ptMouse.y << endl;
@@ -128,7 +128,7 @@ void BattleScene::Update()
         }
     }
 
-    // ÇÃ·¹ÀÌ¾î ÅÊÅ©
+    // í”Œë ˆì´ì–´ íƒ±í¬
     tempPos = player->GetPos();
     player->Update();
     //if (tempPos.x != player->GetPos().x || tempPos.y != player->GetPos().y)
@@ -137,20 +137,20 @@ void BattleScene::Update()
     //}
     playerTankRect = player->GetShape();
 
-    //Àû ÅÊÅ©
+    //ì  íƒ±í¬
     enemyMgr->Update();
 
-    //¾ÆÀÌÅÛ
+    //ì•„ì´í…œ
     mpItem->Update();
     if (mpItem->GetExistItem() == true)
     {
         itemRect = mpItem->GetShape();
     }
 
-    //ÇÃ·¹ÀÌ¾î ¾ÆÀÌÅÛ Á¢ÃË
+    //í”Œë ˆì´ì–´ ì•„ì´í…œ ì ‘ì´‰
     CollisionItem();
 
-    //HQÁÖº¯ Å¸ÀÏ µÇµ¹¸®±â
+    //HQì£¼ë³€ íƒ€ì¼ ë˜ëŒë¦¬ê¸°
     for (int i = 680; i < 750; i++)
     {
         if (tileInfo[i].terrain == Terrain::HQ_STEEL) //684, 685, 686, 687, 712, 715, 740, 743 -> HQ_STEEL
@@ -174,7 +174,7 @@ void BattleScene::Update()
 
     for (int i = 0; i < vecEnemies.size(); ++i)
     {
-        //ÀûÅÊÅ©ÀÇ »óÅÂ°¡ IDLEÀÏ ¶§
+        //ì íƒ±í¬ì˜ ìƒíƒœê°€ IDLEì¼ ë•Œ
         if (elapsedCount < 1005)
         {
             elapsedCount++;
@@ -185,7 +185,7 @@ void BattleScene::Update()
         }
     }
 
-    // Æø¹ß ÀÌÆåÆ® ¾÷µ¥ÀÌÆ®
+    // í­ë°œ ì´í™íŠ¸ ì—…ë°ì´íŠ¸
     for (int i = 0; i < BOOM_NUM; i++)
     {
         if (boomEffect[i].isRender)
@@ -215,22 +215,22 @@ void BattleScene::Update()
         }
     }
 
-    // ÇÃ·¹ÀÌ¾î ¹Ì»çÀÏ Å¸ÀÏ Á¢ÃË
+    // í”Œë ˆì´ì–´ ë¯¸ì‚¬ì¼ íƒ€ì¼ ì ‘ì´‰
     PlayerAmmoMapCollision(boomEffect, player, tileInfo);
 
-    // Àû ¹Ì»çÀÏ Å¸ÀÏ Á¢ÃË
+    // ì  ë¯¸ì‚¬ì¼ íƒ€ì¼ ì ‘ì´‰
     for (int i = 0; i < vecEnemies.size(); ++i)
     {
         EnemyAmmoMapCollision(boomEffect, vecEnemies[i], tileInfo);
     }
 
-    // ¹Ì»çÀÏ ÅÊÅ© Á¢ÃË
+    // ë¯¸ì‚¬ì¼ íƒ±í¬ ì ‘ì´‰
     AmmoTankCollision(boomEffect, player);
 
-    // Àû °İÃß¼ö ÃÖ½ÅÈ­
+    // ï¿½ï¿½ ï¿½ï¿½ï¿½ß¼ï¿½ ï¿½Ö½ï¿½È­
     DestroyCountManager::GetSingleton()->SetDestroyCount(destroyedEnemy);
 
-    //Å×½ºÆ®
+    //í…ŒìŠ¤íŠ¸
     if (KeyManager::GetSingleton()->IsOnceKeyDown(VK_LBUTTON))
     {
         playerLife++;
@@ -244,10 +244,10 @@ void BattleScene::Update()
         cout << "P1L:" << playerLife << endl << "GetcurrFrameX:" << numberText->GetCurrFrameX() << endl;
     }
 
-    //ÅÊÅ© ¶óÀÌÇÁ ÃÊ±âÈ­        //¼ıÀÚ¸¦ ³ô¿©Áà¾ßÇÏ´Âµ¥ init¿¡ »ç¿ëÇÒ ½Ã ÇÑ¹ø¹Û¿¡ ¾ÈºÒ·¯¿Í¼­ playerLife°¡ 2·Î °è¼Ó À¯ÁöµÈ´Ù.
+    //íƒ±í¬ ë¼ì´í”„ ì´ˆê¸°í™”        //ìˆ«ìë¥¼ ë†’ì—¬ì¤˜ì•¼í•˜ëŠ”ë° initì— ì‚¬ìš©í•  ì‹œ í•œë²ˆë°–ì— ì•ˆë¶ˆëŸ¬ì™€ì„œ playerLifeê°€ 2ë¡œ ê³„ì† ìœ ì§€ëœë‹¤.
     numberText->SetCurrFrameX(playerLife);
 
-    // °ÔÀÓ¿À¹ö ¿©ºÎ È®ÀÎ
+    // ï¿½ï¿½ï¿½Ó¿ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ È®ï¿½ï¿½
     if ((playerLife < 0) || isHQDestroyed)
     {
         gameOverPosY -= 5;
@@ -259,7 +259,7 @@ void BattleScene::Update()
     }
     else if (destroyedEnemyCount == enemyMgr->GetEnemyMaxCount())
     {
-        player->SetMoveSpeed(0.0f);                                 // 21.10.26 °ÔÀÓÀÌ ³¡³µÀ» ¶§ ½ºÇÇµå 0À¸·Î -> ´ÙÀ½ ½ºÅ×ÀÌÁö·Î ³Ñ¾î°¥ ½Ã ½ºÇÇµå ÃÊ±âÈ­ÇÏ±â
+        player->SetMoveSpeed(0.0f);                                 // 21.10.26 ê²Œì„ì´ ëë‚¬ì„ ë•Œ ìŠ¤í”¼ë“œ 0ìœ¼ë¡œ -> ë‹¤ìŒ ìŠ¤í…Œì´ì§€ë¡œ ë„˜ì–´ê°ˆ ì‹œ ìŠ¤í”¼ë“œ ì´ˆê¸°í™”í•˜ê¸°
         elapsedEnding++;
         if (elapsedEnding >= 100)
         {
@@ -297,20 +297,20 @@ void BattleScene::Render(HDC hdc)
         }
     }
 
-    // ÇÃ·¹ÀÌ¾î ÅÊÅ©
+    // í”Œë ˆì´ì–´ íƒ±í¬
     player->Render(hdc);
 
-    // Àû ÅÊÅ©
+    // ì  íƒ±í¬
     if (enemyMgr)
         enemyMgr->Render(hdc);
 
-    // ¾ÆÀÌÅÛ    
+    // ì•„ì´í…œ    
     if (mpItem->GetExistItem() == true)
     {
         mpItem->Render(hdc);
     }
 
-    // Æø¹ß ÀÌÆåÆ® ·»´õ
+    // í­ë°œ ì´í™íŠ¸ ë Œë”
     for (int i = 0; i < BOOM_NUM; i++)
     {
         if (boomEffect[i].isRender)
@@ -328,7 +328,7 @@ void BattleScene::Render(HDC hdc)
         }
     }
 
-    //¿¡³Ê¹ÌÅÊÅ© UI
+    //ì—ë„ˆë¯¸íƒ±í¬ UI
     for (int i = 0; i < (enemyMgr->GetEnemyMaxCount() - destroyedEnemyCount); i++)
     {
         switch (i % 2)
@@ -344,42 +344,42 @@ void BattleScene::Render(HDC hdc)
         }
     }
 
-    //¶óÀÌÇÁ UI
+    //ë¼ì´í”„ UI
     P1LifeImage->Render(hdc, UIposX + iconSize / 2, WIN_SIZE_Y / 2);
 
-    if (playerLife % 10 < 5)  // 1ÀÇ ÀÚ¸®(5¹Ì¸¸)
+    if (playerLife % 10 < 5)  // 1ì˜ ìë¦¬(5ë¯¸ë§Œ)
     {
         numberText->Render(hdc, UIposX + iconSize * 2, WIN_SIZE_Y / 2 + iconSize / 2, playerLife % 5, 0);
     }
-    else if (playerLife % 10 >= 5)  // 1ÀÇ ÀÚ¸®(5ÀÌ»ó)
+    else if (playerLife % 10 >= 5)  // 1ì˜ ìë¦¬(5ì´ìƒ)
     {
         numberText->Render(hdc, UIposX + iconSize * 2, WIN_SIZE_Y / 2 + iconSize / 2, playerLife % 5, 1);
     }
 
-    if (playerLife / 10 >= 1 && playerLife / 10 < 5)   // 10ÀÇ ÀÚ¸® (50¹Ì¸¸)
+    if (playerLife / 10 >= 1 && playerLife / 10 < 5)   // 10ì˜ ìë¦¬ (50ë¯¸ë§Œ)
     {
         numberText->Render(hdc, UIposX + iconSize, WIN_SIZE_Y / 2 + iconSize / 2, numberText->GetCurrFrameX() / 10, 0);
     }
-    else if (playerLife / 10 >= 5)   // 10ÀÇ ÀÚ¸® (50ÀÌ»ó)
+    else if (playerLife / 10 >= 5)   // 10ì˜ ìë¦¬ (50ì´ìƒ)
     {
         numberText->Render(hdc, UIposX + iconSize, WIN_SIZE_Y / 2 + iconSize / 2, (numberText->GetCurrFrameX() / 10) % 5, 1);
     }
-    // -> img->GetCurrFrameX, GetCurrFrameY¸¦ »ç¿ëÇÏ¿© º¯¼ö ÁÙÀÌ±â
+    // -> img->GetCurrFrameX, GetCurrFrameYë¥¼ ì‚¬ìš©í•˜ì—¬ ë³€ìˆ˜ ì¤„ì´ê¸°
 
-    stageFlag->Render(hdc, UIposX + iconSize / 2, WIN_SIZE_Y * 4 / 5);                                  // ½ºÅ×ÀÌÁö ±ê¹ß
-    numberText->Render(hdc, UIposX + iconSize, WIN_SIZE_Y * 4 / 5 + iconSize, stagescene.GetStageNum(), 0);        // ½ºÅ×ÀÌÁö ¼ıÀÚ
+    stageFlag->Render(hdc, UIposX + iconSize / 2, WIN_SIZE_Y * 4 / 5);                                  // ìŠ¤í…Œì´ì§€ ê¹ƒë°œ
+    numberText->Render(hdc, UIposX + iconSize, WIN_SIZE_Y * 4 / 5 + iconSize, stagescene.GetStageNum(), 0);        // ìŠ¤í…Œì´ì§€ ìˆ«ì
 
-    //°ÔÀÓ ¿À¹ö
+    //ê²Œì„ ì˜¤ë²„
     gameOverImg->Render(hdc, 330, gameOverPosY);
 }
 
 void BattleScene::Release()
 {
-    // ÇÃ·¹ÀÌ¾î ÅÊÅ©
+    // í”Œë ˆì´ì–´ íƒ±í¬
     SAFE_RELEASE(player);
-    // Àû ÅÊÅ©
+    // ì  íƒ±í¬
     SAFE_RELEASE(enemyMgr);
-    // ¾ÆÀÌÅÛ
+    // ì•„ì´í…œ
     SAFE_RELEASE(mpItem);
 }
 
@@ -389,18 +389,18 @@ void BattleScene::Load(int loadIndex)
     loadFileName += ".map";
 
     HANDLE hFile = CreateFile(loadFileName.c_str(),
-        GENERIC_READ,           // ÀĞ±â, ¾²±â
-        0, NULL,                // °øÀ¯, º¸¾È ¸ğµå
-        OPEN_EXISTING,          // ÆÄÀÏ ¸¸µé°Å³ª ÀĞÀ» ¶§ ¿É¼Ç
-        FILE_ATTRIBUTE_NORMAL,  // ÆÄÀÏ ¼Ó¼º(ÀĞ±â Àü¿ë, ¼û±è µîµî)
+        GENERIC_READ,           // ì½ê¸°, ì“°ê¸°
+        0, NULL,                // ê³µìœ , ë³´ì•ˆ ëª¨ë“œ
+        OPEN_EXISTING,          // íŒŒì¼ ë§Œë“¤ê±°ë‚˜ ì½ì„ ë•Œ ì˜µì…˜
+        FILE_ATTRIBUTE_NORMAL,  // íŒŒì¼ ì†ì„±(ì½ê¸° ì „ìš©, ìˆ¨ê¹€ ë“±ë“±)
         NULL);
 
-    // ÀĞ±â
+    // ì½ê¸°
     DWORD readByte;
     if (ReadFile(hFile, tileInfo, sizeof(tagTile) * TILE_COUNT_X * TILE_COUNT_Y,
         &readByte, NULL) == false)
     {
-        MessageBox(g_hWnd, "¸Ê µ¥ÀÌÅÍ ·Îµå¿¡ ½ÇÆĞÇß½À´Ï´Ù.", "¿¡·¯", MB_OK);
+        MessageBox(g_hWnd, "ë§µ ë°ì´í„° ë¡œë“œì— ì‹¤íŒ¨í–ˆìŠµë‹ˆë‹¤.", "ì—ëŸ¬", MB_OK);
     }
 
     CloseHandle(hFile);
@@ -411,25 +411,25 @@ void BattleScene::PlayerAmmoMapCollision(Boom* boom, Tank* tank, TILE_INFO* tile
     for (int j = 0; j < tank->ammoCount; j++)
     {
         RECT ammoRect = tank->ammoPack[j].GetShape();
-        if (tank->GetImgFrameY() < 3)                                                   //21.10.25 ÇÃ·¹ÀÌ¾î ÅÊÅ© ÃÖÁ¾·¾º¸´Ù ¾Æ·¡ÀÏ ¶§ °­Ã¶ ¸ø ºÎ½É
+        if (tank->GetImgFrameY() < 3)                                                   //21.10.25 í”Œë ˆì´ì–´ íƒ±í¬ ìµœì¢…ë ™ë³´ë‹¤ ì•„ë˜ì¼ ë•Œ ê°•ì²  ëª» ë¶€ì‹¬
         {
             for (int i = 0; i < TILE_COUNT_X * TILE_COUNT_Y; i++)
             {
-                if (IntersectRect(&tempRect, &ammoRect, &tile[i].rc) && tank->ammoPack[j].GetIsFire()) // Ammo¶û TileÀÌ Ãæµ¹ÇÏ¸é
+                if (IntersectRect(&tempRect, &ammoRect, &tile[i].rc) && tank->ammoPack[j].GetIsFire()) // Ammoë‘ Tileì´ ì¶©ëŒí•˜ë©´
                 {
-                    if ((tile[i].terrain == Terrain::WALL) || (tile[i].terrain == Terrain::HQ_WALL)) // Ãæµ¹ÇÑ TileÀÌ º®ÀÏ¶§
+                    if ((tile[i].terrain == Terrain::WALL) || (tile[i].terrain == Terrain::HQ_WALL)) // ì¶©ëŒí•œ Tileì´ ë²½ì¼ë•Œ
                     {
                         BoomAnimation(boom, BoomType::SMALL_BOOM, tank->ammoPack[j].GetPos());
                         tile[i].hp--;
-                        if (tile[i].hp == 0) // ÆÄ±«µÈ º®ÀÎ °æ¿ì
+                        if (tile[i].hp == 0) // íŒŒê´´ëœ ë²½ì¸ ê²½ìš°
                         {
                             tile[i].frameX = 10;
-                            tile[i].frameY = 10; // ROAD·Î ¹Ù²Û´Ù.
+                            tile[i].frameY = 10; // ROADë¡œ ë°”ê¾¼ë‹¤.
                         }
                         else
                         {
                             tile[i].frameY = 8;
-                            switch (tank->ammoPack[j].GetMoveDir()) // AmmoÀÇ ¹æÇâ¿¡ µû¶ó Ã³¸®
+                            switch (tank->ammoPack[j].GetMoveDir()) // Ammoì˜ ë°©í–¥ì— ë”°ë¼ ì²˜ë¦¬
                             {
                             case MoveDir::DOWN:
                                 tile[i].frameX = 2;
@@ -457,7 +457,7 @@ void BattleScene::PlayerAmmoMapCollision(Boom* boom, Tank* tank, TILE_INFO* tile
                         tank->ammoPack[j].SetPos(tank->GetPos());
                         tank->ammoPack[j].SetBodySize(0);
                     }
-                    else if (tile[i].terrain == Terrain::HQ)    // Ãæµ¹ÇÑ Å¸ÀÏÀÌ HQÀÏ¶§
+                    else if (tile[i].terrain == Terrain::HQ)    // ì¶©ëŒí•œ íƒ€ì¼ì´ HQì¼ë•Œ
                     {
                         POINTFLOAT hqPos;
                         hqPos.x = tile[713].rc.left;
@@ -477,20 +477,20 @@ void BattleScene::PlayerAmmoMapCollision(Boom* boom, Tank* tank, TILE_INFO* tile
                 }
             }
         }
-        if (player->GetImgFrameY() >= 3)                                                        //21.10.25 ÇÃ·¹ÀÌ¾î ÅÊÅ© ÃÖÁ¾·¾ÀÏ ¶§ °­Ã¶ ºÎ½É
+        if (player->GetImgFrameY() >= 3)                                                        //21.10.25 í”Œë ˆì´ì–´ íƒ±í¬ ìµœì¢…ë ™ì¼ ë•Œ ê°•ì²  ë¶€ì‹¬
         {
             for (int i = 0; i < TILE_COUNT_X * TILE_COUNT_Y; i++)
             {
-                if (IntersectRect(&tempRect, &ammoRect, &tile[i].rc) && tank->ammoPack[j].GetIsFire()) // Ammo¶û TileÀÌ Ãæµ¹ÇÏ¸é
+                if (IntersectRect(&tempRect, &ammoRect, &tile[i].rc) && tank->ammoPack[j].GetIsFire()) // Ammoë‘ Tileì´ ì¶©ëŒí•˜ë©´
                 {
-                    if ((tile[i].terrain == Terrain::STEEL) || (tile[i].terrain == Terrain::HQ_STEEL) || (tile[i].terrain == Terrain::WALL) || (tile[i].terrain == Terrain::HQ_WALL)) // Ãæµ¹ÇÑ TileÀÌ º®ÀÏ¶§
+                    if ((tile[i].terrain == Terrain::STEEL) || (tile[i].terrain == Terrain::HQ_STEEL) || (tile[i].terrain == Terrain::WALL) || (tile[i].terrain == Terrain::HQ_WALL)) // ì¶©ëŒí•œ Tileì´ ë²½ì¼ë•Œ
                     {
                         BoomAnimation(boom, BoomType::SMALL_BOOM, tank->ammoPack[j].GetPos());
                         tile[i].hp -= 3;
                         if (tile[i].hp < 0)
                         {
                             tile[i].frameX = 10;
-                            tile[i].frameY = 10; // ROAD·Î ¹Ù²Û´Ù.
+                            tile[i].frameY = 10; // ROADë¡œ ë°”ê¾¼ë‹¤.
                         }
 
                         tank->ammoPack[j].SetIsFire(false);
@@ -514,21 +514,21 @@ void BattleScene::EnemyAmmoMapCollision(Boom* boom, Enemy* enemy, TILE_INFO* til
 
         for (int i = 0; i < TILE_COUNT_X * TILE_COUNT_Y; i++)
         {
-            if (IntersectRect(&tempRect, &ammoRect, &tile[i].rc) && ammoPack[j]->GetIsFire()) // Ammo¶û TileÀÌ Ãæµ¹ÇÏ¸é
+            if (IntersectRect(&tempRect, &ammoRect, &tile[i].rc) && ammoPack[j]->GetIsFire()) // Ammoë‘ Tileì´ ì¶©ëŒí•˜ë©´
             {
-                if ((tile[i].terrain == Terrain::WALL) || (tile[i].terrain == Terrain::HQ_WALL)) // Ãæµ¹ÇÑ TileÀÌ º®ÀÏ¶§
+                if ((tile[i].terrain == Terrain::WALL) || (tile[i].terrain == Terrain::HQ_WALL)) // ì¶©ëŒí•œ Tileì´ ë²½ì¼ë•Œ
                 {
                     BoomAnimation(boom, BoomType::SMALL_BOOM, ammoPack[j]->GetPos());
                     tile[i].hp--;
-                    if (tile[i].hp == 0) // ÆÄ±«µÈ º®ÀÎ °æ¿ì
+                    if (tile[i].hp == 0) // íŒŒê´´ëœ ë²½ì¸ ê²½ìš°
                     {
                         tile[i].frameX = 10;
-                        tile[i].frameY = 10; // ROAD·Î ¹Ù²Û´Ù.
+                        tile[i].frameY = 10; // ROADë¡œ ë°”ê¾¼ë‹¤.
                     }
                     else
                     {
                         tile[i].frameY = 8;
-                        switch (ammoPack[j]->GetMoveDir()) // AmmoÀÇ ¹æÇâ¿¡ µû¶ó Ã³¸®
+                        switch (ammoPack[j]->GetMoveDir()) // Ammoì˜ ë°©í–¥ì— ë”°ë¼ ì²˜ë¦¬
                         {
                         case MoveDir::DOWN:
                             tile[i].frameX = 2;
@@ -556,7 +556,7 @@ void BattleScene::EnemyAmmoMapCollision(Boom* boom, Enemy* enemy, TILE_INFO* til
                     ammoPack[j]->SetPos(enemy->GetPos());
                     ammoPack[j]->SetBodySize(0);
                 }
-                else if (tile[i].terrain == Terrain::HQ)    // Ãæµ¹ÇÑ Å¸ÀÏÀÌ HQÀÏ¶§
+                else if (tile[i].terrain == Terrain::HQ)    // ì¶©ëŒí•œ íƒ€ì¼ì´ HQì¼ë•Œ
                 {
                     POINTFLOAT hqPos;
                     hqPos.x = tile[713].rc.left;
@@ -580,11 +580,11 @@ void BattleScene::EnemyAmmoMapCollision(Boom* boom, Enemy* enemy, TILE_INFO* til
 
 void BattleScene::AmmoTankCollision(Boom* boom, Tank* player)
 {
-    // Àû Á¤º¸µéÀ» °¡Á®¿Â´Ù.
+    // ì  ì •ë³´ë“¤ì„ ê°€ì ¸ì˜¨ë‹¤.
     AmmoManager ammoMgr;
     vector<Ammo*> vecAmmos;
 
-    // ÇÃ·¹ÀÌ¾î ¹Ì»çÀÏÀÌ ÀûÀÌ³ª Àû ¹Ì»çÀÏ¿¡ È÷Æ®ÇßÀ» °æ¿ì
+    // í”Œë ˆì´ì–´ ë¯¸ì‚¬ì¼ì´ ì ì´ë‚˜ ì  ë¯¸ì‚¬ì¼ì— íˆíŠ¸í–ˆì„ ê²½ìš°
     for (int i = 0; i < player->ammoCount; ++i)
     {
         RECT ammoRect = player->ammoPack[i].GetShape();
@@ -593,7 +593,7 @@ void BattleScene::AmmoTankCollision(Boom* boom, Tank* player)
             RECT enemyRect = vecEnemies[j]->GetShape();
             ammoMgr = vecEnemies[j]->GetAmmoManager();
             vecAmmos = ammoMgr.GetAmmos();
-            // ÇÃ·¹ÀÌ¾î ¹Ì»çÀÏ°ú Àû ÅÊÅ©°¡ Ãæµ¹ÇßÀ» °æ¿ì
+            // í”Œë ˆì´ì–´ ë¯¸ì‚¬ì¼ê³¼ ì  íƒ±í¬ê°€ ì¶©ëŒí–ˆì„ ê²½ìš°
             if (IntersectRect(&tempRect, &ammoRect, &enemyRect) && player->ammoPack[i].GetIsFire())
             {
                 BoomAnimation(boom, BoomType::BIG_BOOM, vecEnemies[j]->GetPos());
@@ -637,7 +637,7 @@ void BattleScene::AmmoTankCollision(Boom* boom, Tank* player)
             for (int k = 0; k < vecAmmos.size(); ++k)
             {
                 RECT enemyAmmoRect = vecAmmos[k]->GetShape();
-                // ÇÃ·¹ÀÌ¾î ¹Ì»çÀÏ°ú Àû ¹Ì»çÀÏÀÌ Ãæµ¹ÇßÀ» °æ¿ì
+                // í”Œë ˆì´ì–´ ë¯¸ì‚¬ì¼ê³¼ ì  ë¯¸ì‚¬ì¼ì´ ì¶©ëŒí–ˆì„ ê²½ìš°
                 if (IntersectRect(&tempRect, &ammoRect, &enemyAmmoRect) && player->ammoPack[i].GetIsFire() && vecAmmos[k]->GetIsFire())
                 {
                     player->ammoPack[i].SetIsFire(false);
@@ -649,7 +649,7 @@ void BattleScene::AmmoTankCollision(Boom* boom, Tank* player)
         }
     }
 
-    // Àû ¹Ì»çÀÏÀÌ ÇÃ·¹ÀÌ¾î¿¡°Ô È÷Æ®ÇßÀ» °æ¿ì
+    // ì  ë¯¸ì‚¬ì¼ì´ í”Œë ˆì´ì–´ì—ê²Œ íˆíŠ¸í–ˆì„ ê²½ìš°
     for (int i = 0; i < vecEnemies.size(); ++i)
     {
         ammoMgr = vecEnemies[i]->GetAmmoManager();
@@ -657,7 +657,7 @@ void BattleScene::AmmoTankCollision(Boom* boom, Tank* player)
         for (int j = 0; j < vecAmmos.size(); ++j)
         {
             RECT enemyAmmoRect = vecAmmos[j]->GetShape();
-            if (vecAmmos[j]->GetIsFire() && IntersectRect(&tempRect, &playerTankRect, &enemyAmmoRect))  // Àû ¹Ì»çÀÏ°ú ÇÃ·¹ÀÌ¾î ÅÊÅ©°¡ Ãæµ¹ÇßÀ» °æ¿ì
+            if (vecAmmos[j]->GetIsFire() && IntersectRect(&tempRect, &playerTankRect, &enemyAmmoRect))  // ì  ë¯¸ì‚¬ì¼ê³¼ í”Œë ˆì´ì–´ íƒ±í¬ê°€ ì¶©ëŒí–ˆì„ ê²½ìš°
             {
                 vecAmmos[j]->SetIsFire(false);
                 vecAmmos[j]->SetBodySize(0);
@@ -666,12 +666,12 @@ void BattleScene::AmmoTankCollision(Boom* boom, Tank* player)
                     BoomAnimation(boom, BoomType::BIG_BOOM, player->GetPos());
                     player->SetIsAlive(false);
                     player->Init();
-                    player->SetImgFrameX(0);                                                // 21.10.25 ÇÃ·¹ÀÌ¾î Á×¾úÀ» ¶§ ¸®½ºÆù À§·Î º¸°Ô²û
-                    player->SetplayerLife(playerLife - 1);                                  // 21.10.25 ÇÃ·¹ÀÌ¾î ÅÊÅ©¾ÆÀÌÅÛ ¸Ô¾úÀ» ¶§ »ı¸í ¼öÁ¤
+                    player->SetImgFrameX(0);                                                // 21.10.25 í”Œë ˆì´ì–´ ì£½ì—ˆì„ ë•Œ ë¦¬ìŠ¤í° ìœ„ë¡œ ë³´ê²Œë”
+                    player->SetplayerLife(playerLife - 1);                                  // 21.10.25 í”Œë ˆì´ì–´ íƒ±í¬ì•„ì´í…œ ë¨¹ì—ˆì„ ë•Œ ìƒëª… ìˆ˜ì •
                     playerSpawnPos = GetSpawnPos(tileInfo, ObjectType::PLAYER).back();
                     player->SetPos(playerSpawnPos);
                     playerLife--;
-                    //cout << "ÇÃ·¹ÀÌ¾î ¸ñ¼û : " << playerLife << endl;
+                    //cout << "í”Œë ˆì´ì–´ ëª©ìˆ¨ : " << playerLife << endl;
                 }
             }
         }
@@ -692,17 +692,17 @@ void BattleScene::CollisionItem()
 
 void BattleScene::FunctionItem(Boom* boom)
 {
-    //Çï¸ä
+    //í—¬ë©§
     if (mpItem->GetItemState() == ecFunctionItem::HELMET)
     {
         player->SetInvincible(true);
         player->SetElapsedInvincible(0);
         //playerTankRect.left = player->GetPos().x + 
     }
-    //½Ã°è
+    //ì‹œê³„
     if (mpItem->GetItemState() == ecFunctionItem::WATCH)
     {
-        //ÀûÅÊÅ© ÀÏ½ÃÁ¤Áö
+        //ì íƒ±í¬ ì¼ì‹œì •ì§€
         for (int i = 0; i < vecEnemies.size(); ++i)
         {
             if (vecEnemies[i]->GetIsAilve() == true)
@@ -712,7 +712,7 @@ void BattleScene::FunctionItem(Boom* boom)
             elapsedCount = 0;
         }
     }
-    //»ğ
+    //ì‚½
     if (mpItem->GetItemState() == ecFunctionItem::SHOVEL)
     {
         for (int i = 684; i < 688; i++)
@@ -734,7 +734,7 @@ void BattleScene::FunctionItem(Boom* boom)
         tileInfo[743].frameX = 8;
         tileInfo[743].frameY = 2;
     }
-    //º°
+    //ë³„
     if (mpItem->GetItemState() == ecFunctionItem::STAR)
     {
         player->SetImgFrameY(player->GetImgFrameY() + 1);
@@ -747,18 +747,18 @@ void BattleScene::FunctionItem(Boom* boom)
         }
         if (player->GetImgFrameY() >= 2)
         {
-            player->SetAmmoCount(2);            //Åº¼ö 2°³
+            player->SetAmmoCount(2);            //íƒ„ìˆ˜ 2ê°œ
         }
         if (player->GetImgFrameY() >= 3)
         {
-            player->SetptAttackValue(2.5);      //°ø°İ·Â Áõ°¡
-            player->SetImgFrameY(3);            //ÃÖ´ë ·¹º§¾÷ÀÏ ¶§ ÀÌ¹ÌÁö ±×´ë·Î
+            player->SetptAttackValue(2.5);      //ê³µê²©ë ¥ ì¦ê°€
+            player->SetImgFrameY(3);            //ìµœëŒ€ ë ˆë²¨ì—…ì¼ ë•Œ ì´ë¯¸ì§€ ê·¸ëŒ€ë¡œ
         }
     }
-    //¼ö·ùÅº
+    //ìˆ˜ë¥˜íƒ„
     if (mpItem->GetItemState() == ecFunctionItem::GRENADE)
     {
-        //³ª¿ÍÀÖ´Â Àû ¸ğµÎ Á×ÀÓ  
+        //ë‚˜ì™€ìˆëŠ” ì  ëª¨ë‘ ì£½ì„  
         int count = 0;
         for (int i = 0; i < vecEnemies.size(); ++i)
         {
@@ -772,7 +772,7 @@ void BattleScene::FunctionItem(Boom* boom)
         }
         destroyedEnemyCount += count;
     }
-    //ÅÊÅ©
+    //íƒ±í¬
     if (mpItem->GetItemState() == ecFunctionItem::TANK)
     {
         player->SetplayerLife(player->GetplayerLife() + 1);
