@@ -3,7 +3,7 @@
 
 HRESULT EnemyManager::Init()
 {
-	enemyMaxCount = 6;
+	enemyMaxCount = 18;
 	enemyCurrCount = 3;
 
 	enemySpawnDelay = 0;
@@ -12,10 +12,19 @@ HRESULT EnemyManager::Init()
 
 	for (int i = 0; i < enemyMaxCount; i++)
 	{
-		vecEnemys[i] = new Enemy;
+		vecEnemys[i] = new Enemy;		
 		vecEnemys[i]->Init();
 		vecEnemys[i]->SetEnemyType((EnemyType)(rand() % 4));
 	}
+	vecEnemys[3]->SetHaveItem(true);
+	vecEnemys[3]->Init();
+	vecEnemys[3]->SetEnemyType((EnemyType)(rand() % 4));
+	vecEnemys[10]->SetHaveItem(true);
+	vecEnemys[10]->Init();
+	vecEnemys[10]->SetEnemyType((EnemyType)(rand() % 4));
+	vecEnemys[17]->SetHaveItem(true);
+	vecEnemys[17]->Init();
+	vecEnemys[17]->SetEnemyType((EnemyType)(rand() % 4));
 
 	return S_OK;
 }

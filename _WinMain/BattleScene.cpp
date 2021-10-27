@@ -82,7 +82,14 @@ HRESULT BattleScene::Init()
     // 아이템
     mpItem = new Item;
     mpItem->Init();
+    itemSpawnPos = GetSpawnPos(tileInfo, ObjectType::ITEM).back();
+    mpItem->SetPos(itemSpawnPos);
     itemRect = mpItem->GetShape();
+    itemRect.left = mpItem->GetPos().x - mpItem->GetBodySize() / 2;
+    itemRect.top = mpItem->GetPos().y - mpItem->GetBodySize() / 2;
+    itemRect.right = mpItem->GetPos().x + mpItem->GetBodySize() / 2;
+    itemRect.bottom = mpItem->GetPos().y + mpItem->GetBodySize() / 2;
+    mpItem->SetShape(itemRect);
 
     //UI
     ImageManager::GetSingleton()->AddImage("Image/BattleCity/Icon/Icon_Enemy.bmp", iconSize-5, iconSize-5);
@@ -594,33 +601,6 @@ void BattleScene::EnemyAmmoMapCollision(Boom* boom, Enemy* enemy, TILE_INFO* til
     }
 }
 
-//void BattleScene::EnemyCollision()
-//{
-//    for (int i = 0; i < vecEnemies.size(); ++i)
-//    {
-//        for (int j = 0; j < vecEnemies.size(); ++j)
-//        {
-//            if (i != j)
-//            {
-//                POINTFLOAT buffPos1 = vecEnemies[i]->GetPos();
-//                POINTFLOAT buffPos2 = vecEnemies[j]->GetPos();
-//                RECT enemyRect1 = vecEnemies[i]->GetShape();
-//                RECT enemyRect2 = vecEnemies[j]->GetShape();
-//                RECT buffRect1 = enemyRect1;
-//                RECT buffRect2 = enemyRect2;
-//                if (IntersectRect(&tempRect, &enemyRect1, &enemyRect2))
-//                {
-//                    cout << "c" << endl;
-//                    vecEnemies[i]->SetPos(buffPos1);
-//                    vecEnemies[i]->SetShape(buffRect1);
-//                    vecEnemies[j]->SetPos(buffPos2);
-//                    vecEnemies[j]->SetShape(buffRect2);
-//                }
-//            }
-//        }
-//    }
-//}
-
 void BattleScene::AmmoTankCollision(Boom* boom, Tank* player)
 {
     // 적 정보들을 가져온다.
@@ -642,6 +622,10 @@ void BattleScene::AmmoTankCollision(Boom* boom, Tank* player)
                 BoomAnimation(boom, BoomType::BIG_BOOM, vecEnemies[j]->GetPos());
                 vecEnemies[j]->SetIsAlive(false);
                 vecEnemies[j]->SetTankState(ecTankState::DIE);
+                if (j == 3 || j == 10 || j == 17)
+                {
+                    mpItem->SetExistItem(true);
+                }
 
                 player->ammoPack[i].SetIsFire(false);
                 player->ammoPack[i].SetBodySize(0);

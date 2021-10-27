@@ -18,7 +18,7 @@ private:
 
 	bool isAlive = false;
 	bool isCollision  = false;
-	bool isItem = false;
+	bool haveItem = false;
 
 	AmmoManager ammoMgr;
 
@@ -33,6 +33,10 @@ private:
 	int elapsedSpeed = 0;
 
 	Tank* player;
+
+	Image* itemTankImg = nullptr;
+	int elapseditemTankFrameX = NULL;
+	int elapseditemTankFrameY = NULL;
 
 public:
 	virtual HRESULT Init() override;
@@ -65,6 +69,12 @@ public:
 
 	// 플레이어의 정보를 가져오는 함수
 	inline void SetPlayer(Tank* player) { this->player = player; }
+
+	inline void SetImage(Image* img) { this->itemTankImg = img; }
+
+	void ChangeItemTankImage();
+
+	inline void SetHaveItem(bool haveItem) { this->haveItem = haveItem; }
 
 	virtual ~Enemy() = default;
 };
