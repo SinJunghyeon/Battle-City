@@ -99,6 +99,16 @@ void Enemy::Update()
 					{
 						moveDir = (MoveDir)(rand() % 4);
 					}
+
+					if(tankType == EnemyType::SPEED)
+					{
+						moveSpeed = 100.0f;
+					}
+					else
+					{
+						moveSpeed = 50.0f;
+					}
+
 					isCollision = false;
 					elapsedTurn = 0;
 				}
@@ -114,6 +124,14 @@ void Enemy::Update()
 					while (moveDir == MoveDir::LEFT)
 					{
 						moveDir = (MoveDir)(rand() % 4);
+					}
+					if (tankType == EnemyType::SPEED)
+					{
+						moveSpeed = 100.0f;
+					}
+					else
+					{
+						moveSpeed = 50.0f;
 					}
 					isCollision = false;
 					elapsedTurn = 0;
@@ -131,6 +149,14 @@ void Enemy::Update()
 					{
 						moveDir = (MoveDir)(rand() % 4);
 					}
+					if (tankType == EnemyType::SPEED)
+					{
+						moveSpeed = 100.0f;
+					}
+					else
+					{
+						moveSpeed = 50.0f;
+					}
 					isCollision = false;
 					elapsedTurn = 0;
 				}
@@ -146,6 +172,14 @@ void Enemy::Update()
 					while (moveDir == MoveDir::DOWN)
 					{
 						moveDir = (MoveDir)(rand() % 4);
+					}
+					if (tankType == EnemyType::SPEED)
+					{
+						moveSpeed = 100.0f;
+					}
+					else
+					{
+						moveSpeed = 50.0f;
 					}
 					isCollision = false;
 					elapsedTurn = 0;
