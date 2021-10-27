@@ -1,6 +1,7 @@
 #include "EndingScene.h"
 #include "Image.h"
 #include "StageScene.h"
+#include "DestroyCountManager.h"
 
 HRESULT EndingScene::Init()
 {
@@ -36,6 +37,8 @@ HRESULT EndingScene::Init()
     ImageManager::GetSingleton()->AddImage("Image/BattleCity/Text/TotalScore.bmp", WIN_SIZE_X/2, 40*1.5, true, RGB(255, 0, 255));
     textTotal = ImageManager::GetSingleton()->FindImage("Image/BattleCity/Text/TotalScore.bmp");
 
+    destroyedEnemy = DestroyCountManager::GetSingleton()->GetDestroyCount();
+
     return S_OK;
 }
 
@@ -58,6 +61,7 @@ void EndingScene::Update()
         }
         if (enemyCount[enemyCountArrNum] == destroyedEnemy[enemyCountArrNum])
         {
+            enemyTotal += enemyCount[enemyCountArrNum];
             enemyCountArrNum++;
         }
         break;
@@ -83,7 +87,7 @@ void EndingScene::Render(HDC hdc)
 
     for (int i = 0; i < 4; i++)
     {
-        enemyTankImage->Render(hdc, enemyTankImagePosX, enemyTankImagePosY[i], 0, i);
+        enemyTankImage->Render(hdc, enemyTankImagePosX, enemyTankImagePosY[i], 0, i,0.8f);
         arrowImage->Render(hdc, enemyTankImagePosX - 50, enemyTankImagePosY[i]);
         textPTS->Render(hdc, scoreNumberPosX * 2 / 3, enemyTankImagePosY[i]);
 

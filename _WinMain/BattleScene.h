@@ -5,7 +5,7 @@
 #include "Enemy.h"
 #include "StageScene.h"
 
-#define BOOM_NUM 10
+#define BOOM_NUM 30
 
 enum class BoomType { SMALL_BOOM, BIG_BOOM };
 
@@ -64,7 +64,7 @@ private:
     int elapsedCount = 1005;
 
     // UI
-    int UIposX = TILE_SIZE * TILE_COUNT_X + 100;
+    int UIposX = TILE_SIZE * TILE_COUNT_X + 120;
     int destroyedEnemy[4] = {}; // 1 : 일반형  2 : 속도형   3 : 속사형   4 : 슈퍼탱크
     int iconSize = 30;
     int destroyedEnemyCount = 0;
@@ -82,9 +82,10 @@ private:
 
     //게임 오버 이미지
     Image* gameOverImg;
-    POINT gameOverImgSize;
     int gameOverPosY = WIN_SIZE_Y * 3 / 2;
 
+    // HQ 파괴 여부
+    bool isHQDestroyed = false;
 
     int elapsedEnding = NULL;
 
@@ -98,13 +99,12 @@ public:
 
     void PlayerAmmoMapCollision(Boom* boom, Tank* tank, TILE_INFO* tile);
     void EnemyAmmoMapCollision(Boom* boom, Enemy* enemy, TILE_INFO* tile);
+    //void EnemyCollision();
     void AmmoTankCollision(Boom* boom, Tank* player);
     void CollisionItem();
     void FunctionItem(Boom* boom);
 
     void BoomAnimation(Boom* boom, BoomType type, POINTFLOAT pos);
-
-    inline int GetDestroyedEnemy(int arr) { return destroyedEnemy[arr]; }
 
     virtual ~BattleScene() = default;
 };

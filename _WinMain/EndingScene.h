@@ -1,9 +1,8 @@
 #pragma once
 #include "Config.h"
 #include "GameEntity.h"
-#include "BattleScene.h"
+#include "StageScene.h"
 
-class StageScene;
 class Image;
 class EndingScene : public GameEntity
 {
@@ -23,8 +22,6 @@ private:
 	Image* scoreNumber[4] = {};
 
 
-	BattleScene destroyEnemy;
-
 	StageScene stageScene;
 
 	int enemyTankImagePosX = WIN_SIZE_X * 4 / 5;
@@ -32,13 +29,14 @@ private:
 	
 	int scoreNumberPosX = enemyTankImagePosX - 100;
 
-	//½Ì±ÛÅæÀ¸·Î Á¤º¸ °¡Á®¿À´Â ¸Å´ÏÀú¸¦ ÇÏ³ª Á¦ÀÛ
-	// destroyedEnemy[0] *1, killEnemyNumber[1]*2, killEnemyNumber[2]*3, killEnemyNumber[3]*4 ÇØ¾ßÇÔ
-	int destroyedEnemy[4] = { 10,15,20,3 };
+
+	// destroyedEnemy[0] *1, killEnemyNumber[1]*2, killEnemyNumber[2]*3, killEnemyNumber[3]*4 �ؾ���
+	int tempArr[4] = { 0, 0, 0, 0 };
+	int* destroyedEnemy = tempArr;
 
 	Image* textTotal = nullptr;
 	Image* enemyTotalText = nullptr;
-	int enemyTotal = destroyedEnemy[0]+ destroyedEnemy[1]+ destroyedEnemy[2]+ destroyedEnemy[3];
+	int enemyTotal = 0;
 
 	int enemyCount[4] = { 0, 0, 0, 0 };
 	int enemyCountArrNum = 0;

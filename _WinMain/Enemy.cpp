@@ -1,6 +1,8 @@
 #include "Enemy.h"
 #include "Image.h"
 
+#include "Tank.h"
+
 /*
 	TO DO LIST
 	 1. 방향 전환 자연스럽게 하기
@@ -387,5 +389,14 @@ void Enemy::Move(MoveDir dir)
 				}
 			}
 		//}
+	}
+
+	RECT playerTankShape = player->GetShape();
+	if (IntersectRect(&tempRect, &shape, &playerTankShape))
+	{
+		cout << "적탱크 플레이어탱크랑 접촉! !" << endl;
+		pos = buffPos;
+		shape = buffRect;
+		isCollision = true;
 	}
 }

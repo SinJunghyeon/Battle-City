@@ -11,7 +11,7 @@ HRESULT StageScene::Init()
 	ImageManager::GetSingleton()->AddImage("Image/BattleCity/Text/Stage.bmp", stageImageSizeX, stageImageSizeY);
 	stageImage = ImageManager::GetSingleton()->FindImage("Image/BattleCity/Text/Stage.bmp");
 
-	ImageManager::GetSingleton()->AddImage("Image/BattleCity/Text/Number.bmp", 40*5, 14*5, 5, 2);
+	ImageManager::GetSingleton()->AddImage("Image/BattleCity/Text/Number.bmp", 40, 14, 5, 2, true, RGB(255, 0, 255));
 	stageNum = ImageManager::GetSingleton()->FindImage("Image/BattleCity/Text/Number.bmp");
 
 	return S_OK;
@@ -51,7 +51,7 @@ void StageScene::Render(HDC hdc)
 	if (!isAnimation)
 	{
 		stageImage->Render(hdc, WIN_SIZE_X / 2, WIN_SIZE_Y / 2);
-		stageNum->Render(hdc, WIN_SIZE_X / 2 + stageImageSizeX*2/3, WIN_SIZE_Y / 2, stageN, 0);
+		stageNum->Render(hdc, WIN_SIZE_X / 2 + stageImageSizeX*2/3, WIN_SIZE_Y/2 - 13, stageN, 0, 5.0f);
 	}
 }
 
