@@ -12,10 +12,19 @@ HRESULT EnemyManager::Init()
 
 	for (int i = 0; i < enemyMaxCount; i++)
 	{
-		vecEnemys[i] = new Enemy;
+		vecEnemys[i] = new Enemy;		
 		vecEnemys[i]->Init();
 		vecEnemys[i]->SetEnemyType((EnemyType)(rand() % 4));
 	}
+	vecEnemys[3]->SetHaveItem(true);
+	vecEnemys[3]->Init();
+	vecEnemys[3]->SetEnemyType((EnemyType)(rand() % 4));
+	vecEnemys[10]->SetHaveItem(true);
+	vecEnemys[10]->Init();
+	vecEnemys[10]->SetEnemyType((EnemyType)(rand() % 4));
+	vecEnemys[17]->SetHaveItem(true);
+	vecEnemys[17]->Init();
+	vecEnemys[17]->SetEnemyType((EnemyType)(rand() % 4));
 
 	return S_OK;
 }
@@ -30,47 +39,7 @@ void EnemyManager::Update()
 		enemySpawnDelay = 0;
 	}
 
-	// Fix List
-	for (int i = 0; i < enemyCurrCount; i++)
-	{
-		if (vecEnemys[i]->GetIsAilve() && vecEnemys[i]->GetTankState() != ecTankState::DIE)
-		{
-			for (int j = 0; j < enemyCurrCount; j++)
-			{
-				RECT tempCollisionRect;
-				RECT enemyTankRect1 = vecEnemys[i]->GetShape();
-				RECT enemtTankRect2 = vecEnemys[j]->GetShape();
-				if (i == j)
-					continue;				
-				switch (vecEnemys[i]->GetMoveDir())
-				{
-				case MoveDir::RIGHT:
-					if (IntersectRect(&tempCollisionRect, &enemyTankRect1, &enemtTankRect2))
-					{
-						vecEnemys[i]->SetIsCollision(true);
-					}
-					break;
-				case MoveDir::LEFT:
-					if (IntersectRect(&tempCollisionRect, &enemyTankRect1, &enemtTankRect2))
-					{
-						vecEnemys[i]->SetIsCollision(true);
-					}
-					break;
-				case MoveDir::UP:
-					if (IntersectRect(&tempCollisionRect, &enemyTankRect1, &enemtTankRect2))
-					{
-						vecEnemys[i]->SetIsCollision(true);
-					}
-					break;
-				case MoveDir::DOWN:
-					if (IntersectRect(&tempCollisionRect, &enemyTankRect1, &enemtTankRect2))
-					{
-						vecEnemys[i]->SetIsCollision(true);
-					}
-				}
-			}
-		}
-	}
+	EnemyCollision();
 
 	for (int i = 0; i < enemyCurrCount; i++)
 	{
@@ -129,6 +98,37 @@ void EnemyManager::IsAlive(bool isAlive)
 	for (int i = 0; i < enemyCurrCount; i++)
 	{
 		vecEnemys[i]->SetIsAlive(isAlive);
+	}
+}
+
+void EnemyManager::EnemyCollision()
+{
+	for (int i = 0; i < enemyCurrCount; i++)
+	{
+		for (int j = 0; j < enemyCurrCount; j++)
+		{
+			if (i == j) continue;
+
+			RECT tempCollisionRect;
+			RECT enemyTankRect1 = vecEnemys[i]->GetShape();
+			RECT enemtTankRect2 = vecEnemys[j]->GetShape();
+
+			if ((vecEnemys[i]->GetIsAilve() && vecEnemys[i]->GetTankState() != ecTankState::DIE) &&
+				(vecEnemys[j]->GetIsAilve() && vecEnemys[j]->GetTankState() != ecTankState::DIE))
+			{
+				if (IntersectRect(&tempCollisionRect, &enemyTankRect1, &enemtTankRect2))
+				{
+					vecEnemys[i]->SetIsCollision(true);
+					vecEnemys[j]->SetIsCollision(true);
+
+					vecEnemys[i]->SetPos(vecEnemys[i]->GetBuffPos());
+					vecEnemys[i]->SetShape(vecEnemys[i]->GetBuffRect());
+
+					vecEnemys[j]->SetPos(vecEnemys[j]->GetBuffPos());
+					vecEnemys[j]->SetShape(vecEnemys[j]->GetBuffRect());
+				}
+			}
+		}
 	}
 }
 

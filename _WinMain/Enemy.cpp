@@ -22,6 +22,14 @@ HRESULT Enemy::Init()
 		return E_FAIL;
 	}
 
+	itemTankImg = new Image;
+	itemTankImg->Init("Image/BattleCity/Enemy/Enemy_Item.bmp", 320, 320, 8, 8, true, RGB(255, 0, 255));	
+	if (img == nullptr)
+	{
+		return E_FAIL;
+	}
+
+
 	ImageManager::GetSingleton()->AddImage("Image/BattleCity/Effect/Spawn_Effect.bmp", 192, 48, 4, 1, true, RGB(255, 0, 255));
 	spawnImg = ImageManager::GetSingleton()->FindImage("Image/BattleCity/Effect/Spawn_Effect.bmp");
 	if (spawnImg == nullptr)
@@ -82,114 +90,7 @@ void Enemy::Update()
 	if (isAlive && tankState == ecTankState::MOVE)
 	{
 		Move(moveDir);
-		MoveFrame();
-		// 충돌 시 방향 전환
-		if (isCollision)
-		{
-			switch (moveDir)
-			{
-			case MoveDir::RIGHT:
-				moveSpeed = 0.0f;
-				pos = buffPos;
-				shape = buffRect;
-				elapsedTurn++;
-				if (elapsedTurn >= 30)
-				{
-					while (moveDir == MoveDir::RIGHT)
-					{
-						moveDir = (MoveDir)(rand() % 4);
-					}
-
-					if(tankType == EnemyType::SPEED)
-					{
-						moveSpeed = 100.0f;
-					}
-					else
-					{
-						moveSpeed = 50.0f;
-					}
-
-					isCollision = false;
-					elapsedTurn = 0;
-				}
-				break;
-			case MoveDir::LEFT:
-				moveSpeed = 0.0f;
-				pos = buffPos;
-				shape = buffRect;
-				elapsedTurn++;
-				if (elapsedTurn >= 30)
-				{
-					pos.x += 1;
-					while (moveDir == MoveDir::LEFT)
-					{
-						moveDir = (MoveDir)(rand() % 4);
-					}
-					if (tankType == EnemyType::SPEED)
-					{
-						moveSpeed = 100.0f;
-					}
-					else
-					{
-						moveSpeed = 50.0f;
-					}
-					isCollision = false;
-					elapsedTurn = 0;
-				}
-				break;
-			case MoveDir::UP:
-				moveSpeed = 0.0f;
-				pos = buffPos;
-				shape = buffRect;
-				elapsedTurn++;
-				if (elapsedTurn >= 30)
-				{
-					pos.y += 1;
-					while (moveDir == MoveDir::UP)
-					{
-						moveDir = (MoveDir)(rand() % 4);
-					}
-					if (tankType == EnemyType::SPEED)
-					{
-						moveSpeed = 100.0f;
-					}
-					else
-					{
-						moveSpeed = 50.0f;
-					}
-					isCollision = false;
-					elapsedTurn = 0;
-				}
-				break;
-			case MoveDir::DOWN:
-				moveSpeed = 0.0f;
-				pos = buffPos;
-				shape = buffRect;
-				elapsedTurn++;
-				if (elapsedTurn >= 30)
-				{
-					pos.y -= 1;
-					while (moveDir == MoveDir::DOWN)
-					{
-						moveDir = (MoveDir)(rand() % 4);
-					}
-					if (tankType == EnemyType::SPEED)
-					{
-						moveSpeed = 100.0f;
-					}
-					else
-					{
-						moveSpeed = 50.0f;
-					}
-					isCollision = false;
-					elapsedTurn = 0;
-				}
-				break;
-			default:
-				break;
-			}
-			isCollision = false;
-		}
+		MoveAnimation();
 
 		// moveSpeed가 0.1로 고정되는 오류 방지
 		if (moveSpeed == 0.0f)
@@ -227,6 +128,9 @@ void Enemy::Update()
 		shape.right = shape.left + bodySize - 5;
 		shape.bottom = shape.top + bodySize - 5;
 	}
+
+	//아이템 가지고 있는 적 탱크 이미지 변화
+	ChangeItemTankImage();
 }
 
 void Enemy::Render(HDC hdc)
@@ -243,6 +147,10 @@ void Enemy::Render(HDC hdc)
 	{
 		img->Render(hdc, pos.x, pos.y, img->GetCurrFrameX(), img->GetCurrFrameY());
 
+		if (haveItem)
+		{
+			itemTankImg->Render(hdc, pos.x, pos.y, itemTankImg->GetCurrFrameX(), itemTankImg->GetCurrFrameY());
+		}
 		ammoMgr.Render(hdc);
 	}
 }
@@ -252,11 +160,11 @@ void Enemy::Release()
 	//SAFE_RELEASE(ammoMgr);
 	ammoMgr.Release();
 	SAFE_RELEASE(img);
-
+	SAFE_RELEASE(itemTankImg);
 }
 
 // 움직이는 모양
-void Enemy::MoveFrame()
+void Enemy::MoveAnimation()
 {
 	switch (moveDir)
 	{
@@ -266,7 +174,6 @@ void Enemy::MoveFrame()
 			img->SetCurrFrameX(6);
 		}
 		elapsedCount++;
-
 		if (elapsedCount >= 2)
 		{
 			img->SetCurrFrameX(img->GetCurrFrameX() + 1);
@@ -274,6 +181,20 @@ void Enemy::MoveFrame()
 			{
 				img->SetCurrFrameX(6);
 				elapsedCount = 0;
+			}
+		}
+		if (itemTankImg->GetCurrFrameX() <= 5 || itemTankImg->GetCurrFrameX() >= 8)
+		{
+			itemTankImg->SetCurrFrameX(6);
+		}
+		elapseditemTankFrameX++;
+		if (elapseditemTankFrameX >= 2)
+		{
+			itemTankImg->SetCurrFrameX(itemTankImg->GetCurrFrameX() + 1);
+			if (itemTankImg->GetCurrFrameX() >= 8)
+			{
+				itemTankImg->SetCurrFrameX(6);
+				elapseditemTankFrameX = 0;
 			}
 		}
 		break;
@@ -292,6 +213,20 @@ void Enemy::MoveFrame()
 				elapsedCount = 0;
 			}
 		}
+		if (itemTankImg->GetCurrFrameX() <= 1 || itemTankImg->GetCurrFrameX() >= 4)
+		{
+			itemTankImg->SetCurrFrameX(2);
+		}
+		elapseditemTankFrameX++;
+		if (elapseditemTankFrameX >= 2)
+		{
+			itemTankImg->SetCurrFrameX(itemTankImg->GetCurrFrameX() + 1);
+			if (itemTankImg->GetCurrFrameX() >= 4)
+			{
+				itemTankImg->SetCurrFrameX(2);
+				elapseditemTankFrameX = 0;
+			}
+		}
 		break;
 	case MoveDir::UP:
 		if (img->GetCurrFrameX() <= -1 || img->GetCurrFrameX() >= 2)
@@ -306,6 +241,20 @@ void Enemy::MoveFrame()
 			{
 				img->SetCurrFrameX(0);
 				elapsedCount = 0;
+			}
+		}
+		if (itemTankImg->GetCurrFrameX() <= -1 || itemTankImg->GetCurrFrameX() >= 2)
+		{
+			itemTankImg->SetCurrFrameX(0);
+		}
+		elapseditemTankFrameX++;
+		if (elapseditemTankFrameX >= 2)
+		{
+			itemTankImg->SetCurrFrameX(itemTankImg->GetCurrFrameX() + 1);
+			if (itemTankImg->GetCurrFrameX() >= 2)
+			{
+				itemTankImg->SetCurrFrameX(0);
+				elapseditemTankFrameX = 0;
 			}
 		}
 		break;
@@ -324,6 +273,20 @@ void Enemy::MoveFrame()
 				elapsedCount = 0;
 			}
 		}
+		if (itemTankImg->GetCurrFrameX() <= 3 || itemTankImg->GetCurrFrameX() >= 6)
+		{
+			itemTankImg->SetCurrFrameX(4);
+		}
+		elapseditemTankFrameX++;
+		if (elapseditemTankFrameX >= 2)
+		{
+			itemTankImg->SetCurrFrameX(itemTankImg->GetCurrFrameX() + 1);
+			if (itemTankImg->GetCurrFrameX() >= 6)
+			{
+				itemTankImg->SetCurrFrameX(4);
+				elapseditemTankFrameX = 0;
+			}
+		}
 		break;
 	default:
 		break;
@@ -332,12 +295,11 @@ void Enemy::MoveFrame()
 
 void Enemy::Move(MoveDir dir)
 {
-	POINTFLOAT buffPos;  // 현재 좌표를 백업하기 위한 버퍼
-	buffPos.x = pos.x;
-	buffPos.y = pos.y;
-	RECT buffRect;
+	buffPos = pos;
 	buffRect = shape;
+	RECT playerTankShape = player->GetShape();
 
+	// 위치에 따른 포지션값 갱신
 	switch (dir)
 	{
 	case MoveDir::LEFT: pos.x -= (moveSpeed * TimerManager::GetSingleton()->GetDeltaTime()); break;
@@ -346,19 +308,73 @@ void Enemy::Move(MoveDir dir)
 	case MoveDir::DOWN: pos.y += (moveSpeed * TimerManager::GetSingleton()->GetDeltaTime()); break;
 	}
 
+	// 위치에 따른 모양값 갱신
+	shape.left = pos.x - bodySize / 2 + 1;
+	shape.top = pos.y - bodySize / 2 + 1;
+	shape.right = shape.left + bodySize - 5;
+	shape.bottom = shape.top + bodySize - 5;
+
 	for (int i = 0; i < TILE_COUNT_X * TILE_COUNT_Y; i++)
 	{
-			if (IntersectRect(&tempRect, &shape, &tile[i].rc))
+		if (IntersectRect(&tempRect, &shape, &tile[i].rc) || (IntersectRect(&tempRect, &shape, &playerTankShape)))
+		{
+			if ((tile[i].terrain == Terrain::WALL) || (tile[i].terrain == Terrain::STEEL) || (tile[i].terrain == Terrain::HQ_WALL) || (tile[i].terrain == Terrain::HQ_STEEL) || isCollision)
 			{
-				if ((tile[i].terrain == Terrain::WALL) || (tile[i].terrain == Terrain::STEEL) || (tile[i].terrain == Terrain::HQ_WALL) || (tile[i].terrain == Terrain::HQ_STEEL))
+				pos = buffPos;
+				shape = buffRect;
+				switch (moveDir)
 				{
-					pos = buffPos;
-					shape = buffRect;
-					isCollision = true;
+				case MoveDir::RIGHT:
+					elapsedTurn++;
+					if (elapsedTurn >= 30)
+					{
+						while (moveDir == MoveDir::RIGHT)
+						{
+							moveDir = (MoveDir)(rand() % 4);
+						}
+						elapsedTurn = 0;
+					}
+					break;
+				case MoveDir::LEFT:
+					elapsedTurn++;
+					if (elapsedTurn >= 30)
+					{
+						while (moveDir == MoveDir::LEFT)
+						{
+							moveDir = (MoveDir)(rand() % 4);
+						}
+						elapsedTurn = 0;
+					}
+					break;
+				case MoveDir::UP:
+					elapsedTurn++;
+					if (elapsedTurn >= 30)
+					{
+						while (moveDir == MoveDir::UP)
+						{
+							moveDir = (MoveDir)(rand() % 4);
+						}
+						elapsedTurn = 0;
+					}
+					break;
+				case MoveDir::DOWN:
+					elapsedTurn++;
+					if (elapsedTurn >= 30)
+					{
+						while (moveDir == MoveDir::DOWN)
+						{
+							moveDir = (MoveDir)(rand() % 4);
+						}
+						elapsedTurn = 0;
+					}
+					break;
+				default:
+					break;
 				}
+				isCollision = false;
 			}
-	}
-  
+		}
+	}  
 	RECT playerTankShape = player->GetShape();
 	if (IntersectRect(&tempRect, &shape, &playerTankShape))
 	{
@@ -372,29 +388,93 @@ void Enemy::Move(MoveDir dir)
 void Enemy::SetEnemyType(EnemyType type)
 {
 	tankType = type;
-
 	switch (tankType)
 	{
 	case EnemyType::NORMAL:
 		moveSpeed = 50.0f;
 		img->SetCurrFrameY(0);
+		itemTankImg->SetCurrFrameY(0);
 		break;
 	case EnemyType::SPEED:
 		moveSpeed = 100.0f;
 		img->SetCurrFrameY(1);
+		itemTankImg->SetCurrFrameX(2);
 		break;
 	case EnemyType::RPD:
 		moveSpeed = 50.0f;
 		img->SetCurrFrameY(2);
+		itemTankImg->SetCurrFrameX(4);
 		fireDelay = 50;
 		ammoMgr.SetAmmoSpeed(600.0f);
 		break;
 	case EnemyType::SUPER:
 		moveSpeed = 50.0f;
 		img->SetCurrFrameY(3);
+		itemTankImg->SetCurrFrameX(6);
 		hp = 3;
 		break;
 	default:
 		break;
+	}
+}
+
+void Enemy::ChangeItemTankImage()
+{
+	if (haveItem)
+	{
+		//cout << "elapseditemTankFrameY : " << elapseditemTankFrameY << endl;
+		switch (tankType)
+		{
+		case EnemyType::NORMAL:
+			elapseditemTankFrameY++;
+			if (elapseditemTankFrameY >= 20)
+			{
+				itemTankImg->SetCurrFrameY(1);
+			}
+			if (elapseditemTankFrameY >= 40)
+			{
+				itemTankImg->SetCurrFrameY(0);
+				elapseditemTankFrameY = 0;
+			}
+			break;
+		case EnemyType::SPEED:
+			elapseditemTankFrameY++;
+			if (elapseditemTankFrameY >= 20)
+			{
+				itemTankImg->SetCurrFrameY(3);
+			}
+			if (elapseditemTankFrameY >= 40)
+			{
+				itemTankImg->SetCurrFrameY(2);
+				elapseditemTankFrameY = 0;
+			}
+			break;
+		case EnemyType::RPD:
+			elapseditemTankFrameY++;
+			if (elapseditemTankFrameY >= 20)
+			{
+				itemTankImg->SetCurrFrameY(5);
+			}
+			if (elapseditemTankFrameY >= 40)
+			{
+				itemTankImg->SetCurrFrameY(4);
+				elapseditemTankFrameY = 0;
+			}
+			break;
+		case EnemyType::SUPER:
+			elapseditemTankFrameY++;
+			if (elapseditemTankFrameY >= 20)
+			{
+				itemTankImg->SetCurrFrameY(7);
+			}
+			if (elapseditemTankFrameY >= 40)
+			{
+				itemTankImg->SetCurrFrameY(6);
+				elapseditemTankFrameY = 0;
+			}
+			break;
+		default:
+			break;
+		}
 	}
 }
