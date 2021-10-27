@@ -35,7 +35,7 @@ private:
 
 	Image* textTotal = nullptr;
 	Image* enemyTotalText = nullptr;
-	int enemyTotal = destroyedEnemy[0]+ destroyedEnemy[1]+ destroyedEnemy[2]+ destroyedEnemy[3];
+	int enemyTotal = 0;
 
 	int enemyCount[4] = { 0, 0, 0, 0 };
 	int enemyCountArrNum = 0;

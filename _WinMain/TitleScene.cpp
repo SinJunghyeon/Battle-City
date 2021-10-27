@@ -8,7 +8,7 @@ HRESULT TitleScene::Init()
 	ImageManager::GetSingleton()->AddImage("Image/BattleCity/Title.bmp", WIN_SIZE_X, WIN_SIZE_Y);
 	backGround = ImageManager::GetSingleton()->FindImage("Image/BattleCity/Title.bmp");
 	// 탱크 이미지
-	ImageManager::GetSingleton()->AddImage("Image/BattleCity/Player/Player.bmp", WIN_SIZE_X/2, WIN_SIZE_X/4, 8, 4, true, RGB(255, 0, 255));
+	ImageManager::GetSingleton()->AddImage("Image/BattleCity/Player/Player.bmp", 512, 256, 8, 4, true, RGB(255, 0, 255));
 	selectIcon = ImageManager::GetSingleton()->FindImage("Image/BattleCity/Player/Player.bmp");
 
 	return S_OK;
@@ -75,7 +75,7 @@ void TitleScene::Render(HDC hdc)
 	if (bIsSceneIcon)
 	{
 		timeLate = (HANDLE)SetTimer(g_hWnd, 0, 100, NULL);	// 탱크 프레임 조정
-		selectIcon->Render(hdc, WIN_SIZE_X / 4, iconPosY[iconPosNum], iconFrameX, 0);
+		selectIcon->Render(hdc, WIN_SIZE_X / 4, iconPosY[iconPosNum], iconFrameX, 0, 0.8f);
 	}
 }
 

@@ -64,7 +64,7 @@ private:
     int elapsedCount = 1005;
 
     // UI
-    int UIposX = TILE_SIZE * TILE_COUNT_X + 100;
+    int UIposX = TILE_SIZE * TILE_COUNT_X + 120;
     int destroyedEnemy[4] = {}; // 1 : 일반형  2 : 속도형   3 : 속사형   4 : 슈퍼탱크
     int iconSize = 30;
     int destroyedEnemyCount = 0;

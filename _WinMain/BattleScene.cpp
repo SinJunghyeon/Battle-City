@@ -85,13 +85,13 @@ HRESULT BattleScene::Init()
     itemRect = mpItem->GetShape();
 
     //UI
-    ImageManager::GetSingleton()->AddImage("Image/BattleCity/Icon/Icon_Enemy.bmp", iconSize, iconSize);
+    ImageManager::GetSingleton()->AddImage("Image/BattleCity/Icon/Icon_Enemy.bmp", iconSize-5, iconSize-5);
     enemyIcon = ImageManager::GetSingleton()->FindImage("Image/BattleCity/Icon/Icon_Enemy.bmp");
 
     ImageManager::GetSingleton()->AddImage("Image/BattleCity/Icon/player1Life.bmp", iconSize * 2, iconSize * 2, true, RGB(255, 0, 255));
     P1LifeImage = ImageManager::GetSingleton()->FindImage("Image/BattleCity/Icon/player1Life.bmp");
 
-    ImageManager::GetSingleton()->AddImage("Image/BattleCity/Text/Number.bmp", 40 * 3, 14 * 3, 5, 2);
+    ImageManager::GetSingleton()->AddImage("Image/BattleCity/Text/Number.bmp", 40, 14, 5, 2,true,RGB(255,0,255));
     numberText = ImageManager::GetSingleton()->FindImage("Image/BattleCity/Text/Number.bmp");
 
     ImageManager::GetSingleton()->AddImage("Image/BattleCity/Icon/StageFlag.bmp", iconSize * 2, iconSize * 1.5, true, RGB(255, 0, 255));
@@ -342,10 +342,10 @@ void BattleScene::Render(HDC hdc)
         switch (i % 2)
         {
         case 0:
-            enemyIcon->Render(hdc, UIposX, 100 + (i * 15));
+            enemyIcon->Render(hdc, UIposX, 15 + (i * 15));
             break;
         case 1:
-            enemyIcon->Render(hdc, UIposX + iconSize, 100 + (i - 1) * 15);
+            enemyIcon->Render(hdc, UIposX + iconSize-5, 15 + (i - 1) * 15);
             break;
         default:
             break;
@@ -357,25 +357,25 @@ void BattleScene::Render(HDC hdc)
 
     if (playerLife % 10 < 5)  // 1의 자리(5미만)
     {
-        numberText->Render(hdc, UIposX + iconSize * 2, WIN_SIZE_Y / 2 + iconSize / 2, playerLife % 5, 0);
+        numberText->Render(hdc, UIposX + iconSize * 2, WIN_SIZE_Y / 2 + iconSize / 2, playerLife % 5, 0, 4.0f);
     }
     else if (playerLife % 10 >= 5)  // 1의 자리(5이상)
     {
-        numberText->Render(hdc, UIposX + iconSize * 2, WIN_SIZE_Y / 2 + iconSize / 2, playerLife % 5, 1);
+        numberText->Render(hdc, UIposX + iconSize * 2, WIN_SIZE_Y / 2 + iconSize / 2, playerLife % 5, 1, 4.0f);
     }
 
     if (playerLife / 10 >= 1 && playerLife / 10 < 5)   // 10의 자리 (50미만)
     {
-        numberText->Render(hdc, UIposX + iconSize, WIN_SIZE_Y / 2 + iconSize / 2, numberText->GetCurrFrameX() / 10, 0);
+        numberText->Render(hdc, UIposX + iconSize/ 2 + 10, WIN_SIZE_Y / 2 + iconSize / 2, numberText->GetCurrFrameX() / 10, 0, 4.0f);
     }
     else if (playerLife / 10 >= 5)   // 10의 자리 (50이상)
     {
-        numberText->Render(hdc, UIposX + iconSize, WIN_SIZE_Y / 2 + iconSize / 2, (numberText->GetCurrFrameX() / 10) % 5, 1);
+        numberText->Render(hdc, UIposX + iconSize/ 2 + 10, WIN_SIZE_Y / 2 + iconSize / 2, (numberText->GetCurrFrameX() / 10) % 5, 1, 4.0f);
     }
     // -> img->GetCurrFrameX, GetCurrFrameY를 사용하여 변수 줄이기
 
     stageFlag->Render(hdc, UIposX + iconSize / 2, WIN_SIZE_Y * 4 / 5);                                  // 스테이지 깃발
-    numberText->Render(hdc, UIposX + iconSize, WIN_SIZE_Y * 4 / 5 + iconSize, stagescene.GetStageNum(), 0);        // 스테이지 숫자
+    numberText->Render(hdc, UIposX + iconSize, WIN_SIZE_Y * 4 / 5 + iconSize, stagescene.GetStageNum(), 0, 4.0f);        // 스테이지 숫자
 
     //게임 오버
     gameOverImg->Render(hdc, 330, gameOverPosY);

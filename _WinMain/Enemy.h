@@ -63,7 +63,7 @@ public:
 	inline EnemyType GetEnemyType() { return this->tankType; }
 	void SetEnemyType(EnemyType type);
 
-	// ÇÃ·¹ÀÌ¾îÀÇ Á¤º¸¸¦ °¡Á®¿À´Â ÇÔ¼ö
+	// í”Œë ˆì´ì–´ì˜ ì •ë³´ë¥¼ ê°€ì ¸ì˜¤ëŠ” í•¨ìˆ˜
 	inline void SetPlayer(Tank* player) { this->player = player; }
 
 	virtual ~Enemy() = default;

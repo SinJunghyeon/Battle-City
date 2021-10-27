@@ -348,8 +348,6 @@ void Enemy::Move(MoveDir dir)
 
 	for (int i = 0; i < TILE_COUNT_X * TILE_COUNT_Y; i++)
 	{
-		//if (isCollision == false)
-		//{
 			if (IntersectRect(&tempRect, &shape, &tile[i].rc))
 			{
 				if ((tile[i].terrain == Terrain::WALL) || (tile[i].terrain == Terrain::STEEL) || (tile[i].terrain == Terrain::HQ_WALL) || (tile[i].terrain == Terrain::HQ_STEEL))
@@ -359,8 +357,18 @@ void Enemy::Move(MoveDir dir)
 					isCollision = true;
 				}
 			}
-		//}
 	}
+  
+	RECT playerTankShape = player->GetShape();
+	if (IntersectRect(&tempRect, &shape, &playerTankShape))
+	{
+		cout << "적탱크 플레이어탱크랑 접촉! !" << endl;
+		pos = buffPos;
+		shape = buffRect;
+		isCollision = true;
+	}
+}
+
 }
 
 void Enemy::SetEnemyType(EnemyType type)

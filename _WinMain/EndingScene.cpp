@@ -60,6 +60,7 @@ void EndingScene::Update()
         }
         if (enemyCount[enemyCountArrNum] == destroyedEnemy[enemyCountArrNum])
         {
+            enemyTotal += enemyCount[enemyCountArrNum];
             enemyCountArrNum++;
         }
         break;
@@ -85,11 +86,11 @@ void EndingScene::Render(HDC hdc)
 
     for (int i = 0; i < 4; i++)
     {
-        enemyTankImage->Render(hdc, enemyTankImagePosX, enemyTankImagePosY[i], 0, i);
+        enemyTankImage->Render(hdc, enemyTankImagePosX, enemyTankImagePosY[i], 0, i,0.8f);
         arrowImage->Render(hdc, enemyTankImagePosX - 50, enemyTankImagePosY[i]);
         textPTS->Render(hdc, scoreNumberPosX * 2 / 3, enemyTankImagePosY[i]);
 
-        // Á×ÀÎ ¿¡³Ê¹Ì 1ÀÇ ÀÚ¸®
+        // ì£½ì¸ ì—ë„ˆë¯¸ 1ì˜ ìë¦¬
         if (enemyCount[i] % 10 < 5)
         {
             scoreNumber[i]->Render(hdc, scoreNumberPosX, enemyTankImagePosY[i], enemyCount[i] % 5, 0);
@@ -99,14 +100,14 @@ void EndingScene::Render(HDC hdc)
             scoreNumber[i]->Render(hdc, scoreNumberPosX, enemyTankImagePosY[i], enemyCount[i] % 5, 1);
         }
 
-        // ½ºÄÚ¾î
-        scoreNumber[i]->Render(hdc, scoreNumberPosX / 2, enemyTankImagePosY[i], 0, 0);           // 1ÀÇ ÀÚ¸®
+        // ìŠ¤ì½”ì–´
+        scoreNumber[i]->Render(hdc, scoreNumberPosX / 2, enemyTankImagePosY[i], 0, 0);           // 1ì˜ ìë¦¬
 
         if (enemyCount[i] >= 1)
         {
-            scoreNumber[i]->Render(hdc, scoreNumberPosX / 2 - 40, enemyTankImagePosY[i], 0, 0);  // 10ÀÇ ÀÚ¸®
+            scoreNumber[i]->Render(hdc, scoreNumberPosX / 2 - 40, enemyTankImagePosY[i], 0, 0);  // 10ì˜ ìë¦¬
 
-            // 100ÀÇ ÀÚ¸®
+            // 100ì˜ ìë¦¬
             if (enemyCount[i] < 5)                                                               
             {
                 scoreNumber[i]->Render(hdc, scoreNumberPosX / 2 - 80, enemyTankImagePosY[i], enemyCount[i] % 5, 0);
@@ -119,13 +120,13 @@ void EndingScene::Render(HDC hdc)
 
         if (enemyCount[i] >= 10)
         {
-            scoreNumber[i]->Render(hdc, scoreNumberPosX - 40, enemyTankImagePosY[i], enemyCount[i] / 10, 0);      // Á×ÀÎ ¿¡³Ê¹Ì 10ÀÇ ÀÚ¸®
-            scoreNumber[i]->Render(hdc, scoreNumberPosX / 2 - 120, enemyTankImagePosY[i], enemyCount[i] / 10, 0); // ½ºÄÚ¾î 1000ÀÇ ÀÚ¸®
+            scoreNumber[i]->Render(hdc, scoreNumberPosX - 40, enemyTankImagePosY[i], enemyCount[i] / 10, 0);      // ì£½ì¸ ì—ë„ˆë¯¸ 10ì˜ ìë¦¬
+            scoreNumber[i]->Render(hdc, scoreNumberPosX / 2 - 120, enemyTankImagePosY[i], enemyCount[i] / 10, 0); // ìŠ¤ì½”ì–´ 1000ì˜ ìë¦¬
         }
         else if (enemyCount[i] >= 50)
         {
-            scoreNumber[i]->Render(hdc, scoreNumberPosX - 40, enemyTankImagePosY[i], (enemyCount[i] / 10) % 5, 1);      // Á×ÀÎ ¿¡³Ê¹Ì 10ÀÇ ÀÚ¸®
-            scoreNumber[i]->Render(hdc, scoreNumberPosX / 2 - 120, enemyTankImagePosY[i], (enemyCount[i] / 10) % 5, 1); // ½ºÄÚ¾î 1000ÀÇ ÀÚ¸®
+            scoreNumber[i]->Render(hdc, scoreNumberPosX - 40, enemyTankImagePosY[i], (enemyCount[i] / 10) % 5, 1);      // ì£½ì¸ ì—ë„ˆë¯¸ 10ì˜ ìë¦¬
+            scoreNumber[i]->Render(hdc, scoreNumberPosX / 2 - 120, enemyTankImagePosY[i], (enemyCount[i] / 10) % 5, 1); // ìŠ¤ì½”ì–´ 1000ì˜ ìë¦¬
         }
     }
 
