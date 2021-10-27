@@ -74,7 +74,6 @@
     <ClCompile Include="MainGame.cpp">
       <Filter>MainGame</Filter>
     </ClCompile>
-    <ClCompile Include="DestroyCountManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="KeyManager.h">
@@ -161,7 +160,9 @@
     <ClInclude Include="EndingScene.h">
       <Filter>MainGame\Scene</Filter>
     </ClInclude>
-    <ClInclude Include="DestroyCountManager.h" />
+    <ClInclude Include="DestroyCountManager.h">
+      <Filter>2D FrameWork\Manager</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="2D FrameWork">

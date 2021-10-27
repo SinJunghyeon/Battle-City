@@ -1,5 +1,5 @@
 #pragma once
-enum class Terrain { ROAD, WALL, WATER, GRASS, STEEL, ICE, HQ, HQ_WALL, HQ_STEEL, End };
+enum class Terrain { ROAD, WALL, WATER, GRASS, STEEL, ICE, HQ, HQ_WALL, HQ_STEEL, DESTROYED_HQ, End };
 enum class ObjectType { PLAYER, ENEMY, ITEM };
 
 #define TILE_SIZE	20
@@ -71,7 +71,12 @@ inline void SetTerrain(TILE_INFO* rc)
         else if (6 <= rc->frameX && rc->frameX <= 7)
         {
             rc->terrain = Terrain::HQ;
-            rc->hp = 0;
+            rc->hp = 1000;
+        }
+        else if (8 <= rc->frameX && rc->frameX <= 9)
+        {
+            rc->terrain = Terrain::DESTROYED_HQ;
+            rc->hp = 1000;
         }
     }
     else if (rc->frameX == 8)
