@@ -33,6 +33,8 @@ public:
 	int GetEnemyMaxCount() { return this->enemyMaxCount; }
 	void SetEnemyMaxCount(int EmaxCount) { this->enemyMaxCount = EmaxCount; }
 
+	void EnemyCollision();
+
 	virtual ~EnemyManager() = default;
 };
 

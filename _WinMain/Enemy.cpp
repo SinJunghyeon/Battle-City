@@ -90,114 +90,7 @@ void Enemy::Update()
 	if (isAlive && tankState == ecTankState::MOVE)
 	{
 		Move(moveDir);
-		MoveFrame();
-		// 충돌 시 방향 전환
-		if (isCollision)
-		{
-			switch (moveDir)
-			{
-			case MoveDir::RIGHT:
-				moveSpeed = 0.0f;
-				pos = buffPos;
-				shape = buffRect;
-				elapsedTurn++;
-				if (elapsedTurn >= 30)
-				{
-					while (moveDir == MoveDir::RIGHT)
-					{
-						moveDir = (MoveDir)(rand() % 4);
-					}
-
-					if(tankType == EnemyType::SPEED)
-					{
-						moveSpeed = 100.0f;
-					}
-					else
-					{
-						moveSpeed = 50.0f;
-					}
-
-					isCollision = false;
-					elapsedTurn = 0;
-				}
-				break;
-			case MoveDir::LEFT:
-				moveSpeed = 0.0f;
-				pos = buffPos;
-				shape = buffRect;
-				elapsedTurn++;
-				if (elapsedTurn >= 30)
-				{
-					pos.x += 1;
-					while (moveDir == MoveDir::LEFT)
-					{
-						moveDir = (MoveDir)(rand() % 4);
-					}
-					if (tankType == EnemyType::SPEED)
-					{
-						moveSpeed = 100.0f;
-					}
-					else
-					{
-						moveSpeed = 50.0f;
-					}
-					isCollision = false;
-					elapsedTurn = 0;
-				}
-				break;
-			case MoveDir::UP:
-				moveSpeed = 0.0f;
-				pos = buffPos;
-				shape = buffRect;
-				elapsedTurn++;
-				if (elapsedTurn >= 30)
-				{
-					pos.y += 1;
-					while (moveDir == MoveDir::UP)
-					{
-						moveDir = (MoveDir)(rand() % 4);
-					}
-					if (tankType == EnemyType::SPEED)
-					{
-						moveSpeed = 100.0f;
-					}
-					else
-					{
-						moveSpeed = 50.0f;
-					}
-					isCollision = false;
-					elapsedTurn = 0;
-				}
-				break;
-			case MoveDir::DOWN:
-				moveSpeed = 0.0f;
-				pos = buffPos;
-				shape = buffRect;
-				elapsedTurn++;
-				if (elapsedTurn >= 30)
-				{
-					pos.y -= 1;
-					while (moveDir == MoveDir::DOWN)
-					{
-						moveDir = (MoveDir)(rand() % 4);
-					}
-					if (tankType == EnemyType::SPEED)
-					{
-						moveSpeed = 100.0f;
-					}
-					else
-					{
-						moveSpeed = 50.0f;
-					}
-					isCollision = false;
-					elapsedTurn = 0;
-				}
-				break;
-			default:
-				break;
-			}
-			isCollision = false;
-		}
+		MoveAnimation();
 
 		// moveSpeed가 0.1로 고정되는 오류 방지
 		if (moveSpeed == 0.0f)
@@ -271,7 +164,7 @@ void Enemy::Release()
 }
 
 // 움직이는 모양
-void Enemy::MoveFrame()
+void Enemy::MoveAnimation()
 {
 	switch (moveDir)
 	{
@@ -402,12 +295,11 @@ void Enemy::MoveFrame()
 
 void Enemy::Move(MoveDir dir)
 {
-	POINTFLOAT buffPos;  // 현재 좌표를 백업하기 위한 버퍼
-	buffPos.x = pos.x;
-	buffPos.y = pos.y;
-	RECT buffRect;
+	buffPos = pos;
 	buffRect = shape;
+	RECT playerTankShape = player->GetShape();
 
+	// 위치에 따른 포지션값 갱신
 	switch (dir)
 	{
 	case MoveDir::LEFT: pos.x -= (moveSpeed * TimerManager::GetSingleton()->GetDeltaTime()); break;
@@ -416,26 +308,72 @@ void Enemy::Move(MoveDir dir)
 	case MoveDir::DOWN: pos.y += (moveSpeed * TimerManager::GetSingleton()->GetDeltaTime()); break;
 	}
 
+	// 위치에 따른 모양값 갱신
+	shape.left = pos.x - bodySize / 2 + 1;
+	shape.top = pos.y - bodySize / 2 + 1;
+	shape.right = shape.left + bodySize - 5;
+	shape.bottom = shape.top + bodySize - 5;
+
 	for (int i = 0; i < TILE_COUNT_X * TILE_COUNT_Y; i++)
 	{
-			if (IntersectRect(&tempRect, &shape, &tile[i].rc))
+		if (IntersectRect(&tempRect, &shape, &tile[i].rc) || (IntersectRect(&tempRect, &shape, &playerTankShape)))
+		{
+			if ((tile[i].terrain == Terrain::WALL) || (tile[i].terrain == Terrain::STEEL) || (tile[i].terrain == Terrain::HQ_WALL) || (tile[i].terrain == Terrain::HQ_STEEL) || isCollision)
 			{
-				if ((tile[i].terrain == Terrain::WALL) || (tile[i].terrain == Terrain::STEEL) || (tile[i].terrain == Terrain::HQ_WALL) || (tile[i].terrain == Terrain::HQ_STEEL))
+				pos = buffPos;
+				shape = buffRect;
+				switch (moveDir)
 				{
-					pos = buffPos;
-					shape = buffRect;
-					isCollision = true;
+				case MoveDir::RIGHT:
+					elapsedTurn++;
+					if (elapsedTurn >= 30)
+					{
+						while (moveDir == MoveDir::RIGHT)
+						{
+							moveDir = (MoveDir)(rand() % 4);
+						}
+						elapsedTurn = 0;
+					}
+					break;
+				case MoveDir::LEFT:
+					elapsedTurn++;
+					if (elapsedTurn >= 30)
+					{
+						while (moveDir == MoveDir::LEFT)
+						{
+							moveDir = (MoveDir)(rand() % 4);
+						}
+						elapsedTurn = 0;
+					}
+					break;
+				case MoveDir::UP:
+					elapsedTurn++;
+					if (elapsedTurn >= 30)
+					{
+						while (moveDir == MoveDir::UP)
+						{
+							moveDir = (MoveDir)(rand() % 4);
+						}
+						elapsedTurn = 0;
+					}
+					break;
+				case MoveDir::DOWN:
+					elapsedTurn++;
+					if (elapsedTurn >= 30)
+					{
+						while (moveDir == MoveDir::DOWN)
+						{
+							moveDir = (MoveDir)(rand() % 4);
+						}
+						elapsedTurn = 0;
+					}
+					break;
+				default:
+					break;
 				}
+				isCollision = false;
 			}
-	}
-  
-	RECT playerTankShape = player->GetShape();
-	if (IntersectRect(&tempRect, &shape, &playerTankShape))
-	{
-		cout << "적탱크 플레이어탱크랑 접촉! !" << endl;
-		pos = buffPos;
-		shape = buffRect;
-		isCollision = true;
+		}
 	}
 }
 
