@@ -142,7 +142,6 @@
     <ClCompile Include="Ammo.cpp" />
     <ClCompile Include="AmmoManager.cpp" />
     <ClCompile Include="BattleScene.cpp" />
-    <ClCompile Include="BattleTest2.cpp" />
     <ClCompile Include="Button.cpp" />
     <ClCompile Include="ButtonFunction.cpp" />
     <ClCompile Include="EndingScene.cpp" />
@@ -170,7 +169,6 @@
     <ClInclude Include="Ammo.h" />
     <ClInclude Include="AmmoManager.h" />
     <ClInclude Include="BattleScene.h" />
-    <ClInclude Include="BattleTest2.h" />
     <ClInclude Include="Button.h" />
     <ClInclude Include="ButtonFunction.h" />
     <ClInclude Include="CommonFunction.h" />
