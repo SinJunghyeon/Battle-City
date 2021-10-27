@@ -139,30 +139,30 @@ void BattleScene::Update()
     //cout << "elapsedChange : " << elapsedChange << endl;
     //cout << "elapsedCount : " << elapsedCount << endl;
 
-    // 타일 속성 확인용 코드
-    for (int i = 0; i < TILE_COUNT_X * TILE_COUNT_Y; i++)
-    {
-        if (PtInRect(&(tileInfo[i].rc), g_ptMouse))
-        {
-            if (KeyManager::GetSingleton()->IsStayKeyDown(VK_RBUTTON)) // 디버그용
-            {
-                cout << i << " tile" << endl;
-                cout << "mouse x : " << g_ptMouse.x << "mouse y : " << g_ptMouse.y << endl;
-                if (tileInfo[i].terrain == Terrain::WALL) cout << "WALL" << tileInfo[i].hp << endl;
-                else if (tileInfo[i].playerSpawn) cout << "playerSpawn" << tileInfo[i].hp << endl;
-                else if (tileInfo[i].enemySpawn) cout << "enemySpawn" << tileInfo[i].hp << endl;
-                else if (tileInfo[i].itemSpawn) cout << "itemSpawn" << tileInfo[i].hp << endl;
-                else if (tileInfo[i].isHQWall) cout << "isHQWall" << tileInfo[i].hp << endl;
+    //// 타일 속성 확인용 코드
+    //for (int i = 0; i < TILE_COUNT_X * TILE_COUNT_Y; i++)
+    //{
+    //    if (PtInRect(&(tileInfo[i].rc), g_ptMouse))
+    //    {
+    //        if (KeyManager::GetSingleton()->IsStayKeyDown(VK_RBUTTON)) // 디버그용
+    //        {
+    //            cout << i << " tile" << endl;
+    //            cout << "mouse x : " << g_ptMouse.x << "mouse y : " << g_ptMouse.y << endl;
+    //            if (tileInfo[i].terrain == Terrain::WALL) cout << "WALL" << tileInfo[i].hp << endl;
+    //            else if (tileInfo[i].playerSpawn) cout << "playerSpawn" << tileInfo[i].hp << endl;
+    //            else if (tileInfo[i].enemySpawn) cout << "enemySpawn" << tileInfo[i].hp << endl;
+    //            else if (tileInfo[i].itemSpawn) cout << "itemSpawn" << tileInfo[i].hp << endl;
+    //            else if (tileInfo[i].isHQWall) cout << "isHQWall" << tileInfo[i].hp << endl;
 
-                else if (tileInfo[i].terrain == Terrain::STEEL) cout << "STEEL" << tileInfo[i].hp << endl;
-                else if (tileInfo[i].terrain == Terrain::ROAD) cout << "ROAD" << tileInfo[i].hp << endl;
-                else if (tileInfo[i].terrain == Terrain::HQ) cout << "HQ" << tileInfo[i].hp << endl;
-                else if (tileInfo[i].terrain == Terrain::GRASS) cout << "GRASS" << tileInfo[i].hp << endl;
-                else if (tileInfo[i].terrain == Terrain::HQ_WALL) cout << "HQ_WALL" << tileInfo[i].hp << endl;
-                else if (tileInfo[i].terrain == Terrain::HQ_STEEL) cout << "HQ_STEEL" << tileInfo[i].hp << endl;
-            }
-        }
-    }
+    //            else if (tileInfo[i].terrain == Terrain::STEEL) cout << "STEEL" << tileInfo[i].hp << endl;
+    //            else if (tileInfo[i].terrain == Terrain::ROAD) cout << "ROAD" << tileInfo[i].hp << endl;
+    //            else if (tileInfo[i].terrain == Terrain::HQ) cout << "HQ" << tileInfo[i].hp << endl;
+    //            else if (tileInfo[i].terrain == Terrain::GRASS) cout << "GRASS" << tileInfo[i].hp << endl;
+    //            else if (tileInfo[i].terrain == Terrain::HQ_WALL) cout << "HQ_WALL" << tileInfo[i].hp << endl;
+    //            else if (tileInfo[i].terrain == Terrain::HQ_STEEL) cout << "HQ_STEEL" << tileInfo[i].hp << endl;
+    //        }
+    //    }
+    //}
 
     // 플레이어 탱크
     tempPos = player->GetPos();
@@ -211,10 +211,10 @@ void BattleScene::Update()
     for (int i = 0; i < vecEnemies.size(); ++i)
     {
         //적탱크의 상태가 IDLE일 때
-        if (elapsedCount < 1005)
+        if (elapsedCount < 3005)
         {
             elapsedCount++;
-            if ((vecEnemies[i]->GetTankState() == ecTankState::IDLE) && elapsedCount >= 1000)
+            if ((vecEnemies[i]->GetTankState() == ecTankState::IDLE) && elapsedCount >= 3000)
             {
                 (vecEnemies[i]->SetTankState(ecTankState::MOVE));
             }
@@ -265,20 +265,6 @@ void BattleScene::Update()
 
     // �� ���߼� �ֽ�ȭ
     DestroyCountManager::GetSingleton()->SetDestroyCount(destroyedEnemy);
-
-    //테스트
-    if (KeyManager::GetSingleton()->IsOnceKeyDown(VK_LBUTTON))
-    {
-        playerLife++;
-        //destroyedEnemyCount++;
-        cout << "P1L:" << playerLife << endl << "GetcurrFrameX:" << numberText->GetCurrFrameX() << endl;
-    }
-    if (KeyManager::GetSingleton()->IsOnceKeyDown(VK_RBUTTON))
-    {
-        playerLife--;
-        //destroyedEnemyCount++;
-        cout << "P1L:" << playerLife << endl << "GetcurrFrameX:" << numberText->GetCurrFrameX() << endl;
-    }
   
     //탱크 라이프 초기화        //숫자를 높여줘야하는데 init에 사용할 시 한번밖에 안불러와서 playerLife가 2로 계속 유지된다.
     numberText->SetCurrFrameX(playerLife);
@@ -656,27 +642,27 @@ void BattleScene::AmmoTankCollision(Boom* boom, Tank* player)
                 {
                 case EnemyType::NORMAL:
                     destroyedEnemy[0]++;
-                    cout << "destroy NORMAL : " << destroyedEnemy[0] << endl;
+                    //cout << "destroy NORMAL : " << destroyedEnemy[0] << endl;
                     destroyedEnemyCount++;
-                    cout << destroyedEnemyCount << endl;
+                    //cout << destroyedEnemyCount << endl;
                     break;
                 case EnemyType::SPEED:
                     destroyedEnemy[1]++;
-                    cout << "destroy SPEED : " << destroyedEnemy[1] << endl;
+                    //cout << "destroy SPEED : " << destroyedEnemy[1] << endl;
                     destroyedEnemyCount++;
-                    cout << destroyedEnemyCount << endl;
+                    //cout << destroyedEnemyCount << endl;
                     break;
                 case EnemyType::RPD:
                     destroyedEnemy[2]++;
-                    cout << "destroy RPD : " << destroyedEnemy[2] << endl;
+                    //cout << "destroy RPD : " << destroyedEnemy[2] << endl;
                     destroyedEnemyCount++;
-                    cout << destroyedEnemyCount << endl;
+                    //cout << destroyedEnemyCount << endl;
                     break;
                 case EnemyType::SUPER:
                     destroyedEnemy[3]++;
-                    cout << "destroy SUPER : " << destroyedEnemy[3] << endl;
+                    //cout << "destroy SUPER : " << destroyedEnemy[3] << endl;
                     destroyedEnemyCount++;
-                    cout << destroyedEnemyCount << endl;
+                    //cout << destroyedEnemyCount << endl;
                     break;
                 default:
                     break;

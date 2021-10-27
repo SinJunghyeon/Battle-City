@@ -7,6 +7,10 @@ HRESULT EndingScene::Init()
     hiscoreTextPos.x = 370;
     hiscoreTextPos.y = 50;
 
+    if (destroyedEnemy)
+    {
+        DestroyCountManager::GetSingleton()->SetDestroyCount(0);
+    }
 
     ImageManager::GetSingleton()->AddImage("Image/BattleCity/Text/HISocre.bmp", hiscoreTextPos.x, hiscoreTextPos.y, true, RGB(255, 0, 255));
     highScoreText = ImageManager::GetSingleton()->FindImage("Image/BattleCity/Text/HISocre.bmp");
@@ -40,13 +44,16 @@ HRESULT EndingScene::Init()
     destroyedEnemy = DestroyCountManager::GetSingleton()->GetDestroyCount();
 
 
-    enemyCountArrNum = 0;
 
     isAnimation = true;
     for (int i = 0; i < 4; i++)
     {
         enemyCount[i] = 0;
     }
+
+    
+    enemyCountArrNum = 0;
+    enemyTotal = 0;
 
     return S_OK;
 }

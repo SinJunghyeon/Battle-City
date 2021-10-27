@@ -62,7 +62,7 @@ private:
     RECT itemRect;
 
     int elapsedChange = NULL;;
-    int elapsedCount = 1005;
+    int elapsedCount = 3005;
 
     // UI
     int UIposX = TILE_SIZE * TILE_COUNT_X + 120;

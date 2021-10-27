@@ -30,7 +30,7 @@ HRESULT Tank::Init()
 	pos.y = 540.0f;
 
 	bodySize = 35;
-	moveSpeed = 100.0f;
+	moveSpeed = 150.0f;
 
 	shape.left = pos.x - (bodySize / 2) - 5.0f;
 	shape.top = pos.y - (bodySize / 2) - 5.0f;
@@ -105,10 +105,10 @@ void Tank::Update()
 	}
 
 	//무적상태변화
-	if (elapsedInvincible <= 200000)
+	if (elapsedInvincible <= 200)
 	{
 		elapsedInvincible++;
-		if (elapsedInvincible >= 200000)
+		if (elapsedInvincible >= 200)
 		{
 			isInvincible = false;
 		}
@@ -156,7 +156,7 @@ void Tank::Render(HDC hdc)
 	if (isAlive)	//살아있을 때
 	{
 		//몸통
-		Rectangle(hdc, shape.left, shape.top, shape.right, shape.bottom);
+		//Rectangle(hdc, shape.left, shape.top, shape.right, shape.bottom);
 		// 플레이어 이미지
 		img->Render(hdc, pos.x + 10, pos.y + 10, img->GetCurrFrameX(), img->GetCurrFrameY(), 0.625f);
 		if (isInvincible)
@@ -368,7 +368,7 @@ void Tank::Move(MoveDir dir)
 		RECT enemyRect = enemies[i]->GetShape();
 		if (IntersectRect(&tempRect, &shape, &enemyRect))
 		{
-			cout << "플레이어탱크 적탱크랑 접촉! !" << endl;
+			//cout << "플레이어탱크 적탱크랑 접촉! !" << endl;
 			pos = buffPos;
 			shape = buffRect;
 		}
