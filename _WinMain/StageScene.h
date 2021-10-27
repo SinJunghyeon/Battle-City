@@ -18,13 +18,16 @@ private:
 
 	bool isAnimation = true;
 
+	int stageN = 1;
+
 public:
 	virtual HRESULT Init() override;
 	virtual void Update() override;
 	virtual void Render(HDC hdc) override;
 	virtual void Release() override;
 
-	int stageN = 1;	// 외부에서 클리어가 들어오면 스테이지에 맞게 더하기		-> private 하고 getter setter 사용
+	inline int GetStageNum() { return this->stageN; }
+	inline void SetStageNum(int num) { this->stageN = num; }
 
 	virtual ~StageScene() = default;
 };

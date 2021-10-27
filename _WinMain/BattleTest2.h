@@ -19,6 +19,7 @@ struct Boom
     POINTFLOAT boomPos = {};
 };
 
+class StageScene;
 class GameObject;
 class EnemyManager;
 class Tank;
@@ -71,13 +72,10 @@ private:
     Image* enemyIcon;           // 에너미 탱크
     int enemyCount = 0;
 
-    Image* P1Life;
+    Image* P1LifeImage;
     int playerLife = 2;
 
-    int playerLife5 = 0;        // 5~9까지 출력
-    int playerLife10 = 0;       // 10의 자리
-
-    Image* UIText;
+    Image* numberText;
 
     Image* stageFlag;
     StageScene stagescene;

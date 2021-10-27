@@ -5,6 +5,7 @@
 #include "Item.h"
 #include "Ammo.h"
 #include "AmmoManager.h"
+#include "StageScene.h"
 
 HRESULT BattleTest2::Init()
 {
@@ -78,10 +79,13 @@ HRESULT BattleTest2::Init()
     //UI
     ImageManager::GetSingleton()->AddImage("Image/BattleCity/Icon/Icon_Enemy.bmp", iconSize, iconSize);
     enemyIcon = ImageManager::GetSingleton()->FindImage("Image/BattleCity/Icon/Icon_Enemy.bmp");
+
     ImageManager::GetSingleton()->AddImage("Image/BattleCity/Icon/player1Life.bmp", iconSize * 2, iconSize * 2, true, RGB(255, 0, 255));
-    P1Life = ImageManager::GetSingleton()->FindImage("Image/BattleCity/Icon/player1Life.bmp");
-    ImageManager::GetSingleton()->AddImage("Image/BattleCity/Text/Number.bmp", 40*3.5, 14*3.5, 5, 2);
-    UIText = ImageManager::GetSingleton()->FindImage("Image/BattleCity/Text/Number.bmp");
+    P1LifeImage = ImageManager::GetSingleton()->FindImage("Image/BattleCity/Icon/player1Life.bmp");
+
+    ImageManager::GetSingleton()->AddImage("Image/BattleCity/Text/Number.bmp", 40*3, 14*3, 5, 2);
+    numberText = ImageManager::GetSingleton()->FindImage("Image/BattleCity/Text/Number.bmp");
+
     ImageManager::GetSingleton()->AddImage("Image/BattleCity/Icon/StageFlag.bmp", iconSize*2, iconSize*1.5, true, RGB(255, 0, 255));
     stageFlag = ImageManager::GetSingleton()->FindImage("Image/BattleCity/Icon/StageFlag.bmp");
 
@@ -96,7 +100,6 @@ HRESULT BattleTest2::Init()
 
 void BattleTest2::Update()
 {
-
     //cout << boolalpha << "mpItem->GetExistItem() : " << mpItem->GetExistItem() << endl;
     //cout << "elapsedChange : " << elapsedChange << endl;
     //cout << "elapsedCount : " << elapsedCount << endl;
@@ -222,22 +225,24 @@ void BattleTest2::Update()
 
     // 미사일 탱크 접촉
     AmmoTankCollision(boomEffect, player);
+
     //테스트
     if (KeyManager::GetSingleton()->IsOnceKeyDown(VK_LBUTTON))
     {
-        //playerLife--;
+        playerLife++;
         //destroyedEnemyCount++;
+        cout << "P1L:" << playerLife << endl << "GetcurrFrameX:" << numberText->GetCurrFrameX() << endl;
+
+    }
+    if (KeyManager::GetSingleton()->IsOnceKeyDown(VK_RBUTTON))
+    {
+        playerLife--;
+        //destroyedEnemyCount++;
+        cout << "P1L:"<< playerLife << endl << "GetcurrFrameX:"<<numberText->GetCurrFrameX() << endl;
     }
 
-    if (playerLife >= 10)  //플레이어 라이프 10의 자리
-    {
-        playerLife10 = playerLife / 10;
-        playerLife5 = 0;
-    }
-    if (playerLife % 10 >= 5)   //플레이어 라이프 5이상
-    {
-        playerLife5 = 1;
-    }
+    //탱크 라이프 초기화        //숫자를 높여줘야하는데 init에 사용할 시 한번밖에 안불러와서 playerLife가 2로 계속 유지된다.
+    numberText->SetCurrFrameX(playerLife);
 
     if (playerLife < 0)
     {
@@ -258,7 +263,6 @@ void BattleTest2::Update()
             elapsedEnding = 0;
         }
     }
-
 }
 
 void BattleTest2::Render(HDC hdc)
@@ -337,21 +341,29 @@ void BattleTest2::Render(HDC hdc)
     }
 
     //라이프 UI
-    P1Life->Render(hdc, UIposX + iconSize / 2, WIN_SIZE_Y / 2);
-    UIText->Render(hdc, UIposX + iconSize*2, WIN_SIZE_Y / 2 + iconSize/2, playerLife%5, playerLife5);   // 1의 자리
+    P1LifeImage->Render(hdc, UIposX + iconSize / 2, WIN_SIZE_Y / 2);
 
-    if (playerLife10 >= 1 && playerLife10 < 5)
+    if (playerLife % 10 < 5)  // 1의 자리(5미만)
     {
-        UIText->Render(hdc, UIposX + iconSize, WIN_SIZE_Y / 2 + iconSize / 2, playerLife10, 0);         // 10의 자리
+        numberText->Render(hdc, UIposX + iconSize*2, WIN_SIZE_Y / 2 + iconSize/2, playerLife % 5, 0); 
     }
-    else if (playerLife10 >= 5)
+    else if (playerLife % 10 >= 5)  // 1의 자리(5이상)
     {
-        UIText->Render(hdc, UIposX + iconSize, WIN_SIZE_Y / 2 + iconSize / 2, playerLife10 % 5, 1);     // 10의 자리(5이상)
+        numberText->Render(hdc, UIposX + iconSize * 2, WIN_SIZE_Y / 2 + iconSize / 2, playerLife % 5, 1);
+    }
+
+    if (playerLife / 10 >= 1 && playerLife / 10 < 5)   // 10의 자리 (50미만)
+    {
+        numberText->Render(hdc, UIposX + iconSize, WIN_SIZE_Y / 2 + iconSize / 2, numberText->GetCurrFrameX() / 10, 0);
+    }
+    else if (playerLife / 10 >= 5)   // 10의 자리 (50이상)
+    {
+        numberText->Render(hdc, UIposX + iconSize, WIN_SIZE_Y / 2 + iconSize / 2, (numberText->GetCurrFrameX() / 10) % 5, 1);
     }
     // -> img->GetCurrFrameX, GetCurrFrameY를 사용하여 변수 줄이기
 
     stageFlag->Render(hdc, UIposX + iconSize / 2, WIN_SIZE_Y * 4 / 5);                                  // 스테이지 깃발
-    UIText->Render(hdc, UIposX + iconSize, WIN_SIZE_Y * 4 / 5 + iconSize, stagescene.stageN, 0);        // 스테이지 숫자
+    numberText->Render(hdc, UIposX + iconSize, WIN_SIZE_Y * 4 / 5 + iconSize, stagescene.GetStageNum(), 0);        // 스테이지 숫자
 
     //게임 오버
     gameOverImg->Render(hdc, 330, gameOverPosY);
