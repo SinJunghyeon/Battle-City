@@ -375,7 +375,6 @@ void Enemy::Move(MoveDir dir)
 			}
 		}
 	}  
-	RECT playerTankShape = player->GetShape();
 	if (IntersectRect(&tempRect, &shape, &playerTankShape))
 	{
 		cout << "적탱크 플레이어탱크랑 접촉! !" << endl;
