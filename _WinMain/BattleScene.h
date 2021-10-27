@@ -5,7 +5,7 @@
 #include "Enemy.h"
 #include "StageScene.h"
 
-#define BOOM_NUM 30
+#define BOOM_NUM 40
 
 enum class BoomType { SMALL_BOOM, BIG_BOOM };
 
