@@ -63,6 +63,9 @@ public:
 	inline EnemyType GetEnemyType() { return this->tankType; }
 	void SetEnemyType(EnemyType type);
 
+	// 플레이어의 정보를 가져오는 함수
+	inline void SetPlayer(Tank* player) { this->player = player; }
+
 	virtual ~Enemy() = default;
 };
 
