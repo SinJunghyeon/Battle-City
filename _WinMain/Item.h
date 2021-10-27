@@ -9,7 +9,7 @@ class Item : public GameObject
 {
 protected:
 	int currItem = NULL;				//아이템 선택
-	bool bExistItem = true;				//아이템 존재여부
+	bool bExistItem = false;			//아이템 존재여부
 
 	Image* mpImgHelmet = nullptr;		//헬멧
 	Image* mpImgWatch = nullptr;		//시계
