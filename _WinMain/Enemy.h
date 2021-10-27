@@ -32,6 +32,8 @@ private:
 	int elapsedTurn = 0;
 	int elapsedSpeed = 0;
 
+	Tank* player;
+
 public:
 	virtual HRESULT Init() override;
 	virtual void Update() override;
@@ -61,6 +63,8 @@ public:
 
 	inline EnemyType GetEnemyType() { return this->tankType; }
 	inline void SetEnemyType(EnemyType type) { this->tankType = type; }
+	// 플레이어의 정보를 가져오는 함수
+	inline void SetPlayer(Tank* player) { this->player = player; }
 
 	virtual ~Enemy() = default;
 };

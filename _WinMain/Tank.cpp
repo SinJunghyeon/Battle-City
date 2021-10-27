@@ -103,10 +103,10 @@ void Tank::Update()
 	}
 
 	//무적상태변화
-	if (elapsedInvincible <= 200)
+	if (elapsedInvincible <= 200000)
 	{
 		elapsedInvincible++;
-		if (elapsedInvincible >= 200)
+		if (elapsedInvincible >= 200000)
 		{
 			isInvincible = false;
 		}
@@ -154,7 +154,7 @@ void Tank::Render(HDC hdc)
 	if (isAlive)	//살아있을 때
 	{
 		//몸통
-		//Rectangle(hdc, shape.left, shape.top, shape.right, shape.bottom);
+		Rectangle(hdc, shape.left, shape.top, shape.right, shape.bottom);
 		// 플레이어 이미지
 		img->Render(hdc, pos.x + 10, pos.y + 10, img->GetCurrFrameX(), img->GetCurrFrameY(), 0.625f);
 		if (isInvincible)
@@ -301,6 +301,10 @@ void Tank::Move(MoveDir dir)
 	POINTFLOAT buffPos; // 현재 좌표를 백업하기 위한 버퍼
 	buffPos.x = pos.x;
 	buffPos.y = pos.y;
+	//cout << "buffPos.x : " << buffPos.x << endl;
+	//cout << "buffPos.y : " << buffPos.y << endl;
+	//cout << "pos.x : " << pos.x << endl;
+	//cout << "pos.y : " << pos.y << endl;
 	RECT buffRect;
 	buffRect = shape;
 
@@ -328,7 +332,7 @@ void Tank::Move(MoveDir dir)
 				shape = buffRect;
 				if (moveDir == MoveDir::UP || moveDir == MoveDir::DOWN)
 				{
-					cout << tile[i].rc.right << "\t" << shape.left  << "\t" << tile[i + 1].rc.right << endl;
+					//cout << tile[i].rc.right << "\t" << shape.left  << "\t" << tile[i + 1].rc.right << endl;
 					if (tile[i].rc.right - 10 < shape.left && tile[i + 1].terrain == Terrain::ROAD && tile[i + 2].terrain == Terrain::ROAD)
 					{
 						pos.x = tile[i + 1].rc.right + 3;
@@ -353,6 +357,18 @@ void Tank::Move(MoveDir dir)
 					}
 				}
 			}
+		}
+	}
+
+	enemies = enemyManager->GetEnemies();
+	for (int i = 0; i < enemies.size(); ++i)
+	{
+		RECT enemyRect = enemies[i]->GetShape();
+		if (IntersectRect(&tempRect, &shape, &enemyRect))
+		{
+			cout << "a" << endl;
+			pos = buffPos;
+			shape = buffRect;
 		}
 	}
 }

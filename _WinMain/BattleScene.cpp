@@ -70,7 +70,14 @@ HRESULT BattleScene::Init()
     player->SetPos(playerSpawnPos);
     player->SetTileMap(tileInfo);
     playerTankRect = player->GetShape();
+    player->SetEnemyManager(enemyMgr);
+    player->SetEnemy(vecEnemies);
 
+    // 적이 플레이어의 정보 가져오기
+    for (int i = 0; i < vecEnemies.size(); ++i)
+    {
+        vecEnemies[i]->SetPlayer(player);
+    }
     // 아이템
     mpItem = new Item;
     mpItem->Init();
@@ -242,7 +249,7 @@ void BattleScene::Update()
         cout << "P1L:" << playerLife << endl << "GetcurrFrameX:" << numberText->GetCurrFrameX() << endl;
     }
 
-    //탱크 라이프 초기화        //숫자를 높여줘야하는데 init에 사용할 시 한번밖에 안불러와서 playerLife가 2로 계속 유지된다.
+    //탱크 라이프 초기화                    //숫자를 높여줘야하는데 init에 사용할 시 한번밖에 안불러와서 playerLife가 2로 계속 유지된다.
     numberText->SetCurrFrameX(playerLife);
 
     if (playerLife < 0)
@@ -264,6 +271,7 @@ void BattleScene::Update()
             elapsedEnding = 0;
         }
     }
+
 }
 
 void BattleScene::Render(HDC hdc)
