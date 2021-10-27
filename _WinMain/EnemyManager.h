@@ -22,7 +22,7 @@ public:
 	virtual void Render(HDC hdc) override;
 	virtual void Release() override;
 
-	void AddEnemy(POINTFLOAT pos);
+	void AddEnemy();
 
 	void SetTileMapManager(TILE_INFO* tile);
 	void TankState(ecTankState state);

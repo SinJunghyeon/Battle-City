@@ -39,10 +39,10 @@ HRESULT Enemy::Init()
 	moveDir = MoveDir::DOWN;
 	tankState = ecTankState::MOVE;
 
-	shape.left = pos.x - bodySize / 2 + 1;
-	shape.top = pos.y - bodySize / 2 + 1;
-	shape.right = shape.left + bodySize - 5;
-	shape.bottom = shape.top + bodySize - 5;
+	shape.left = pos.x - bodySize / 2;
+	shape.top = pos.y - bodySize / 2;
+	shape.right = shape.left + bodySize;
+	shape.bottom = shape.top + bodySize;
 
 	return S_OK;
 }
@@ -202,7 +202,14 @@ void Enemy::Update()
 
 			if (elapsedSpeed >= 50)
 			{
-				//TankAbilitySetting();
+				if (tankType == EnemyType::SPEED)
+				{
+					moveSpeed = 100.0f;
+				}
+				else
+				{
+					moveSpeed = 50.0f;
+				}
 			}
 		}
 
@@ -222,10 +229,10 @@ void Enemy::Update()
 		}
 		ammoMgr.Update();
 
-		shape.left = pos.x - bodySize / 2 + 1;
-		shape.top = pos.y - bodySize / 2 + 1;
-		shape.right = shape.left + bodySize - 5;
-		shape.bottom = shape.top + bodySize - 5;
+		shape.left = pos.x - bodySize / 2;
+		shape.top = pos.y - bodySize / 2;
+		shape.right = shape.left + bodySize;
+		shape.bottom = shape.top + bodySize;
 	}
 }
 
@@ -348,15 +355,15 @@ void Enemy::Move(MoveDir dir)
 
 	for (int i = 0; i < TILE_COUNT_X * TILE_COUNT_Y; i++)
 	{
-			if (IntersectRect(&tempRect, &shape, &tile[i].rc))
+		if (IntersectRect(&tempRect, &shape, &tile[i].rc))
+		{
+			if ((tile[i].terrain == Terrain::WALL) || (tile[i].terrain == Terrain::STEEL) || (tile[i].terrain == Terrain::HQ_WALL) || (tile[i].terrain == Terrain::HQ_STEEL))
 			{
-				if ((tile[i].terrain == Terrain::WALL) || (tile[i].terrain == Terrain::STEEL) || (tile[i].terrain == Terrain::HQ_WALL) || (tile[i].terrain == Terrain::HQ_STEEL))
-				{
-					pos = buffPos;
-					shape = buffRect;
-					isCollision = true;
-				}
+				pos = buffPos;
+				shape = buffRect;
+				isCollision = true;
 			}
+		}
 	}
   
 	RECT playerTankShape = player->GetShape();

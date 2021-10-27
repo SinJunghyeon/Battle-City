@@ -25,7 +25,7 @@ void EnemyManager::Update()
 	enemySpawnDelay++;
 	if (enemySpawnDelay >= 500)
 	{
-		AddEnemy(enemySpawnPos[enemyCurrCount%3]);
+		AddEnemy();
 
 		enemySpawnDelay = 0;
 	}
@@ -96,7 +96,7 @@ void EnemyManager::Release()
 	vecEnemys.clear();
 }
 
-void EnemyManager::AddEnemy(POINTFLOAT pos)
+void EnemyManager::AddEnemy()
 {
 	enemyCurrCount++;
 	if (enemyCurrCount > enemyMaxCount)
