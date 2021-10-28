@@ -267,20 +267,6 @@ void BattleScene::Update()
 
     // �� ���߼� �ֽ�ȭ
     DestroyCountManager::GetSingleton()->SetDestroyCount(destroyedEnemy);
-
-    //테스트
-    if (KeyManager::GetSingleton()->IsOnceKeyDown(VK_LBUTTON))
-    {
-        playerLife++;
-        //destroyedEnemyCount++;
-        //cout << "P1L:" << playerLife << endl << "GetcurrFrameX:" << numberText->GetCurrFrameX() << endl;
-    }
-    if (KeyManager::GetSingleton()->IsOnceKeyDown(VK_RBUTTON))
-    {
-        playerLife--;
-        //destroyedEnemyCount++;
-        //cout << "P1L:" << playerLife << endl << "GetcurrFrameX:" << numberText->GetCurrFrameX() << endl;
-    }
   
     //탱크 라이프 초기화        //숫자를 높여줘야하는데 init에 사용할 시 한번밖에 안불러와서 playerLife가 2로 계속 유지된다.
     numberText->SetCurrFrameX(playerLife);
