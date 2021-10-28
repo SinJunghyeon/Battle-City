@@ -2,13 +2,10 @@
 #include "Image.h"
 #include "TitleScene.h"
 #include "BattleScene.h"
-#include "LoadingScene.h"
 #include "TilemapToolScene.h"
 #include "StageScene.h"
 #include "EndingScene.h"
 #include "GameOverScene.h"
-
-//2021.10.27 최종수정
 
 HRESULT MainGame::Init()
 {
@@ -24,9 +21,7 @@ HRESULT MainGame::Init()
 	SceneManager::GetSingleton()->AddScene("endingS", new EndingScene());
 	SceneManager::GetSingleton()->AddScene("gameoverS", new GameOverScene());
 
-	SceneManager::GetSingleton()->ChangeScene("battleS");
-
-	//srand((unsigned int) time(nullptr));
+	SceneManager::GetSingleton()->ChangeScene("titleS");
 
 	// 타이머 셋팅
 	hTimer = (HANDLE)SetTimer(g_hWnd, 0, 10, NULL);

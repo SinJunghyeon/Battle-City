@@ -38,6 +38,8 @@ void TitleScene::Update()
 			iconPosArr = 1;
 		}
 	}
+	else if (KeyManager::GetSingleton()->IsStayKeyDown(VK_LEFT)) {}
+	else if (KeyManager::GetSingleton()->IsStayKeyDown(VK_RIGHT)) {}
 	// 타이틀 애니메이션
 	if (countFrameY >= WIN_SIZE_Y / 2)	
 	{
@@ -78,7 +80,6 @@ void TitleScene::Render(HDC hdc)
 	{
 		timeLate = (HANDLE)SetTimer(g_hWnd, 0, 100, NULL);	// 탱크 프레임 조정
 		selectIcon->Render(hdc, WIN_SIZE_X / 4, iconPosY[iconPosArr], iconFrameX, 0, 0.8f);
-
 	}
 }
 

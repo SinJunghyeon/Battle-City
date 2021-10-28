@@ -12,8 +12,7 @@ HRESULT BattleScene::Init()
 {
     // 아이템
     elapsedChange = NULL;
-    elapsedCount = 1005;
-
+    elapsedCount = 3005;
 
     UIposX = TILE_SIZE * TILE_COUNT_X + 120;
     iconSize = 30;
@@ -23,14 +22,12 @@ HRESULT BattleScene::Init()
     //파괴한 에너미 숫자
     destroyedEnemyCount = 0;
 
-
     //게임 오버 이미지 y값
     gameOverPosY = WIN_SIZE_Y * 3 / 2;
 
     // HQ 파괴 여부
     isHQDestroyed = false;
     elapsedEnding = NULL;
-
 
     // 타일 맵 이미지
     ImageManager::GetSingleton()->AddImage("Image/BattleCity/SamlpTile1.bmp", 220, 220, 11, 11, true, RGB(255, 0, 255));
@@ -79,14 +76,12 @@ HRESULT BattleScene::Init()
     // 타일맵 로드
     Load();
 
-
     // 적 매니저
     enemyMgr = new EnemyManager;
     enemyMgr->Init();
     enemyMgr->SetTileMapManager(tileInfo);
     vecEnemies = enemyMgr->GetEnemies();
     vecEnemies.resize(enemyMgr->GetEnemyMaxCount());
-
 
     // 플레이어 탱크
     player = new Tank;
@@ -137,42 +132,8 @@ HRESULT BattleScene::Init()
 
 void BattleScene::Update()
 {
-    //cout << boolalpha << "mpItem->GetExistItem() : " << mpItem->GetExistItem() << endl;
-    //cout << "elapsedChange : " << elapsedChange << endl;
-    //cout << "elapsedCount : " << elapsedCount << endl;
-
-    //// 타일 속성 확인용 코드
-    //for (int i = 0; i < TILE_COUNT_X * TILE_COUNT_Y; i++)
-    //{
-    //    if (PtInRect(&(tileInfo[i].rc), g_ptMouse))
-    //    {
-    //        if (KeyManager::GetSingleton()->IsStayKeyDown(VK_RBUTTON)) // 디버그용
-    //        {
-    //            cout << i << " tile" << endl;
-    //            cout << "mouse x : " << g_ptMouse.x << "mouse y : " << g_ptMouse.y << endl;
-    //            if (tileInfo[i].terrain == Terrain::WALL) cout << "WALL" << tileInfo[i].hp << endl;
-    //            else if (tileInfo[i].playerSpawn) cout << "playerSpawn" << tileInfo[i].hp << endl;
-    //            else if (tileInfo[i].enemySpawn) cout << "enemySpawn" << tileInfo[i].hp << endl;
-    //            else if (tileInfo[i].itemSpawn) cout << "itemSpawn" << tileInfo[i].hp << endl;
-    //            else if (tileInfo[i].isHQWall) cout << "isHQWall" << tileInfo[i].hp << endl;
-
-    //            else if (tileInfo[i].terrain == Terrain::STEEL) cout << "STEEL" << tileInfo[i].hp << endl;
-    //            else if (tileInfo[i].terrain == Terrain::ROAD) cout << "ROAD" << tileInfo[i].hp << endl;
-    //            else if (tileInfo[i].terrain == Terrain::HQ) cout << "HQ" << tileInfo[i].hp << endl;
-    //            else if (tileInfo[i].terrain == Terrain::GRASS) cout << "GRASS" << tileInfo[i].hp << endl;
-    //            else if (tileInfo[i].terrain == Terrain::HQ_WALL) cout << "HQ_WALL" << tileInfo[i].hp << endl;
-    //            else if (tileInfo[i].terrain == Terrain::HQ_STEEL) cout << "HQ_STEEL" << tileInfo[i].hp << endl;
-    //        }
-    //    }
-    //}
-
     // 플레이어 탱크
-    tempPos = player->GetPos();
     player->Update();
-    //if (tempPos.x != player->GetPos().x || tempPos.y != player->GetPos().y)
-    //{
-    //    cout << "x : " << player->GetPos().x << " y : " << player->GetPos().y << endl;
-    //}
     playerTankRect = player->GetShape();
 
     //적 탱크
@@ -268,25 +229,28 @@ void BattleScene::Update()
     // �� ���߼� �ֽ�ȭ
     DestroyCountManager::GetSingleton()->SetDestroyCount(destroyedEnemy);
   
-    //탱크 라이프 초기화        //숫자를 높여줘야하는데 init에 사용할 시 한번밖에 안불러와서 playerLife가 2로 계속 유지된다.
+    //탱크 라이프 초기화
     numberText->SetCurrFrameX(playerLife);
 
     // ���ӿ�� ���� Ȯ��
     if ((playerLife < 0) || isHQDestroyed)
     {
+        player->SetMoveSpeed(0.0f);
         gameOverPosY -= 5;
         if (gameOverPosY <= WIN_SIZE_Y / 2)
         {
             Sleep(1000);
+            player->SetImgFrameX(0);
             SceneManager::GetSingleton()->ChangeScene("endingS");
         }
     }
     else if (destroyedEnemyCount == enemyMgr->GetEnemyMaxCount())
     {
-        player->SetMoveSpeed(0.0f);                                 // 21.10.26 게임이 끝났을 때 스피드 0으로 -> 다음 스테이지로 넘어갈 시 스피드 초기화하기
+        player->SetMoveSpeed(0.0f);
         elapsedEnding++;
         if (elapsedEnding >= 100)
         {
+            player->SetImgFrameX(0);
             SceneManager::GetSingleton()->ChangeScene("endingS");
             elapsedEnding = 0;
         }
@@ -326,8 +290,7 @@ void BattleScene::Render(HDC hdc)
     player->Render(hdc);
 
     // 적 탱크
-    if (enemyMgr)
-        enemyMgr->Render(hdc);
+    enemyMgr->Render(hdc);
 
     // 아이템    
     if (mpItem->GetExistItem() == true)
@@ -436,7 +399,7 @@ void BattleScene::PlayerAmmoMapCollision(Boom* boom, Tank* tank, TILE_INFO* tile
     for (int j = 0; j < tank->ammoCount; j++)
     {
         RECT ammoRect = tank->ammoPack[j].GetShape();
-        if (tank->GetImgFrameY() < 3)                                                   //21.10.25 플레이어 탱크 최종렙보다 아래일 때 강철 못 부심
+        if (tank->GetImgFrameY() < 3)
         {
             for (int i = 0; i < TILE_COUNT_X * TILE_COUNT_Y; i++)
             {
@@ -506,7 +469,7 @@ void BattleScene::PlayerAmmoMapCollision(Boom* boom, Tank* tank, TILE_INFO* tile
                 }
             }
         }
-        if (player->GetImgFrameY() >= 3)                                                        //21.10.25 플레이어 탱크 최종렙일 때 강철 부심
+        if (player->GetImgFrameY() >= 3)
         {
             for (int i = 0; i < TILE_COUNT_X * TILE_COUNT_Y; i++)
             {
@@ -644,27 +607,19 @@ void BattleScene::AmmoTankCollision(Boom* boom, Tank* player)
                 {
                 case EnemyType::NORMAL:
                     destroyedEnemy[0]++;
-                    //cout << "destroy NORMAL : " << destroyedEnemy[0] << endl;
                     destroyedEnemyCount++;
-                    //cout << destroyedEnemyCount << endl;
                     break;
                 case EnemyType::SPEED:
                     destroyedEnemy[1]++;
-                    //cout << "destroy SPEED : " << destroyedEnemy[1] << endl;
                     destroyedEnemyCount++;
-                    //cout << destroyedEnemyCount << endl;
                     break;
                 case EnemyType::RPD:
                     destroyedEnemy[2]++;
-                    //cout << "destroy RPD : " << destroyedEnemy[2] << endl;
                     destroyedEnemyCount++;
-                    //cout << destroyedEnemyCount << endl;
                     break;
                 case EnemyType::SUPER:
                     destroyedEnemy[3]++;
-                    //cout << "destroy SUPER : " << destroyedEnemy[3] << endl;
                     destroyedEnemyCount++;
-                    //cout << destroyedEnemyCount << endl;
                     break;
                 default:
                     break;
@@ -703,12 +658,11 @@ void BattleScene::AmmoTankCollision(Boom* boom, Tank* player)
                     BoomAnimation(boom, BoomType::BIG_BOOM, player->GetPos());
                     player->SetIsAlive(false);
                     player->Init();
-                    player->SetImgFrameX(0);                                                // 21.10.25 플레이어 죽었을 때 리스폰 위로 보게끔
-                    player->SetplayerLife(playerLife - 1);                                  // 21.10.25 플레이어 탱크아이템 먹었을 때 생명 수정
+                    player->SetImgFrameX(0);
+                    player->SetplayerLife(playerLife - 1);                                  
                     playerSpawnPos = GetSpawnPos(tileInfo, ObjectType::PLAYER).back();
                     player->SetPos(playerSpawnPos);
                     playerLife--;
-                    //cout << "플레이어 목숨 : " << playerLife << endl;
                 }
             }
         }
@@ -734,7 +688,6 @@ void BattleScene::FunctionItem()
     {
         player->SetInvincible(true);
         player->SetElapsedInvincible(0);
-        //playerTankRect.left = player->GetPos().x + 
     }
     //시계
     if (mpItem->GetItemState() == ecFunctionItem::WATCH)
