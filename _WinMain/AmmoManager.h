@@ -27,6 +27,8 @@ public:
 
 	inline vector<Ammo*> GetAmmos() { return this->vecAmmos; }
 
+	void SetAmmoDisabled();
+
 	virtual ~AmmoManager() = default;
 };
 
