@@ -79,33 +79,20 @@ void Enemy::Update()
 		}
 	}
 
+	// 탱크가 파괴된 상태인 경우
 	if (!isAlive && (tankState == ecTankState::DIE))
 	{
 		shape.left = 0;
 		shape.top = 0;
 		shape.right = 0;
 		shape.bottom = 0;
+		ammoMgr.SetAmmoDisabled();
 	}
 
 	if (isAlive && tankState == ecTankState::MOVE)
 	{
 		Move(moveDir);
 		MoveAnimation();
-
-		// moveSpeed가 0.1로 고정되는 오류 방지
-		if (moveSpeed == 0.0f)
-		{
-			elapsedSpeed++;
-			if (moveSpeed != 0.0f)
-			{
-				elapsedSpeed = 0;
-			}
-
-			if (elapsedSpeed >= 50)
-			{
-				//TankAbilitySetting();
-			}
-		}
 
 		fireTimer++;
 		if (fireTimer >= fireDelay)
