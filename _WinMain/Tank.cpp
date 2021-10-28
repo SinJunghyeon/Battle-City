@@ -67,23 +67,6 @@ HRESULT Tank::Init()
 
 void Tank::Update()
 {
-	//cout << "Tank : " << moveDir << endl;
-	//cout << "img->GetCurrFrameX() : " << img->GetCurrFrameX() << endl;
-	//cout << "img->GetCurrFrameY() : " << img->GetCurrFrameY() << endl;
-	//cout << "elapsedCount : " << elapsedCount << endl;
-	//cout << "ptLife : " << ptLife << endl;
-	//cout << "effectImg->GetCurrFrameX() : " << effectImg->GetCurrFrameX() << endl;
-	//cout << "elapsedInvincible : " << elapsedInvincible << endl;
-	//cout << boolalpha << "isInvincible : " << isInvincible << endl;
-	//cout << boolalpha << "isAlive : " << isAlive << endl;
-	//cout << "elapsedSpawn : " << elapsedSpawn << endl;
-	//cout << "spawnImg->GetCurrFrameX() : " << spawnImg->GetCurrFrameX() << endl;
-	//cout << "pos.x : " << pos.x << "\t" << "pos.y : " << pos.y << endl;
-	//cout << "Player ammo pos.x : " << ammoPack->GetPos().x << endl;
-	//cout << "Player ammo pos.y : " << ammoPack->GetPos().y << endl;
-	//cout << "ptAttackValue : " << ptAttackValue << endl;
-	//cout << "playerLife : " << playerLife << endl;
-
 	//스폰이미지변화
 	if (!isAlive)
 	{
@@ -155,8 +138,6 @@ void Tank::Render(HDC hdc)
 	// 플레이어
 	if (isAlive)	//살아있을 때
 	{
-		//몸통
-		//Rectangle(hdc, shape.left, shape.top, shape.right, shape.bottom);
 		// 플레이어 이미지
 		img->Render(hdc, pos.x + 10, pos.y + 10, img->GetCurrFrameX(), img->GetCurrFrameY(), 0.625f);
 		if (isInvincible)
@@ -177,7 +158,7 @@ void Tank::Fire()
 	for (int i = 0; i < ammoCount; i++)
 	{
 		// 전체 미사일을 순회하면서 발사 됐는지 안됐는지 판단
-		if (ammoPack[i].GetIsFire()/* && ammoPack[i].GetIsAlive()*/)
+		if (ammoPack[i].GetIsFire())
 			continue;
 		ammoPack[i].SetMoveDir(moveDir);
 		ammoPack[i].SetPos(pos);		// 미사일 위치 변경
@@ -191,110 +172,113 @@ void Tank::ProcessInputKey()
 {
 	if (!isAlive) return;
 
-	// 공격키
-	if (Singleton<KeyManager>::GetSingleton()->IsOnceKeyDown(VK_SPACE))
+	if (isAlive)
 	{
-		Fire();
-	}
-	// 이동(상)
-	if (Singleton<KeyManager>::GetSingleton()->IsStayKeyDown(VK_UP))
-	{
-		moveDir = MoveDir::UP;
-		img->SetCurrFrameX(0);
-		Move(moveDir);
-		tanckState = ecTankState::MOVE;
-		//프레임 움직임
-		elapsedCount++;
-		if (elapsedCount >= 20)
+		// 공격키
+		if (Singleton<KeyManager>::GetSingleton()->IsOnceKeyDown(VK_SPACE))
 		{
-			img->SetCurrFrameX(1);
+			Fire();
 		}
-		if (elapsedCount >= 40)
+		// 이동(상)
+		if (Singleton<KeyManager>::GetSingleton()->IsStayKeyDown(VK_UP))
 		{
+			moveDir = MoveDir::UP;
 			img->SetCurrFrameX(0);
-			elapsedCount = 0;
+			Move(moveDir);
+			tanckState = ecTankState::MOVE;
+			//프레임 움직임
+			elapsedCount++;
+			if (elapsedCount >= 20)
+			{
+				img->SetCurrFrameX(1);
+			}
+			if (elapsedCount >= 40)
+			{
+				img->SetCurrFrameX(0);
+				elapsedCount = 0;
+			}
 		}
-	}
-	// 이동(하)
-	else if (Singleton<KeyManager>::GetSingleton()->IsStayKeyDown(VK_DOWN))
-	{
-		moveDir = MoveDir::DOWN;
-		img->SetCurrFrameX(4);
-		Move(moveDir);
-		tanckState = ecTankState::MOVE;
-		//프레임 움직임
-		elapsedCount++;
-		if (elapsedCount >= 20)
+		// 이동(하)
+		else if (Singleton<KeyManager>::GetSingleton()->IsStayKeyDown(VK_DOWN))
 		{
-			img->SetCurrFrameX(5);
-		}
-		if (elapsedCount >= 40)
-		{
+			moveDir = MoveDir::DOWN;
 			img->SetCurrFrameX(4);
-			elapsedCount = 0;
+			Move(moveDir);
+			tanckState = ecTankState::MOVE;
+			//프레임 움직임
+			elapsedCount++;
+			if (elapsedCount >= 20)
+			{
+				img->SetCurrFrameX(5);
+			}
+			if (elapsedCount >= 40)
+			{
+				img->SetCurrFrameX(4);
+				elapsedCount = 0;
+			}
 		}
-	}
-	// 이동(좌)
-	else if (Singleton<KeyManager>::GetSingleton()->IsStayKeyDown(VK_LEFT))
-	{
-		moveDir = MoveDir::LEFT;
-		img->SetCurrFrameX(2);
-		Move(moveDir);
-		tanckState = ecTankState::MOVE;
-		//프레임 움직임					
-		elapsedCount++;					
-		if (elapsedCount >= 20)			
+		// 이동(좌)
+		else if (Singleton<KeyManager>::GetSingleton()->IsStayKeyDown(VK_LEFT))
 		{
-			img->SetCurrFrameX(3);
-		}
-		if (elapsedCount >= 40)			
-		{
+			moveDir = MoveDir::LEFT;
 			img->SetCurrFrameX(2);
-			elapsedCount = 0;
+			Move(moveDir);
+			tanckState = ecTankState::MOVE;
+			//프레임 움직임					
+			elapsedCount++;
+			if (elapsedCount >= 20)
+			{
+				img->SetCurrFrameX(3);
+			}
+			if (elapsedCount >= 40)
+			{
+				img->SetCurrFrameX(2);
+				elapsedCount = 0;
+			}
 		}
-	}
-	// 이동(우)
-	else if (Singleton<KeyManager>::GetSingleton()->IsStayKeyDown(VK_RIGHT))
-	{
-		moveDir = MoveDir::RIGHT;
-		img->SetCurrFrameX(6);
-		Move(moveDir);
-		tanckState = ecTankState::MOVE;
-		//프레임 움직임
-		elapsedCount++;
-		if (elapsedCount >= 20)
+		// 이동(우)
+		else if (Singleton<KeyManager>::GetSingleton()->IsStayKeyDown(VK_RIGHT))
 		{
-			img->SetCurrFrameX(7);
-		}
-		if (elapsedCount >= 40)
-		{
+			moveDir = MoveDir::RIGHT;
 			img->SetCurrFrameX(6);
-			elapsedCount = 0;
+			Move(moveDir);
+			tanckState = ecTankState::MOVE;
+			//프레임 움직임
+			elapsedCount++;
+			if (elapsedCount >= 20)
+			{
+				img->SetCurrFrameX(7);
+			}
+			if (elapsedCount >= 40)
+			{
+				img->SetCurrFrameX(6);
+				elapsedCount = 0;
+			}
 		}
-	}
-	// 키 뺐을때(상)
-	if (Singleton<KeyManager>::GetSingleton()->IsOnceKeyUp(VK_UP))
-	{
-		moveDir = MoveDir::UP;
-		tanckState = ecTankState::IDLE;
-	}
-	// 키 뺐을때(하)
-	if (Singleton<KeyManager>::GetSingleton()->IsOnceKeyUp(VK_DOWN))
-	{
-		moveDir = MoveDir::DOWN;
-		tanckState = ecTankState::IDLE;
-	}
-	// 키 뺐을때(좌)
-	if (Singleton<KeyManager>::GetSingleton()->IsOnceKeyUp(VK_LEFT))
-	{
-		moveDir = MoveDir::LEFT;
-		tanckState = ecTankState::IDLE;
-	}
-	// 키 뺐을때(우)
-	if (Singleton<KeyManager>::GetSingleton()->IsOnceKeyUp(VK_RIGHT)) 
-	{
-		moveDir = MoveDir::RIGHT;
-		tanckState = ecTankState::IDLE;
+		// 키 뺐을때(상)
+		if (Singleton<KeyManager>::GetSingleton()->IsOnceKeyUp(VK_UP))
+		{
+			moveDir = MoveDir::UP;
+			tanckState = ecTankState::IDLE;
+		}
+		// 키 뺐을때(하)
+		if (Singleton<KeyManager>::GetSingleton()->IsOnceKeyUp(VK_DOWN))
+		{
+			moveDir = MoveDir::DOWN;
+			tanckState = ecTankState::IDLE;
+		}
+		// 키 뺐을때(좌)
+		if (Singleton<KeyManager>::GetSingleton()->IsOnceKeyUp(VK_LEFT))
+		{
+			moveDir = MoveDir::LEFT;
+			tanckState = ecTankState::IDLE;
+		}
+		// 키 뺐을때(우)
+		if (Singleton<KeyManager>::GetSingleton()->IsOnceKeyUp(VK_RIGHT))
+		{
+			moveDir = MoveDir::RIGHT;
+			tanckState = ecTankState::IDLE;
+		}
 	}
 }
 
@@ -303,10 +287,6 @@ void Tank::Move(MoveDir dir)
 	POINTFLOAT buffPos; // 현재 좌표를 백업하기 위한 버퍼
 	buffPos.x = pos.x;
 	buffPos.y = pos.y;
-	//cout << "buffPos.x : " << buffPos.x << endl;
-	//cout << "buffPos.y : " << buffPos.y << endl;
-	//cout << "pos.x : " << pos.x << endl;
-	//cout << "pos.y : " << pos.y << endl;
 	RECT buffRect;
 	buffRect = shape;
 
@@ -334,12 +314,10 @@ void Tank::Move(MoveDir dir)
 				shape = buffRect;
 				if (moveDir == MoveDir::UP || moveDir == MoveDir::DOWN)
 				{
-					//cout << tile[i].rc.right << "\t" << shape.left  << "\t" << tile[i + 1].rc.right << endl;
 					if (tile[i].rc.right - 10 < shape.left && tile[i + 1].terrain == Terrain::ROAD && tile[i + 2].terrain == Terrain::ROAD)
 					{
 						pos.x = tile[i + 1].rc.right + 3;
 					}
-					//cout << tile[i].rc.left << "\t" << shape.right << "\t" << tile[i - 1].rc.left << endl;
 					if (tile[i].rc.left + 10 > shape.right && tile[i - 1].terrain == Terrain::ROAD && tile[i - 2].terrain == Terrain::ROAD)
 					{
 						pos.x = tile[i - 1].rc.left + 3;
@@ -347,12 +325,10 @@ void Tank::Move(MoveDir dir)
 				}
 				if (moveDir == MoveDir::LEFT || moveDir == MoveDir::RIGHT)
 				{
-					//cout << tile[i].rc.bottom << "\t" << shape.top << "\t" << tile[i + TILE_COUNT_X].rc.bottom << endl;
 					if (tile[i].rc.bottom - 10 < shape.top && tile[i + (TILE_COUNT_X * 1)].terrain == Terrain::ROAD && tile[i + (TILE_COUNT_X * 2)].terrain == Terrain::ROAD)
 					{
 						pos.y = tile[i + TILE_COUNT_X].rc.bottom + 3;
 					}
-					//cout << tile[i].rc.top << "\t" << shape.bottom  << "\t" << tile[i - TILE_COUNT_X].rc.top << endl;
 					if (tile[i].rc.top + 10 > shape.bottom && tile[i - (TILE_COUNT_X * 1)].terrain == Terrain::ROAD && tile[i - (TILE_COUNT_X * 2)].terrain == Terrain::ROAD)
 					{
 						pos.y = tile[i - TILE_COUNT_X].rc.top + 3;
@@ -364,11 +340,9 @@ void Tank::Move(MoveDir dir)
 
 	for (int i = 0; i < enemies.size(); ++i)
 	{
-		
 		RECT enemyRect = enemies[i]->GetShape();
 		if (IntersectRect(&tempRect, &shape, &enemyRect))
 		{
-			//cout << "플레이어탱크 적탱크랑 접촉! !" << endl;
 			pos = buffPos;
 			shape = buffRect;
 		}

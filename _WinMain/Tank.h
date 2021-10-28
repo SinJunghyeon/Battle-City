@@ -19,7 +19,6 @@ public:
 	int playerLife = NULL;			//플레이어 목숨
 	int playerScore = NULL;			//플레이어 탱크 점수
 
-
 	Image* effectImg = nullptr;
 	bool isInvincible = true;		//무적상태
 	int elapsedInvincible = NULL;
@@ -41,7 +40,6 @@ public:
 
 	void Fire();
 	void ProcessInputKey();
-
 	void Move(MoveDir dir);
 
 	inline void SetIsAlive(bool alive) { this->isAlive = alive; }
@@ -54,7 +52,6 @@ public:
 
 	inline int GetplayerLife() { return playerLife; }
 	inline void SetplayerLife(int playerLife) { this->playerLife = playerLife; }
-
 
 	inline int GetImgFrameX() { return img->GetCurrFrameX(); }
 	inline void SetImgFrameX(int frameX) { this->img->SetCurrFrameX(frameX); }

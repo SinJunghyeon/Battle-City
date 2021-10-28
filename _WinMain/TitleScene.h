@@ -7,7 +7,7 @@ class TitleScene : public GameEntity
 {
 private:
 	
-	HANDLE timeLate;	// 헤더에서 초기화시 작동하지 않아서 cpp에 초기화
+	HANDLE timeLate;
 
 	Image* backGround = nullptr;
 	Image* selectIcon = nullptr;

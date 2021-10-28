@@ -102,19 +102,6 @@ void TilemapToolScene::Update()
                 tileInfo[i].frameY = selectedSampleTile.frameY;
                 break;
             }
-            //if (KeyManager::GetSingleton()->IsStayKeyDown(VK_RBUTTON)) // 디버그용
-            //{
-            //    if (tileInfo[i].terrain == Terrain::WALL) cout << "WALL" << tileInfo[i].hp << endl;
-            //    else if (tileInfo[i].playerSpawn) cout << "playerSpawn" << tileInfo[i].hp << endl;
-            //    else if (tileInfo[i].enemySpawn) cout << "enemySpawn" << tileInfo[i].hp << endl;
-            //    else if (tileInfo[i].itemSpawn) cout << "itemSpawn" << tileInfo[i].hp << endl;
-            //    else if (tileInfo[i].terrain == Terrain::STEEL) cout << "STEEL" << tileInfo[i].hp << endl;
-            //    else if (tileInfo[i].terrain == Terrain::ROAD) cout << "ROAD" << tileInfo[i].hp << endl;
-            //    else if (tileInfo[i].terrain == Terrain::HQ) cout << "HQ" << tileInfo[i].hp << endl;
-            //    else if (tileInfo[i].terrain == Terrain::GRASS) cout << "GRASS" << tileInfo[i].hp << endl;
-            //    else if (tileInfo[i].terrain == Terrain::HQ_WALL) cout << "HQ_WALL" << tileInfo[i].hp << endl;
-            //    else if (tileInfo[i].terrain == Terrain::HQ_STEEL) cout << "HQ_STEEL" << tileInfo[i].hp << endl;
-            //}
         }
     }
 
@@ -149,10 +136,10 @@ void TilemapToolScene::Render(HDC hdc)
                 tileInfo[i * TILE_COUNT_X + j].frameX,
                 tileInfo[i * TILE_COUNT_X + j].frameY);
 
-           /* Rectangle(hdc, tileInfo[i * TILE_COUNT_X + j].rc.left,
-                tileInfo[i * TILE_COUNT_X + j].rc.top,
-                tileInfo[i * TILE_COUNT_X + j].rc.right,
-                tileInfo[i * TILE_COUNT_X + j].rc.bottom);*/
+            //Rectangle(hdc, tileInfo[i * TILE_COUNT_X + j].rc.left,
+            //    tileInfo[i * TILE_COUNT_X + j].rc.top,
+            //    tileInfo[i * TILE_COUNT_X + j].rc.right,
+            //    tileInfo[i * TILE_COUNT_X + j].rc.bottom);
         }
     }
 

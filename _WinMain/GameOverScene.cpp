@@ -1,5 +1,6 @@
 #include "GameOverScene.h"
 #include "Image.h"
+#include "DestroyCountManager.h"
 
 HRESULT GameOverScene::Init()
 {
@@ -13,6 +14,11 @@ void GameOverScene::Update()
 {
     if (KeyManager::GetSingleton()->IsOnceKeyDown(VK_RETURN))
     {
+        tempPtr = DestroyCountManager::GetSingleton()->GetDestroyCount();
+        for (int i = 0; i < 4; ++i)
+        {
+            tempPtr[i] = 0;
+        }
         SceneManager::GetSingleton()->ChangeScene("titleS");
     }
 }

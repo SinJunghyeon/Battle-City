@@ -3,12 +3,6 @@
 
 #include "Tank.h"
 
-/*
-	TO DO LIST
-	 1. 방향 전환 자연스럽게 하기
-	 2. 적 탱크 종류 추가
-*/
-
 HRESULT Enemy::Init()
 {
 	elapsedCount = 0;
@@ -122,9 +116,6 @@ void Enemy::Update()
 
 void Enemy::Render(HDC hdc)
 {
-	// 임시 충돌 박스
-	//Rectangle(hdc, shape.left, shape.top, shape.right, shape.bottom);
-
 	if (!isAlive && (tankState != ecTankState::DIE))	//죽어있을 때 -> 스폰 이미지를 부르고 -> 살게끔
 	{
 		spawnImg->Render(hdc, pos.x, pos.y, spawnImg->GetCurrFrameX(), spawnImg->GetCurrFrameY());
@@ -144,7 +135,6 @@ void Enemy::Render(HDC hdc)
 
 void Enemy::Release()
 {
-	//SAFE_RELEASE(ammoMgr);
 	ammoMgr.Release();
 	SAFE_RELEASE(img);
 	SAFE_RELEASE(itemTankImg);
@@ -364,7 +354,6 @@ void Enemy::Move(MoveDir dir)
 	}  
 	if (IntersectRect(&tempRect, &shape, &playerTankShape))
 	{
-		//cout << "적탱크 플레이어탱크랑 접촉! !" << endl;
 		pos = buffPos;
 		shape = buffRect;
 		isCollision = true;
@@ -408,7 +397,6 @@ void Enemy::ChangeItemTankImage()
 {
 	if (haveItem)
 	{
-		//cout << "elapseditemTankFrameY : " << elapseditemTankFrameY << endl;
 		switch (tankType)
 		{
 		case EnemyType::NORMAL:

@@ -28,7 +28,6 @@ private:
 	Image* scoreNumber[4] = {};
 	int scoreNumberPosX = enemyTankImagePosX - 100;
 
-	// destroyedEnemy[0] *1, killEnemyNumber[1]*2, killEnemyNumber[2]*3, killEnemyNumber[3]*4 �ؾ���
 	int tempArr[4] = { 0, 0, 0, 0 };
 	int* destroyedEnemy = tempArr;
 

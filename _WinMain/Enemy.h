@@ -75,7 +75,6 @@ public:
 	// 플레이어의 정보를 가져오는 함수
 	inline void SetPlayer(Tank* player) { this->player = player; }
 
-
 	// 버퍼의 정보를 가져오는 함수
 	inline POINTFLOAT GetBuffPos() { return this->buffPos; }
 	inline RECT GetBuffRect() { return this->buffRect; }

@@ -23,12 +23,6 @@
     <ClCompile Include="GameObject.cpp">
       <Filter>2D FrameWork</Filter>
     </ClCompile>
-    <ClCompile Include="Button.cpp">
-      <Filter>2D FrameWork\Button</Filter>
-    </ClCompile>
-    <ClCompile Include="ButtonFunction.cpp">
-      <Filter>2D FrameWork\Button</Filter>
-    </ClCompile>
     <ClCompile Include="GameEntity.cpp">
       <Filter>2D FrameWork</Filter>
     </ClCompile>
@@ -39,9 +33,6 @@
       <Filter>MainGame\Ammo</Filter>
     </ClCompile>
     <ClCompile Include="BattleScene.cpp">
-      <Filter>MainGame\Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="LoadingScene.cpp">
       <Filter>MainGame\Scene</Filter>
     </ClCompile>
     <ClCompile Include="TilemapToolScene.cpp">
@@ -100,12 +91,6 @@
     <ClInclude Include="GameObject.h">
       <Filter>2D FrameWork</Filter>
     </ClInclude>
-    <ClInclude Include="Button.h">
-      <Filter>2D FrameWork\Button</Filter>
-    </ClInclude>
-    <ClInclude Include="ButtonFunction.h">
-      <Filter>2D FrameWork\Button</Filter>
-    </ClInclude>
     <ClInclude Include="GameEntity.h">
       <Filter>2D FrameWork</Filter>
     </ClInclude>
@@ -119,9 +104,6 @@
       <Filter>MainGame\Ammo</Filter>
     </ClInclude>
     <ClInclude Include="BattleScene.h">
-      <Filter>MainGame\Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="LoadingScene.h">
       <Filter>MainGame\Scene</Filter>
     </ClInclude>
     <ClInclude Include="TilemapToolScene.h">
@@ -173,9 +155,6 @@
     </Filter>
     <Filter Include="MainGame">
       <UniqueIdentifier>{2e5f6329-09c2-4638-9ffd-c98e47e672bb}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="2D FrameWork\Button">
-      <UniqueIdentifier>{3d764016-e0a6-4fb3-98de-4b4fe457be9f}</UniqueIdentifier>
     </Filter>
     <Filter Include="MainGame\Enemy">
       <UniqueIdentifier>{bd3c6171-a96c-441e-b0cd-29646e8033d4}</UniqueIdentifier>

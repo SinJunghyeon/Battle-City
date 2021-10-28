@@ -45,22 +45,22 @@ private:
     Tank* player;
     POINTFLOAT playerSpawnPos;
     RECT playerTankRect;
+    Image* P1LifeImage;
+    int playerLife=2;
 
     // 적
     EnemyManager* enemyMgr;
     vector<Enemy*> vecEnemies;
+    Image* enemyIcon;           // 에너미 탱크
+    int enemyCount;
 
     // 충돌처리용 RECT
     RECT tempRect;
-
-    // 디버그용
-    POINTFLOAT tempPos;
 
     // 아이템
     Item* mpItem;
     POINTFLOAT itemSpawnPos;
     RECT itemRect;
-
     int elapsedChange = NULL;;
     int elapsedCount = 3005;
 
@@ -69,27 +69,15 @@ private:
     int destroyedEnemy[4] = {}; // 1 : 일반형  2 : 속도형   3 : 속사형   4 : 슈퍼탱크
     int iconSize = 30;
     int destroyedEnemyCount = 0;
-
-    Image* enemyIcon;           // 에너미 탱크
-    int enemyCount;
-
-    Image* P1LifeImage;
-    int playerLife=2;
-
     Image* numberText;
-
     Image* stageFlag;
     StageScene stagescene;
-
     //게임 오버 이미지
     Image* gameOverImg;
     int gameOverPosY = WIN_SIZE_Y * 3 / 2;
-
     // HQ 파괴 여부
     bool isHQDestroyed = false;
-
     int elapsedEnding = NULL;
- 
 
 public:
     virtual HRESULT Init() override;

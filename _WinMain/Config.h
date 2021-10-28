@@ -31,12 +31,6 @@ using namespace std;
 
 enum MoveDir { LEFT, RIGHT, UP, DOWN };
 
-typedef struct ArgumentFuncPtr
-{
-	string sceneName;
-	string loadingSceneName;
-} ARGUMENT_PTR, *LPARGUMENT_PTR;
-
 #include "TimerManager.h"
 #include "ImageManager.h"
 #include "KeyManager.h"
